@@ -3,8 +3,10 @@
     public enum RipType
     {
         None,       
-        Mov,    
-        Comparison,
+        Mov64,
+        Mov32,
+        Cmp,
+        QwordCmp,
         Call
     }
 }

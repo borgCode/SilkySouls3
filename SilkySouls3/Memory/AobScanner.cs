@@ -14,8 +14,22 @@ namespace SilkySouls3.Memory
         public void Scan()
         {
             Offsets.WorldChrMan.Base = FindAddressByPattern(Patterns.WorldChrMan);
+            Offsets.GameMan.Base = FindAddressByPattern(Patterns.GameMan);
+            Offsets.LuaEventMan.Base = FindAddressByPattern(Patterns.LuaEventMan);
+            Offsets.AiTargetingFlags.Base = FindAddressByPattern(Patterns.AiTargetingFlags);
+            Offsets.WorldAiMan.Base = FindAddressByPattern(Patterns.WorldAiMan);
+
+
+            Offsets.Hooks.LastLockedTarget = FindAddressByPattern(Patterns.LockedTarget).ToInt64();
+            Offsets.Hooks.WarpCoordWrite = FindAddressByPattern(Patterns.WarpCoordWrite).ToInt64();
+
+            Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
             
             Console.WriteLine($"WorldChrMan.Base: 0x{Offsets.WorldChrMan.Base.ToInt64():X}");
+            Console.WriteLine($"GameMan.Base: 0x{Offsets.GameMan.Base.ToInt64():X}");
+            Console.WriteLine($"LuaEventMan.Base: 0x{Offsets.LuaEventMan.Base.ToInt64():X}");
+            Console.WriteLine($"AiTargetingFlags.Base: 0x{Offsets.AiTargetingFlags.Base.ToInt64():X}");
+            Console.WriteLine($"WorldAiMan.Base: 0x{Offsets.WorldAiMan.Base.ToInt64():X}");
             // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
             // Console.WriteLine($"Cam.Base: 0x{Offsets.Cam.Base.ToInt64():X}");
             // Console.WriteLine($"GameDataMan.Base: 0x{Offsets.GameDataMan.Base.ToInt64():X}");
@@ -40,7 +54,9 @@ namespace SilkySouls3.Memory
             // Console.WriteLine($"Weapon: 0x{Offsets.OpenEnhanceShopWeapon:X}");
             // Console.WriteLine($"Weapon: 0x{Offsets.OpenEnhanceShopArmor:X}");
             //
-            // Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
+            Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
+            Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
+            
             // Console.WriteLine($"Hooks.AllNoDamage: 0x{Offsets.Hooks.AllNoDamage:X}");
             // Console.WriteLine($"Hooks.ItemSpawn: 0x{Offsets.Hooks.ItemSpawn:X}");
             // Console.WriteLine($"Hooks.Draw: 0x{Offsets.Hooks.Draw:X}");
@@ -52,6 +68,7 @@ namespace SilkySouls3.Memory
             // Console.WriteLine($"Hooks.UpdateCoords: 0x{Offsets.Hooks.UpdateCoords:X}");
             // Console.WriteLine($"Hooks.WarpCoords: 0x{Offsets.Hooks.WarpCoords:X}");
             // Console.WriteLine($"Hooks.LuaIfElse: 0x{Offsets.Hooks.LuaIfCase:X}");
+            Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
         }
 
         public IntPtr FindAddressByPattern(Pattern pattern)
@@ -67,15 +84,24 @@ namespace SilkySouls3.Memory
                 case RipType.None:
                     return instructionAddress;
 
-                case RipType.Mov:
+                case RipType.Mov64:
                     // e.g. 48 8B 05/0D - Standard mov rax/rcx,[rip+offset]
                     int stdOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
                     return IntPtr.Add(instructionAddress, stdOffset + 7);
 
-                case RipType.Comparison:
+                case RipType.Mov32:
+                    // e.g. 8B 05 - 32-bit mov eax,[rip+offset]
+                    int mov32Offset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
+                    return IntPtr.Add(instructionAddress, mov32Offset + 6);
+                
+                case RipType.Cmp:
                     // e.g. 80 3D - cmp byte ptr [rip+offset],imm
                     int cmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
                     return IntPtr.Add(instructionAddress, cmpOffset + 7);
+                case RipType.QwordCmp:
+                    // e.g. 48 83 3D - cmp qword ptr [rip+offset],imm
+                    int qwordCmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
+                    return IntPtr.Add(instructionAddress, qwordCmpOffset + 8);
                 case RipType.Call:
                     int callOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 1));
                     return IntPtr.Add(instructionAddress, callOffset + 5);

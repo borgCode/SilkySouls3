@@ -346,24 +346,24 @@ namespace SilkySouls3.Memory
         //     
         // }
         //
-        // public void AllocCodeCave()
-        // {
-        //     IntPtr searchRangeStart = BaseAddress - 0x40000000;
-        //     IntPtr searchRangeEnd = BaseAddress - 0x30000;
-        //     uint codeCaveSize = 0x2000;
-        //     IntPtr allocatedMemory;
-        //
-        //     for (IntPtr addr = searchRangeEnd; addr.ToInt64() > searchRangeStart.ToInt64(); addr -= 0x10000)
-        //     {
-        //         allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, addr, codeCaveSize);
-        //
-        //         if (allocatedMemory != IntPtr.Zero)
-        //         {
-        //             CodeCaveOffsets.Base = allocatedMemory;
-        //             break;
-        //         }
-        //     }
-        // }
+        public void AllocCodeCave()
+        {
+            IntPtr searchRangeStart = BaseAddress - 0x40000000;
+            IntPtr searchRangeEnd = BaseAddress - 0x30000;
+            uint codeCaveSize = 0x2000;
+            IntPtr allocatedMemory;
+        
+            for (IntPtr addr = searchRangeEnd; addr.ToInt64() > searchRangeStart.ToInt64(); addr -= 0x10000)
+            {
+                allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, addr, codeCaveSize);
+        
+                if (allocatedMemory != IntPtr.Zero)
+                {
+                    CodeCaveOffsets.Base = allocatedMemory;
+                    break;
+                }
+            }
+        }
         //
         // public IntPtr GetModuleStart(IntPtr address)
         // {

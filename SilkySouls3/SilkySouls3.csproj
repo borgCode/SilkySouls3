@@ -54,8 +54,20 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="Memory\AobScanner.cs" />
+        <Compile Include="Memory\CodeCaveOffsets.cs" />
+        <Compile Include="Services\EnemyService.cs" />
+        <Compile Include="Services\ItemService.cs" />
+        <Compile Include="Services\PlayerService.cs" />
+        <Compile Include="Services\SettingsService.cs" />
+        <Compile Include="Services\UtilityService.cs" />
+        <Compile Include="Utilities\AsmHelper.cs" />
         <Compile Include="Utilities\AsmLoader.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />
+        <Compile Include="ViewModels\EnemyViewModel.cs" />
+        <Compile Include="ViewModels\ItemViewModel.cs" />
+        <Compile Include="ViewModels\PlayerViewModel.cs" />
+        <Compile Include="ViewModels\SettingsViewModel.cs" />
+        <Compile Include="ViewModels\UtilityViewModel.cs" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -96,7 +108,6 @@
     <ItemGroup>
       <Folder Include="Assets\" />
       <Folder Include="Converters\" />
-      <Folder Include="Services\" />
       <Folder Include="Views\" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
