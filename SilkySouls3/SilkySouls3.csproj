@@ -37,7 +37,9 @@
         <Prefer32bit>false</Prefer32bit>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="mscorlib" />
         <Reference Include="System"/>
+        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
@@ -53,8 +55,12 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Converters\BooleanAndConverter.cs" />
+        <Compile Include="Converters\ImmuneFillConverter.cs" />
         <Compile Include="Memory\AobScanner.cs" />
         <Compile Include="Memory\CodeCaveOffsets.cs" />
+        <Compile Include="Memory\Pointers.cs" />
+        <Compile Include="Services\CinderService.cs" />
         <Compile Include="Services\EnemyService.cs" />
         <Compile Include="Services\ItemService.cs" />
         <Compile Include="Services\PlayerService.cs" />
@@ -68,6 +74,12 @@
         <Compile Include="ViewModels\PlayerViewModel.cs" />
         <Compile Include="ViewModels\SettingsViewModel.cs" />
         <Compile Include="ViewModels\UtilityViewModel.cs" />
+        <Compile Include="Views\EnemyTab.xaml.cs">
+          <DependentUpon>EnemyTab.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Views\UtilityTab.xaml.cs">
+          <DependentUpon>UtilityTab.xaml</DependentUpon>
+        </Compile>
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -80,6 +92,8 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Views\EnemyTab.xaml" />
+        <Page Include="Views\UtilityTab.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Memory\HookManager.cs" />
@@ -102,13 +116,11 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <None Include="App.config"/>
+        <None Include="App.config" />
         <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Assets\" />
-      <Folder Include="Converters\" />
-      <Folder Include="Views\" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

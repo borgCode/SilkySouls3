@@ -22,17 +22,17 @@ namespace SilkySouls3.Memory
         }
 
 
-        public long InstallHook(long target, long origin, byte[] originalBytes)
+        public long InstallHook(long codeLoc, long origin, byte[] originalBytes)
         {
-            byte[] hookBytes = GetHookBytes(originalBytes.Length, target, origin);
+            byte[] hookBytes = GetHookBytes(originalBytes.Length, codeLoc, origin);
             _memoryIo.WriteBytes((IntPtr) origin, hookBytes);
-            _hookRegistry[target] = new HookData
+            _hookRegistry[codeLoc] = new HookData
             {
-                CaveAddr = target,
+                CaveAddr = codeLoc,
                 OriginAddr = origin,
                 OriginalBytes = originalBytes
             };
-            return target;
+            return codeLoc;
         }
 
         private byte[] GetHookBytes(int originalBytesLength, long target, long origin)

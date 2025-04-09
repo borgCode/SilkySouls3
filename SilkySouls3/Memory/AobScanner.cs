@@ -16,18 +16,21 @@ namespace SilkySouls3.Memory
             Offsets.WorldChrMan.Base = FindAddressByPattern(Patterns.WorldChrMan);
             Offsets.GameMan.Base = FindAddressByPattern(Patterns.GameMan);
             Offsets.LuaEventMan.Base = FindAddressByPattern(Patterns.LuaEventMan);
+            Offsets.SoloParamRepo.Base = FindAddressByPattern(Patterns.SoloParamRepo);
             Offsets.AiTargetingFlags.Base = FindAddressByPattern(Patterns.AiTargetingFlags);
             Offsets.WorldAiMan.Base = FindAddressByPattern(Patterns.WorldAiMan);
 
 
             Offsets.Hooks.LastLockedTarget = FindAddressByPattern(Patterns.LockedTarget).ToInt64();
             Offsets.Hooks.WarpCoordWrite = FindAddressByPattern(Patterns.WarpCoordWrite).ToInt64();
+            Offsets.Hooks.AddSubGoal = FindAddressByPattern(Patterns.AddSubGoal).ToInt64();
 
             Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
             
             Console.WriteLine($"WorldChrMan.Base: 0x{Offsets.WorldChrMan.Base.ToInt64():X}");
             Console.WriteLine($"GameMan.Base: 0x{Offsets.GameMan.Base.ToInt64():X}");
             Console.WriteLine($"LuaEventMan.Base: 0x{Offsets.LuaEventMan.Base.ToInt64():X}");
+            Console.WriteLine($"SoloParamRepo.Base: 0x{Offsets.SoloParamRepo.Base.ToInt64():X}");
             Console.WriteLine($"AiTargetingFlags.Base: 0x{Offsets.AiTargetingFlags.Base.ToInt64():X}");
             Console.WriteLine($"WorldAiMan.Base: 0x{Offsets.WorldAiMan.Base.ToInt64():X}");
             // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
@@ -56,6 +59,7 @@ namespace SilkySouls3.Memory
             //
             Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
             Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
+            Console.WriteLine($"Hooks.AddSubGoal: 0x{Offsets.Hooks.AddSubGoal:X}");
             
             // Console.WriteLine($"Hooks.AllNoDamage: 0x{Offsets.Hooks.AllNoDamage:X}");
             // Console.WriteLine($"Hooks.ItemSpawn: 0x{Offsets.Hooks.ItemSpawn:X}");

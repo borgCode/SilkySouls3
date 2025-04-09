@@ -32,7 +32,21 @@
             RipType.Mov64
         );
 
+        public static readonly Pattern DamageMan = new Pattern(
+            new byte[] { 0xC7, 0x44, 0x24, 0x28, 0xFF, 0xFF, 0xFF, 0xFF, 0x48, 0x89, 0x7C, 0x24, 0x20, 0x0F },
+            "xxxxxxxxxxxxxx",
+            0x15,
+            RipType.Mov64
+        );
 
+
+        public static readonly Pattern SoloParamRepo = new Pattern(
+            new byte[] { 0x89, 0x11, 0x33, 0xDB, 0x48, 0x89, 0x59, 0x08, 0x85, 0xD2 },
+            "xxxxxxxxxx",
+            0x10,
+            RipType.Mov64
+        );
+        
         public static readonly Pattern LuaEventMan = new Pattern(
             new byte[] { 0x0F, 0xB6, 0xF8, 0x48, 0x83, 0x3D },
             "xxxxxx",
@@ -70,6 +84,13 @@
             new byte[] { 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x0F, 0x28, 0x01, 0x66, 0x0F, 0x7F, 0x80, 0x40 },
             "xxx????xxxxxxxx",
             0,
+            RipType.None
+        );
+
+        public static readonly Pattern AddSubGoal = new Pattern(
+            new byte[] { 0x48, 0x83, 0xC4, 0x68, 0xC3, 0xCC, 0x81 },
+            "xxxxxxx",
+            -0xA,
             RipType.None
         );
 

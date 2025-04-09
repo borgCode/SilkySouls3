@@ -3,10 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SilkySouls3"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="SilkySouls3"
+        Height="600"
+        Width="520"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}"
+        BorderBrush="{StaticResource BorderBrush}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize">
     <Grid>
-        
+        <TabControl x:Name="MainTabControl"
+                    Grid.Row="0"
+                    Background="Transparent"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1">
+            <TabControl.Template>
+                <ControlTemplate TargetType="TabControl">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Top">
+                            <TabPanel IsItemsHost="True" HorizontalAlignment="Left" />
+                        </Grid>
+                        <ContentPresenter ContentSource="SelectedContent" />
+                    </DockPanel>
+                </ControlTemplate>
+            </TabControl.Template>
+        </TabControl>
     </Grid>
 </Window>

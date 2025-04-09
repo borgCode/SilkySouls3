@@ -114,4 +114,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SaveTargetPtr" xml:space="preserve">
+    <value>48 89 05 00 00 00 00    mov    QWORD PTR [rip+0x0],rax        # 7 &lt;_main+0x7&gt;
+48 8b 80 90 1f 00 00    mov    rax,QWORD PTR [rax+0x1f90]
+e9 00 00 00 00          jmp    13 &lt;_main+0x13&gt;</value>
+  </data>
+  <data name="CinderPhaseLock" xml:space="preserve">
+    <value>f3 0f 11 44 24 20       movss  DWORD PTR [rsp+0x20],xmm0
+50                      push   rax
+66 0f 7e d8             movd   eax,xmm3
+3d 00 40 9c 46          cmp    eax,0x469c4000
+74 1b                   je     2d &lt;skipCall&gt;
+3d 00 42 9c 46          cmp    eax,0x469c4200
+74 14                   je     2d &lt;skipCall&gt;
+3d 00 44 9c 46          cmp    eax,0x469c4400
+74 0d                   je     2d &lt;skipCall&gt;
+3d 00 48 9c 46          cmp    eax,0x469c4800
+74 06                   je     2d &lt;skipCall&gt;
+58                      pop    rax
+e9 00 00 00 00          jmp    2d &lt;skipCall&gt;
+58                      pop    rax
+48 83 c4 68             add    rsp,0x68
+c3                      ret</value>
+  </data>
 </root>

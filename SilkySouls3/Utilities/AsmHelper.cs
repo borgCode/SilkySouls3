@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SilkySouls3.Memory
+namespace SilkySouls3.Utilities
 {
     public static class AsmHelper
     {
@@ -23,6 +23,22 @@ namespace SilkySouls3.Memory
                 var relativeBytes = GetRelOffsetBytes(baseAddr, targetAddr, size);
                 Array.Copy(relativeBytes, 0, bytes, offset, 4);
             }
+        }
+        
+        
+        public static void WriteJumpOffsets(byte[] bytes, (long jumpInstrAddr, long targetAddr, int jumpInstrLength, int offset)[] jumps)
+        {
+            foreach (var (jumpInstrAddr, targetAddr, jumpInstrLength, offset) in jumps)
+            {
+                var jumpBytes = GetRelOffsetBytes(jumpInstrAddr, targetAddr, jumpInstrLength);
+                Array.Copy(jumpBytes, 0, bytes, offset, 4);
+            }
+        }
+        
+        public static void WriteJumpOffset(byte[] bytes, long jumpInstrAddr, long targetAddr, int jumpInstrLength, int offset)
+        {
+            var jumpBytes = GetRelOffsetBytes(jumpInstrAddr, targetAddr, jumpInstrLength);
+            Array.Copy(jumpBytes, 0, bytes, offset, 4);
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
+using SilkySouls3.Services;
+using SilkySouls3.ViewModels;
+using SilkySouls3.Views;
 
 namespace SilkySouls3
 {
@@ -15,6 +19,9 @@ namespace SilkySouls3
         private readonly DispatcherTimer _gameLoadedTimer;
         private readonly HookManager _hookManager;
         
+        private readonly UtilityViewModel _utilityViewModel;
+        private readonly EnemyViewModel _enemyViewModel;
+        
         public MainWindow()
         {
             
@@ -26,10 +33,19 @@ namespace SilkySouls3
             _hookManager = new HookManager(_memoryIo);
             _aobScanner = new AoBScanner(_memoryIo);
             
-            
-            
+            var utilityService = new UtilityService(_memoryIo, _hookManager);
+            var enemyService = new EnemyService(_memoryIo, _hookManager);
+            var cinderService = new CinderService(_memoryIo, _hookManager);
             //TODO INITS
             
+            _utilityViewModel = new UtilityViewModel(utilityService);
+            _enemyViewModel = new EnemyViewModel(enemyService);
+            
+            var utilityTab = new UtilityTab(_utilityViewModel);
+            var enemyTab = new EnemyTab(_enemyViewModel);
+            
+            MainTabControl.Items.Add(new TabItem { Header = "Utility", Content = utilityTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Enemies", Content = enemyTab });
             
             _gameLoadedTimer = new DispatcherTimer
             {
@@ -57,7 +73,8 @@ namespace SilkySouls3
 
                 if (!_hasAllocatedMemory)
                 {
-                    
+                    _memoryIo.AllocCodeCave();
+                    Console.WriteLine($"Code cave: 0x{CodeCaveOffsets.Base.ToInt64():X}");
                     _hasAllocatedMemory = true;
                 }
                 
