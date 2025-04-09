@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
@@ -39,7 +41,7 @@ namespace SilkySouls3
             //TODO INITS
             
             _utilityViewModel = new UtilityViewModel(utilityService);
-            _enemyViewModel = new EnemyViewModel(enemyService);
+            _enemyViewModel = new EnemyViewModel(enemyService, cinderService);
             
             var utilityTab = new UtilityTab(_utilityViewModel);
             var enemyTab = new EnemyTab(_enemyViewModel);
@@ -82,11 +84,12 @@ namespace SilkySouls3
                 {
                     if (_loaded) return;
                     _loaded = true;
-                    
+                    TryEnableFeatures();
+
                 }
                 else if (_loaded)
                 {
-                
+                    DisableFeatures();
                     _loaded = false;
                 }
             }
@@ -94,6 +97,41 @@ namespace SilkySouls3
             {
                 _hookManager.ClearHooks();
             }
+        }
+
+        private void TryEnableFeatures()
+        {
+            _enemyViewModel.TryEnableFeatures();
+        }
+
+        private void DisableFeatures()
+        {
+            _enemyViewModel.DisableFeatures();
+        }
+
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                if (WindowState == WindowState.Maximized)
+                    WindowState = WindowState.Normal;
+                else
+                    WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                DragMove();
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

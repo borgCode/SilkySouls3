@@ -11,29 +11,35 @@ namespace SilkySouls3.Memory
 
             public enum PlayerInsOffsets
             {
-                ChrFlags1 = 0x1ED8,
+                ChrFlags1 = 0x1EE8,
                 Modules = 0x1F90,
             }
 
             public enum ChrFlag1BitFlag
             {
-                DisableAi = 75
+                DisableAi = 11
             }
-            
+
             public enum Modules
             {
                 ChrDataModule = 0x18,
                 ChrResistModule = 0x20,
                 ChrBehaviorModule = 0x28,
-                ChrEventModule = 0x58
+                ChrSuperArmorModule = 0x40,
+                ChrEventModule = 0x58,
+                ChrPhysicsModule = 0x68
             }
+            public const int ForceAnimationOffset = 0x20;
+
+            public const int CsChrProxy = 0xA8;
+            public const int CsHkCharacterProxy = 0x40;
+            public const int TargetCoordsOffset = 0x70;
 
             public enum ChrDataModule
             {
                 Hp = 0xD8,
                 MaxHp = 0xDC,
                 ChrFlags2 = 0x1C0
-                
             }
 
             public enum ChrFlags2 : byte
@@ -53,11 +59,19 @@ namespace SilkySouls3.Memory
                 BleedMax = 0x2C,
                 FrostMax = 0x34
             }
-            
-//TODO look into replacing behavior module and current anim with better
-            public const int CurrentAnimationOffset = 0x898;
-            public const int ForceAnimationOffset = 0x20;
-            
+
+            public enum ChrBehaviorModule
+            {
+                AnimSpeed = 0xA58,
+                CurrentAnimation = 0x898,
+            }
+
+            public enum ChrSuperArmorModule
+            {
+                Poise = 0x28,
+                MaxPoise = 0x2C,
+                PoiseTimer = 0x34,
+            }
         }
 
         public static class GameMan
@@ -81,11 +95,21 @@ namespace SilkySouls3.Memory
             public const int CinderSoulmass = 0x126730;
         }
 
+        public static class MenuMan
+        {
+            public static IntPtr Base;
+
+            public enum MenuManOffsets
+            {
+                LoadedFlag = 0x28C,
+            }
+        }
+
         public static class LuaEventMan
         {
             public static IntPtr Base;
         }
-        
+
 
         public static class AiTargetingFlags
         {
@@ -93,6 +117,7 @@ namespace SilkySouls3.Memory
             public const int Height = 0x4;
             public const int Width = 0x5;
         }
+
         public static class WorldAiMan
         {
             public static IntPtr Base;
@@ -100,14 +125,11 @@ namespace SilkySouls3.Memory
 
         public static class EnemyIns
         {
-            public const int EnemyCtrl = 0x50;
-            public const int ActionCtrl = 0x48;
-            public const int CurrentPhaseOffset = 0xF0;
             
             public const int ComManipulator = 0x58;
             public const int EnemyId = 0x390;
-            
             public const int AiIns = 0x320;
+            
 
             public enum AiInsOffsets
             {
@@ -122,15 +144,17 @@ namespace SilkySouls3.Memory
                 Bleed = 0x170,
                 FrostBite = 0x178
             }
-            
+
             public enum LuaNumbers
-            
+
             {
                 Gwyn5HitComboNumberIndex = 0,
                 GwynLightningRainNumberIndex = 1,
                 PhaseTransitionCounterNumberIndex = 2
             }
-
+            
+            public const int CurrentPhaseOffset = 0x1FF0;
+            
         }
 
         public static class Hooks
@@ -138,7 +162,6 @@ namespace SilkySouls3.Memory
             public static long LastLockedTarget;
             public static long WarpCoordWrite;
             public static long AddSubGoal;
-
         }
 
         public static class Funcs

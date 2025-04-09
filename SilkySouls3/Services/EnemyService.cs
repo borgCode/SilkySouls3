@@ -43,8 +43,7 @@ namespace SilkySouls3.Services
             return _memoryIo.ReadUInt64(CodeCaveOffsets.Base +
                                         CodeCaveOffsets.LockedTargetPtr);
         }
-
-
+        
         public int GetTargetHp() =>
             _memoryIo.ReadInt32(GetTargetChrDataFieldPtr((int)Offsets.WorldChrMan.ChrDataModule.Hp));
 
@@ -63,7 +62,7 @@ namespace SilkySouls3.Services
         public bool IsTargetNoDamageEnabled() =>
             _memoryIo.IsBitSet(GetTargetChrDataFieldPtr((int)Offsets.WorldChrMan.ChrDataModule.ChrFlags2),
                 (byte)Offsets.WorldChrMan.ChrFlags2.NoDamage);
-        
+
         private IntPtr GetTargetChrDataFieldPtr(int fieldOffset)
         {
             return _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
@@ -92,7 +91,7 @@ namespace SilkySouls3.Services
                 _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectImmunityOffsets.FrostBite) == 30040
                 );
         }
-        
+
         public int GetTargetResistance(Offsets.WorldChrMan.ChrResistModule resistanceOffset)
         {
             var resistancePtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
@@ -104,6 +103,80 @@ namespace SilkySouls3.Services
                 }, false);
 
             return _memoryIo.ReadInt32(resistancePtr);
+        }
+
+        public float GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule poiseOffset)
+        {
+            var poisePtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
+                new[]
+                {
+                    (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)Offsets.WorldChrMan.Modules.ChrSuperArmorModule,
+                    (int) poiseOffset
+                }, false);
+            
+            return _memoryIo.ReadFloat(poisePtr);
+        }
+
+        public void ToggleTargetAi(bool isDisableTargetAiEnabled)
+        {
+            var targetPtr = (IntPtr) _memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
+            
+            _memoryIo.SetBit32(targetPtr + (int) Offsets.WorldChrMan.PlayerInsOffsets.ChrFlags1,
+                (int)Offsets.WorldChrMan.ChrFlag1BitFlag.DisableAi, isDisableTargetAiEnabled);
+        }
+
+        public bool IsTargetAiDisabled()
+        {
+            var targetPtr = (IntPtr) _memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
+            return _memoryIo.IsBitSet(targetPtr + (int)Offsets.WorldChrMan.PlayerInsOffsets.ChrFlags1,
+                (int)Offsets.WorldChrMan.ChrFlag1BitFlag.DisableAi);
+        }
+
+        public void SetTargetSpeed(float value)
+        {
+            var speedPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
+                new[]
+                {
+                    (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)Offsets.WorldChrMan.Modules.ChrBehaviorModule,
+                    (int) Offsets.WorldChrMan.ChrBehaviorModule.AnimSpeed
+                }, false);
+            
+            _memoryIo.WriteFloat(speedPtr, value);
+        }
+
+        public float GetTargetSpeed()
+        {
+            var speedPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
+                new[]
+                {
+                    (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)Offsets.WorldChrMan.Modules.ChrBehaviorModule,
+                    (int) Offsets.WorldChrMan.ChrBehaviorModule.AnimSpeed
+                }, false);
+            
+            return _memoryIo.ReadFloat(speedPtr);
+        }
+
+        public float[] GetTargetPos()
+        {
+            var targetPosPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
+                new[]
+                {
+                    (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)Offsets.WorldChrMan.Modules.ChrPhysicsModule,
+                    Offsets.WorldChrMan.CsChrProxy,
+                    Offsets.WorldChrMan.CsHkCharacterProxy,
+                    Offsets.WorldChrMan.TargetCoordsOffset
+                }, false);
+            
+            float[] position = new float[3];
+            position[0] = _memoryIo.ReadFloat(targetPosPtr);
+            position[1] = _memoryIo.ReadFloat(targetPosPtr + 0x4);
+            position[2] = _memoryIo.ReadFloat(targetPosPtr + 0x8);
+
+            return position;
         }
     }
 }

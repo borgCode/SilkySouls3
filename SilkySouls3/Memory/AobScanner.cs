@@ -19,6 +19,7 @@ namespace SilkySouls3.Memory
             Offsets.SoloParamRepo.Base = FindAddressByPattern(Patterns.SoloParamRepo);
             Offsets.AiTargetingFlags.Base = FindAddressByPattern(Patterns.AiTargetingFlags);
             Offsets.WorldAiMan.Base = FindAddressByPattern(Patterns.WorldAiMan);
+            Offsets.MenuMan.Base = FindAddressByPattern(Patterns.MenuMan);
 
 
             Offsets.Hooks.LastLockedTarget = FindAddressByPattern(Patterns.LockedTarget).ToInt64();
@@ -33,6 +34,9 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"SoloParamRepo.Base: 0x{Offsets.SoloParamRepo.Base.ToInt64():X}");
             Console.WriteLine($"AiTargetingFlags.Base: 0x{Offsets.AiTargetingFlags.Base.ToInt64():X}");
             Console.WriteLine($"WorldAiMan.Base: 0x{Offsets.WorldAiMan.Base.ToInt64():X}");
+            Console.WriteLine($"MenuMan.Base: 0x{Offsets.MenuMan.Base.ToInt64():X}");
+            
+            
             // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
             // Console.WriteLine($"Cam.Base: 0x{Offsets.Cam.Base.ToInt64():X}");
             // Console.WriteLine($"GameDataMan.Base: 0x{Offsets.GameDataMan.Base.ToInt64():X}");

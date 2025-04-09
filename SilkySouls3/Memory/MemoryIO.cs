@@ -339,13 +339,12 @@ namespace SilkySouls3.Memory
             WriteInt32(wordAddr, (int)newValue);
         }
 
-        // public bool IsGameLoaded()
-        // {
-        //     var loadingCheckPtr = FollowPointers(Offsets.MenuMan.Base,new[] { (int)Offsets.MenuMan.MenuManData.LoadedFlag }, false);
-        //     return ReadInt32(loadingCheckPtr) == 1;
-        //     
-        // }
-        //
+        public bool IsGameLoaded()
+        {
+            return ReadInt32((IntPtr)ReadInt64(Offsets.MenuMan.Base) + (int) Offsets.MenuMan.MenuManOffsets.LoadedFlag) == 1;
+            
+        }
+        
         public void AllocCodeCave()
         {
             IntPtr searchRangeStart = BaseAddress - 0x40000000;
@@ -369,9 +368,5 @@ namespace SilkySouls3.Memory
         // {
         //     return Kernel32.QueryMemory(ProcessHandle, address).AllocationBase;
         // }
-        public bool IsGameLoaded()
-        {
-            return true;
-        }
     }
 }

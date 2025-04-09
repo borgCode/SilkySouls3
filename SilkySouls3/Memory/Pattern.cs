@@ -70,6 +70,13 @@
             0x31,
             RipType.Mov32);
 
+        public static readonly Pattern MenuMan = new Pattern(
+            new byte[] { 0x48, 0x39, 0x81, 0x50 },
+            "xxxx",
+            -0x9,
+            RipType.Mov64
+        );
+        
         
         //Hooks
 
