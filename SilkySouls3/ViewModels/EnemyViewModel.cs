@@ -7,7 +7,6 @@ namespace SilkySouls3.ViewModels
 {
     public class EnemyViewModel : BaseViewModel
     {
-        //TODO implement options enavbled
         private bool _areOptionsEnabled = true;
         private bool _isTargetOptionsEnabled;
         private bool _isValidTarget;

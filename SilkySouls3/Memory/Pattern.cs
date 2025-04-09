@@ -76,6 +76,31 @@
             -0x9,
             RipType.Mov64
         );
+
+        public static readonly Pattern DebugFlags = new Pattern(
+            new byte[] { 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x74, 0x0A, 0xC7 },
+            "xx????xxxx",
+            0,
+            RipType.Cmp
+        );
+
+        public static readonly Pattern DebugEvent = new Pattern(
+            new byte[] { 0x02, 0x00, 0x48, 0x83, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x75 },
+            "xxxxx????xx",
+            0x2,
+            RipType.QwordCmp
+        );
+
+        
+        //Patch
+
+        public static readonly Pattern RepeatAct = new Pattern(
+            new byte[] { 0x0F, 0xBE, 0x80, 0x81 },
+            "xxxx",
+            0,
+            RipType.None
+        );
+            
         
         
         //Hooks
@@ -100,6 +125,11 @@
             -0xA,
             RipType.None
         );
+        
+     // PLayer coords for noclip   // public static readonly Pattern Placeholder = new Pattern(
+        //     new byte[] { 0x48, 0x8B, 0x48, 0x18, 0x8D, 0x46 },
+        //     "xxxxxx",
+
 
         
         //Funcs

@@ -45,6 +45,7 @@ namespace SilkySouls3.Memory
             public enum ChrFlags2 : byte
             {
                 NoDamage = 1 << 1,
+                NoDeath = 1 << 2,
                 InfiniteStam = 1 << 4,
             }
 
@@ -72,6 +73,12 @@ namespace SilkySouls3.Memory
                 MaxPoise = 0x2C,
                 PoiseTimer = 0x34,
             }
+
+            public enum ChrPhysicsModule
+            {
+                Angle = 0x74,
+                Coords = 0x80,
+            }
         }
 
         public static class GameMan
@@ -84,6 +91,27 @@ namespace SilkySouls3.Memory
         {
             public static IntPtr Base;
             public const int HitboxView = 0x30;
+        }
+
+        public static class DebugFlags
+        {
+            public static IntPtr Base;
+            public const int NoDeath = 0x0;
+            public const int OneShot = 0x1;
+            public const int InfiniteStam = 0x2;
+            public const int InfiniteFp = 0x3;
+            public const int InfiniteArrows = 0x4;
+            public const int Invisible = 0x6;
+            public const int Silent = 0x7;
+            public const int AllNoDeath = 0x8;
+            public const int AllNoDamage = 0x9;
+            public const int DisableAllAi = 0xD;
+        }
+
+        public static class DebugEvent
+        {
+            public static IntPtr Base;
+            public const int EventDraw = 0xA8;
         }
 
         public static class SoloParamRepo
@@ -155,6 +183,11 @@ namespace SilkySouls3.Memory
             
             public const int CurrentPhaseOffset = 0x1FF0;
             
+        }
+
+        public static class Patches
+        {
+            public static long RepeatAct;
         }
 
         public static class Hooks

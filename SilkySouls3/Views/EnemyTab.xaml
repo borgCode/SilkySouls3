@@ -519,7 +519,8 @@
                         <StackPanel Orientation="Horizontal">
                             <CheckBox Content="Lock Phase"
                                       Margin="0,0,10,0"
-                                      VerticalAlignment="Center">
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsCinderPhasedLocked}">
                                 <CheckBox.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                         <Binding Path="AreOptionsEnabled" />
@@ -529,7 +530,8 @@
                             </CheckBox>
                             <CheckBox Content="Endless Soulmass"
                                       Margin="0,0,0,0"
-                                      VerticalAlignment="Center">
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsEndlessSoulmassEnabled}">
                                 <CheckBox.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                         <Binding Path="AreOptionsEnabled" />

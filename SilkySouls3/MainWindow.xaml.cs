@@ -20,7 +20,9 @@ namespace SilkySouls3
         private readonly AoBScanner _aobScanner;
         private readonly DispatcherTimer _gameLoadedTimer;
         private readonly HookManager _hookManager;
-        
+
+
+        private readonly PlayerViewModel _playerViewModel;
         private readonly UtilityViewModel _utilityViewModel;
         private readonly EnemyViewModel _enemyViewModel;
         
@@ -34,18 +36,22 @@ namespace SilkySouls3
             
             _hookManager = new HookManager(_memoryIo);
             _aobScanner = new AoBScanner(_memoryIo);
-            
+
+            var playerService = new PlayerService(_memoryIo, _hookManager);
             var utilityService = new UtilityService(_memoryIo, _hookManager);
             var enemyService = new EnemyService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);
             //TODO INITS
-            
+
+            _playerViewModel = new PlayerViewModel(playerService);
             _utilityViewModel = new UtilityViewModel(utilityService);
             _enemyViewModel = new EnemyViewModel(enemyService, cinderService);
-            
+
+            var playerTab = new PlayerTab(_playerViewModel);
             var utilityTab = new UtilityTab(_utilityViewModel);
             var enemyTab = new EnemyTab(_enemyViewModel);
-            
+
+            MainTabControl.Items.Add(new TabItem { Header = "Player", Content = playerTab });
             MainTabControl.Items.Add(new TabItem { Header = "Utility", Content = utilityTab });
             MainTabControl.Items.Add(new TabItem { Header = "Enemies", Content = enemyTab });
             
@@ -101,11 +107,13 @@ namespace SilkySouls3
 
         private void TryEnableFeatures()
         {
+            _playerViewModel.TryEnableFeatures();
             _enemyViewModel.TryEnableFeatures();
         }
 
         private void DisableFeatures()
         {
+            _playerViewModel.DisableFeatures();
             _enemyViewModel.DisableFeatures();
         }
 

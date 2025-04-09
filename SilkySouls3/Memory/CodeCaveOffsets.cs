@@ -10,5 +10,8 @@ namespace SilkySouls3.Memory
             public const int SaveTargetPtrCode = 0x10;
 
             public const int CinderPhaseLock = 0x30;
+
+            public const int SavePos1 = 0x70;
+            public const int SavePos2 = 0x80;
     }
 }
