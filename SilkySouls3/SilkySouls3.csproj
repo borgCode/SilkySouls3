@@ -84,6 +84,7 @@
         <Compile Include="Memory\AobScanner.cs" />
         <Compile Include="Memory\CodeCaveOffsets.cs" />
         <Compile Include="Memory\Pointers.cs" />
+        <Compile Include="Models\WarpEntry.cs" />
         <Compile Include="Services\CinderService.cs" />
         <Compile Include="Services\EnemyService.cs" />
         <Compile Include="Services\ItemService.cs" />
@@ -92,6 +93,7 @@
         <Compile Include="Services\UtilityService.cs" />
         <Compile Include="Utilities\AsmHelper.cs" />
         <Compile Include="Utilities\AsmLoader.cs" />
+        <Compile Include="Utilities\DataLoader.cs" />
         <Compile Include="ViewModels\BaseViewModel.cs" />
         <Compile Include="ViewModels\EnemyViewModel.cs" />
         <Compile Include="ViewModels\ItemViewModel.cs" />

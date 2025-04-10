@@ -25,20 +25,10 @@ namespace SilkySouls3.Utilities
             }
         }
         
+        public static byte[] GetJmpOriginOffsetBytes(long hookLocation, int originalInstrLen, IntPtr customCodeAddr)
+            => BitConverter.GetBytes((int)(hookLocation + originalInstrLen - customCodeAddr.ToInt64()));
+
         
-        public static void WriteJumpOffsets(byte[] bytes, (long jumpInstrAddr, long targetAddr, int jumpInstrLength, int offset)[] jumps)
-        {
-            foreach (var (jumpInstrAddr, targetAddr, jumpInstrLength, offset) in jumps)
-            {
-                var jumpBytes = GetRelOffsetBytes(jumpInstrAddr, targetAddr, jumpInstrLength);
-                Array.Copy(jumpBytes, 0, bytes, offset, 4);
-            }
-        }
         
-        public static void WriteJumpOffset(byte[] bytes, long jumpInstrAddr, long targetAddr, int jumpInstrLength, int offset)
-        {
-            var jumpBytes = GetRelOffsetBytes(jumpInstrAddr, targetAddr, jumpInstrLength);
-            Array.Copy(jumpBytes, 0, bytes, offset, 4);
-        }
     }
 }

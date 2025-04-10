@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -12,6 +13,16 @@ namespace SilkySouls3.Views
             InitializeComponent();
             _utilityViewModel = utilityViewModel;
             DataContext = utilityViewModel;
+        }
+
+        private void Warp_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.Warp();
+        }
+
+        private void UnlockBonfires_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.UnlockBonfires();
         }
     }
 }

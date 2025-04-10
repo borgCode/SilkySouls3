@@ -137,4 +137,122 @@ e9 00 00 00 00          jmp    2d &lt;skipCall&gt;
 48 83 c4 68             add    rsp,0x68
 c3                      ret</value>
   </data>
+  <data name="WarpEntries" xml:space="preserve">
+    <value>Cemetery of Ash,0x5A03,6,4001951,,
+Iudex Gundyr,0x5A03,5,4001952,,
+Firelink Shrine,0x5A03,7,4001950,,
+Untended Graves,0x5A03,4,4001953,,
+Champion Gundyr,0x5A03,3,4001954,,
+High Wall of Lothric,0xF02,6,3001950,,
+Tower on the Wall,0xF03,2,3001955,,,
+Vordt of the Boreal Valley,0xF03,5,3001952,,
+Vordt (Fog Gate),,,3001955,27.61|-25.49|51.48,-0.01
+Dancer of the Boreal Valley,0xF03,3,3001954,,
+Dancer (Fog Gate),,,3001955,27.54|-8.58|126.75,3.14
+Oceiros the Consumed King,0xF03,6,3001951
+Oceiros (Fog Gate),,,3001954,-73.99|-49.43|360.94,2.89
+Foot of the High Wall,0x1903,3,3101954
+Undead Settlement,0x1903,7,3101950
+Dilapidated Bridge,0x1903,4,3101953
+Greatwood (Fog Gate),,,3101953,134.07|-180.74|-874.74,-0.31
+Cliff Underside,0x1903,5,3101952
+Pit of Hollows,0x1903,1,3101951
+Road of Sacrifices,0x2D03,1,3301956
+Halfway Fortress,0x2D03,1,3301950
+Crucifixion Woods,0x2D03,7,3301957
+Crystal Sage (Fog Gate),,,3301957,-156.24|-249.25|-424.70,1.84
+Crystal Sage,0x2D03,2,3301952
+Farron Keep,0x2D03,0,3301953
+Keep Ruins,0x2D03,4,3301954
+Old Wolf of Farron,0x2D03,3,3301955
+Farron Keep Perimeter,0x2D03,5,3301958
+Abyss Watchers (Fog Gate),,,3301958,272.16|-248.78|-485.06,-1.50
+Abyss Watchers,0x2D02,7,3301954
+Cathedral of the Deep,0x2D03,6,3501953
+Cleansing Chapel,0x3C03,4,3501950
+Cathedral Running,,,3501950,-295.98|-199.63|-693.75,1.01
+Cathedral Giant,,,3501950,-256.41|-177.65|-500.61,0.98
+Deacons (Fog Gate),,,3501950,-449.63|-196.57|-617.35,1.09
+Deacons of the Deep,0x3C03,7,3501951
+Rosaria's Bed Chamber,0x3C03,6,3501952
+Catacombs of Carthus,0x3C03,5,3801956
+Abandoned Tomb,0x5003,1,3801951
+Demon Ruins,0x5003,6,3801953
+Old King's Antechamber,0x5003,4,3801952
+High Lord Wolnir,0x5003,5,3801950
+Old Demon King,0x5003,7,3801954
+Irithyll of the Boreal Valley,0x5003,3,3701957
+Central Irithyll,0x4B03,0,3701954
+Church of Yorshka,0x4B03,3,3701950
+Distant Manor,0x4B03,7,3701955
+Pontiff Stairs,,,3701955,275.19|-269.95|-1031.26,-1.36
+Pontiff (Fog Gate),,,3701955,397.70|-224.75|-1116.94,-0.14
+Pontiff Sulyvahn,0x4B03,2,3701951
+Water Reserve,0x4B03,1,3701956
+Anor Londo,0x4B03,6,3701953
+Prison Tower,0x4B03,4,3701958
+Aldrich (Fog Gate),,,3701953,687.84|-121.36|-1079.03,-1.62
+Aldrich Devourer of Gods,0x4B02,7,3701952
+Irithyll Dungeon,0x4B03,5,3901950
+Bridge Gargoyle,,,3901952,70.97|-367.36|-782.68,-2.16
+Profaned Capital,0x5503,7,3901952
+Yhorm (Fog Gate),,,3901952,121.35|-424.86|-615.54,-2.95
+Yhorm the Giant,0x5503,5,3901951
+Archdragon Peak (Start),,,3201950,18.90|-5.89|81.54,1.82
+Archdragon Peak,0x5503,6,3201950
+Kin Mausoleum,0x2303,7,3201953
+Great Belfry,0x2303,4,3201952
+Nameless King,0x2303,5,3201951
+Lothric Castle,0x2303,6,3011950
+Dragon Barracks,0x1403,7,3011952
+Dragonslayer Armor (Fog Gate),,,3011952,-32.29|59.76|222.63,1.64
+Dragonslayer Armor,0x1403,5,3011951
+Grand Archives,0x1403,6,3411951
+Princes Stairs,,,3411951,-149.62|121.63|258.68,-2.01
+Twin Princes (Fog Gate),,,3411951,-24.58|141.97|312.01,-1.98
+Twin Princes,0x3703,6,3411950
+Flameless Shrine,0x3703,7,4101950
+Kiln of the First Flame,0x5F03,7,4101951
+Soul of Cinder,0x5F03,6,4101952
+Snowfield,0x6403,6,4501951
+Rope Bridge Cave,0x6403,5,4501952
+Ariandel Chapel,0x6403,2,4501955
+Corvian Settlement,0x6403,4,4501953
+Snowy Mountain Pass,0x6403,3,4501954
+Sister Friede,0x6403,7,4501950
+Champion's Gravetender,0x6403,1,4501956
+Depths of the Painting,0x6403,0,4501957
+The Dreg Heap,0x7303,6,5001951
+Earthen Peak Ruins,0x7303,5,5001952
+Within the Earthen Peak Ruins,0x7303,4,5001953
+The Demon Prince,0x7303,7,5001950
+Mausoleum Lookout,0x7803,5,5101952
+Ringed Inner Wall,0x7803,4,5101953
+Ringed City Streets,0x7803,3,5101954
+Shared Grave,0x7803,2,5101955
+Church of Filianore,0x7803,7,5101950
+Darkeater Midir,0x7803,6,5101951
+Filianore's Rest,0x7D03,6,5111951
+Slave Knight Gael,0x7D03,7,5111950</value>
+  </data>
+  <data name="WarpCall" xml:space="preserve">
+    <value>48 a1 00 00 00 00 00    movabs rax,ds:0x0
+00 00 00
+48 89 c1                mov    rcx,rax
+ba 01 00 00 00          mov    edx,0x1
+48 be 00 00 00 00 00    movabs rsi,0x0
+00 00 00
+48 83 ec 28             sub    rsp,0x28
+ff d6                   call   rsi
+48 83 c4 28             add    rsp,0x28
+c3                      ret</value>
+  </data>
+  <data name="WarpHookCode" xml:space="preserve">
+    <value>44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+00
+44 0f 11 b8 40 0a 00    movups XMMWORD PTR [rax+0xa40],xmm15
+00
+45 0f 57 ff             xorps  xmm15,xmm15
+e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
+  </data>
 </root>

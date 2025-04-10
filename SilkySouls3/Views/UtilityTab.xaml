@@ -130,12 +130,12 @@
                 
                 <ComboBox ItemsSource="{Binding WarpLocations}"
                           DisplayMemberPath="Value"
-                          SelectedItem="{Binding SelectedLocation, Mode=TwoWay}"
+                          SelectedItem="{Binding SelectedWarp, Mode=TwoWay}"
                           IsEnabled="{Binding AreButtonsEnabled}"
                           Margin="0,0,0,5"/>
                           
                 <Button Content="Warp" Width="100"
-                
+                        Click="Warp_Click"
                         IsEnabled="{Binding AreButtonsEnabled}"
                         Height="25"/>
             </StackPanel>
@@ -200,8 +200,8 @@
                                Margin="0,0,0,10"/>
                     
                     <StackPanel>
-                        <Button Content="Unlock All Bonfire Warps"
-                     
+                        <Button Content="Unlock All Bonfires"
+                            Click="UnlockBonfires_Click"
                                 IsEnabled="{Binding AreButtonsEnabled}"
                                 Height="25"
                                 Margin="0,2"/>

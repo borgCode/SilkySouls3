@@ -89,5 +89,58 @@ namespace SilkySouls3.Properties {
                 return ResourceManager.GetString("SaveTargetPtr", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 a1 00 00 00 00 00    movabs rax,ds:0x0
+        ///00 00 00
+        ///48 89 c1                mov    rcx,rax
+        ///ba 01 00 00 00          mov    edx,0x1
+        ///48 be 00 00 00 00 00    movabs rsi,0x0
+        ///00 00 00
+        ///48 83 ec 28             sub    rsp,0x28
+        ///ff d6                   call   rsi
+        ///48 83 c4 28             add    rsp,0x28
+        ///c3                      ret.
+        /// </summary>
+        internal static string WarpCall {
+            get {
+                return ResourceManager.GetString("WarpCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cemetery of Ash,0x5A03,6,4001951,,
+        ///Iudex Gundyr,0x5A03,5,4001952,,
+        ///Firelink Shrine,0x5A03,7,4001950,,
+        ///Untended Graves,0x5A03,4,4001953,,
+        ///Champion Gundyr,0x5A03,3,4001954,,
+        ///High Wall of Lothric,0xF02,6,3001950,,
+        ///Tower on the Wall,0xF03,2,3001955,,,
+        ///Vordt of the Boreal Valley,0xF03,5,3001952,,
+        ///Vordt (Fog Gate),,,3001955,27.61|-25.49|51.48,-0.01
+        ///Dancer of the Boreal Valley,0xF03,3,3001954,,
+        ///Dancer (Fog Gate),,,3001955,27.54|-8.58|126.75,3.14
+        ///Oceiros the Consumed King,0xF03,6,3001951
+        ///Oceiros (Fog Ga [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WarpEntries {
+            get {
+                return ResourceManager.GetString("WarpEntries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///00
+        ///44 0f 11 b8 40 0a 00    movups XMMWORD PTR [rax+0xa40],xmm15
+        ///00
+        ///45 0f 57 ff             xorps  xmm15,xmm15
+        ///e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;.
+        /// </summary>
+        internal static string WarpHookCode {
+            get {
+                return ResourceManager.GetString("WarpHookCode", resourceCulture);
+            }
+        }
     }
 }

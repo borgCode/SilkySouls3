@@ -77,6 +77,14 @@
             RipType.Mov64
         );
 
+        public static readonly Pattern EventFlagMan = new Pattern(
+            new byte[] { 0xBE, 0x02, 0x00, 0x00, 0x00, 0xE9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x0D },
+            "xxxxxx????xxx",
+            0xA,
+            RipType.Mov64
+        );
+
+
         public static readonly Pattern DebugFlags = new Pattern(
             new byte[] { 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x74, 0x0A, 0xC7 },
             "xx????xxxx",
@@ -115,7 +123,7 @@
         public static readonly Pattern WarpCoordWrite = new Pattern(
             new byte[] { 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x0F, 0x28, 0x01, 0x66, 0x0F, 0x7F, 0x80, 0x40 },
             "xxx????xxxxxxxx",
-            0,
+            0xA,
             RipType.None
         );
 

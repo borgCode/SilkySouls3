@@ -16,34 +16,31 @@ namespace SilkySouls3.Views
             DataContext = _playerViewModel;
         }
 
-        private void RestorePos2_Click(object sender, RoutedEventArgs e)
+        private void SavePos_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            Button button = (Button)sender;
+            string parameter = button.CommandParameter.ToString();
+            int index = int.Parse(parameter);
+            _playerViewModel.SavePos(index);
         }
+        
 
-        private void SavePos2_Click(object sender, RoutedEventArgs e)
+        private void RestorePos_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            Button button = (Button)sender;
+            string parameter = button.CommandParameter.ToString();
+            int index = int.Parse(parameter);
+            _playerViewModel.RestorePos(index);
         }
-
-        private void RestorePos1_Click(object sender, RoutedEventArgs e)
+        
+        private void SetRtsrClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            _playerViewModel.SetHp(1);
         }
 
         private void SetMaxHpClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
-        }
-
-        private void SetRtsrClick(object sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void SavePos1_Click(object sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
+            _playerViewModel.SetMaxHp();
         }
     }
 }

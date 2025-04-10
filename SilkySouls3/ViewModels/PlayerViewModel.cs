@@ -84,7 +84,35 @@ namespace SilkySouls3.ViewModels
             _playerService.SetHp(hp);
             CurrentHp = hp;
         }
+        public void SetMaxHp()
+        {
+            _playerService.SetHp(CurrentMaxHp);
+        }
         
+        
+        public bool IsPos1Saved
+        {
+            get => _isPos1Saved;
+            set => SetProperty(ref _isPos1Saved, value);
+        }
+
+        public bool IsPos2Saved
+        {
+            get => _isPos2Saved;
+            set => SetProperty(ref _isPos2Saved, value);
+        }
+        
+        public void SavePos(int index)
+        {
+            if (index == 0) IsPos1Saved = true;
+            else IsPos2Saved = true;
+            _playerService.SavePos(index);
+        }
+
+        public void RestorePos(int index)
+        {
+            _playerService.RestorePos(index);
+        }
         
         public bool IsNoDeathEnabled
         {
@@ -141,11 +169,16 @@ namespace SilkySouls3.ViewModels
         //     {
         //         if (SetProperty(ref _isInfiniteDurabilityEnabled, value))
         //         {
+
         //             _playerService.ToggleInfiniteDurability(_isInfiniteDurabilityEnabled);
+
         //         }
+
         //     }
         // }
+
         //
+
         public bool IsInfiniteFpEnabled
         {
             get => _isInfiniteFpEnabled;
@@ -169,7 +202,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsInvisibleEnabled
         {
             get => _isInvisibleEnabled;
@@ -181,7 +214,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsSilentEnabled
         {
             get => _isSilentEnabled;
@@ -193,7 +226,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsNoAmmoConsumeEnabled
         {
             get => _isNoAmmoConsumeEnabled;
@@ -205,33 +238,61 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
+
         //
+
         // public bool IsInfinitePoiseEnabled
+
         // {
+
         //     get => _isInfinitePoiseEnabled;
+
         //     set
+
         //     {
+
         //         if (SetProperty(ref _isInfinitePoiseEnabled, value))
+
         //         {
+
         //             _playerService.ToggleInfinitePoise(_isInfinitePoiseEnabled);
+
         //         }
+
         //     }
+
         // }
+
         //
+
         // public bool IsAutoSetNewGameSixEnabled
+
         // {
+
         //     get => _isAutoSetNewGameSixEnabled;
+
         //     set
+
         //     {
+
         //         if (SetProperty(ref _isAutoSetNewGameSixEnabled, value))
+
         //         {
+
         //             if (_isAutoSetNewGameSixEnabled && AreOptionsEnabled)
+
         //             {
+
         //                 NewGame = _playerService.GetSetNewGame(7);
+
         //             }
+
         //         }
+
         //     }
+
         // }
+
 
         public void TryEnableFeatures()
         {

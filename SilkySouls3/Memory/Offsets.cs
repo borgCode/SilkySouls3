@@ -93,6 +93,13 @@ namespace SilkySouls3.Memory
             public const int HitboxView = 0x30;
         }
 
+        public static class EventFlagMan
+        {
+            public static IntPtr Base;
+            public const int CoiledSword = 0x5A0F;
+            public const byte CoiledSwordBitFlag = 1 << 2;
+        }
+
         public static class DebugFlags
         {
             public static IntPtr Base;
