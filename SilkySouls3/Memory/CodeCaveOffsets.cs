@@ -21,5 +21,12 @@ namespace SilkySouls3.Memory
                 CoordCode = 0xB0,
                 AngleCode = 0xD0 
             }
+
+            public enum RepeatAct
+            {
+                BattleGoalId = 0x100,
+                Code = 0x110,
+            }
+            
     }
 }

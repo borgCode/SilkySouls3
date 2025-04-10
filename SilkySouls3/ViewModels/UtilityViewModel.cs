@@ -15,7 +15,7 @@ namespace SilkySouls3.ViewModels
         private readonly Dictionary<string, WarpEntry> _warpLocations;
         private KeyValuePair<string, string> _selectedWarp;
         
-        public UtilityViewModel(UtilityService utilityService)
+        public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager)
         {
             _utilityService = utilityService;
             _warpLocations = DataLoader.GetWarpEntryDict();

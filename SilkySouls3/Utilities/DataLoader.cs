@@ -77,5 +77,30 @@ namespace SilkySouls3.Utilities
 
             return entries;
         }
+        
+        public static List<Item> GetItemList(string filePath)
+        {
+            List<Item> items = new List<Item>();
+    
+            foreach (string line in File.ReadLines(filePath))
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    
+                    string[] parts = line.Split(',');
+                    
+                    items.Add(new Item
+                    {
+                        Id = int.Parse(parts[0]),
+                        Name = parts[1],
+                        StackSize = int.Parse(parts[2]),
+                        UpgradeType = int.Parse(parts[3]),
+                        Infusable = parts[4] == "1"
+                    });
+                }
+            }
+    
+            return items;
+        }
     }
 }

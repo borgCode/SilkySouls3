@@ -46,14 +46,13 @@
             0x10,
             RipType.Mov64
         );
-        
+
         public static readonly Pattern LuaEventMan = new Pattern(
             new byte[] { 0x0F, 0xB6, 0xF8, 0x48, 0x83, 0x3D },
             "xxxxxx",
             3,
             RipType.QwordCmp
         );
-
 
 
         //TODO Maybe not neceessary
@@ -99,18 +98,30 @@
             RipType.QwordCmp
         );
 
-        
+        public static readonly Pattern MapItemMan = new Pattern(
+            new byte[] { 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8D, 0x94, 0x24, 0xC8 },
+            "xxx????xxxxx",
+            0,
+            RipType.Mov64
+        );
+
+
         //Patch
 
-        public static readonly Pattern RepeatAct = new Pattern(
-            new byte[] { 0x0F, 0xBE, 0x80, 0x81 },
-            "xxxx",
+        
+        //TODO Look into other patches
+        public static readonly Pattern NoLogo = new Pattern(
+            new byte[]
+            {
+                0xE8, 0x00, 0x00, 0x00, 0x00, 0x90, 0x4D, 0x8B, 0xC7, 0x49, 0x8B, 0xD4, 0x48, 0x8B, 0xC8, 0xE8, 0x00,
+                0x00, 0x00, 0x00, 0xC7, 0x44, 0x24, 0x50
+            },
+            "x????xxxxxxxxxxx????xxxx",
             0,
             RipType.None
         );
-            
-        
-        
+
+
         //Hooks
 
         public static readonly Pattern LockedTarget = new Pattern(
@@ -133,22 +144,32 @@
             -0xA,
             RipType.None
         );
-        
-     // PLayer coords for noclip   // public static readonly Pattern Placeholder = new Pattern(
+
+        public static readonly Pattern RepeatAct = new Pattern(
+            new byte[] { 0x0F, 0xBE, 0x80, 0x81 },
+            "xxxx",
+            0,
+            RipType.None
+        );
+
+        // PLayer coords for noclip   // public static readonly Pattern Placeholder = new Pattern(
         //     new byte[] { 0x48, 0x8B, 0x48, 0x18, 0x8D, 0x46 },
         //     "xxxxxx",
 
 
-        
         //Funcs
 
         public static readonly Pattern WarpFunc = new Pattern(
-            new byte[]
-            {
-                0x48, 0x89, 0x5C, 0x24, 0x18, 0x56, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xF1, 0x48, 0x8B, 0x49
-            },
+            new byte[] { 0x48, 0x89, 0x5C, 0x24, 0x18, 0x56, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xF1, 0x48, 0x8B, 0x49 },
             "xxxxxxxxxxxxxxxx",
             0,
+            RipType.None
+        );
+
+        public static readonly Pattern ItemSpawnFunc = new Pattern(
+            new byte[] { 0x48, 0x8D, 0x6C, 0x24, 0xD9, 0x48, 0x81, 0xEC, 0x00, 0x01, 0x00, 0x00, 0x48, 0xC7, 0x45, 0xCF },
+            "xxxxxxxxxxxxxxxx",
+            -0x10,
             RipType.None
         );
 

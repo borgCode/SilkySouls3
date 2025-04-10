@@ -2,6 +2,7 @@
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
+using SilkySouls3.Utilities;
 
 namespace SilkySouls3.ViewModels
 {
@@ -32,7 +33,7 @@ namespace SilkySouls3.ViewModels
         private readonly DispatcherTimer _timer;
         
         private readonly PlayerService _playerService;
-        public PlayerViewModel(PlayerService playerService)
+        public PlayerViewModel(PlayerService playerService, HotkeyManager hotkeyManager)
         {
             _playerService = playerService;
             

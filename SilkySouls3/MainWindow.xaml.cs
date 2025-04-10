@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
+using SilkySouls3.Utilities;
 using SilkySouls3.ViewModels;
 using SilkySouls3.Views;
 
@@ -25,6 +26,8 @@ namespace SilkySouls3
         private readonly PlayerViewModel _playerViewModel;
         private readonly UtilityViewModel _utilityViewModel;
         private readonly EnemyViewModel _enemyViewModel;
+        private readonly ItemViewModel _itemViewModel;
+        private readonly SettingsViewModel _settingsViewModel;
         
         public MainWindow()
         {
@@ -36,24 +39,37 @@ namespace SilkySouls3
             
             _hookManager = new HookManager(_memoryIo);
             _aobScanner = new AoBScanner(_memoryIo);
+            var hotkeyManager = new HotkeyManager(_memoryIo);
 
             var playerService = new PlayerService(_memoryIo, _hookManager);
             var utilityService = new UtilityService(_memoryIo, _hookManager);
             var enemyService = new EnemyService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);
+            var itemService = new ItemService(_memoryIo, _hookManager);
+            var settingsService = new SettingsService(_memoryIo);
             //TODO INITS
 
-            _playerViewModel = new PlayerViewModel(playerService);
-            _utilityViewModel = new UtilityViewModel(utilityService);
-            _enemyViewModel = new EnemyViewModel(enemyService, cinderService);
+            _playerViewModel = new PlayerViewModel(playerService, hotkeyManager);
+            _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager);
+            _enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager);
+            _itemViewModel = new ItemViewModel(itemService);
+            _settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager);
 
             var playerTab = new PlayerTab(_playerViewModel);
             var utilityTab = new UtilityTab(_utilityViewModel);
             var enemyTab = new EnemyTab(_enemyViewModel);
+            var itemTab = new ItemTab(_itemViewModel);
+            var settingsTab = new SettingsTab(_settingsViewModel);
 
             MainTabControl.Items.Add(new TabItem { Header = "Player", Content = playerTab });
             MainTabControl.Items.Add(new TabItem { Header = "Utility", Content = utilityTab });
             MainTabControl.Items.Add(new TabItem { Header = "Enemies", Content = enemyTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Items", Content = itemTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Settings", Content = settingsTab });
+            
+            
+            _settingsViewModel.ApplyStartUpOptions();
+            
             
             _gameLoadedTimer = new DispatcherTimer
             {
@@ -77,6 +93,8 @@ namespace SilkySouls3
                 {
                     _aobScanner.Scan();
                     _hasScanned = true;
+                    //TODO implement in settings
+                    ApplyNoLogo();
                 }
 
                 if (!_hasAllocatedMemory)
@@ -109,6 +127,7 @@ namespace SilkySouls3
         {
             _playerViewModel.TryEnableFeatures();
             _enemyViewModel.TryEnableFeatures();
+            
         }
 
         private void DisableFeatures()
@@ -140,6 +159,12 @@ namespace SilkySouls3
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+        
+        //TODO move
+        private void ApplyNoLogo()
+        {
+            _memoryIo.WriteBytes(Offsets.Patches.NoLogo, AsmLoader.GetAsmBytes("NoLogo"));
         }
     }
 }

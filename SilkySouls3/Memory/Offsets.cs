@@ -158,17 +158,26 @@ namespace SilkySouls3.Memory
             public static IntPtr Base;
         }
 
+        public static class MapItemMan
+        {
+            public static IntPtr Base;
+        }
+        
         public static class EnemyIns
         {
             
             public const int ComManipulator = 0x58;
-            public const int EnemyId = 0x390;
-            public const int AiIns = 0x320;
-            
 
+            public enum ComManipOffsets
+            {
+                EnemyId = 0x390,
+                AiIns = 0x320
+            }
+            
             public enum AiInsOffsets
             {
                 SpEffectPtr = 0x20,
+                NpcThinkParam = 0x30,
                 LuaNumbers = 0x6BC,
             }
 
@@ -178,6 +187,11 @@ namespace SilkySouls3.Memory
                 Toxic = 0x64,
                 Bleed = 0x170,
                 FrostBite = 0x178
+            }
+
+            public enum NpcThinkParam
+            {
+                BattleGoalId = 0x4,
             }
 
             public enum LuaNumbers
@@ -194,19 +208,22 @@ namespace SilkySouls3.Memory
 
         public static class Patches
         {
-            public static long RepeatAct;
+            public static IntPtr NoLogo;
         }
-
+        
+        
         public static class Hooks
         {
             public static long LastLockedTarget;
             public static long WarpCoordWrite;
             public static long AddSubGoal;
+            public static long RepeatAct;
         }
 
         public static class Funcs
         {
             public static long Warp;
+            public static long ItemSpawn;
         }
     }
 }

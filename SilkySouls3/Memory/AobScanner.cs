@@ -23,14 +23,18 @@ namespace SilkySouls3.Memory
             Offsets.MenuMan.Base = FindAddressByPattern(Patterns.MenuMan);
             Offsets.DebugFlags.Base = FindAddressByPattern(Patterns.DebugFlags);
             Offsets.DebugEvent.Base = FindAddressByPattern(Patterns.DebugEvent);
+            Offsets.MapItemMan.Base = FindAddressByPattern(Patterns.MapItemMan);
 
-            Offsets.Patches.RepeatAct = FindAddressByPattern(Patterns.RepeatAct).ToInt64();
+            Offsets.Patches.NoLogo = FindAddressByPattern(Patterns.NoLogo);
+            
             
             Offsets.Hooks.LastLockedTarget = FindAddressByPattern(Patterns.LockedTarget).ToInt64();
             Offsets.Hooks.WarpCoordWrite = FindAddressByPattern(Patterns.WarpCoordWrite).ToInt64();
             Offsets.Hooks.AddSubGoal = FindAddressByPattern(Patterns.AddSubGoal).ToInt64();
+            Offsets.Hooks.RepeatAct = FindAddressByPattern(Patterns.RepeatAct).ToInt64();
 
             Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
+            Offsets.Funcs.ItemSpawn = FindAddressByPattern(Patterns.ItemSpawnFunc).ToInt64();
             
             Console.WriteLine($"WorldChrMan.Base: 0x{Offsets.WorldChrMan.Base.ToInt64():X}");
             Console.WriteLine($"GameMan.Base: 0x{Offsets.GameMan.Base.ToInt64():X}");
@@ -42,11 +46,13 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"MenuMan.Base: 0x{Offsets.MenuMan.Base.ToInt64():X}");
             Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
             Console.WriteLine($"DebugEvent.Base: 0x{Offsets.DebugEvent.Base.ToInt64():X}");
+            Console.WriteLine($"MapItemMan.Base: 0x{Offsets.MapItemMan.Base.ToInt64():X}");
             
             
             
+            Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             
-            Console.WriteLine($"RepeatAct.Base: 0x{Offsets.Patches.RepeatAct:X}");
+         
             
             // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
             // Console.WriteLine($"Cam.Base: 0x{Offsets.Cam.Base.ToInt64():X}");
@@ -75,6 +81,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
             Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
             Console.WriteLine($"Hooks.AddSubGoal: 0x{Offsets.Hooks.AddSubGoal:X}");
+            Console.WriteLine($"Hooks.RepeatAct: 0x{Offsets.Hooks.RepeatAct:X}");
             
             // Console.WriteLine($"Hooks.AllNoDamage: 0x{Offsets.Hooks.AllNoDamage:X}");
             // Console.WriteLine($"Hooks.ItemSpawn: 0x{Offsets.Hooks.ItemSpawn:X}");
@@ -88,6 +95,7 @@ namespace SilkySouls3.Memory
             // Console.WriteLine($"Hooks.WarpCoords: 0x{Offsets.Hooks.WarpCoords:X}");
             // Console.WriteLine($"Hooks.LuaIfElse: 0x{Offsets.Hooks.LuaIfCase:X}");
             Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
+            Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
         }
 
         public IntPtr FindAddressByPattern(Pattern pattern)

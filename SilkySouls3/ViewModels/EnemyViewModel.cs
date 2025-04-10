@@ -2,6 +2,7 @@
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
+using SilkySouls3.Utilities;
 
 namespace SilkySouls3.ViewModels
 {
@@ -11,7 +12,7 @@ namespace SilkySouls3.ViewModels
         private bool _isTargetOptionsEnabled;
         private bool _isValidTarget;
         private readonly DispatcherTimer _targetOptionsTimer;
-        
+
         private int _targetCurrentHealth;
         private int _targetMaxHealth;
         private ulong _currentTargetId;
@@ -46,7 +47,7 @@ namespace SilkySouls3.ViewModels
         private bool _isFrostImmune;
 
         private bool _showAllResistances;
-        
+
         private bool _areCinderOptionsEnabled;
         private bool _isCinderPhaseLocked;
         private bool _isEndlessSoulmassEnabled;
@@ -54,7 +55,7 @@ namespace SilkySouls3.ViewModels
         private readonly EnemyService _enemyService;
         private readonly CinderService _cinderService;
 
-        public EnemyViewModel(EnemyService enemyService, CinderService cinderService)
+        public EnemyViewModel(EnemyService enemyService, CinderService cinderService, HotkeyManager hotkeyManager)
         {
             _enemyService = enemyService;
             _cinderService = cinderService;
@@ -73,7 +74,7 @@ namespace SilkySouls3.ViewModels
                 IsValidTarget = false;
                 return;
             }
-            
+
             IsValidTarget = true;
             TargetCurrentHealth = _enemyService.GetTargetHp();
             TargetMaxHealth = _enemyService.GetTargetMaxHp();
@@ -83,25 +84,41 @@ namespace SilkySouls3.ViewModels
             if (targetId != _currentTargetId)
             {
                 IsDisableTargetAiEnabled = _enemyService.IsTargetAiDisabled();
-                //     IsRepeatActEnabled = IsCurrentTargetRepeating();
+                // IsRepeatActEnabled = IsCurrentTargetRepeating();
                 IsFreezeHealthEnabled = _enemyService.IsTargetNoDamageEnabled();
                 _currentTargetId = targetId;
                 TargetMaxPoise = _enemyService.GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule.MaxPoise);
                 (IsPoisonImmune, IsToxicImmune, IsBleedImmune, IsFrostImmune) = _enemyService.GetImmunities();
-                TargetMaxPoison = IsPoisonImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.PoisonMax);
-                TargetMaxToxic = IsToxicImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.ToxicMax);
-                TargetMaxBleed = IsBleedImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.BleedMax);
-                TargetMaxFrost = IsFrostImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.FrostMax);
+                TargetMaxPoison = IsPoisonImmune
+                    ? 0
+                    : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.PoisonMax);
+                TargetMaxToxic = IsToxicImmune
+                    ? 0
+                    : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.ToxicMax);
+                TargetMaxBleed = IsBleedImmune
+                    ? 0
+                    : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.BleedMax);
+                TargetMaxFrost = IsFrostImmune
+                    ? 0
+                    : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.FrostMax);
                 AreCinderOptionsEnabled = _cinderService.IsTargetCinder();
-
             }
+
             TargetSpeed = _enemyService.GetTargetSpeed();
             TargetCurrentPoise = _enemyService.GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule.Poise);
             TargetPoiseTimer = _enemyService.GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule.PoiseTimer);
-            TargetCurrentPoison = IsPoisonImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.PoisonCurrent);
-            TargetCurrentToxic = IsToxicImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.ToxicCurrent);
-            TargetCurrentBleed = IsBleedImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.BleedCurrent);
-            TargetCurrentFrost = IsFrostImmune ? 0 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.FrostCurrent);
+            TargetCurrentPoison = IsPoisonImmune
+                ? 0
+                : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.PoisonCurrent);
+            TargetCurrentToxic = IsToxicImmune
+                ? 0
+                : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.ToxicCurrent);
+            TargetCurrentBleed = IsBleedImmune
+                ? 0
+                : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.BleedCurrent);
+            TargetCurrentFrost = IsFrostImmune
+                ? 0
+                : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.FrostCurrent);
         }
 
 
@@ -110,7 +127,7 @@ namespace SilkySouls3.ViewModels
             get => _areOptionsEnabled;
             set => SetProperty(ref _areOptionsEnabled, value);
         }
-        
+
         public bool IsValidTarget
         {
             get => _isValidTarget;
@@ -131,13 +148,13 @@ namespace SilkySouls3.ViewModels
             if (health > maxHealth * 1.5) return false;
 
             var position = _enemyService.GetTargetPos();
-            
+
             if (float.IsNaN(position[0]) || float.IsNaN(position[1]) || float.IsNaN(position[2]))
                 return false;
-            
+
             if (Math.Abs(position[0]) > 10000 || Math.Abs(position[1]) > 10000 || Math.Abs(position[2]) > 10000)
                 return false;
-            
+
             return true;
         }
 
@@ -163,13 +180,26 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool AreCinderOptionsEnabled
         {
             get => _areCinderOptionsEnabled;
             set => SetProperty(ref _areCinderOptionsEnabled, value);
         }
-        
+
+        public bool IsRepeatActEnabled
+        {
+            get => _isRepeatActEnabled;
+            set
+            {
+                if (!SetProperty(ref _isRepeatActEnabled, value)) return;
+                if (_isRepeatActEnabled)
+                {
+                    _enemyService.InstallRepeatActHook();
+                }
+            }
+        }
+
         public int TargetCurrentHealth
         {
             get => _targetCurrentHealth;
@@ -318,8 +348,8 @@ namespace SilkySouls3.ViewModels
             get => _isFrostImmune;
             set => SetProperty(ref _isFrostImmune, value);
         }
-        
-        
+
+
         public float TargetSpeed
         {
             get => _targetSpeed;
@@ -331,14 +361,13 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public void SetSpeed(float value)
         {
             TargetSpeed = value;
         }
-        
-        
-        
+
+
         public bool IsDisableTargetAiEnabled
         {
             get => _isDisableTargetAiEnabled;
@@ -374,7 +403,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public void SetCinderPhase(int phaseIndex)
         {
             _cinderService.ForcePhaseTransition(phaseIndex);
@@ -392,7 +421,7 @@ namespace SilkySouls3.ViewModels
                 _enemyService.InstallTargetHook();
                 _targetOptionsTimer.Start();
             }
-                
+
             AreOptionsEnabled = true;
         }
 

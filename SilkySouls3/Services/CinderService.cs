@@ -11,9 +11,7 @@ namespace SilkySouls3.Services
     {
         private readonly MemoryIo _memoryIo;
         private readonly HookManager _hookManager;
-
-        private int _currentPhase;
-
+        
         private readonly Dictionary<int, int> _phaseAnimations = new Dictionary<int, int>
         {
             { 0, 20000 }, //Sword
@@ -41,7 +39,6 @@ namespace SilkySouls3.Services
 
         public void ForcePhaseTransition(int phaseIndex)
         {
-            _currentPhase = phaseIndex;
             int phaseAnimation = _phaseAnimations[phaseIndex];
             ForceAnimation(phaseAnimation);
             ResetLuaNumbers();
@@ -66,7 +63,7 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     Offsets.EnemyIns.ComManipulator,
-                    Offsets.EnemyIns.AiIns,
+                    (int)Offsets.EnemyIns.ComManipOffsets.AiIns,
                     (int)Offsets.EnemyIns.AiInsOffsets.LuaNumbers
                 }, false);
 
@@ -188,7 +185,7 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     Offsets.EnemyIns.ComManipulator,
-                    Offsets.EnemyIns.EnemyId
+                    (int)Offsets.EnemyIns.ComManipOffsets.EnemyId
                 }, false);
             return _memoryIo.ReadInt32(enemyIdPtr) == 528000;
         }
