@@ -30,15 +30,16 @@ namespace SilkySouls3.Utilities
 
                     string offsetStr = parts[1];
                     int? offset = null;
-                    
+
                     if (offsetStr.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
                         offsetStr = offsetStr.Substring(2);
-                    
+
                     if (int.TryParse(offsetStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var o))
                         offset = o;
 
 
-                    byte? bitPos = byte.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var b)
+                    byte? bitPos = byte.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture,
+                        out var b)
                         ? (byte?)b
                         : null;
 
@@ -77,29 +78,40 @@ namespace SilkySouls3.Utilities
 
             return entries;
         }
-        
-        public static List<Item> GetItemList(string filePath)
+
+        public static List<Item> GetItemList(string listName)
         {
             List<Item> items = new List<Item>();
-    
-            foreach (string line in File.ReadLines(filePath))
+
+            string csvData = Properties.Resources.ResourceManager.GetString(listName);
+
+            if (string.IsNullOrEmpty(csvData))
             {
-                if (!string.IsNullOrWhiteSpace(line))
+                return new List<Item>();
+            }
+
+            using (StringReader reader = new StringReader(csvData))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
                     string[] parts = line.Split(',');
-                    
-                    items.Add(new Item
+                    if (parts.Length >= 5)
                     {
-                        Id = int.Parse(parts[0]),
-                        Name = parts[1],
-                        StackSize = int.Parse(parts[2]),
-                        UpgradeType = int.Parse(parts[3]),
-                        Infusable = parts[4] == "1"
-                    });
+                        items.Add(new Item
+                        {
+                            Id = int.Parse(parts[0], NumberStyles.HexNumber),
+                            Name = parts[1],
+                            StackSize = int.Parse(parts[2]),
+                            UpgradeType = int.Parse(parts[3]),
+                            Infusable = parts[4] == "1"
+                        });
+                    }
                 }
             }
-    
+
             return items;
         }
     }

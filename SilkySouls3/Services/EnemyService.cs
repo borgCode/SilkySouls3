@@ -178,35 +178,36 @@ namespace SilkySouls3.Services
 
             return position;
         }
-
-        public void InstallRepeatActHook()
+        
+        public void ToggleTargetRepeatAct(bool isEnabled)
         {
-            var savedBattleGoalIdLoc = CodeCaveOffsets.Base + (int)CodeCaveOffsets.RepeatAct.BattleGoalId;
-            var repeatActCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.RepeatAct.Code;
-            var hookLoc = Offsets.Hooks.RepeatAct;
-            
-            var enemyBattleGoalIdPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
+            var ptr = GetForceActPtr();
+            _memoryIo.WriteUInt8(ptr, isEnabled ? _memoryIo.ReadUInt8(ptr + 1) : (byte)0);
+        }
+
+        public bool IsTargetRepeating() => _memoryIo.ReadUInt8(GetForceActPtr()) != 0;
+        
+        private IntPtr GetForceActPtr()
+        {
+            return _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
                 new[]
                 {
                     Offsets.EnemyIns.ComManipulator,
                     (int)Offsets.EnemyIns.ComManipOffsets.AiIns,
-                    (int)Offsets.EnemyIns.AiInsOffsets.NpcThinkParam,
-                    (int)Offsets.EnemyIns.NpcThinkParam.BattleGoalId
+                    (int)Offsets.EnemyIns.AiInsOffsets.AiFunc,
+                    Offsets.EnemyIns.ForceActPtr,
+                    Offsets.EnemyIns.ForceActOffset
                 }, false);
-            
-            _memoryIo.WriteInt32(savedBattleGoalIdLoc, _memoryIo.ReadInt32(enemyBattleGoalIdPtr));
+        }
+        
+        public void ToggleDebugFlag(int offset, int value)
+        {
+            _memoryIo.WriteByte(Offsets.DebugFlags.Base + offset, value);
+        }
 
-            byte[] repeatActBytes = AsmLoader.GetAsmBytes("TargetRepeatAct");
-            byte[] bytes = AsmHelper.GetRelOffsetBytes(repeatActCode + 0x1, savedBattleGoalIdLoc, 0x6);
-            Array.Copy(bytes, 0, repeatActBytes, 0x1 + 2, 4);
-            bytes = AsmHelper.GetJmpOriginOffsetBytes(hookLoc, 7, repeatActCode + 0x19);
-            Array.Copy(bytes, 0, repeatActBytes, 0x14 + 1, 4);
-            bytes = AsmHelper.GetJmpOriginOffsetBytes(hookLoc, 7, repeatActCode + 0x26);
-            Array.Copy(bytes, 0, repeatActBytes, 0x21 + 1, 4);
-            _memoryIo.WriteBytes(repeatActCode, repeatActBytes);
-
-            _hookManager.InstallHook(repeatActCode.ToInt64(), hookLoc,
-                new byte[] { 0x0F, 0xBE, 0x80, 0x81, 0xB6, 0x00, 0x00  });
+        public void ToggleAllRepeatAct(bool isAllRepeatActEnabled)
+        {
+            _memoryIo.WriteByte(Offsets.Patches.RepeatAct, isAllRepeatActEnabled ? 0x82 : 0x81);
         }
     }
 }

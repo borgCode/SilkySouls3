@@ -120,21 +120,21 @@
 e9 00 00 00 00          jmp    13 &lt;_main+0x13&gt;</value>
   </data>
   <data name="CinderPhaseLock" xml:space="preserve">
-    <value>f3 0f 11 44 24 20       movss  DWORD PTR [rsp+0x20],xmm0
-50                      push   rax
+    <value>50                      push   rax
 66 0f 7e d8             movd   eax,xmm3
 3d 00 40 9c 46          cmp    eax,0x469c4000
-74 1b                   je     2d &lt;skipCall&gt;
+74 25                   je     31 &lt;ret&gt;
 3d 00 42 9c 46          cmp    eax,0x469c4200
-74 14                   je     2d &lt;skipCall&gt;
+74 1e                   je     31 &lt;ret&gt;
 3d 00 44 9c 46          cmp    eax,0x469c4400
-74 0d                   je     2d &lt;skipCall&gt;
+74 17                   je     31 &lt;ret&gt;
 3d 00 48 9c 46          cmp    eax,0x469c4800
-74 06                   je     2d &lt;skipCall&gt;
+74 10                   je     31 &lt;ret&gt;
 58                      pop    rax
-e9 00 00 00 00          jmp    2d &lt;skipCall&gt;
+48 8b c4                mov    rax,rsp
+48 81 ec 98 00 00 00    sub    rsp,0x98
+e9 00 00 00 00          jmp    31 &lt;ret&gt;
 58                      pop    rax
-48 83 c4 68             add    rsp,0x68
 c3                      ret</value>
   </data>
   <data name="WarpEntries" xml:space="preserve">
@@ -257,18 +257,6 @@ c3                      ret</value>
 45 0f 57 ff             xorps  xmm15,xmm15
 e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
   </data>
-  <data name="TargetRepeatAct" xml:space="preserve">
-    <value>51                      push   rcx
-8b 0d 00 00 00 00       mov    ecx,DWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
-3b 48 28                cmp    ecx,DWORD PTR [rax+0x28]
-75 0d                   jne    19 &lt;original_code&gt;
-0f be 80 82 b6 00 00    movsx  eax,BYTE PTR [rax+0xb682]
-59                      pop    rcx
-e9 00 00 00 00          jmp    19 &lt;original_code&gt;
-0f be 80 81 b6 00 00    movsx  eax,BYTE PTR [rax+0xb681]
-59                      pop    rcx
-e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
-  </data>
   <data name="NoLogo" xml:space="preserve">
     <value>48 31 c0                xor    rax,rax
 48 89 02                mov    QWORD PTR [rdx],rax
@@ -285,373 +273,372 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 90                      nop</value>
   </data>
   <data name="Armor" xml:space="preserve">
-    <value>14C4B400,Alva Helm,1,0,0
-14C4B7E8,Alva Armor,1,0,0
+    <value>14C4B7E8,Alva Armor,1,0,0
 14C4BBD0,Alva Gauntlets,1,0,0
+14C4B400,Alva Helm,1,0,0
 14C4BFB8,Alva Leggings,1,0,0
-11B2E408,Antiquated Plain Garb,1,0,0
-11B2E7F0,Violet Wrappings,1,0,0
-11B2EBD8,Loincloth,1,0,0
-15D75C80,Crown of Dusk,1,0,0
 15D76068,Antiquated Dress,1,0,0
 15D76450,Antiquated Gloves,1,0,0
+11B2E408,Antiquated Plain Garb,1,0,0
 15D76838,Antiquated Skirt,1,0,0
-13EF1480,Archdeacon White Crown,1,0,0
 13EF1868,Archdeacon Holy Garb,1,0,0
 13EF2038,Archdeacon Skirt,1,0,0
-115EFB90,Assassin Gloves,1,0,0
-115EFF78,Assassin Trousers,1,0,0
-11607A60,Assassin Hood,1,0,0
+13EF1480,Archdeacon White Crown,1,0,0
+129F6300,Aristocrat's Mask,1,0,0
+15B8DBE8,Armor of Thorns,1,0,0
+152F87A8,Armor of the Sun,1,0,0
 11607E48,Assassin Armor,1,0,0
+115EFB90,Assassin Gloves,1,0,0
+11607A60,Assassin Hood,1,0,0
+115EFF78,Assassin Trousers,1,0,0
 11A39DE0,Billed Mask,1,0,0
 11A3A1C8,Black Dress,1,0,0
 11A3A5B0,Black Gauntlets,1,0,0
-11A3A998,Black Leggings,1,0,0
-115EF3C0,Black Hand Hat,1,0,0
 115EF7A8,Black Hand Armor,1,0,0
-1337F980,Black Knight Helm,1,0,0
-1337FD68,Black Knight Armor,1,0,0
-13380150,Black Knight Gauntlets,1,0,0
-13380538,Black Knight Leggings,1,0,0
-14A62F80,Thief Mask,1,0,0
-155D4A80,Black Iron Helm,1,0,0
+115EF3C0,Black Hand Hat,1,0,0
 155D4E68,Black Iron Armor,1,0,0
 155D5250,Black Iron Gauntlets,1,0,0
+155D4A80,Black Iron Helm,1,0,0
 155D5638,Black Iron Leggings,1,0,0
-12656740,Thief Mask,1,0,0
+1337FD68,Black Knight Armor,1,0,0
+13380150,Black Knight Gauntlets,1,0,0
+1337F980,Black Knight Helm,1,0,0
+13380538,Black Knight Leggings,1,0,0
 14A63368,Black Leather Armor,1,0,0
-14A63750,Black Leather Gloves,1,0,0
 14A63B38,Black Leather Boots,1,0,0
-14FA1BE0,Black Witch Veil,1,0,0
-14EAD9A0,Black Witch Hat,1,0,0
+14A63750,Black Leather Gloves,1,0,0
+11A3A998,Black Leggings,1,0,0
 14EADD88,Black Witch Garb,1,0,0
-14EAE170,Black Witch Wrappings,1,0,0
+14EAD9A0,Black Witch Hat,1,0,0
 14EAE558,Black Witch Trousers,1,0,0
-1501BD00,Brass Helm,1,0,0
+14FA1BE0,Black Witch Veil,1,0,0
+14EAE170,Black Witch Wrappings,1,0,0
+15095E20,Blindfold Mask,1,0,0
 1501C0E8,Brass Armor,1,0,0
 1501C4D0,Brass Gauntlets,1,0,0
+1501BD00,Brass Helm,1,0,0
 1501C8B8,Brass Leggings,1,0,0
-148009E0,Brigand Hood,1,0,0
 14800DC8,Brigand Armor,1,0,0
 148011B0,Brigand Gauntlets,1,0,0
+148009E0,Brigand Hood,1,0,0
 14801598,Brigand Trousers,1,0,0
-14692680,Catarina Helm,1,0,0
 14692A68,Catarina Armor,1,0,0
 14692E50,Catarina Gauntlets,1,0,0
+14692680,Catarina Helm,1,0,0
 14693238,Catarina Leggings,1,0,0
-130291A0,Cathedral Knight Helm,1,0,0
 13029588,Cathedral Knight Armor,1,0,0
 13029970,Cathedral Knight Gauntlets,1,0,0
+130291A0,Cathedral Knight Helm,1,0,0
 13029D58,Cathedral Knight Leggings,1,0,0
-142C1D80,Chain Helm,1,0,0
 142C2168,Chain Armor,1,0,0
-142C2550,Leather Gauntlets,1,0,0
+142C1D80,Chain Helm,1,0,0
 142C2938,Chain Leggings,1,0,0
 11CB4E08,Clandestine Coat,1,0,0
-11D905C0,Cleric Hat,1,0,0
 11D909A8,Cleric Blue Robe,1,0,0
 11D90D90,Cleric Gloves,1,0,0
+11D905C0,Cleric Hat,1,0,0
 11D91178,Cleric Trousers,1,0,0
-149E8E60,Conjurator Hood,1,0,0
-149E9248,Conjurator Robe,1,0,0
-149E9630,Conjurator Manchettes,1,0,0
 149E9A18,Conjurator Boots,1,0,0
+149E8E60,Conjurator Hood,1,0,0
+149E9630,Conjurator Manchettes,1,0,0
+149E9248,Conjurator Robe,1,0,0
+11945F88,Cornyx's Garb,1,0,0
+11946758,Cornyx's Skirt,1,0,0
+11946370,Cornyx's Wrap,1,0,0
+11BA8910,Court Sorcerer Gloves,1,0,0
 11BA8140,Court Sorcerer Hood,1,0,0
 11BA8528,Court Sorcerer Robe,1,0,0
-11BA8910,Court Sorcerer Gloves,1,0,0
 11BA8CF8,Court Sorcerer Trousers,1,0,0
-11945BA0,Old Sage's Blindfold,1,0,0
-11945F88,Cornyx's Garb,1,0,0
-11946370,Cornyx's Wrap,1,0,0
-11946758,Cornyx's Skirt,1,0,0
-13C14DC0,Dancer's Crown,1,0,0
+14B571C0,Creighton's Steel Mask,1,0,0
+15D75C80,Crown of Dusk,1,0,0
 13C151A8,Dancer's Armor,1,0,0
+13C14DC0,Dancer's Crown,1,0,0
 13C15590,Dancer's Gauntlets,1,0,0
 13C15978,Dancer's Leggings,1,0,0
-133F9AA0,Dark Mask,1,0,0
 133F9E88,Dark Armor,1,0,0
 133FA270,Dark Gauntlets,1,0,0
 133FA658,Dark Leggings,1,0,0
+133F9AA0,Dark Mask,1,0,0
 13F6B988,Deacon Robe,1,0,0
 13F6C158,Deacon Skirt,1,0,0
-14DB9760,Desert Pyromancer Hood,1,0,0
 14DB9B48,Desert Pyromancer Garb,1,0,0
 14DB9F30,Desert Pyromancer Gloves,1,0,0
+14DB9760,Desert Pyromancer Hood,1,0,0
 14DBA318,Desert Pyromancer Skirt,1,0,0
-12625A00,Steel Soldier Helm,1,0,0
 12625DE8,Deserter Armor,1,0,0
 126265B8,Deserter Trousers,1,0,0
-100F4240,Dragon Head,1,0,0
-100F4628,Dragon Body,1,0,0
 100F4A10,Dragon Arms,1,0,0
+100F4628,Dragon Body,1,0,0
+100F4240,Dragon Head,1,0,0
 100F4DF8,Dragon Legs,1,0,0
-158B1140,Dragonslayer Helm,1,0,0
+1365C428,Dragonscale Armor,1,0,0
+1365CBF8,Dragonscale Waistcloth,1,0,0
 158B1528,Dragonslayer Armor,1,0,0
 158B1910,Dragonslayer Gauntlets,1,0,0
+158B1140,Dragonslayer Helm,1,0,0
 158B1CF8,Dragonslayer Leggings,1,0,0
-153EC600,Drakeblood Helm,1,0,0
 153EC9E8,Drakeblood Armor,1,0,0
 153ECDD0,Drakeblood Gauntlets,1,0,0
+153EC600,Drakeblood Helm,1,0,0
 153ED1B8,Drakeblood Leggings,1,0,0
 154E0C28,Drang Armor,1,0,0
 154E1010,Drang Gauntlets,1,0,0
 154E13F8,Drang Shoes,1,0,0
-1365C040,Golden Crown,1,0,0
-1365C428,Dragonscale Armor,1,0,0
-1365C810,Golden Bracelets,1,0,0
-1365CBF8,Dragonscale Waistcloth,1,0,0
-14E33880,Eastern Helm,1,0,0
 14E33C68,Eastern Armor,1,0,0
 14E34050,Eastern Gauntlets,1,0,0
+14E33880,Eastern Helm,1,0,0
 14E34438,Eastern Leggings,1,0,0
-144AA200,Elite Knight Helm,1,0,0
 144AA5E8,Elite Knight Armor,1,0,0
 144AA9D0,Elite Knight Gauntlets,1,0,0
+144AA200,Elite Knight Helm,1,0,0
 144AADB8,Elite Knight Leggings,1,0,0
+14F27EA8,Embraced Armor of Favor,1,0,0
+12DC73D0,Evangelist Gloves,1,0,0
 12DC6C00,Evangelist Hat,1,0,0
 12DC6FE8,Evangelist Robe,1,0,0
-12DC73D0,Evangelist Gloves,1,0,0
 12DC77B8,Evangelist Trousers,1,0,0
-119BFCC0,Executioner Helm,1,0,0
 119C00A8,Executioner Armor,1,0,0
 119C0490,Executioner Gauntlets,1,0,0
+119BFCC0,Executioner Helm,1,0,0
 119C0878,Executioner Leggings,1,0,0
-13473BC0,Exile Mask,1,0,0
 13473FA8,Exile Armor,1,0,0
 13474390,Exile Gauntlets,1,0,0
 13474778,Exile Leggings,1,0,0
-1121EAC0,Fallen Knight Helm,1,0,0
+13473BC0,Exile Mask,1,0,0
 1121EEA8,Fallen Knight Armor,1,0,0
 1121F290,Fallen Knight Gauntlets,1,0,0
+1121EAC0,Fallen Knight Helm,1,0,0
 1121F678,Fallen Knight Trousers,1,0,0
-1459E440,Faraam Helm,1,0,0
 1459E828,Faraam Armor,1,0,0
-1459EC10,Faraam Gauntlets,1,0,0
 1459EFF8,Faraam Boots,1,0,0
-14F27AC0,Helm of Favor,1,0,0
-14F27EA8,Embraced Armor of Favor,1,0,0
-14F28290,Gauntlets of Favor,1,0,0
-14F28678,Leggings of Favor,1,0,0
-140D9CE8,Fire Keeper Robe,1,0,0
+1459EC10,Faraam Gauntlets,1,0,0
+1459E440,Faraam Helm,1,0,0
 140DA0D0,Fire Keeper Gloves,1,0,0
+140D9CE8,Fire Keeper Robe,1,0,0
 140DA4B8,Fire Keeper Skirt,1,0,0
-13938700,Fire Witch Helm,1,0,0
 13938AE8,Fire Witch Armor,1,0,0
 13938ED0,Fire Witch Gauntlets,1,0,0
+13938700,Fire Witch Helm,1,0,0
 139392B8,Fire Witch Leggings,1,0,0
-11406F40,Firelink Helm,1,0,0
 11407328,Firelink Armor,1,0,0
 11407710,Firelink Gauntlets,1,0,0
+11406F40,Firelink Helm,1,0,0
 11407AF8,Firelink Leggings,1,0,0
-137CA3A0,Follower Helm,1,0,0
 137CA788,Follower Armor,1,0,0
-137CAB70,Follower Gloves,1,0,0
 137CAF58,Follower Boots,1,0,0
+137CAB70,Follower Gloves,1,0,0
+137CA3A0,Follower Helm,1,0,0
+14F28290,Gauntlets of Favor,1,0,0
+15B8DFD0,Gauntlets of Thorns,1,0,0
+1365C810,Golden Bracelets,1,0,0
+1365C040,Golden Crown,1,0,0
 12BDE780,Grave Warden Hood,1,0,0
 12BDEB68,Grave Warden Robe,1,0,0
-12BDEF50,Grave Warden Wrap,1,0,0
 12BDF338,Grave Warden Skirt,1,0,0
-13D09000,Gundyr's Helm,1,0,0
+12BDEF50,Grave Warden Wrap,1,0,0
 13D093E8,Gundyr's Armor,1,0,0
 13D097D0,Gundyr's Gauntlets,1,0,0
+13D09000,Gundyr's Helm,1,0,0
 13D09BB8,Gundyr's Leggings,1,0,0
 13D83508,Harald Legion Armor,1,0,0
 13D838F0,Harald Legion Gauntlets,1,0,0
 13D83CD8,Harald Legion Leggings,1,0,0
-1470C7A0,Standard Helm,1,0,0
 1470CB88,Hard Leather Armor,1,0,0
-1470CF70,Hard Leather Gauntlets,1,0,0
 1470D358,Hard Leather Boots,1,0,0
-147868C0,Havel's Helm,1,0,0
+1470CF70,Hard Leather Gauntlets,1,0,0
 14786CA8,Havel's Armor,1,0,0
 14787090,Havel's Gauntlets,1,0,0
+147868C0,Havel's Helm,1,0,0
 14787478,Havel's Leggings,1,0,0
-114FB180,Herald Helm,1,0,0
+14F27AC0,Helm of Favor,1,0,0
+15B8D800,Helm of Thorns,1,0,0
 114FB568,Herald Armor,1,0,0
 114FB950,Herald Gloves,1,0,0
+114FB180,Herald Helm,1,0,0
 114FBD38,Herald Trousers,1,0,0
-129F6300,Aristocrat's Mask,1,0,0
-1405F7E0,Iron Dragonslayer Helm,1,0,0
+13AA6A60,Hood of Prayer,1,0,0
+152F8B90,Iron Bracelets,1,0,0
 1405FBC8,Iron Dragonslayer Armor,1,0,0
 1405FFB0,Iron Dragonslayer Gauntlets,1,0,0
+1405F7E0,Iron Dragonslayer Helm,1,0,0
 14060398,Iron Dragonslayer Leggings,1,0,0
 152F83C0,Iron Helm,1,0,0
-152F87A8,Armor of the Sun,1,0,0
-152F8B90,Iron Bracelets,1,0,0
 152F8F78,Iron Leggings,1,0,0
-129F66E8,Jailer Robe,1,0,0
 129F6AD0,Jailer Gloves,1,0,0
+129F66E8,Jailer Robe,1,0,0
 129F6EB8,Jailer Trousers,1,0,0
-15E69EC0,Karla's Pointed Hat,1,0,0
 15E6A2A8,Karla's Coat,1,0,0
 15E6A690,Karla's Gloves,1,0,0
+15E69EC0,Karla's Pointed Hat,1,0,0
 15E6AA78,Karla's Trousers,1,0,0
-11298BE0,Knight Helm,1,0,0
 11298FC8,Knight Armor,1,0,0
 112993B0,Knight Gauntlets,1,0,0
+11298BE0,Knight Helm,1,0,0
 11299798,Knight Leggings,1,0,0
-11E84800,Lapp's Helm,1,0,0
 11E84BE8,Lapp's Armor,1,0,0
 11E84FD0,Lapp's Gauntlets,1,0,0
+11E84800,Lapp's Helm,1,0,0
 11E853B8,Lapp's Leggings,1,0,0
-1487AB00,Pharis's Hat,1,0,0
 1487AEE8,Leather Armor,1,0,0
-1487B2D0,Leather Gloves,1,0,0
 1487B6B8,Leather Boots,1,0,0
-13197500,Lothric Knight Helm,1,0,0
-131978E8,Lothric Knight Armor,1,0,0
-13197CD0,Lothric Knight Gauntlets,1,0,0
-131980B8,Lothric Knight Leggings,1,0,0
-117D7840,Silver Mask,1,0,0
+142C2550,Leather Gauntlets,1,0,0
+1487B2D0,Leather Gloves,1,0,0
+14F28678,Leggings of Favor,1,0,0
+15B8E3B8,Leggings of Thorns,1,0,0
 117D7C28,Leonhard's Garb,1,0,0
 117D8010,Leonhard's Gauntlets,1,0,0
 117D83F8,Leonhard's Trousers,1,0,0
-13A2C940,Lorian's Helm,1,0,0
+148F57D8,Loincloth,1,0,0
+11B2EBD8,Loincloth,1,0,0
 13A2CD28,Lorian's Armor,1,0,0
 13A2D110,Lorian's Gauntlets,1,0,0
+13A2C940,Lorian's Helm,1,0,0
 13A2D4F8,Lorian's Leggings,1,0,0
-148F4C20,Ragged Mask,1,0,0
-148F5008,Master's Attire,1,0,0
-148F53F0,Master's Gloves,1,0,0
-148F57D8,Loincloth,1,0,0
-139B2820,Millwood Knight Helm,1,0,0
-139B2C08,Millwood Knight Armor,1,0,0
-139B2FF0,Millwood Knight Gauntlets,1,0,0
-139B33D8,Millwood Knight Leggings,1,0,0
+131978E8,Lothric Knight Armor,1,0,0
+13197CD0,Lothric Knight Gauntlets,1,0,0
+13197500,Lothric Knight Helm,1,0,0
+131980B8,Lothric Knight Leggings,1,0,0
+15204180,Lucatiel's Mask,1,0,0
+14BD1AB0,Maiden Gloves,1,0,0
 14BD12E0,Maiden Hood,1,0,0
 14BD16C8,Maiden Robe,1,0,0
-14BD1AB0,Maiden Gloves,1,0,0
 14BD1E98,Maiden Skirt,1,0,0
-14B571C0,Creighton's Steel Mask,1,0,0
-14B575A8,Mirrah Chain Mail,1,0,0
+148F5008,Master's Attire,1,0,0
+148F53F0,Master's Gloves,1,0,0
+139B2C08,Millwood Knight Armor,1,0,0
+139B2FF0,Millwood Knight Gauntlets,1,0,0
+139B2820,Millwood Knight Helm,1,0,0
+139B33D8,Millwood Knight Leggings,1,0,0
 14B57990,Mirrah Chain Gloves,1,0,0
 14B57D78,Mirrah Chain Leggings,1,0,0
-15204180,Lucatiel's Mask,1,0,0
-15204568,Mirrah Vest,1,0,0
+14B575A8,Mirrah Chain Mail,1,0,0
 15204950,Mirrah Gloves,1,0,0
 15204D38,Mirrah Trousers,1,0,0
-1175D720,Morne's Helm,1,0,0
+15204568,Mirrah Vest,1,0,0
 1175DB08,Morne's Armor,1,0,0
 1175DEF0,Morne's Gauntlets,1,0,0
+1175D720,Morne's Helm,1,0,0
 1175E2D8,Morne's Leggings,1,0,0
-143B5FC0,Nameless Knight Helm,1,0,0
 143B63A8,Nameless Knight Armor,1,0,0
 143B6790,Nameless Knight Gauntlets,1,0,0
+143B5FC0,Nameless Knight Helm,1,0,0
 143B6B78,Nameless Knight Leggings,1,0,0
-116E3600,Northern Helm,1,0,0
 116E39E8,Northern Armor,1,0,0
 116E3DD0,Northern Gloves,1,0,0
+116E3600,Northern Helm,1,0,0
 116E41B8,Northern Trousers,1,0,0
-1496ED40,Old Sorcerer Hat,1,0,0
+11945BA0,Old Sage's Blindfold,1,0,0
+1496F8F8,Old Sorcerer Boots,1,0,0
 1496F128,Old Sorcerer Coat,1,0,0
 1496F510,Old Sorcerer Gauntlets,1,0,0
-1496F8F8,Old Sorcerer Boots,1,0,0
-135E1F20,Ordained Hood,1,0,0
+1496ED40,Old Sorcerer Hat,1,0,0
 135E2308,Ordained Dress,1,0,0
+135E1F20,Ordained Hood,1,0,0
 135E2AD8,Ordained Trousers,1,0,0
-1328B740,Outrider Knight Helm,1,0,0
 1328BB28,Outrider Knight Armor,1,0,0
 1328BF10,Outrider Knight Gauntlets,1,0,0
+1328B740,Outrider Knight Helm,1,0,0
 1328C2F8,Outrider Knight Leggings,1,0,0
-156C8CC0,Painting Guardian Hood,1,0,0
-156C90A8,Painting Guardian Gown,1,0,0
 156C9490,Painting Guardian Gloves,1,0,0
+156C90A8,Painting Guardian Gown,1,0,0
+156C8CC0,Painting Guardian Hood,1,0,0
 156C9878,Painting Guardian Waistcloth,1,0,0
-11851960,Sneering Mask,1,0,0
-11851D48,Pale Shade Robe,1,0,0
 11852130,Pale Shade Gloves,1,0,0
+11851D48,Pale Shade Robe,1,0,0
 11852518,Pale Shade Trousers,1,0,0
-13567E00,Pontiff Knight Crown,1,0,0
+1487AB00,Pharis's Hat,1,0,0
 135681E8,Pontiff Knight Armor,1,0,0
+13567E00,Pontiff Knight Crown,1,0,0
 135685D0,Pontiff Knight Gauntlets,1,0,0
 135689B8,Pontiff Knight Leggings,1,0,0
-13AA6A60,Hood of Prayer,1,0,0
-13AA6E48,Robe of Prayer,1,0,0
-13AA7618,Skirt of Prayer,1,0,0
 11AB3F00,Pyromancer Crown,1,0,0
 11AB42E8,Pyromancer Garb,1,0,0
-11AB46D0,Pyromancer Wrap,1,0,0
 11AB4AB8,Pyromancer Trousers,1,0,0
-13C8EEE0,Ringed Knight Hood,1,0,0
+11AB46D0,Pyromancer Wrap,1,0,0
+148F4C20,Ragged Mask,1,0,0
 13C8F2C8,Ringed Knight Armor,1,0,0
 13C8F6B0,Ringed Knight Gauntlets,1,0,0
+13C8EEE0,Ringed Knight Hood,1,0,0
 13C8FA98,Ringed Knight Leggings,1,0,0
-14CC5520,Ruin Sentinel Helm,1,0,0
+13AA6E48,Robe of Prayer,1,0,0
 14CC5908,Ruin Sentinel Armor,1,0,0
 14CC5CF0,Ruin Sentinel Gauntlets,1,0,0
+14CC5520,Ruin Sentinel Helm,1,0,0
 14CC60D8,Ruin Sentinel Leggings,1,0,0
-12E40D20,Scholar's Shed Skin,1,0,0
+129020C0,Sage's Big Hat,1,0,0
 12E41108,Scholar's Robe,1,0,0
-11481060,Sellsword Helm,1,0,0
+12E40D20,Scholar's Shed Skin,1,0,0
 11481448,Sellsword Armor,1,0,0
 11481830,Sellsword Gauntlet,1,0,0
+11481060,Sellsword Helm,1,0,0
 11481C18,Sellsword Trousers,1,0,0
-14D3F640,Shadow Mask,1,0,0
 14D3FA28,Shadow Garb,1,0,0
 14D3FE10,Shadow Gauntlets,1,0,0
 14D401F8,Shadow Leggings,1,0,0
-11C22260,Shira's Crown,1,0,0
+14D3F640,Shadow Mask,1,0,0
 11C22648,Shira's Armor,1,0,0
+11C22260,Shira's Crown,1,0,0
 11C22A30,Shira's Gloves,1,0,0
 11C22E18,Shira's Trousers,1,0,0
-1510FF40,Silver Knight Helm,1,0,0
 15110328,Silver Knight Armor,1,0,0
 15110710,Silver Knight Gauntlets,1,0,0
+1510FF40,Silver Knight Helm,1,0,0
 15110AF8,Silver Knight Leggings,1,0,0
-134EDCE0,Slave Knight Hood,1,0,0
+117D7840,Silver Mask,1,0,0
+13AA7618,Skirt of Prayer,1,0,0
 134EE0C8,Slave Knight Armor,1,0,0
 134EE4B0,Slave Knight Gauntlets,1,0,0
+134EDCE0,Slave Knight Hood,1,0,0
 134EE898,Slave Knight Leggings,1,0,0
-159A5380,Smough's Helm,1,0,0
 159A5768,Smough's Armor,1,0,0
 159A5B50,Smough's Gauntlets,1,0,0
+159A5380,Smough's Helm,1,0,0
 159A5F38,Smough's Leggings,1,0,0
+11851960,Sneering Mask,1,0,0
+11C9CB50,Sorcerer Gloves,1,0,0
 11C9C380,Sorcerer Hood,1,0,0
 11C9C768,Sorcerer Robe,1,0,0
-11C9CB50,Sorcerer Gloves,1,0,0
 11C9CF38,Sorcerer Trousers,1,0,0
-115752A0,Sunless Veil,1,0,0
+1470C7A0,Standard Helm,1,0,0
+12625A00,Steel Soldier Helm,1,0,0
 11575688,Sunless Armor,1,0,0
 11575A70,Sunless Gauntlets,1,0,0
 11575E58,Sunless Leggings,1,0,0
-118CBA80,Sunset Helm,1,0,0
+115752A0,Sunless Veil,1,0,0
 118CBE68,Sunset Armor,1,0,0
 118CC250,Sunset Gauntlets,1,0,0
+118CBA80,Sunset Helm,1,0,0
 118CC638,Sunset Leggings,1,0,0
-15B8D800,Helm of Thorns,1,0,0
-15B8DBE8,Armor of Thorns,1,0,0
-15B8DFD0,Gauntlets of Thorns,1,0,0
-15B8E3B8,Leggings of Thorns,1,0,0
-13750280,Undead Legion Helm,1,0,0
+14ADD0A0,Symbol of Avarice,1,0,0
+12656740,Thief Mask,1,0,0
+12D4CAE0,Thrall Hood,1,0,0
 13750668,Undead Legion Armor,1,0,0
 13750A50,Undead Legion Gauntlet,1,0,0
+13750280,Undead Legion Helm,1,0,0
 13750E38,Undead Legion Leggings,1,0,0
-11312D00,Vilhelm's Helm,1,0,0
 113130E8,Vilhelm's Armor,1,0,0
 113134D0,Vilhelm's Gauntlets,1,0,0
+11312D00,Vilhelm's Helm,1,0,0
 113138B8,Vilhelm's Leggings,1,0,0
-12EBAE40,Winged Knight Helm,1,0,0
+11B2E7F0,Violet Wrappings,1,0,0
+14153A20,White Preacher Head,1,0,0
 12EBB228,Winged Knight Armor,1,0,0
 12EBB610,Winged Knight Gauntlets,1,0,0
+12EBAE40,Winged Knight Helm,1,0,0
 12EBB9F8,Winged Knight Leggings,1,0,0
-157BCF00,Wolf Knight Helm,1,0,0
 157BD2E8,Wolf Knight Armor,1,0,0
 157BD6D0,Wolf Knight Gauntlets,1,0,0
+157BCF00,Wolf Knight Helm,1,0,0
 157BDAB8,Wolf Knight Leggings,1,0,0
-12CD29C0,Worker Hat,1,0,0
+136D6160,Wolnir's Crown,1,0,0
 12CD2DA8,Worker Garb,1,0,0
 12CD3190,Worker Gloves,1,0,0
+12CD29C0,Worker Hat,1,0,0
 12CD3578,Worker Trousers,1,0,0
 116694E0,Xanthous Crown,1,0,0
-116698C8,Xanthous Overcoat,1,0,0
 11669CB0,Xanthous Gloves,1,0,0
+116698C8,Xanthous Overcoat,1,0,0
 1166A098,Xanthous Trousers,1,0,0
-15095E20,Blindfold Mask,1,0,0
-129020C0,Sage's Big Hat,1,0,0
-14ADD0A0,Symbol of Avarice,1,0,0
-12D4CAE0,Thrall Hood,1,0,0
-14153A20,White Preacher Head,1,0,0
-136D6160,Wolnir's Crown,1,0,0
 </value>
   </data>
   <data name="Weapons" xml:space="preserve">
@@ -944,7 +931,6 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
   </data>
   <data name="Consumables" xml:space="preserve">
     <value>40000126,Alluring Skull,99,0,0
-40000173,Binoculars,99,0,0
 400001CD,Black Bug Pellet,99,0,0
 40000129,Black Firebomb,99,0,0
 4000010E,Bloodred Moss Clump,99,0,0
@@ -954,32 +940,22 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 4000014F,Carthus Rouge,99,0,0
 40000154,Charcoal Pine Bundle,99,0,0
 4000014A,Charcoal Pine Resin,99,0,0
-4000013B,Church Guardian Shiv,99,0,0
-4000015F,Coiled Sword Fragment,99,0,0
 4000006F,Cracked Red Eye Orb,99,0,0
 400001EA,Dark Sigil,99,0,0
 400000F0,Divine Blessing,99,0,0
-4000028B,Divine Spear Fragment,99,0,0
-40000179,Dragon Head Stone,99,0,0
-4000017A,Dragon Torso Stone,99,0,0
-40000181,Dried Finger,99,0,0
 40000130,Duel Charm,99,0,0
 40000125,Dung Pie,99,0,0
 400001F4,Ember,99,0,0
 4000017B,Filianore's Spear Ornament,99,0,0
-40000186,Fire Keeper Soul,99,0,0
 40000124,Firebomb,99,0,0
 40000170,Forked Pale Tongue,99,0,0
 40000155,Gold Pine Bundle,99,0,0
 4000014B,Gold Pine Resin,99,0,0
 40000104,Green Blossom,99,0,0
-40000208,Hello Carving,99,0,0
-4000020C,Help me! Carving,99,0,0
 400000F1,Hidden Blessing,99,0,0
 4000015E,Homeward Bone,99,0,0
 4000016F,Human Dregs,99,0,0
 4000014E,Human Pine Resin,99,0,0
-4000020B,I'm sorry Carving,99,0,0
 40000122,Kukri,99,0,0
 4000012C,Lightning Urn,99,0,0
 40000150,Pale Pine Resin,99,0,0
@@ -994,10 +970,8 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 400001CB,Red Bug Pellet,99,0,0
 40000118,Repair Powder,99,0,0
 40000114,Rime-blue Moss Clump,99,0,0
-4000028A,Ritual Spear Fragment,99,0,0
 4000012E,Rope Black Firebomb,99,0,0
 4000012B,Rope Firebomb,99,0,0
-4000006C,Roster of Knights,99,0,0
 40000157,Rotten Pine Resin,99,0,0
 4000017C,Rubbish,99,0,0
 400001C7,Rusted Coin,99,0,0
@@ -1006,13 +980,11 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 400001C8,Siegbräu,99,0,0
 4000012F,Stalk Dung Pie,99,0,0
 40000177,Sunlight Medal,99,0,0
-40000209,Thank you Carving,99,0,0
 40000136,Throwing Knife,99,0,0
 40000183,Twinkling Dragon Head Stone,99,0,0
 40000184,Twinkling Dragon Torso Stone,99,0,0
 40000128,Undead Hunter Charm,99,0,0
 40000176,Vertebra Shackle,99,0,0
-4000020A,Very good! Carving,99,0,0
 4000016E,Wolf's Blood Swordgrass,99,0,0
 400001CC,Yellow Bug Pellet,99,0,0
 400001C6,Young White Branch,99,0,0
@@ -1039,7 +1011,6 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 400001A3,Soul of a Champion,99,0,0
 400001A4,Soul of a Great Champion,99,0,0
 400002C8,Soul of Champion Gundyr,99,0,0
-400002C9,Soul of a Wicked Spirit,99,0,0
 400002CA,Soul of the Dancer,99,0,0
 400002CB,Soul of a Crystal Sage,99,0,0
 400002CD,Soul of the Blood of the Wolf,99,0,0
@@ -1057,7 +1028,7 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 400002DC,Soul of Yhorm the Giant,99,0,0
 400002DD,Soul of the Lords,99,0,0
 400002E3,Soul of a Demon,99,0,0
-400002E6,Soul of the Twin Princes,99,0,0
+400002DB,Soul of the Twin Princes,99,0,0
 400002E7,Soul of a Stray Demon,99,0,0
 400002E8,Soul of Sister Friede,99,0,0
 400002E9,Soul of Slave Knight Gael,99,0,0
@@ -1116,7 +1087,6 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 402527B8,Carthus Flame Arc,1,0,0
 402579C0,Chaos Bed Vestiges,1,0,0
 40256638,Chaos Storm,1,0,0
-4024C610,Combustion,1,0,0
 4024A6D0,Fire Orb,1,0,0
 4024B288,Fire Surge,1,0,0
 40256A20,Fire Whip,1,0,0
@@ -1292,7 +1262,6 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 20005070,Ring of the Evil Eye+2,1,0,0
 20005071,Ring of the Evil Eye+3,1,0,0
 20004F1B,Ring of the Sun's First Born,1,0,0
-20004F74,Ring of the Sun's Firstborn,1,0,0
 20004F38,Sage Ring,1,0,0
 20004F39,Sage Ring+1,1,0,0
 20004F3A,Sage Ring+2,1,0,0
@@ -1321,102 +1290,117 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 </value>
   </data>
   <data name="KeyItems" xml:space="preserve">
-    <value>4000085D,Estus Shard,1,0,0
-4000085F,Undead Bone Shard,1,0,0
+    <value>40002345,Applause,1,0,0
 40000845,Basin of Vows,1,0,0
+40002328,Beckon,1,0,0
+40000173,Binoculars,1,0,0
 4000086E,Blood of the Dark souls,1,0,0
-400007DA,Cell Key,1,0,0
-40000869,Champions Bones,1,0,0
-4000084B,Cinders of a Lord,1,0,0
-4000084C,Cinders of a Lord,1,0,0
-4000084D,Cinders of a Lord,1,0,0
-4000084E,Cinders of a Lord,1,0,0
-40000859,Coiled Sword,1,0,0
-4000086B,Contraption Key,1,0,0
-400007DB,Dungeon Ground Floor Key,1,0,0
-4000085A,Eyes of a Fire Keeper,1,0,0
-400007DE,Grand Archives Key,1,0,0
-400007D9,Grave Key,1,0,0
-4000085E,Hawkwood's Swordgrass,1,0,0
-400007D7,Jailbreaker's Key,1,0,0
-400007D8,Jailer's Key Ring,1,0,0
-400007D1,Lift Chamber Key,1,0,0
-40000846,Loretta's Bone,1,0,0
-400007DC,Old Cell Key,1,0,0
-400007D5,Small Doll,1,0,0
-4000086C,Small Envoy Banner,1,0,0
-40000836,Small Lothric Banner,1,0,0
-4000085B,Sword of Avowal,1,0,0
-400007DD,Tower Key,1,0,0
-400007DF,Tower Key,1,0,0
-4000086F,Young Grass Dew,1,0,0
-4000086A,Captain's Ashes,1,0,0
-40000841,Cornyx's Ashes,1,0,0
-40000867,Dragon Chaser's Ashes,1,0,0
-4000083C,Dreamchaser's Ashes,1,0,0
-40000868,Easterner's Ashes,1,0,0
-40000862,Excrement-covered Ashes,1,0,0
-4000083E,Grave Warden's Ashes,1,0,0
-4000083F,Greirat's Ashes,1,0,0
-40000865,Hollow's Ashes,1,0,0
-40000843,Irina's Ashes,1,0,0
-40000842,Karla's Ashes,1,0,0
-4000083B,Mortician's Ashes,1,0,0
-4000086D,Old Woman's Ashes,1,0,0
-40000840,Orbeck's Ashes,1,0,0
-4000083D,Paladin's Ashes,1,0,0
-40000866,Patches' Ashes,1,0,0
-40000863,Prisoner Chief's Ashes,1,0,0
-40000864,Xanthous Ashes,1,0,0
-40000844,Yuria's Ashes,1,0,0
+4000232B,Bow,1,0,0
 40000849,Braille Divine Sunlight Tome,1,0,0
 40000847,Braille Divine Tome of Carim,1,0,0
 40000848,Braille Divine Tome of Lothric,1,0,0
-40000850,Carthus Pyromancy Tome,1,0,0
-40000856,Crystal Scroll,1,0,0
-40000860,Deep Braille Divine Tome,1,0,0
-4000085C,Golden Scroll,1,0,0
-40000853,Grave Warden Pyromancy Tome,1,0,0
-4000084F,Great Swamp Pyromancy Tome,1,0,0
-40000851,Izalith Pyromancy Tome,1,0,0
-40000855,Logan's Scroll,1,0,0
-40000861,Londor Braille Divine Tome,1,0,0
-40000852,Quelana Pyromancy Tome,1,0,0
-40000854,Sage's Scroll,1,0,0
-40000857,Transposing Kiln,1,0,0
-40002345,Applause,1,0,0
-40002328,Beckon,1,0,0
-4000232B,Bow,1,0,0
 4000233C,By my sword,1,0,0
 40002341,Call over,1,0,0
+4000086A,Captain's Ashes,1,0,0
+40000850,Carthus Pyromancy Tome,1,0,0
+400007DA,Cell Key,1,0,0
+40000869,Champions Bones,1,0,0
+4000013B,Church Guardian Shiv,1,0,0
+4000084E,Cinders of a Lord,1,0,0
+4000084D,Cinders of a Lord,1,0,0
+4000084C,Cinders of a Lord,1,0,0
+4000084B,Cinders of a Lord,1,0,0
+40000859,Coiled Sword,1,0,0
+4000015F,Coiled Sword Fragment,1,0,0
 40002342,Collapse,1,0,0
+4000086B,Contraption Key,1,0,0
+40000841,Cornyx's Ashes,1,0,0
+40000856,Crystal Scroll,1,0,0
 4000233F,Curl up,1,0,0
 40002348,Darkmoon Loyalty,1,0,0
+40000860,Deep Braille Divine Tome,1,0,0
 4000233D,Dignified bow,1,0,0
+4000028B,Divine Spear Fragment,1,0,0
+40000867,Dragon Chaser's Ashes,1,0,0
+40000179,Dragon Head Stone,1,0,0
+4000017A,Dragon Torso Stone,1,0,0
+4000083C,Dreamchaser's Ashes,1,0,0
+40000181,Dried Finger,1,0,0
 4000232D,Duel bow,1,0,0
+400007DB,Dungeon Ground Floor Key,1,0,0
+40000868,Easterner's Ashes,1,0,0
+4000085D,Estus Shard,1,0,0
+40000862,Excrement-covered Ashes,1,0,0
+4000085A,Eyes of a Fire Keeper,1,0,0
+40000186,Fire Keeper Soul,1,0,0
+4000085C,Golden Scroll,1,0,0
+400007DE,Grand Archives Key,1,0,0
+400007D9,Grave Key,1,0,0
+40000853,Grave Warden Pyromancy Tome,1,0,0
+4000083E,Grave Warden's Ashes,1,0,0
+4000084F,Great Swamp Pyromancy Tome,1,0,0
+4000083F,Greirat's Ashes,1,0,0
+4000085E,Hawkwood's Swordgrass,1,0,0
+40000208,Hello Carving,1,0,0
+4000020C,Help me! Carving,1,0,0
+40000865,Hollow's Ashes,1,0,0
 4000232A,Hurrah!,1,0,0
+4000020B,I'm sorry Carving,1,0,0
+40000843,Irina's Ashes,1,0,0
+40000851,Izalith Pyromancy Tome,1,0,0
+400007D7,Jailbreaker's Key,1,0,0
+400007D8,Jailer's Key Ring,1,0,0
 40002338,Joy,1,0,0
 4000232C,Jump for joy,1,0,0
+40000842,Karla's Ashes,1,0,0
 40002347,Legion Etiquette,1,0,0
+400007D1,Lift Chamber Key,1,0,0
+40000855,Logan's Scroll,1,0,0
+40000861,Londor Braille Divine Tome,1,0,0
+40000846,Loretta's Bone,1,0,0
+4000083B,Mortician's Ashes,1,0,0
 40002339,My thanks!,1,0,0
+400007DC,Old Cell Key,1,0,0
+4000086D,Old Woman's Ashes,1,0,0
+40000840,Orbeck's Ashes,1,0,0
+4000083D,Paladin's Ashes,1,0,0
 40002344,Patches Squat,1,0,0
+40000866,Patches' Ashes,1,0,0
 40002346,Path of the Dragon,1,0,0
 40002331,Point down,1,0,0
 40002329,Point forward,1,0,0
 40002330,Point up,1,0,0
 4000232F,Praise the Sun,1,0,0
 40002336,Prayer,1,0,0
+40000863,Prisoner Chief's Ashes,1,0,0
 40002335,Proper bow,1,0,0
 40002334,Prostration,1,0,0
+40000852,Quelana Pyromancy Tome,1,0,0
 40002343,Quiet Resolve,1,0,0
 4000233A,Rejoice,1,0,0
 4000233B,Rest,1,0,0
+4000028A,Ritual Spear Fragment,1,0,0
+4000006C,Roster of Knights,1,0,0
+40000854,Sage's Scroll,1,0,0
 4000234B,Silent Ally!,1,0,0
 40002349,Sleep,1,0,0
+400007D5,Small Doll,1,0,0
+4000086C,Small Envoy Banner,1,0,0
+40000836,Small Lothric Banner,1,0,0
 40002340,Stretch out,1,0,0
+4000085B,Sword of Avowal,1,0,0
+40000209,Thank you Carving,1,0,0
 4000234A,Toast,1,0,0
+400007DD,Tower Key,1,0,0
+400007DF,Tower Key,1,0,0
+40000857,Transposing Kiln,1,0,0
+4000085F,Undead Bone Shard,1,0,0
+4000020A,Very good! Carving,1,0,0
 4000232E,Wave,1,0,0
 40002337,Welcome,1,0,0
+40000864,Xanthous Ashes,1,0,0
+4000086F,Young Grass Dew,1,0,0
+40000844,Yuria's Ashes,1,0,0
 </value>
   </data>
   <data name="UpgradeMaterials" xml:space="preserve">
@@ -1447,5 +1431,119 @@ e9 00 00 00 00          jmp    26 &lt;original_code+0xd&gt;</value>
 40000838,Sage's Coal,1,0,0
 400004E2,Shriving Stone,99,0,0
 </value>
+  </data>
+  <data name="ItemSpawn" xml:space="preserve">
+    <value>48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+4c 8d 05 00 00 00 00    lea    r8,[rip+0x0]        # e &lt;_main+0xe&gt;
+48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 15 &lt;_main+0x15&gt;
+48 83 ec 28             sub    rsp,0x28
+e8 00 00 00 00          call   1e &lt;_main+0x1e&gt;
+48 83 c4 28             add    rsp,0x28
+c3                      ret</value>
+  </data>
+  <data name="NoClip_InAirTimer" xml:space="preserve">
+    <value>50                      push   rax
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00
+48 8b 40 28             mov    rax,QWORD PTR [rax+0x28]
+48 39 c8                cmp    rax,rcx
+75 03                   jne    17 &lt;original&gt;
+0f 57 c0                xorps  xmm0,xmm0
+58                      pop    rax
+f3 0f 11 81 b0 01 00    movss  DWORD PTR [rcx+0x1b0],xmm0
+00
+e9 00 00 00 00          jmp    25 &lt;original+0xe&gt;</value>
+  </data>
+  <data name="NoClip_Keyboard" xml:space="preserve">
+    <value>41 ff 90 f8 00 00 00    call   QWORD PTR [r8+0xf8]
+84 c0                   test   al,al
+74 28                   je     33 &lt;exit&gt;
+49 83 fc 62             cmp    r12,0x62
+74 0b                   je     1c &lt;set_down&gt;
+49 83 fc 7e             cmp    r12,0x7e
+74 13                   je     2a &lt;set_up&gt;
+e9 00 00 00 00          jmp    1c &lt;set_down&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 23 &lt;set_down+0x7&gt;
+30 c0                   xor    al,al
+e9 00 00 00 00          jmp    2a &lt;set_up&gt;
+c6 05 00 00 00 00 02    mov    BYTE PTR [rip+0x0],0x2        # 31 &lt;set_up+0x7&gt;
+30 c0                   xor    al,al
+e9 00 00 00 00          jmp    38 &lt;exit+0x5&gt;</value>
+  </data>
+  <data name="NoClip_Triggers" xml:space="preserve">
+    <value>0f 2f 3d 00 00 00 00    comiss xmm7,DWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
+72 0c                   jb     15 &lt;original&gt;
+48 83 fe 0b             cmp    rsi,0xb
+74 11                   je     20 &lt;set_down&gt;
+48 83 fe 0c             cmp    rsi,0xc
+74 17                   je     2c &lt;set_up&gt;
+000000000015 &lt;original&gt;:
+48 8b 10                mov    rdx,QWORD PTR [rax]
+48 89 c1                mov    rcx,rax
+e9 00 00 00 00          jmp    20 &lt;set_down&gt;
+000000000020 &lt;set_down&gt;:
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 27 &lt;set_down+0x7&gt;
+0f 57 ff                xorps  xmm7,xmm7
+eb e9                   jmp    15 &lt;original&gt;
+00000000002c &lt;set_up&gt;:
+c6 05 00 00 00 00 02    mov    BYTE PTR [rip+0x0],0x2        # 33 &lt;set_up+0x7&gt;
+0f 57 ff                xorps  xmm7,xmm7
+eb dd                   jmp    15 &lt;original&gt;</value>
+  </data>
+  <data name="NoClip_UpdateCoords" xml:space="preserve">
+    <value>51                      push   rcx
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00
+48 8b 49 28             mov    rcx,QWORD PTR [rcx+0x28]
+48 39 d9                cmp    rcx,rbx
+0f 85 bc 00 00 00       jne    d4 &lt;originalCode&gt;
+50                      push   rax
+52                      push   rdx
+66 0f 6f b3 80 00 00    movdqa xmm6,XMMWORD PTR [rbx+0x80]
+00
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00
+f3 44 0f 10 b9 c4 01    movss  xmm15,DWORD PTR [rcx+0x1c4]
+00 00
+45 0f c6 ff 00          shufps xmm15,xmm15,0x0
+b8 cd cc 4c 3e          mov    eax,0x3e4ccccd
+66 44 0f 6e f0          movd   xmm14,eax
+45 0f c6 f6 00          shufps xmm14,xmm14,0x0
+45 0f 59 fe             mulps  xmm15,xmm14
+48 ba 00 00 00 00 00    movabs rdx,0x0
+00 00 00
+44 0f 59 ba a0 03 00    mulps  xmm15,XMMWORD PTR [rdx+0x3a0]
+00
+41 0f 58 f7             addps  xmm6,xmm15
+f3 44 0f 10 b9 c8 01    movss  xmm15,DWORD PTR [rcx+0x1c8]
+00 00
+45 0f c6 ff 00          shufps xmm15,xmm15,0x0
+b8 9a 99 19 3e          mov    eax,0x3e19999a
+66 44 0f 6e f0          movd   xmm14,eax
+45 0f c6 f6 00          shufps xmm14,xmm14,0x0
+45 0f 59 fe             mulps  xmm15,xmm14
+44 0f 59 ba 80 03 00    mulps  xmm15,XMMWORD PTR [rdx+0x380]
+00
+41 0f 58 f7             addps  xmm6,xmm15
+80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 97 &lt;_main+0x97&gt;
+75 07                   jne    a0 &lt;check_up&gt;
+b8 cd cc 4c be          mov    eax,0xbe4ccccd
+eb 0e                   jmp    ae &lt;coord_update&gt;
+80 3d 00 00 00 00 02    cmp    BYTE PTR [rip+0x0],0x2        # a7 &lt;check_up+0x7&gt;
+75 1a                   jne    c3 &lt;y&gt;
+b8 cd cc 4c 3e          mov    eax,0x3e4ccccd
+66 44 0f 6e f8          movd   xmm15,eax
+45 0f c6 ff e1          shufps xmm15,xmm15,0xe1
+41 0f 58 f7             addps  xmm6,xmm15
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # c3 &lt;y&gt;
+0f 29 b3 70 01 00 00    movaps XMMWORD PTR [rbx+0x170],xmm6
+5a                      pop    rdx
+58                      pop    rax
+45 0f 57 f6             xorps  xmm14,xmm14
+45 0f 57 ff             xorps  xmm15,xmm15
+59                      pop    rcx
+66 0f 7f b3 80 00 00    movdqa XMMWORD PTR [rbx+0x80],xmm6
+00
+e9 00 00 00 00          jmp    e2 &lt;originalCode+0xe&gt;</value>
   </data>
 </root>

@@ -39,6 +39,7 @@ namespace SilkySouls3.Services
 
         public void ForcePhaseTransition(int phaseIndex)
         {
+            if (!IsTargetCinder()) return;
             int phaseAnimation = _phaseAnimations[phaseIndex];
             ForceAnimation(phaseAnimation);
             ResetLuaNumbers();
@@ -76,17 +77,18 @@ namespace SilkySouls3.Services
 
         public void ToggleCinderPhaseLock(bool enable)
         {
+            if (!IsTargetCinder()) return;
             var cinderPhaseLockCode = CodeCaveOffsets.Base + CodeCaveOffsets.CinderPhaseLock;
             if (enable)
             {
                 var addSubGoalHook = Offsets.Hooks.AddSubGoal;
                 byte[] phaseLockBytes = AsmLoader.GetAsmBytes("CinderPhaseLock");
                 byte[] jmpBytes =
-                    AsmHelper.GetRelOffsetBytes(cinderPhaseLockCode.ToInt64() + 0x28, addSubGoalHook + 0x6, 5);
-                Array.Copy(jmpBytes, 0, phaseLockBytes, 0x28 + 1, 4);
+                    AsmHelper.GetRelOffsetBytes(cinderPhaseLockCode.ToInt64() + 0x2C, addSubGoalHook + 10, 5);
+                Array.Copy(jmpBytes, 0, phaseLockBytes, 0x2C + 1, 4);
                 _memoryIo.WriteBytes(cinderPhaseLockCode, phaseLockBytes);
                 _hookManager.InstallHook(cinderPhaseLockCode.ToInt64(), addSubGoalHook,
-                    new byte[] { 0xF3, 0x0F, 0x11, 0x44, 0x24, 0x20 });
+                    new byte[] { 0x48, 0x8B, 0xC4, 0x48, 0x81, 0xEC, 0x98, 0x00, 0x00, 0x00 });
             }
             else
             {
@@ -96,6 +98,7 @@ namespace SilkySouls3.Services
 
         public void CastSoulMass()
         {
+            if (!IsTargetCinder()) return;
             const int soulmassEzStateId = 3003;
             const string soulmassAnimationName = "Attack3003";
             const int stringLength = 20;
@@ -167,6 +170,7 @@ namespace SilkySouls3.Services
 
         public void ToggleEndlessSoulmass(bool isEnabled)
         {
+            if (!IsTargetCinder()) return;
             var soulmassPtr = _memoryIo.FollowPointers(Offsets.SoloParamRepo.Base,
                 new[]
                 {

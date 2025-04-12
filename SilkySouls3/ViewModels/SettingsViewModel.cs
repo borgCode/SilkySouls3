@@ -7,13 +7,92 @@ using SilkySouls3.Utilities;
 
 namespace SilkySouls3.ViewModels
 {
-    public class SettingsViewModel
+    public class SettingsViewModel : BaseViewModel
     {
+        #region property setters
+        private bool _isEnableHotkeysEnabled;
+        
+        
+        private string _setSwordPhaseHotkeyText;
+        private string _setLancePhaseHotkeyText;
+        private string _setCurvedPhaseHotkeyText;
+        private string _setStaffPhaseHotkeyText;
+        private string _setGwynPhaseHotkeyText;
+        private string _phaseLockHotkeyText;
+        private string _castSoulmassHotkeyText;
+        private string _endlessSoulmassHotkeyText;
+        
+        
+        public bool IsEnableHotkeysEnabled
+        {
+            get => _isEnableHotkeysEnabled;
+            set
+            {
+                if (SetProperty(ref _isEnableHotkeysEnabled, value))
+                {
+                    Properties.Settings.Default.EnableHotkeys = value;
+                    Properties.Settings.Default.Save();
+                    if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
+                    else _hotkeyManager.Stop();
+                }
+            }
+        }
+        
+        public string SetSwordPhaseHotkeyText
+        {
+            get => _setSwordPhaseHotkeyText;
+            set => SetProperty(ref _setSwordPhaseHotkeyText, value);
+        }
+
+        public string SetLancePhaseHotkeyText
+        {
+            get => _setLancePhaseHotkeyText;
+            set => SetProperty(ref _setLancePhaseHotkeyText, value);
+        }
+
+        public string SetCurvedPhaseHotkeyText
+        {
+            get => _setCurvedPhaseHotkeyText;
+            set => SetProperty(ref _setCurvedPhaseHotkeyText, value);
+        }
+
+        public string SetStaffPhaseHotkeyText
+        {
+            get => _setStaffPhaseHotkeyText;
+            set => SetProperty(ref _setStaffPhaseHotkeyText, value);
+        }
+
+        public string SetGwynPhaseHotkeyText
+        {
+            get => _setGwynPhaseHotkeyText;
+            set => SetProperty(ref _setGwynPhaseHotkeyText, value);
+        }
+
+        public string PhaseLockHotkeyText
+        {
+            get => _phaseLockHotkeyText;
+            set => SetProperty(ref _phaseLockHotkeyText, value);
+        }
+
+        public string CastSoulmassHotkeyText
+        {
+            get => _castSoulmassHotkeyText;
+            set => SetProperty(ref _castSoulmassHotkeyText, value);
+        }
+
+        public string EndlessSoulmassHotkeyText
+        {
+            get => _endlessSoulmassHotkeyText;
+            set => SetProperty(ref _endlessSoulmassHotkeyText, value);
+        }
+        #endregion
+        
         private bool _isLoaded;
         
         private string _currentSettingHotkeyId;
         private LowLevelKeyboardHook _tempHook;
         private Keys _currentKeys;
+        
         
         
         private readonly Dictionary<string, Action<string>> _propertySetters;
@@ -26,38 +105,54 @@ namespace SilkySouls3.ViewModels
             _settingsService = settingsService;
             _hotkeyManager = hotkeyManager;
 
-            // RegisterHotkeys();
-            //
-            // _propertySetters = new Dictionary<string, Action<string>>
-            // {
-            //     { "SavePos1", text => SavePos1HotkeyText = text },
-            //     { "SavePos2", text => SavePos2HotkeyText = text },
-            //     { "RestorePos1", text => RestorePos1HotkeyText = text },
-            //     { "RestorePos2", text => RestorePos2HotkeyText = text },
-            //     { "RTSR", text => RtsrHotkeyText = text },
-            //     { "NoDeath", text => NoDeathHotkeyText = text },
-            //     { "OneShot", text => OneShotHotkeyText = text },
-            //     { "RestoreSpellCasts", text => RestoreSpellCastsHotkeyText = text },
-            //     { "ToggleSpeed", text => ToggleSpeedHotkeyText = text },
-            //     { "IncreaseSpeed", text => IncreaseSpeedHotkeyText = text },
-            //     { "DecreaseSpeed", text => DecreaseSpeedHotkeyText = text },
-            //     { "NoClip", text => NoClipHotkeyText = text },
-            //     { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
-            //     { "FreezeHp", text => FreezeHpHotkeyText = text },
-            //     { "Quitout", text => QuitoutHotkeyText = text },
-            //     { "DisableAi", text => DisableAiHotkeyText = text },
-            //     { "AllNoDeath", text => AllNoDeathHotkeyText = text },
-            //     { "AllNoDamage", text => AllNoDamageHotkeyText = text },
-            //     { "IncreaseTargetSpeed", text => IncreaseTargetSpeedHotkeyText = text },
-            //     { "DecreaseTargetSpeed", text => DecreaseTargetSpeedHotkeyText = text },
-            //     { "EnableTargetOptions", text => EnableTargetOptionsHotkeyText = text },
-            //     { "ShowAllResistances", text => ShowAllResistancesHotkeyText = text },
-            // };
-            //
-            // LoadHotkeyDisplays();
+            RegisterHotkeys();
+            
+            _propertySetters = new Dictionary<string, Action<string>>
+            {
+                // { "SavePos1", text => SavePos1HotkeyText = text },
+                // { "SavePos2", text => SavePos2HotkeyText = text },
+                // { "RestorePos1", text => RestorePos1HotkeyText = text },
+                // { "RestorePos2", text => RestorePos2HotkeyText = text },
+                // { "RTSR", text => RtsrHotkeyText = text },
+                // { "NoDeath", text => NoDeathHotkeyText = text },
+                // { "OneShot", text => OneShotHotkeyText = text },
+                // { "RestoreSpellCasts", text => RestoreSpellCastsHotkeyText = text },
+                // { "ToggleSpeed", text => ToggleSpeedHotkeyText = text },
+                // { "IncreaseSpeed", text => IncreaseSpeedHotkeyText = text },
+                // { "DecreaseSpeed", text => DecreaseSpeedHotkeyText = text },
+                // { "NoClip", text => NoClipHotkeyText = text },
+                // { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
+                
+                { "SetSwordPhase", text => SetSwordPhaseHotkeyText = text },
+                { "SetLancePhase", text => SetLancePhaseHotkeyText = text },
+                { "SetCurvedPhase", text => SetCurvedPhaseHotkeyText = text },
+                { "SetStaffPhase", text => SetStaffPhaseHotkeyText = text },
+                { "SetGwynPhase", text => SetGwynPhaseHotkeyText = text },
+                { "PhaseLock", text => PhaseLockHotkeyText = text },
+                { "CastSoulmass", text => CastSoulmassHotkeyText = text },
+                { "EndlessSoulmass", text => EndlessSoulmassHotkeyText = text }
+                
+                
+                // { "FreezeHp", text => FreezeHpHotkeyText = text },
+                // { "Quitout", text => QuitoutHotkeyText = text },
+                // { "DisableAi", text => DisableAiHotkeyText = text },
+                // { "AllNoDeath", text => AllNoDeathHotkeyText = text },
+                // { "AllNoDamage", text => AllNoDamageHotkeyText = text },
+                // { "IncreaseTargetSpeed", text => IncreaseTargetSpeedHotkeyText = text },
+                // { "DecreaseTargetSpeed", text => DecreaseTargetSpeedHotkeyText = text },
+                // { "EnableTargetOptions", text => EnableTargetOptionsHotkeyText = text },
+                // { "ShowAllResistances", text => ShowAllResistancesHotkeyText = text },
+            };
+            
+            LoadHotkeyDisplays();
         }
-        
-        
+
+        private void RegisterHotkeys()
+        {
+            //TODO quitout
+        }
+
+
         private void LoadHotkeyDisplays()
         {
             foreach (var entry in _propertySetters)
@@ -216,5 +311,6 @@ namespace SilkySouls3.ViewModels
         public void ApplyStartUpOptions()
         {
         }
+        
     }
 }

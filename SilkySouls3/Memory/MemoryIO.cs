@@ -10,7 +10,7 @@ namespace SilkySouls3.Memory
     {
         public Process TargetProcess;
         public IntPtr ProcessHandle = IntPtr.Zero;
-        public IntPtr BaseAddress = new IntPtr(0x140000000);
+        public IntPtr BaseAddress;
 
         private const int ProcessVmRead = 0x0010;
         private const int ProcessVmWrite = 0x0020;
@@ -63,6 +63,10 @@ namespace SilkySouls3.Memory
                 }
                 else
                 {
+                    if (TargetProcess.MainModule != null)
+                    {
+                        BaseAddress = TargetProcess.MainModule.BaseAddress;
+                    }
                     IsAttached = true;
                 }
             }

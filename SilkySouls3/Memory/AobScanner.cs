@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SilkySouls3.Memory
 {
@@ -24,14 +26,23 @@ namespace SilkySouls3.Memory
             Offsets.DebugFlags.Base = FindAddressByPattern(Patterns.DebugFlags);
             Offsets.DebugEvent.Base = FindAddressByPattern(Patterns.DebugEvent);
             Offsets.MapItemMan.Base = FindAddressByPattern(Patterns.MapItemMan);
+            Offsets.ResistGaugeMenuMan.Base = FindAddressByPattern(Patterns.ResistGaugeMenuMan);
+            Offsets.GameDataMan.Base = FindAddressByPattern(Patterns.GameDataMan);
+            Offsets.PadMan.Base = FindAddressByPattern(Patterns.PadMan);
 
             Offsets.Patches.NoLogo = FindAddressByPattern(Patterns.NoLogo);
-            
+            Offsets.Patches.RepeatAct = FindAddressByPattern(Patterns.RepeatAct);
+            Offsets.Patches.GameSpeed = FindAddressByPattern(Patterns.GameSpeed);
             
             Offsets.Hooks.LastLockedTarget = FindAddressByPattern(Patterns.LockedTarget).ToInt64();
             Offsets.Hooks.WarpCoordWrite = FindAddressByPattern(Patterns.WarpCoordWrite).ToInt64();
             Offsets.Hooks.AddSubGoal = FindAddressByPattern(Patterns.AddSubGoal).ToInt64();
-            Offsets.Hooks.RepeatAct = FindAddressByPattern(Patterns.RepeatAct).ToInt64();
+            Offsets.Hooks.InAirTimer = FindAddressByPattern(Patterns.NoClipInAirTimer).ToInt64();
+            Offsets.Hooks.NoClipKeyboard = FindAddressByPattern(Patterns.NoClipKeyboard).ToInt64();
+            var multiple = FindAddressesByPattern(Patterns.NoClipTriggers, 2);
+            Offsets.Hooks.NoClipTriggers = multiple[0].ToInt64();
+            Offsets.Hooks.NoClipTriggers2 = multiple[1].ToInt64();
+            Offsets.Hooks.NoClipUpdateCoords = FindAddressByPattern(Patterns.NoClipUpdateCoords).ToInt64();
 
             Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
             Offsets.Funcs.ItemSpawn = FindAddressByPattern(Patterns.ItemSpawnFunc).ToInt64();
@@ -47,11 +58,15 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
             Console.WriteLine($"DebugEvent.Base: 0x{Offsets.DebugEvent.Base.ToInt64():X}");
             Console.WriteLine($"MapItemMan.Base: 0x{Offsets.MapItemMan.Base.ToInt64():X}");
+            Console.WriteLine($"ResistGaugeMenuMan.Base: 0x{Offsets.ResistGaugeMenuMan.Base.ToInt64():X}");
+            Console.WriteLine($"GameDataMan.Base: 0x{Offsets.GameDataMan.Base.ToInt64():X}");
+            Console.WriteLine($"PadMan.Base: 0x{Offsets.PadMan.Base.ToInt64():X}");
             
             
             
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
-            
+            Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
+            Console.WriteLine($"Patches.GameSpeed: 0x{Offsets.Patches.GameSpeed.ToInt64():X}");
          
             
             // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
@@ -81,7 +96,13 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
             Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
             Console.WriteLine($"Hooks.AddSubGoal: 0x{Offsets.Hooks.AddSubGoal:X}");
-            Console.WriteLine($"Hooks.RepeatAct: 0x{Offsets.Hooks.RepeatAct:X}");
+            Console.WriteLine($"Hooks.InAirTimer: 0x{Offsets.Hooks.InAirTimer:X}");
+            Console.WriteLine($"Hooks.NoClipKeyboard: 0x{Offsets.Hooks.NoClipKeyboard:X}");
+            Console.WriteLine($"Hooks.NoClipTriggers: 0x{Offsets.Hooks.NoClipTriggers:X}");
+            Console.WriteLine($"Hooks.NoClipTriggers2: 0x{Offsets.Hooks.NoClipTriggers2:X}");
+            Console.WriteLine($"Hooks.NoClipUpdateCoords: 0x{Offsets.Hooks.NoClipUpdateCoords:X}");
+           
+           
             
             // Console.WriteLine($"Hooks.AllNoDamage: 0x{Offsets.Hooks.AllNoDamage:X}");
             // Console.WriteLine($"Hooks.ItemSpawn: 0x{Offsets.Hooks.ItemSpawn:X}");
@@ -97,54 +118,61 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
             Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
         }
-
+        
+        
         public IntPtr FindAddressByPattern(Pattern pattern)
         {
-            IntPtr patternAddress = PatternScan(pattern.Bytes, pattern.Mask);
-            if (patternAddress == IntPtr.Zero)
-                return IntPtr.Zero;
-
-            IntPtr instructionAddress = IntPtr.Add(patternAddress, pattern.InstructionOffset);
-
-            switch (pattern.RipType)
-            {
-                case RipType.None:
-                    return instructionAddress;
-
-                case RipType.Mov64:
-                    // e.g. 48 8B 05/0D - Standard mov rax/rcx,[rip+offset]
-                    int stdOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
-                    return IntPtr.Add(instructionAddress, stdOffset + 7);
-
-                case RipType.Mov32:
-                    // e.g. 8B 05 - 32-bit mov eax,[rip+offset]
-                    int mov32Offset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
-                    return IntPtr.Add(instructionAddress, mov32Offset + 6);
-                
-                case RipType.Cmp:
-                    // e.g. 80 3D - cmp byte ptr [rip+offset],imm
-                    int cmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
-                    return IntPtr.Add(instructionAddress, cmpOffset + 7);
-                case RipType.QwordCmp:
-                    // e.g. 48 83 3D - cmp qword ptr [rip+offset],imm
-                    int qwordCmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
-                    return IntPtr.Add(instructionAddress, qwordCmpOffset + 8);
-                case RipType.Call:
-                    int callOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 1));
-                    return IntPtr.Add(instructionAddress, callOffset + 5);
-
-                default:
-                    return IntPtr.Zero;
-            }
+            var results = FindAddressesByPattern(pattern, 1);
+            return results.Count > 0 ? results[0] : IntPtr.Zero;
         }
         
-        public IntPtr PatternScan(byte[] pattern, string mask)
+        public List<IntPtr> FindAddressesByPattern(Pattern pattern, int size)
+        {
+            List<IntPtr> addresses = PatternScanMultiple(pattern.Bytes, pattern.Mask, size);
+
+            for (int i = 0; i < addresses.Count; i++)
+            {
+                IntPtr instructionAddress = IntPtr.Add(addresses[i], pattern.InstructionOffset);
+
+                switch (pattern.RipType)
+                {
+                    case RipType.None:
+                        addresses[i] = instructionAddress;
+                        break;
+                    case RipType.Mov64:
+                        int stdOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
+                        addresses[i] = IntPtr.Add(instructionAddress, stdOffset + 7);
+                        break;
+                    case RipType.Mov32:
+                        int mov32Offset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
+                        addresses[i] = IntPtr.Add(instructionAddress, mov32Offset + 6);
+                        break;
+                    case RipType.Cmp:
+                        int cmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
+                        addresses[i] = IntPtr.Add(instructionAddress, cmpOffset + 7);
+                        break;
+                    case RipType.QwordCmp:
+                        int qwordCmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
+                        addresses[i] = IntPtr.Add(instructionAddress, qwordCmpOffset + 8);
+                        break;
+                    case RipType.Call:
+                        int callOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 1));
+                        addresses[i] = IntPtr.Add(instructionAddress, callOffset + 5);
+                        break;
+                }
+            }
+
+            return addresses;
+        }
+        private List<IntPtr> PatternScanMultiple(byte[] pattern, string mask, int size)
         {
             const int chunkSize = 4096 * 16;
             byte[] buffer = new byte[chunkSize];
 
             IntPtr currentAddress = _memoryIo.BaseAddress;
             IntPtr endAddress = IntPtr.Add(currentAddress, 0x3200000);
+
+            List<IntPtr> addresses = new List<IntPtr>();
 
             while (currentAddress.ToInt64() < endAddress.ToInt64())
             {
@@ -173,14 +201,14 @@ namespace SilkySouls3.Memory
                     }
 
                     if (found)
-                        return IntPtr.Add(currentAddress, i);
+                        addresses.Add(IntPtr.Add(currentAddress, i));
+                    if (addresses.Count == size) break;
                 }
 
                 currentAddress = IntPtr.Add(currentAddress, bytesToRead - pattern.Length + 1);
             }
 
-            return IntPtr.Zero;
+            return addresses;
         }
-        
     }
 }

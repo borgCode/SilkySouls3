@@ -51,20 +51,54 @@ namespace SilkySouls3.ViewModels
         private bool _areCinderOptionsEnabled;
         private bool _isCinderPhaseLocked;
         private bool _isEndlessSoulmassEnabled;
+        
+        private bool _isAllDisableAiEnabled;
+        private bool _isAllNoDamageEnabled;
+        private bool _isAllNoDeathEnabled;
+        private bool _isAllRepeatActEnabled;
 
         private readonly EnemyService _enemyService;
         private readonly CinderService _cinderService;
+        private readonly HotkeyManager _hotkeyManager;
 
         public EnemyViewModel(EnemyService enemyService, CinderService cinderService, HotkeyManager hotkeyManager)
         {
             _enemyService = enemyService;
             _cinderService = cinderService;
+            _hotkeyManager = hotkeyManager;
+            RegisterHotkeys();
 
             _targetOptionsTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(64)
             };
             _targetOptionsTimer.Tick += TargetOptionsTimerTick;
+        }
+
+        private void RegisterHotkeys()
+        {
+            _hotkeyManager.RegisterAction("EnableTargetOptions",
+                () => { IsTargetOptionsEnabled = !IsTargetOptionsEnabled; });
+            _hotkeyManager.RegisterAction("ShowAllResistances", () =>
+            {
+                _showAllResistances = !_showAllResistances;
+                UpdateResistancesDisplay();
+            });
+            _hotkeyManager.RegisterAction("FreezeHp", () => { IsFreezeHealthEnabled = !IsFreezeHealthEnabled; });
+            _hotkeyManager.RegisterAction("DisableTargetAi",
+                () => { IsDisableTargetAiEnabled = !IsDisableTargetAiEnabled; });
+            _hotkeyManager.RegisterAction("IncreaseTargetSpeed", () => SetSpeed(Math.Min(5, TargetSpeed + 0.25f)));
+            _hotkeyManager.RegisterAction("DecreaseTargetSpeed", () => SetSpeed(Math.Max(0, TargetSpeed - 0.25f)));
+            //TODO repeat act
+            //TODO GLobals
+            _hotkeyManager.RegisterAction("SetSwordPhase", () => SetCinderPhase(0));
+            _hotkeyManager.RegisterAction("SetLancePhase", () => SetCinderPhase(1));
+            _hotkeyManager.RegisterAction("SetCurvedPhase", () => SetCinderPhase(2));
+            _hotkeyManager.RegisterAction("SetStaffPhase", () => SetCinderPhase(3));
+            _hotkeyManager.RegisterAction("SetGwynPhase", () => SetCinderPhase(4));
+            _hotkeyManager.RegisterAction("PhaseLock", () => IsCinderPhasedLocked = !IsCinderPhasedLocked);
+            _hotkeyManager.RegisterAction("CastSoulmass", CastSoulmass);
+            _hotkeyManager.RegisterAction("EndlessSoulmass", () => IsEndlessSoulmassEnabled = !IsEndlessSoulmassEnabled);
         }
 
         private void TargetOptionsTimerTick(object sender, EventArgs e)
@@ -78,13 +112,13 @@ namespace SilkySouls3.ViewModels
             IsValidTarget = true;
             TargetCurrentHealth = _enemyService.GetTargetHp();
             TargetMaxHealth = _enemyService.GetTargetMaxHp();
-            //
+      
             ulong targetId = _enemyService.GetTargetId();
-            //
+      
             if (targetId != _currentTargetId)
             {
                 IsDisableTargetAiEnabled = _enemyService.IsTargetAiDisabled();
-                // IsRepeatActEnabled = IsCurrentTargetRepeating();
+                IsRepeatActEnabled = _enemyService.IsTargetRepeating();
                 IsFreezeHealthEnabled = _enemyService.IsTargetNoDamageEnabled();
                 _currentTargetId = targetId;
                 TargetMaxPoise = _enemyService.GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule.MaxPoise);
@@ -172,12 +206,32 @@ namespace SilkySouls3.ViewModels
                 else
                 {
                     _targetOptionsTimer.Stop();
+                    IsRepeatActEnabled = false;
                     _enemyService.UninstallTargetHook();
                     ShowPoise = false;
                     ShowBleed = false;
                     ShowPoison = false;
                     ShowToxic = false;
                 }
+            }
+        }
+
+        private void UpdateResistancesDisplay()
+        {
+            if (!IsTargetOptionsEnabled) return;
+            if (_showAllResistances)
+            {
+                ShowBleed = true;
+                ShowPoise = true;
+                ShowPoison = true;
+                ShowToxic = true;
+            }
+            else
+            {
+                ShowBleed = false;
+                ShowPoise = false;
+                ShowPoison = false;
+                ShowToxic = false;
             }
         }
 
@@ -193,10 +247,19 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isRepeatActEnabled, value)) return;
-                if (_isRepeatActEnabled)
+
+                bool isRepeating = _enemyService.IsTargetRepeating();
+
+                switch (value)
                 {
-                    _enemyService.InstallRepeatActHook();
+                    case true when !isRepeating:
+                        _enemyService.ToggleTargetRepeatAct(true);
+                        break;
+                    case false when isRepeating:
+                        _enemyService.ToggleTargetRepeatAct(false);
+                        break;
                 }
+                
             }
         }
 
@@ -379,6 +442,54 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
+        
+        public bool IsAllDisableAiEnabled
+        {
+            get => _isAllDisableAiEnabled;
+            set
+            {
+                if (SetProperty(ref _isAllDisableAiEnabled, value))
+                {
+                    _enemyService.ToggleDebugFlag(Offsets.DebugFlags.DisableAllAi, _isAllDisableAiEnabled ? 1 : 0);
+                }
+            }
+        }
+        
+        public bool IsAllNoDamageEnabled
+        {
+            get => _isAllNoDamageEnabled;
+            set
+            {
+                if (SetProperty(ref _isAllNoDamageEnabled, value))
+                {
+                    _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDamage, _isAllNoDamageEnabled ? 1 : 0);
+                }
+            }
+        }
+        
+        public bool IsAllNoDeathEnabled
+        {
+            get => _isAllNoDeathEnabled;
+            set
+            {
+                if (SetProperty(ref _isAllNoDeathEnabled, value))
+                {
+                    _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDeath, _isAllNoDeathEnabled ? 1 : 0);
+                }
+            }
+        }
+        
+        public bool IsAllRepeatActEnabled
+        {
+            get => _isAllRepeatActEnabled;
+            set
+            {
+                if (SetProperty(ref _isAllRepeatActEnabled, value))
+                {
+                    _enemyService.ToggleAllRepeatAct(_isAllRepeatActEnabled);
+                }
+            }
+        }
 
         public bool IsCinderPhasedLocked
         {
@@ -413,6 +524,9 @@ namespace SilkySouls3.ViewModels
         {
             _cinderService.CastSoulMass();
         }
+        
+        
+        
 
         public void TryEnableFeatures()
         {

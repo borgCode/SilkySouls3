@@ -11,6 +11,7 @@ namespace SilkySouls3.Memory
 
             public enum PlayerInsOffsets
             {
+                UpdateCoords = 0x18,
                 ChrFlags1 = 0x1EE8,
                 Modules = 0x1F90,
             }
@@ -100,6 +101,29 @@ namespace SilkySouls3.Memory
             public const byte CoiledSwordBitFlag = 1 << 2;
         }
 
+        public static class GameDataMan
+        {
+            public static IntPtr Base;
+            public const int PLayerGameData = 0x10;
+
+            public enum Stats
+            {
+                Vigor = 0x44,
+                Attunement = 0x48,
+                Endurance = 0x4C,
+                Strength = 0x50,
+                Dexterity = 0x54,
+                Intelligence = 0x58,
+                Faith = 0x5C,
+                Luck = 0x60,
+                Vitality = 0x6C,
+                Souls = 0x74
+            }
+
+            public const int NewGame = 0x78;
+
+        }
+
         public static class DebugFlags
         {
             public static IntPtr Base;
@@ -119,6 +143,7 @@ namespace SilkySouls3.Memory
         {
             public static IntPtr Base;
             public const int EventDraw = 0xA8;
+            public const int DisableEvent = 0xD4; //TODO investigate
         }
 
         public static class SoloParamRepo
@@ -136,6 +161,7 @@ namespace SilkySouls3.Memory
 
             public enum MenuManOffsets
             {
+                QuitOut = 0x250,
                 LoadedFlag = 0x28C,
             }
         }
@@ -176,10 +202,14 @@ namespace SilkySouls3.Memory
             
             public enum AiInsOffsets
             {
+                AiFunc = 0x8,
                 SpEffectPtr = 0x20,
                 NpcThinkParam = 0x30,
                 LuaNumbers = 0x6BC,
             }
+
+            public const int ForceActPtr = 0x8;
+            public const int ForceActOffset = 0xB681;
 
             public enum SpEffectImmunityOffsets
             {
@@ -206,9 +236,26 @@ namespace SilkySouls3.Memory
             
         }
 
+        public static class ResistGaugeMenuMan
+        {
+            public static IntPtr Base;
+            public const int ChrExFollowCam = 0x150;
+        }
+
+        public static class PadMan
+        {
+            public static IntPtr Base;
+            public const int MovementInfoPtr = 0x18;
+            public const int VirtualMultiDevice = 0x8;
+            public const int MovementInfoPtr2 = 0x150;
+            public const int YMovement = 0x1C4;
+        }
+
         public static class Patches
         {
             public static IntPtr NoLogo;
+            public static IntPtr RepeatAct;
+            public static IntPtr GameSpeed;
         }
         
         
@@ -217,7 +264,12 @@ namespace SilkySouls3.Memory
             public static long LastLockedTarget;
             public static long WarpCoordWrite;
             public static long AddSubGoal;
-            public static long RepeatAct;
+            public static long InAirTimer;
+            public static long NoClipKeyboard;
+            public static long NoClipTriggers;
+            public static long NoClipTriggers2;
+            public static long NoClipUpdateCoords;
+
         }
 
         public static class Funcs

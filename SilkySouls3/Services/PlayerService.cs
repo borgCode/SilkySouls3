@@ -77,11 +77,11 @@ namespace SilkySouls3.Services
             _memoryIo.WriteFloat(chrPhysicsModule + (int)Offsets.WorldChrMan.ChrPhysicsModule.Angle, angle);
         }
         
-        
-
         public void ToggleDebugFlag(int offset, int value)
         {
             _memoryIo.WriteByte(Offsets.DebugFlags.Base + offset, value);
         }
+        
+        
     }
 }

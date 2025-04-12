@@ -12,6 +12,8 @@ namespace SilkySouls3.ViewModels
         
         private readonly UtilityService _utilityService;
         
+        private bool _isNoClipEnabled;
+        
         private readonly Dictionary<string, WarpEntry> _warpLocations;
         private KeyValuePair<string, string> _selectedWarp;
         
@@ -35,6 +37,27 @@ namespace SilkySouls3.ViewModels
         {
             get => _selectedWarp;
             set => SetProperty(ref _selectedWarp, value);
+        }
+        
+        public bool IsNoClipEnabled
+        {
+            get => _isNoClipEnabled;
+            set
+            {
+                if (!SetProperty(ref _isNoClipEnabled, value)) return;
+                if (_isNoClipEnabled)
+                {
+                    _utilityService.EnableNoClip();
+                    // if (_playerService.IsNoDeathOn()) _wasNoDeathEnabled = true;
+                    // else _playerService.ToggleNoDeath(1);
+                }
+                else
+                {
+                    // _utilityService.DisableNoClip();
+                    // if (_wasNoDeathEnabled) _wasNoDeathEnabled = false;
+                    // else _playerService.ToggleNoDeath(0);
+                }
+            }
         }
         
         public void Warp()

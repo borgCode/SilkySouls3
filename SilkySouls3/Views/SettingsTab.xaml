@@ -383,6 +383,126 @@
                                  Tag="RestoreSpellCasts"
                                  KeyDown="HotkeyTextBox_KeyDown" />
                     </Grid>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="85" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="125" />
+                            <ColumnDefinition Width="85" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Cinder Sword Phase:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding SetSwordPhaseHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="SetSwordPhase"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                        
+                        <TextBlock Grid.Column="3" Text="Cinder Lance Phase:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="4"
+                                 Margin="5,0,-10,0"
+                                 Text="{Binding SetLancePhaseHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="SetLancePhase"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                    </Grid>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="85" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="125" />
+                            <ColumnDefinition Width="85" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Cinder Curved Phase:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding SetCurvedPhaseHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="SetCurvedPhase"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                        
+                        <TextBlock Grid.Column="3" Text="Cinder Staff Phase:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="4"
+                                 Margin="5,0,-10,0"
+                                 Text="{Binding SetStaffPhaseHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="SetStaffPhase"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                    </Grid>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="85" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="125" />
+                            <ColumnDefinition Width="85" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Cinder Gwyn Phase:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding SetGwynPhaseHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="SetGwynPhase"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                        
+                        <TextBlock Grid.Column="3" Text="Cinder Phase Lock:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="4"
+                                 Margin="5,0,-10,0"
+                                 Text="{Binding PhaseLockHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="PhaseLock"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                    </Grid>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="85" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="125" />
+                            <ColumnDefinition Width="85" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Cinder Cast Soulmass:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding CastSoulmassHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="CastSoulmass"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                        
+                        <TextBlock Grid.Column="3" Text="Cinder Endless Soulmass:" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="4"
+                                 Margin="5,0,-10,0"
+                                 Text="{Binding EndlessSoulmassHotkeyText}"
+                                 Style="{StaticResource HotkeyTextBoxStyle}"
+                                 GotFocus="HotkeyTextBox_GotFocus"
+                                 LostFocus="HotkeyTextBox_LostFocus"
+                                 Tag="EndlessSoulmass"
+                                 KeyDown="HotkeyTextBox_KeyDown" />
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
         </StackPanel>

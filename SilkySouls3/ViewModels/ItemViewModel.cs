@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Data;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
@@ -36,7 +37,7 @@ namespace SilkySouls3.ViewModels
         private bool _autoSpawnEnabled;
         private Item _selectedAutoSpawnWeapon;
 
-        public readonly Dictionary<string, int> InfusionTypes = new Dictionary<string, int>
+        public Dictionary<string, int> InfusionTypes { get; } = new Dictionary<string, int>
         {
             { "Normal", 0 }, { "Heavy", 100 }, { "Sharp", 200 },
             { "Refined", 300 }, { "Simple", 400 }, { "Crystal", 500 },
@@ -186,8 +187,8 @@ namespace SilkySouls3.ViewModels
                     if (!CanInfuse) SelectedInfusionType = "Normal";
                     CanUpgrade = _selectedItem.UpgradeType > 0;
                     if (!CanUpgrade) SelectedUpgrade = 0;
-
-                    MaxUpgradeLevel = _selectedUpgrade == 1 ? 10 : 5;
+                    else MaxUpgradeLevel = _selectedItem.UpgradeType == 1 ? 10 : 5;
+                    if (SelectedUpgrade > MaxUpgradeLevel) SelectedUpgrade = MaxUpgradeLevel;
                 }
             }
         }
@@ -212,6 +213,29 @@ namespace SilkySouls3.ViewModels
         {
             get => _selectedInfusionType;
             set => SetProperty(ref _selectedInfusionType, value);
+        }
+
+        public void SpawnItem()
+        {
+            if (_selectedItem == null) return;
+
+            int itemId = _selectedItem.Id;
+            if (CanInfuse) itemId += InfusionTypes[SelectedInfusionType];
+            if (CanUpgrade) itemId += SelectedUpgrade;
+            _itemService.SpawnItem(itemId, SelectedQuantity);
+        }
+
+        public void MassSpawn()
+        {
+            foreach (var item in _itemsByCategory[SelectedCategory])
+            {
+                _itemService.SpawnItem(item.Id, item.StackSize);
+            }
+        }
+
+        public void TryEnableFeatures()
+        {
+            AreOptionsEnabled = true;
         }
     }
 }

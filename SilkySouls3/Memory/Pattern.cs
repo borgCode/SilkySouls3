@@ -105,10 +105,31 @@
             RipType.Mov64
         );
 
+        public static readonly Pattern ResistGaugeMenuMan = new Pattern(
+            new byte[] { 0x48, 0x8B, 0x58, 0x08, 0x41, 0x8B },
+            "xxxxxx",
+            -0x7,
+            RipType.Mov64
+        );
+
+        public static readonly Pattern GameDataMan = new Pattern(
+            new byte[] { 0x05, 0x00, 0x00, 0x00, 0x00, 0x80, 0xB8, 0x82 },
+            "x????xxx",
+            -0x2,
+            RipType.Mov64
+        );
+
+        public static readonly Pattern PadMan = new Pattern(
+            new byte[] { 0x83, 0xEC, 0x20, 0x4C, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0xD9, 0x4D, 0x85, 0xC0 },
+            "xxxxxx????xxxxxx",
+            0x3,
+            RipType.Mov64
+        );
+
 
         //Patch
 
-        
+
         //TODO Look into other patches
         public static readonly Pattern NoLogo = new Pattern(
             new byte[]
@@ -120,6 +141,24 @@
             0,
             RipType.None
         );
+
+
+        public static readonly Pattern RepeatAct = new Pattern(
+            new byte[] { 0x0F, 0xBE, 0x80, 0x81 },
+            "xxxx",
+            3,
+            RipType.None
+        );
+
+        public static readonly Pattern GameSpeed = new Pattern(
+            new byte[] { 0x00, 0x00, 0x80, 0x3F, 0xF3, 0x0F, 0x10, 0x8B },
+            "xxxxxxxx",
+            0,
+            RipType.None
+        );
+        
+        
+
 
 
         //Hooks
@@ -139,39 +178,69 @@
         );
 
         public static readonly Pattern AddSubGoal = new Pattern(
-            new byte[] { 0x48, 0x83, 0xC4, 0x68, 0xC3, 0xCC, 0x81 },
-            "xxxxxxx",
-            -0xA,
-            RipType.None
-        );
-
-        public static readonly Pattern RepeatAct = new Pattern(
-            new byte[] { 0x0F, 0xBE, 0x80, 0x81 },
-            "xxxx",
+            new byte[]
+            {
+                0x48, 0x8B, 0xC4, 0x48, 0x81, 0xEC, 0x98, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x8C, 0x24, 0xD0
+            },
+            "xxxxxxxxxxxxxxxx",
             0,
             RipType.None
         );
 
-        // PLayer coords for noclip   // public static readonly Pattern Placeholder = new Pattern(
-        //     new byte[] { 0x48, 0x8B, 0x48, 0x18, 0x8D, 0x46 },
-        //     "xxxxxx",
+        public static readonly Pattern NoClipInAirTimer = new Pattern(
+            new byte[] { 0xF3, 0x0F, 0x11, 0x81, 0xB0, 0x01 },
+            "xxxxxx",
+            0,
+            RipType.None
+        );
 
+
+        public static readonly Pattern NoClipKeyboard = new Pattern(
+            new byte[] { 0x49, 0xC1, 0xE8, 0x05, 0x48, 0x8B, 0x93 },
+            "xxxxxxx",
+            -0x138,
+            RipType.None
+        );
+
+
+        public static readonly Pattern NoClipTriggers = new Pattern(
+            new byte[] { 0x0F, 0x2F, 0xFE, 0x72, 0x2D, 0x44, 0x0F, 0x2F, 0xC7, 0x72, 0x27 },
+            "xxxxxxxxxxx",
+            -0x9,
+            RipType.None
+        );
+
+        public static readonly Pattern NoClipUpdateCoords = new Pattern(
+            new byte[] { 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00, 0x0F },
+            "xxxxxxxx",
+            -0x1,
+            RipType.None
+        );
+
+
+
+    
 
         //Funcs
 
         public static readonly Pattern WarpFunc = new Pattern(
-            new byte[] { 0x48, 0x89, 0x5C, 0x24, 0x18, 0x56, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xF1, 0x48, 0x8B, 0x49 },
+            new byte[]
+            {
+                0x48, 0x89, 0x5C, 0x24, 0x18, 0x56, 0x48, 0x83, 0xEC, 0x20, 0x48, 0x8B, 0xF1, 0x48, 0x8B, 0x49
+            },
             "xxxxxxxxxxxxxxxx",
             0,
             RipType.None
         );
 
         public static readonly Pattern ItemSpawnFunc = new Pattern(
-            new byte[] { 0x48, 0x8D, 0x6C, 0x24, 0xD9, 0x48, 0x81, 0xEC, 0x00, 0x01, 0x00, 0x00, 0x48, 0xC7, 0x45, 0xCF },
+            new byte[]
+            {
+                0x48, 0x8D, 0x6C, 0x24, 0xD9, 0x48, 0x81, 0xEC, 0x00, 0x01, 0x00, 0x00, 0x48, 0xC7, 0x45, 0xCF
+            },
             "xxxxxxxxxxxxxxxx",
             -0x10,
             RipType.None
         );
-
     }
 }
