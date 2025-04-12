@@ -12,13 +12,17 @@ namespace SilkySouls3.Memory
             public enum PlayerInsOffsets
             {
                 UpdateCoords = 0x18,
-                ChrFlags1 = 0x1EE8,
+                InfinitePoise = 0x1A09,
+                CharFlags1 = 0x1EE8,
                 Modules = 0x1F90,
             }
 
+            public const byte InfinitePoise = 1 << 7;
+
             public enum ChrFlag1BitFlag
             {
-                DisableAi = 11
+                DisableAi = 11,
+                NoGoodsConsume = 19
             }
 
             public enum Modules
@@ -104,7 +108,7 @@ namespace SilkySouls3.Memory
         public static class GameDataMan
         {
             public static IntPtr Base;
-            public const int PLayerGameData = 0x10;
+            public const int PlayerGameData = 0x10;
 
             public enum Stats
             {
@@ -119,9 +123,7 @@ namespace SilkySouls3.Memory
                 Vitality = 0x6C,
                 Souls = 0x74
             }
-
             public const int NewGame = 0x78;
-
         }
 
         public static class DebugFlags
@@ -248,7 +250,6 @@ namespace SilkySouls3.Memory
             public const int MovementInfoPtr = 0x18;
             public const int VirtualMultiDevice = 0x8;
             public const int MovementInfoPtr2 = 0x150;
-            public const int YMovement = 0x1C4;
         }
 
         public static class Patches
@@ -256,6 +257,7 @@ namespace SilkySouls3.Memory
             public static IntPtr NoLogo;
             public static IntPtr RepeatAct;
             public static IntPtr GameSpeed;
+            public static IntPtr InfiniteDurability;
         }
         
         

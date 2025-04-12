@@ -1,4 +1,6 @@
-﻿using SilkySouls3.Memory;
+﻿using System;
+using SilkySouls3.Memory;
+using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
 {
@@ -13,20 +15,17 @@ namespace SilkySouls3.Services
         
         
         //TODO implement choice to apply nologo
-        //
-        // public void Quitout()
-        // {
-        //     var quitoutPtr =
-        //         _memoryIo.FollowPointers(Offsets.MenuMan.Base, new[]
-        //         {
-        //             (int)Offsets.MenuMan.MenuManData.Quitout
-        //         }, false);
-        //     _memoryIo.WriteByte(quitoutPtr, 2);
-        // }
+
+        
+        public void Quitout() =>
+            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(MenuMan.Base) + (int)MenuMan.MenuManOffsets.QuitOut, 1);
+        
+        
         //
         // public void ToggleFastQuitout(int value)
         // {
         //     _memoryIo.WriteByte(Offsets.QuitoutPatch, value);
         // }
+
     }
 }

@@ -33,6 +33,7 @@ namespace SilkySouls3.Memory
             Offsets.Patches.NoLogo = FindAddressByPattern(Patterns.NoLogo);
             Offsets.Patches.RepeatAct = FindAddressByPattern(Patterns.RepeatAct);
             Offsets.Patches.GameSpeed = FindAddressByPattern(Patterns.GameSpeed);
+            Offsets.Patches.InfiniteDurability = FindAddressByPattern(Patterns.InfiniteDurability);
             
             Offsets.Hooks.LastLockedTarget = FindAddressByPattern(Patterns.LockedTarget).ToInt64();
             Offsets.Hooks.WarpCoordWrite = FindAddressByPattern(Patterns.WarpCoordWrite).ToInt64();
@@ -67,6 +68,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
             Console.WriteLine($"Patches.GameSpeed: 0x{Offsets.Patches.GameSpeed.ToInt64():X}");
+            Console.WriteLine($"Patches.InfiniteDurability: 0x{Offsets.Patches.InfiniteDurability.ToInt64():X}");
          
             
             // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");

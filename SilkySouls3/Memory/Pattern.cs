@@ -156,10 +156,15 @@
             0,
             RipType.None
         );
-        
-        
 
+        public static readonly Pattern InfiniteDurability = new Pattern(
+            new byte[] { 0x0F, 0x85, 0x9C, 0x00, 0x00, 0x00, 0x8B, 0x87 },
+            "xxxxxxxx",
+            0,
+            RipType.None
+        );
 
+ 
 
         //Hooks
 

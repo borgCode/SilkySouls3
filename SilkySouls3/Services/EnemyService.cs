@@ -121,15 +121,14 @@ namespace SilkySouls3.Services
         public void ToggleTargetAi(bool isDisableTargetAiEnabled)
         {
             var targetPtr = (IntPtr) _memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
-            
-            _memoryIo.SetBit32(targetPtr + (int) Offsets.WorldChrMan.PlayerInsOffsets.ChrFlags1,
+            _memoryIo.SetBit32(targetPtr + (int) Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1,
                 (int)Offsets.WorldChrMan.ChrFlag1BitFlag.DisableAi, isDisableTargetAiEnabled);
         }
 
         public bool IsTargetAiDisabled()
         {
             var targetPtr = (IntPtr) _memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
-            return _memoryIo.IsBitSet(targetPtr + (int)Offsets.WorldChrMan.PlayerInsOffsets.ChrFlags1,
+            return _memoryIo.IsBitSet(targetPtr + (int)Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1,
                 (int)Offsets.WorldChrMan.ChrFlag1BitFlag.DisableAi);
         }
 
