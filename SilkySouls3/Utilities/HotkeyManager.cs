@@ -35,7 +35,7 @@ namespace SilkySouls3.Utilities
             
             LoadHotkeys();
 
-           if (Properties.Settings.Default.EnableHotkeys) _keyboardHook.Start();
+           if (Settings.Default.EnableHotkeys) _keyboardHook.Start();
         }
 
         public void Start()

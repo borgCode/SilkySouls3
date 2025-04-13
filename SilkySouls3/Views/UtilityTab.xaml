@@ -25,38 +25,16 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     
-                    <CheckBox Content="Enable Draw" 
-                              IsChecked="{Binding IsDrawEnabled}"
+                    <TextBlock Text="Draw"
                               Grid.Column="0"/>
-                    
-                    <Border
-                            Background="#3498db" 
-                            CornerRadius="10" 
-                            Width="12" 
-                            Height="12" 
-                            Margin="10,0,0,0" 
-                            Cursor="Hand"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left"
-                            Grid.Column="1"
-                          >
-                        <TextBlock Text="i" 
-                                   Foreground="White" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" 
-                                   FontWeight="Bold" 
-                                   FontSize="10"/>
-                    </Border>
                 </Grid>
                 
                 <UniformGrid Columns="2" Margin="20,5,0,0">
                     <CheckBox Content="Hitbox View" 
-                              IsEnabled="{Binding IsDrawEnabled}"
                               IsChecked="{Binding IsHitboxEnabled}"
                               Margin="0,2"/>
                     
                     <CheckBox Content="Player Sound View" 
-                              IsEnabled="{Binding IsDrawEnabled}"
                               IsChecked="{Binding IsSoundViewEnabled}"
                               Margin="0,2"/>
                     
@@ -206,8 +184,8 @@
                                 Height="25"
                                 Margin="0,2"/>
                                   
-                        <Button Content="Unlock Kalameet (Requires reload)"
-                              
+                        <Button Content="Unlock Midir"
+                              Click="UnlockMidir_Click"
                                 IsEnabled="{Binding AreButtonsEnabled}"
                                 Height="25"
                                 Margin="0,5"/>

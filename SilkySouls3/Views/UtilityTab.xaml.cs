@@ -24,5 +24,10 @@ namespace SilkySouls3.Views
         {
             _utilityViewModel.UnlockBonfires();
         }
+
+        private void UnlockMidir_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.UnlockMidir();
+        }
     }
 }

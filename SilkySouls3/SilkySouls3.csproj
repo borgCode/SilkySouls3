@@ -88,6 +88,7 @@
     <Compile Include="Converters\ImmuneFillConverter.cs" />
     <Compile Include="Memory\AobScanner.cs" />
     <Compile Include="Memory\CodeCaveOffsets.cs" />
+    <Compile Include="Memory\EventFlags.cs" />
     <Compile Include="Memory\Pointers.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\WarpEntry.cs" />

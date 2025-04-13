@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SilkySouls3.Memory;
 using static SilkySouls3.Memory.Offsets;
 
@@ -8,6 +9,12 @@ namespace SilkySouls3.Services
     {
         private readonly MemoryIo _memoryIo;
         private readonly HookManager _hookManager;
+        
+        private readonly Dictionary<int, int> _lowLevelSoulRequirements = new Dictionary<int, int>
+        {
+            { 2, 673 }, { 3, 690 }, { 4, 707 }, { 5, 724 }, { 6, 741 }, { 7, 758 }, { 8, 775 }, { 9, 793 }, { 10, 811 },
+            { 11, 829 },
+        };
 
         public PlayerService(MemoryIo memoryIo, HookManager hookManager)
         {
@@ -30,8 +37,7 @@ namespace SilkySouls3.Services
             var flagMask = (byte)WorldChrMan.ChrFlags2.NoDamage;
             _memoryIo.SetBitValue(noDamagePtr, flagMask, setValue);
         }
-
-
+        
         private IntPtr GetChrDataFieldPtr(int fieldOffset)
         {
             return _memoryIo.FollowPointers(WorldChrMan.Base,
@@ -126,5 +132,73 @@ namespace SilkySouls3.Services
 
         public void SetNewGame(int value) =>
             _memoryIo.WriteInt32((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.NewGame, value);
+
+        public int GetPlayerStat(GameDataMan.Stats stat)
+        {
+            var statsBasePtr = (IntPtr) _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.PlayerGameData);
+            return _memoryIo.ReadInt32(statsBasePtr + (int)stat);
+        }
+
+        public void SetPlayerStat(GameDataMan.Stats stat, int newValue)
+        {
+            var statsBasePtr = (IntPtr) _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.PlayerGameData);
+            int currentVal = _memoryIo.ReadInt32(statsBasePtr + (int)stat);
+            if (currentVal == newValue) return;
+            
+            if (stat == GameDataMan.Stats.Souls) HandleSoulEdit(statsBasePtr, newValue, currentVal);
+            else HandleStatEdit(statsBasePtr, stat, newValue, currentVal);
+        }
+
+        private void HandleSoulEdit(IntPtr statsBasePtr, int newValue, int currentVal)
+        {
+            if (newValue < currentVal)
+            {
+                _memoryIo.WriteInt32(statsBasePtr + (int) GameDataMan.Stats.Souls, newValue);
+                return;
+            }
+
+            int difference = newValue - currentVal;
+            int currentTotalSouls = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls);
+            _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls, difference + currentTotalSouls);
+            _memoryIo.WriteInt32(statsBasePtr + (int) GameDataMan.Stats.Souls, newValue);
+        }
+
+        private void HandleStatEdit(IntPtr statsBasePtr, GameDataMan.Stats stat, int newValue, int currentVal)
+        {
+            var validatedStat = newValue;
+            if (validatedStat < 1) validatedStat = 1;
+            if (validatedStat > 99) validatedStat = 99;
+            if (validatedStat == currentVal) return;
+            _memoryIo.WriteInt32(statsBasePtr + (int) stat, newValue);
+            
+            int currentSoulLevel = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.SoulLevel);
+            int newLevel = currentSoulLevel + (validatedStat - currentVal);
+            if (newLevel < currentSoulLevel) return;
+            
+            int totalSoulsRequired = CalculateTotalSoulsRequired(currentSoulLevel, newLevel);
+            int currentTotalSouls = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls);
+            _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls, totalSoulsRequired + currentTotalSouls);
+        }
+
+        private int CalculateTotalSoulsRequired(int startLevel, int endLevel)
+        {
+            startLevel = Math.Max(1, startLevel);
+            double totalSouls = 0;
+            for (int level = startLevel + 1; level <= endLevel; level++)
+            {
+                if (level <= 11)
+                {
+                    totalSouls += _lowLevelSoulRequirements[level];
+                }
+                else
+                {
+                    double x = level;
+                    double levelCost = 0.02 * Math.Pow(x, 3) + 3.06 * Math.Pow(x, 2) + 105.6 * x - 895;
+                    totalSouls += Math.Round(levelCost);
+                }
+            }
+
+            return (int)totalSouls;
+        }
     }
 }

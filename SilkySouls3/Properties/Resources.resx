@@ -233,6 +233,7 @@ Ringed Inner Wall,0x7803,4,5101953
 Ringed City Streets,0x7803,3,5101954
 Shared Grave,0x7803,2,5101955
 Church of Filianore,0x7803,7,5101950
+Darkeater Midir (Fog Gate),,,5101953,-484.42|-83.08|-398.50,-2.42
 Darkeater Midir,0x7803,6,5101951
 Filianore's Rest,0x7D03,6,5111951
 Slave Knight Gael,0x7D03,7,5111950</value>
@@ -1545,5 +1546,19 @@ c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # c3 &lt;y&gt;
 66 0f 7f b3 80 00 00    movdqa XMMWORD PTR [rbx+0x80],xmm6
 00
 e9 00 00 00 00          jmp    e2 &lt;originalCode+0xe&gt;</value>
+  </data>
+  <data name="SetEvent" xml:space="preserve">
+    <value>48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00
+48 ba 00 00 00 00 00    movabs rdx,0x0
+00 00 00
+41 b8 01 00 00 00       mov    r8d,0x1
+41 b9 00 00 00 00       mov    r9d,0x0
+48 83 ec 48             sub    rsp,0x48
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00
+ff d0                   call   rax
+48 83 c4 48             add    rsp,0x48
+c3                      ret</value>
   </data>
 </root>

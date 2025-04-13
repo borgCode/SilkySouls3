@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -41,6 +42,36 @@ namespace SilkySouls3.Views
         private void SetMaxHpClick(object sender, RoutedEventArgs e)
         {
             _playerViewModel.SetMaxHp();
+        }
+        
+        private void PauseUpdates_GotFocus(object sender, RoutedEventArgs e)
+        {
+            _playerViewModel.PauseUpdates();
+        }
+
+        private void HealthUpDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (HealthUpDown.Value.HasValue)
+            {
+                _playerViewModel.SetHp(HealthUpDown.Value.Value);
+            }
+
+            _playerViewModel.ResumeUpdates();
+        }
+
+        private void HealthUpDown_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Return)
+            {
+                if (HealthUpDown.Value.HasValue)
+                {
+                    _playerViewModel.SetHp(HealthUpDown.Value.Value);
+                }
+
+                Focus();
+
+                e.Handled = true;
+            }
         }
     }
 }

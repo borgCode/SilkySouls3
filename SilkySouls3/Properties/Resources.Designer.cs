@@ -329,6 +329,26 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00
+        ///48 ba 00 00 00 00 00    movabs rdx,0x0
+        ///00 00 00
+        ///41 b8 01 00 00 00       mov    r8d,0x1
+        ///41 b9 00 00 00 00       mov    r9d,0x0
+        ///48 83 ec 48             sub    rsp,0x48
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 48             add    rsp,0x48
+        ///c3                      ret.
+        /// </summary>
+        internal static string SetEvent {
+            get {
+                return ResourceManager.GetString("SetEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 401875B8,Affinity,1,0,0
         ///4014B0E0,Aural Decoy,1,0,0
         ///40149970,Cast Light,1,0,0

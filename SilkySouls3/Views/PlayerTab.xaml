@@ -33,7 +33,9 @@
                                          Value="{Binding CurrentHp}"
                                          TextAlignment="Center"
                                          Width="100"
-                              
+                                         PreviewKeyDown="HealthUpDown_PreviewKeyDown"
+                                         GotFocus="PauseUpdates_GotFocus"
+                                         LostFocus="HealthUpDown_LostFocus"
                                          IsEnabled="{Binding AreOptionsEnabled}"
                                          BorderBrush="#3F3F46"/>
                     <TextBlock Text="{Binding CurrentMaxHp, StringFormat=Max: {0}}" 
@@ -151,8 +153,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <xctk:IntegerUpDown x:Name="VitalityUpDown"
-                                             Value="{Binding Vitality}"
+                        <xctk:IntegerUpDown x:Name="VigorUpDown"
+                                             Value="{Binding Vigor}"
                                              TextAlignment="Center"
                                              Width="80"
                                              Minimum="1"
@@ -161,7 +163,7 @@
                              
                                              IsEnabled="{Binding AreOptionsEnabled}"
                                              BorderBrush="#3F3F46"/>
-                        <TextBlock Text="Vitality" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock Text="Vigor" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
 
                     <Grid Margin="0,2">
@@ -242,24 +244,6 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <xctk:IntegerUpDown x:Name="ResistanceUpDown"
-                                             Value="{Binding Resistance}"
-                                             TextAlignment="Center"
-                                             Width="80"
-                                             Minimum="1"
-                                             Maximum="99"
-                                             Grid.Column="0"
-                                     
-                                             IsEnabled="{Binding AreOptionsEnabled}"
-                                             BorderBrush="#3F3F46"/>
-                        <TextBlock Text="Resistance" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    </Grid>
-
-                    <Grid Margin="0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
                         <xctk:IntegerUpDown x:Name="IntelligenceUpDown"
                                              Value="{Binding Intelligence}"
                                              TextAlignment="Center"
@@ -267,7 +251,7 @@
                                              Minimum="1"
                                              Maximum="99"
                                              Grid.Column="0"
-                                
+                                     
                                              IsEnabled="{Binding AreOptionsEnabled}"
                                              BorderBrush="#3F3F46"/>
                         <TextBlock Text="Intelligence" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -285,7 +269,7 @@
                                              Minimum="1"
                                              Maximum="99"
                                              Grid.Column="0"
-                                   
+                                
                                              IsEnabled="{Binding AreOptionsEnabled}"
                                              BorderBrush="#3F3F46"/>
                         <TextBlock Text="Faith" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -296,8 +280,26 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <xctk:IntegerUpDown x:Name="HumanityUpDown"
-                                             Value="{Binding Humanity}"
+                        <xctk:IntegerUpDown x:Name="LuckUpdown"
+                                             Value="{Binding Luck}"
+                                             TextAlignment="Center"
+                                             Width="80"
+                                             Minimum="1"
+                                             Maximum="99"
+                                             Grid.Column="0"
+                                   
+                                             IsEnabled="{Binding AreOptionsEnabled}"
+                                             BorderBrush="#3F3F46"/>
+                        <TextBlock Text="Luck" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </Grid>
+
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <xctk:IntegerUpDown x:Name="VitalityUpDown"
+                                             Value="{Binding Vitality}"
                                              TextAlignment="Center"
                                              Width="80"
                                              Minimum="1"
@@ -306,7 +308,7 @@
                                       
                                              IsEnabled="{Binding AreOptionsEnabled}"
                                              BorderBrush="#3F3F46"/>
-                        <TextBlock Text="Humanity" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        <TextBlock Text="Vitality" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
 
                     <Grid Margin="0,2">

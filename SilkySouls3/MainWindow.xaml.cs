@@ -47,7 +47,6 @@ namespace SilkySouls3
             var cinderService = new CinderService(_memoryIo, _hookManager);
             var itemService = new ItemService(_memoryIo, _hookManager);
             var settingsService = new SettingsService(_memoryIo);
-            //TODO INITS
 
             _playerViewModel = new PlayerViewModel(playerService, hotkeyManager);
             _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager);

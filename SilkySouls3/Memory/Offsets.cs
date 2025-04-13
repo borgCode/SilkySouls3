@@ -121,7 +121,9 @@ namespace SilkySouls3.Memory
                 Faith = 0x5C,
                 Luck = 0x60,
                 Vitality = 0x6C,
-                Souls = 0x74
+                SoulLevel = 0x70,
+                Souls = 0x74,
+                TotalSouls = 0x78
             }
             public const int NewGame = 0x78;
         }
@@ -206,7 +208,6 @@ namespace SilkySouls3.Memory
             {
                 AiFunc = 0x8,
                 SpEffectPtr = 0x20,
-                NpcThinkParam = 0x30,
                 LuaNumbers = 0x6BC,
             }
 
@@ -220,12 +221,7 @@ namespace SilkySouls3.Memory
                 Bleed = 0x170,
                 FrostBite = 0x178
             }
-
-            public enum NpcThinkParam
-            {
-                BattleGoalId = 0x4,
-            }
-
+            
             public enum LuaNumbers
 
             {
@@ -238,10 +234,11 @@ namespace SilkySouls3.Memory
             
         }
 
-        public static class ResistGaugeMenuMan
+        public static class FieldArea
         {
             public static IntPtr Base;
-            public const int ChrExFollowCam = 0x150;
+            public const int ChrCam = 0x28;
+            public const int ChrExFollowCam = 0x60;
         }
 
         public static class PadMan
@@ -258,6 +255,8 @@ namespace SilkySouls3.Memory
             public static IntPtr RepeatAct;
             public static IntPtr GameSpeed;
             public static IntPtr InfiniteDurability;
+            public static IntPtr PlayerSoundView;
+            public static IntPtr DebugFont;
         }
         
         
@@ -278,6 +277,7 @@ namespace SilkySouls3.Memory
         {
             public static long Warp;
             public static long ItemSpawn;
+            public static long SetEvent;
         }
     }
 }
