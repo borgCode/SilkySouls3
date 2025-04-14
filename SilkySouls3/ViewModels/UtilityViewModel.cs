@@ -18,7 +18,6 @@ namespace SilkySouls3.ViewModels
         private bool _isDrawEventEnabled;
         private bool _isTargetingViewEnabled;
         private bool _isNoClipEnabled;
-        private bool _isNoRollEnabled;
         private bool _areButtonsEnabled;
         private bool _areAttachedOptionsEnabled;
         private bool _areAttachedOptionsRestored;
@@ -111,6 +110,7 @@ namespace SilkySouls3.ViewModels
                   _utilityService.ToggleSoundView(_isSoundViewEnabled);
             }
         }
+        
         //
         // public bool IsDrawEventEnabled
         // {
@@ -161,6 +161,11 @@ namespace SilkySouls3.ViewModels
         public void UnlockMidir()
         {
             _utilityService.SetEvent(EventFlags.UnlockMidir);
+        }
+
+        public void MovePatchesToFirelink()
+        {
+            _utilityService.SetMultipleEvents(EventFlags.Patches);
         }
     }
 }

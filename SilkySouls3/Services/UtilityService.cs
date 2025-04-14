@@ -261,5 +261,13 @@ namespace SilkySouls3.Services
             Array.Copy(bytes, 0, setEventBytes, 0x24 + 2, 8);
             _memoryIo.AllocateAndExecute(setEventBytes);
         }
+        
+        public void SetMultipleEvents(params ulong[] flagIds)
+        {
+            foreach (var flagId in flagIds)
+            {
+                SetEvent(flagId);
+            }
+        }
     }
 }

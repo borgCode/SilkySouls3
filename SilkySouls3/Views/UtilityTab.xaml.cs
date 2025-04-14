@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -28,6 +29,17 @@ namespace SilkySouls3.Views
         private void UnlockMidir_Click(object sender, RoutedEventArgs e)
         {
             _utilityViewModel.UnlockMidir();
+        }
+
+        private void MovePatches_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.MovePatchesToFirelink();
+        }
+        
+        private void NoClipInfoBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Vertical movement with Ctrl/Space or L2/R2 on controller", "Info", MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 }

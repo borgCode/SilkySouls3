@@ -8,6 +8,7 @@ using SilkySouls3.Services;
 using SilkySouls3.Utilities;
 using SilkySouls3.ViewModels;
 using SilkySouls3.Views;
+using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3
 {
@@ -87,12 +88,12 @@ namespace SilkySouls3
         {
             if (_memoryIo.IsAttached)
             {
+                IsAttachedText.Text = "Attached to game";
                 
                 if (!_hasScanned)
                 {
                     _aobScanner.Scan();
                     _hasScanned = true;
-                    //TODO implement in settings
                     ApplyNoLogo();
                 }
 
@@ -108,7 +109,7 @@ namespace SilkySouls3
                     if (_loaded) return;
                     _loaded = true;
                     TryEnableFeatures();
-
+                    TrySetGameStartPrefs();
                 }
                 else if (_loaded)
                 {
@@ -119,6 +120,10 @@ namespace SilkySouls3
             else
             {
                 _hookManager.ClearHooks();
+                DisableFeatures();
+                _loaded = false;
+                _hasAllocatedMemory = false;
+                IsAttachedText.Text = "Not attached";
             }
         }
 
@@ -128,6 +133,18 @@ namespace SilkySouls3
             _enemyViewModel.TryEnableFeatures();
             _itemViewModel.TryEnableFeatures();
 
+        }
+
+        private void TrySetGameStartPrefs()
+        {
+            ulong gameDataPtr = _memoryIo.ReadUInt64(GameDataMan.Base);
+            IntPtr inGameTimePtr = (IntPtr)(gameDataPtr + GameDataMan.InGameTime);
+            long gameTimeMs = _memoryIo.ReadInt64(inGameTimePtr);
+            if (gameTimeMs < 5000)
+            {
+                _playerViewModel.TrySetNgPref();
+                // _itemViewModel.TrySpawnWeaponPref();
+            }
         }
 
         private void DisableFeatures()
@@ -161,10 +178,9 @@ namespace SilkySouls3
             Close();
         }
         
-        //TODO move
         private void ApplyNoLogo()
         {
-            _memoryIo.WriteBytes(Offsets.Patches.NoLogo, AsmLoader.GetAsmBytes("NoLogo"));
+            _memoryIo.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes("NoLogo"));
         }
     }
 }

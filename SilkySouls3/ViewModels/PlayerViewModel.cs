@@ -26,7 +26,8 @@ namespace SilkySouls3.ViewModels
         private bool _isSilentEnabled;
         private bool _isNoAmmoConsumeEnabled;
         private bool _isInfinitePoiseEnabled;
-        private bool _isAutoSetNewGameSixEnabled;
+        private bool _isAutoSetNewGameSevenEnabled;
+        private bool _isNoRollEnabled;
 
         private int _vigor;
         private int _attunement;
@@ -43,6 +44,10 @@ namespace SilkySouls3.ViewModels
         private float _playerSpeed;
         private int _currentSoulLevel;
 
+        private float _playerDesiredSpeed = -1f;
+        private const float DefaultSpeed = 1f;
+        private const float Epsilon = 0.0001f;
+
         private bool _pauseUpdates;
         private bool _areOptionsEnabled;
         private readonly DispatcherTimer _timer;
@@ -54,9 +59,9 @@ namespace SilkySouls3.ViewModels
         {
             _playerService = playerService;
             _hotkeyManager = hotkeyManager;
-            
+
             RegisterHotkeys();
-            
+
             _timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(100)
@@ -68,7 +73,7 @@ namespace SilkySouls3.ViewModels
                 CurrentHp = _playerService.GetHp();
                 CurrentMaxHp = _playerService.GetMaxHp();
                 Souls = _playerService.GetPlayerStat(Stats.Souls);
-                // PlayerSpeed = _playerService.GetSetPlayerSpeed(null);
+                PlayerSpeed = _playerService.GetPlayerSpeed();
                 int newSoulLevel = _playerService.GetPlayerStat(Stats.SoulLevel);
                 if (_currentSoulLevel != newSoulLevel)
                 {
@@ -88,12 +93,9 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction("RTSR", () => SetHp(1));
             _hotkeyManager.RegisterAction("NoDeath", () => { IsNoDeathEnabled = !IsNoDeathEnabled; });
             _hotkeyManager.RegisterAction("OneShot", () => { IsOneShotEnabled = !IsOneShotEnabled; });
-            // _hotkeyManager.RegisterAction("ToggleSpeed", ToggleSpeed);
-            // _hotkeyManager.RegisterAction("IncreaseSpeed", () => SetSpeed(PlayerSpeed.HasValue ? Math.Min(10, PlayerSpeed.Value + 0.25f) : 0.25f));
-            // _hotkeyManager.RegisterAction("DecreaseSpeed", () =>
-            // {
-            //     if (PlayerSpeed != null) SetSpeed(Math.Max(0, PlayerSpeed.Value - 0.25f));
-            // });
+            _hotkeyManager.RegisterAction("TogglePlayerSpeed", ToggleSpeed);
+            _hotkeyManager.RegisterAction("IncreasePlayerSpeed", () => SetSpeed(Math.Min(10, PlayerSpeed + 0.25f)));
+            _hotkeyManager.RegisterAction("DecreasePlayerSpeed", () => SetSpeed(Math.Max(0, PlayerSpeed - 0.25f)));
         }
 
         private void LoadStats()
@@ -124,7 +126,7 @@ namespace SilkySouls3.ViewModels
             _pauseUpdates = false;
         }
 
-        
+
         public bool AreOptionsEnabled
         {
             get => _areOptionsEnabled;
@@ -312,15 +314,25 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        public bool IsAutoSetNewGameSixEnabled
+        public bool IsAutoSetNewGameSevenEnabled
         {
-            get => _isAutoSetNewGameSixEnabled;
+            get => _isAutoSetNewGameSevenEnabled;
             set
             {
-                if (SetProperty(ref _isAutoSetNewGameSixEnabled, value))
+                if (SetProperty(ref _isAutoSetNewGameSevenEnabled, value))
                 {
-                    if (_isAutoSetNewGameSixEnabled && AreOptionsEnabled) SetNewGame(8);
+                    if (_isAutoSetNewGameSevenEnabled && AreOptionsEnabled) SetNewGame(8);
                 }
+            }
+        }
+
+        public bool IsNoRollEnabled
+        {
+            get => _isNoRollEnabled;
+            set
+            {
+                if (!SetProperty(ref _isNoRollEnabled, value)) return;
+                _playerService.ToggleNoRoll(_isNoRollEnabled);
             }
         }
 
@@ -348,12 +360,17 @@ namespace SilkySouls3.ViewModels
                 _playerService.ToggleInfinitePoise(true);
             if (IsInfiniteDurabilityEnabled)
                 _playerService.ToggleInfiniteDurability(true);
+            if (IsNoRollEnabled)
+                _playerService.ToggleNoRoll(true);
             AreOptionsEnabled = true;
+            LoadStats();
             _timer.Start();
         }
 
         public void DisableFeatures()
         {
+            AreOptionsEnabled = false;
+            _timer.Stop();
         }
 
         public int Vigor
@@ -494,28 +511,46 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        public void SetVigor(int value) => Vigor = value;
-
-        public void SetAttunement(int value) => Attunement = value;
-
-        public void SetEndurance(int value) => Endurance = value;
-
-        public void SetStrength(int value) => Strength = value;
-
-        public void SetDexterity(int value) => Dexterity = value;
-
-        public void SetIntelligence(int value) => Intelligence = value;
-
-        public void SetFaith(int value) => Faith = value;
-
-        public void SetLuck(int value) => Luck = value;
-
-        public void SetVitality(int value) => Vitality = value;
-
-        public void SetSoulLevel(int value) => SoulLevel = value;
-
-        public void SetSouls(int value) => Souls = value;
+        public float PlayerSpeed
+        {
+            get => _playerSpeed;
+            set
+            {
+                if (SetProperty(ref _playerSpeed, value))
+                {
+                    _playerService.SetPlayerSpeed(value);
+                }
+            }
+        }
 
         public void SetNewGame(int value) => NewGame = value;
+        public void SetSpeed(float value) => PlayerSpeed = value;
+
+        private void ToggleSpeed()
+        {
+            if (!AreOptionsEnabled) return;
+
+            if (!IsApproximately(PlayerSpeed, DefaultSpeed))
+            {
+                _playerDesiredSpeed = PlayerSpeed;
+                SetSpeed(DefaultSpeed);
+            }
+            else if (_playerDesiredSpeed >= 0)
+            {
+                SetSpeed(_playerDesiredSpeed);
+            }
+        }
+
+        private bool IsApproximately(float a, float b)
+        {
+            return Math.Abs(a - b) < Epsilon;
+        }
+
+        public void TrySetNgPref()
+        {
+            if (!IsAutoSetNewGameSevenEnabled) return;
+            _playerService.SetNewGame(8);
+            NewGame = _playerService.GetNewGame();
+        }
     }
 }

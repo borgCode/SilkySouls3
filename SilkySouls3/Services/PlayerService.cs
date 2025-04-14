@@ -109,7 +109,9 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     WorldChrMan.PlayerIns,
-                    (int)WorldChrMan.PlayerInsOffsets.InfinitePoise
+                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    (int) WorldChrMan.Modules.ChrSuperArmorModule,
+                    (int) WorldChrMan.ChrSuperArmorModule.InfinitePoise,
                 }, false);
             var flagMask = WorldChrMan.InfinitePoise;
             _memoryIo.SetBitValue(infinitePoisePtr, flagMask, setValue);
@@ -199,6 +201,36 @@ namespace SilkySouls3.Services
             }
 
             return (int)totalSouls;
+        }
+
+        public float GetPlayerSpeed() => _memoryIo.ReadFloat(GetPlayerSpeedPtr());
+        public void SetPlayerSpeed(float speed) => _memoryIo.WriteFloat(GetPlayerSpeedPtr(), speed);
+
+        private IntPtr GetPlayerSpeedPtr()
+        {
+            return _memoryIo.FollowPointers(WorldChrMan.Base,
+                new[]
+                {
+                    WorldChrMan.PlayerIns,
+                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)WorldChrMan.Modules.ChrBehaviorModule,
+                    (int)WorldChrMan.ChrBehaviorModule.AnimSpeed
+                }, false);
+        }
+        
+
+        public void ToggleNoRoll(bool isNoRollEnabled)
+        {
+            if (isNoRollEnabled)
+            {
+                _memoryIo.WriteByte(Patches.NoRoll + 0x6, 0);
+                _memoryIo.WriteByte(Patches.NoRoll + 0x15, 0);
+            }
+            else
+            {
+                _memoryIo.WriteByte(Patches.NoRoll + 0x6, 1);
+                _memoryIo.WriteByte(Patches.NoRoll + 0x15, 1);
+            }
         }
     }
 }

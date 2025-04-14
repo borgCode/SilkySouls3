@@ -12,13 +12,10 @@ namespace SilkySouls3.Memory
             public enum PlayerInsOffsets
             {
                 UpdateCoords = 0x18,
-                InfinitePoise = 0x1A09,
                 CharFlags1 = 0x1EE8,
                 Modules = 0x1F90,
             }
-
-            public const byte InfinitePoise = 1 << 7;
-
+            
             public enum ChrFlag1BitFlag
             {
                 DisableAi = 11,
@@ -74,10 +71,13 @@ namespace SilkySouls3.Memory
 
             public enum ChrSuperArmorModule
             {
+                InfinitePoise = 0x10,
                 Poise = 0x28,
                 MaxPoise = 0x2C,
                 PoiseTimer = 0x34,
             }
+
+            public const byte InfinitePoise = 1 << 0;
 
             public enum ChrPhysicsModule
             {
@@ -126,6 +126,7 @@ namespace SilkySouls3.Memory
                 TotalSouls = 0x78
             }
             public const int NewGame = 0x78;
+            public const int InGameTime = 0xA4;
         }
 
         public static class DebugFlags
@@ -257,6 +258,7 @@ namespace SilkySouls3.Memory
             public static IntPtr InfiniteDurability;
             public static IntPtr PlayerSoundView;
             public static IntPtr DebugFont;
+            public static IntPtr NoRoll;
         }
         
         

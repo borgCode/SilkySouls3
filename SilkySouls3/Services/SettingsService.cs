@@ -14,7 +14,6 @@ namespace SilkySouls3.Services
         }
         
         
-        //TODO implement choice to apply nologo
 
         
         public void Quitout() =>

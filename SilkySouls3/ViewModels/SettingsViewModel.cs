@@ -21,60 +21,24 @@ namespace SilkySouls3.ViewModels
         private string _noDeathHotkeyText;
         private string _oneShotHotkeyText;
         
+        private string _togglePlayerSpeedHotkeyText;
+        private string _increasePlayerSpeedHotkeyText;
+        private string _decreasePlayerSpeedHotkeyText;
         
         private string _setSwordPhaseHotkeyText;
         private string _setLancePhaseHotkeyText;
         private string _setCurvedPhaseHotkeyText;
         private string _setStaffPhaseHotkeyText;
         private string _setGwynPhaseHotkeyText;
+
         private string _phaseLockHotkeyText;
+
         private string _castSoulmassHotkeyText;
+
         private string _endlessSoulmassHotkeyText;
-        
+
         private string _quitoutHotkeyText;
-        
-        public string SavePos1HotkeyText
-        {
-            get => _savePos1HotkeyText;
-            set => SetProperty(ref _savePos1HotkeyText, value);
-        }
-        
-        public string SavePos2HotkeyText
-        {
-            get => _savePos2HotkeyText;
-            set => SetProperty(ref _savePos2HotkeyText, value);
-        }
-        
-        public string RestorePos1HotkeyText
-        {
-            get => _restorePos1HotkeyText;
-            set => SetProperty(ref _restorePos1HotkeyText, value);
-        }
 
-        public string RestorePos2HotkeyText
-        {
-            get => _restorePos2HotkeyText;
-            set => SetProperty(ref _restorePos2HotkeyText, value);
-        }
-        
-        public string RtsrHotkeyText
-        {
-            get => _rtsrHotkeyText;
-            set => SetProperty(ref _rtsrHotkeyText, value);
-        }
-        
-        public string NoDeathHotkeyText
-        {
-            get => _noDeathHotkeyText;
-            set => SetProperty(ref _noDeathHotkeyText, value);
-        }
-        public string OneShotHotkeyText
-        {
-            get => _oneShotHotkeyText;
-            set => SetProperty(ref _oneShotHotkeyText, value);
-        }
-
-        
         public bool IsEnableHotkeysEnabled
         {
             get => _isEnableHotkeysEnabled;
@@ -89,7 +53,66 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
+
+        public string SavePos1HotkeyText
+        {
+            get => _savePos1HotkeyText;
+            set => SetProperty(ref _savePos1HotkeyText, value);
+        }
+
+        public string SavePos2HotkeyText
+        {
+            get => _savePos2HotkeyText;
+            set => SetProperty(ref _savePos2HotkeyText, value);
+        }
+
+        public string RestorePos1HotkeyText
+        {
+            get => _restorePos1HotkeyText;
+            set => SetProperty(ref _restorePos1HotkeyText, value);
+        }
+
+        public string RestorePos2HotkeyText
+        {
+            get => _restorePos2HotkeyText;
+            set => SetProperty(ref _restorePos2HotkeyText, value);
+        }
+
+        public string RtsrHotkeyText
+        {
+            get => _rtsrHotkeyText;
+            set => SetProperty(ref _rtsrHotkeyText, value);
+        }
+
+        public string NoDeathHotkeyText
+        {
+            get => _noDeathHotkeyText;
+            set => SetProperty(ref _noDeathHotkeyText, value);
+        }
+
+        public string OneShotHotkeyText
+        {
+            get => _oneShotHotkeyText;
+            set => SetProperty(ref _oneShotHotkeyText, value);
+        }
         
+        public string TogglePlayerSpeedHotkeyText
+        {
+            get => _togglePlayerSpeedHotkeyText;
+            set => SetProperty(ref _togglePlayerSpeedHotkeyText, value);
+        }
+        public string IncreasePlayerSpeedHotkeyText
+        {
+            get => _increasePlayerSpeedHotkeyText;
+            set => SetProperty(ref _increasePlayerSpeedHotkeyText, value);
+        }
+
+        public string DecreasePlayerSpeedHotkeyText
+        {
+            get => _decreasePlayerSpeedHotkeyText;
+            set => SetProperty(ref _decreasePlayerSpeedHotkeyText, value);
+        }
+
         public string SetSwordPhaseHotkeyText
         {
             get => _setSwordPhaseHotkeyText;
@@ -176,9 +199,9 @@ namespace SilkySouls3.ViewModels
                 { "NoDeath", text => NoDeathHotkeyText = text },
                 { "OneShot", text => OneShotHotkeyText = text },
                 // { "RestoreSpellCasts", text => RestoreSpellCastsHotkeyText = text },
-                // { "ToggleSpeed", text => ToggleSpeedHotkeyText = text },
-                // { "IncreaseSpeed", text => IncreaseSpeedHotkeyText = text },
-                // { "DecreaseSpeed", text => DecreaseSpeedHotkeyText = text },
+                { "TogglePlayerSpeed", text => TogglePlayerSpeedHotkeyText = text },
+                { "IncreasePlayerSpeed", text => IncreasePlayerSpeedHotkeyText = text },
+                { "DecreasePlayerSpeed", text => DecreasePlayerSpeedHotkeyText = text },
                 // { "NoClip", text => NoClipHotkeyText = text },
                 // { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
                 
@@ -228,8 +251,7 @@ namespace SilkySouls3.ViewModels
             Keys keys = _hotkeyManager.GetHotkey(actionId);
             return keys != null && keys.Values.ToArray().Length > 0 ? string.Join(" + ", keys) : "None";
         }
-
-
+        
         public void StartSettingHotkey(string actionId)
         {
             if (_currentSettingHotkeyId != null &&
@@ -369,6 +391,9 @@ namespace SilkySouls3.ViewModels
 
         public void ApplyStartUpOptions()
         {
+            _isEnableHotkeysEnabled = Properties.Settings.Default.EnableHotkeys;
+            if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
+            else _hotkeyManager.Stop();
         }
         
     }

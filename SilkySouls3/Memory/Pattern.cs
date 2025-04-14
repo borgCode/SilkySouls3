@@ -183,6 +183,14 @@ namespace SilkySouls3.Memory
             None
         );
 
+        public static readonly Pattern NoRoll = new Pattern(
+            new byte[]  { 0xC6, 0x83, 0x10, 0x04, 0x00, 0x00, 0x01, 0xF3, 0x0F, 0x11, 0x83, 0x0C, 0x04, 0x00, 0x00, 0xC6 },
+            "xxxxxxxxxxxxxxxx",
+            0,
+            None
+        );
+
+
 
         //Hooks
 
