@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
+using System.Windows;
 using System.Windows.Data;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
@@ -33,6 +33,9 @@ namespace SilkySouls3.ViewModels
 
         private ObservableCollection<string> _categories = new ObservableCollection<string>();
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
+        
+        
+        private string _selectedMassSpawnCategory;
 
         private bool _autoSpawnEnabled;
         private Item _selectedAutoSpawnWeapon;
@@ -74,6 +77,10 @@ namespace SilkySouls3.ViewModels
             _itemsByCategory.Add("Upgrade Materials",
                 new ObservableCollection<Item>(DataLoader.GetItemList("UpgradeMaterials")));
             _itemsByCategory.Add("Weapons", new ObservableCollection<Item>(DataLoader.GetItemList("Weapons")));
+
+            SelectedCategory = Categories.FirstOrDefault();
+            SelectedMassSpawnCategory = Categories.FirstOrDefault();
+
         }
 
         public bool AreOptionsEnabled
@@ -224,18 +231,68 @@ namespace SilkySouls3.ViewModels
             if (CanUpgrade) itemId += SelectedUpgrade;
             _itemService.SpawnItem(itemId, SelectedQuantity);
         }
+        
+        
+        public string SelectedMassSpawnCategory
+        {
+            get => _selectedMassSpawnCategory;
+            set => SetProperty(ref _selectedMassSpawnCategory, value);
+        }
+        
+        public bool AutoSpawnEnabled
+        {
+            get => _autoSpawnEnabled;
+            set => SetProperty(ref _autoSpawnEnabled, value);
+        }
 
+        public Item SelectedAutoSpawnWeapon
+        {
+            get => _selectedAutoSpawnWeapon;
+            set => SetProperty(ref _selectedAutoSpawnWeapon, value);
+        }
+        
+        public ObservableCollection<Item> WeaponList => _itemsByCategory["Weapons"];
+
+        private readonly string[] _sensitiveCategories = { "Ammo", "Consumables", "Upgrade Materials" };
+        
         public void MassSpawn()
         {
-            foreach (var item in _itemsByCategory[SelectedCategory])
+            
+            bool isSensitiveCategory = _sensitiveCategories.Contains(SelectedMassSpawnCategory);
+
+            if (isSensitiveCategory && !ConfirmSpawn()) return;
+            foreach (var item in _itemsByCategory[SelectedMassSpawnCategory])
             {
                 _itemService.SpawnItem(item.Id, item.StackSize);
             }
         }
 
+        private bool ConfirmSpawn()
+        {
+            var result = MessageBox.Show(
+                $"Are you sure you want to spawn all items in the {SelectedMassSpawnCategory} category?\n\n" +
+                "WARNING: If you've already mass spawned this category, spawning it again may crash the game.",
+                "Confirm Mass Spawn",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+        
+            return result == MessageBoxResult.Yes;
+        }
+
         public void TryEnableFeatures()
         {
             AreOptionsEnabled = true;
+        }
+
+        public void DisableFeatures()
+        {
+            AreOptionsEnabled = false;
+        }
+
+        public void TrySpawnWeaponPref()
+        {
+            if (!AutoSpawnEnabled || SelectedAutoSpawnWeapon == null) return;
+            _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
         }
     }
 }

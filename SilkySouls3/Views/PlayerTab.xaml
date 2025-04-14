@@ -397,10 +397,7 @@
                                 <CheckBox Content="Disable Roll"
                                           IsChecked="{Binding IsNoRollEnabled}"
                                           Margin="0,2" />
-
-                                <CheckBox Content="Super Armor"
-                                          IsChecked="{Binding IsSuperArmorEnabled}"
-                                          Margin="0,2" />
+                                
                             </StackPanel>
                             
                             <StackPanel Grid.Column="1">

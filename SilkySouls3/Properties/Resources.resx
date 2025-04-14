@@ -931,110 +931,110 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 005C29C0,Zweihander,1,1,1</value>
   </data>
   <data name="Consumables" xml:space="preserve">
-    <value>40000126,Alluring Skull,99,0,0
-400001CD,Black Bug Pellet,99,0,0
-40000129,Black Firebomb,99,0,0
-4000010E,Bloodred Moss Clump,99,0,0
-40000110,Blooming Purple Moss Clump,99,0,0
-400001CA,Blue Bug Pellet,99,0,0
-40000106,Budding Green Blossom,99,0,0
-4000014F,Carthus Rouge,99,0,0
-40000154,Charcoal Pine Bundle,99,0,0
-4000014A,Charcoal Pine Resin,99,0,0
-4000006F,Cracked Red Eye Orb,99,0,0
-400001EA,Dark Sigil,99,0,0
-400000F0,Divine Blessing,99,0,0
-40000130,Duel Charm,99,0,0
-40000125,Dung Pie,99,0,0
-400001F4,Ember,99,0,0
-4000017B,Filianore's Spear Ornament,99,0,0
-40000124,Firebomb,99,0,0
-40000170,Forked Pale Tongue,99,0,0
-40000155,Gold Pine Bundle,99,0,0
-4000014B,Gold Pine Resin,99,0,0
-40000104,Green Blossom,99,0,0
-400000F1,Hidden Blessing,99,0,0
-4000015E,Homeward Bone,99,0,0
-4000016F,Human Dregs,99,0,0
-4000014E,Human Pine Resin,99,0,0
-40000122,Kukri,99,0,0
-4000012C,Lightning Urn,99,0,0
-40000150,Pale Pine Resin,99,0,0
-40000175,Pale Tongue,99,0,0
-40000178,Pendant,99,0,0
-40000137,Poison Throwing Knife,99,0,0
-40000172,Prism Stone,99,0,0
-40000174,Proof of a Concord Kept,99,0,0
-40000171,Proof of a Concord Well Kept,99,0,0
-40000112,Purging Stone,99,0,0
-4000010F,Purple Moss Clump,99,0,0
-400001CB,Red Bug Pellet,99,0,0
-40000118,Repair Powder,99,0,0
-40000114,Rime-blue Moss Clump,99,0,0
-4000012E,Rope Black Firebomb,99,0,0
-4000012B,Rope Firebomb,99,0,0
-40000157,Rotten Pine Resin,99,0,0
-4000017C,Rubbish,99,0,0
-400001C7,Rusted Coin,99,0,0
-400001C9,Rusted Gold Coin,99,0,0
-400001B8,Seed of a Giant Tree,99,0,0
-400001C8,Siegbräu,99,0,0
-4000012F,Stalk Dung Pie,99,0,0
-40000177,Sunlight Medal,99,0,0
-40000136,Throwing Knife,99,0,0
-40000183,Twinkling Dragon Head Stone,99,0,0
-40000184,Twinkling Dragon Torso Stone,99,0,0
-40000128,Undead Hunter Charm,99,0,0
-40000176,Vertebra Shackle,99,0,0
-4000016E,Wolf's Blood Swordgrass,99,0,0
-400001CC,Yellow Bug Pellet,99,0,0
-400001C6,Young White Branch,99,0,0
-400001CF,Young White Branch,99,0,0
-40000190,Fading Soul,99,0,0
-40000191,Soul of a Deserted Corpse,99,0,0
-40000192,Large Soul of a Deserted Corpse,99,0,0
-40000193,Soul of an Unknown Traveler,99,0,0
-40000194,Large Soul of an Unknown Traveler,99,0,0
-40000195,Soul of a Nameless Soldier,99,0,0
-40000196,Large Soul of a Nameless Soldier,99,0,0
-40000197,Soul of a Weary Warrior,99,0,0
-40000198,Large Soul of a Weary Warrior,99,0,0
-40000199,Soul of a Crestfallen Knight,99,0,0
-4000019A,Large Soul of a Crestfallen Knight,99,0,0
-4000019B,Soul of a Proud Paladin,99,0,0
-4000019C,Large Soul of a Proud Paladin,99,0,0
-4000019D,Soul of an Intrepid Hero,99,0,0
-4000019E,Large Soul of an Intrepid Hero,99,0,0
-4000019F,Soul of a Seasoned Warrior,99,0,0
-400001A0,Large Soul of a Seasoned Warrior,99,0,0
-400001A1,Soul of an Old Hand,99,0,0
-400001A2,Soul of a Venerable Old Hand,99,0,0
-400001A3,Soul of a Champion,99,0,0
-400001A4,Soul of a Great Champion,99,0,0
-400002C8,Soul of Champion Gundyr,99,0,0
-400002CA,Soul of the Dancer,99,0,0
-400002CB,Soul of a Crystal Sage,99,0,0
-400002CD,Soul of the Blood of the Wolf,99,0,0
-400002CE,Soul of Consumed Oceiros,99,0,0
-400002CF,Soul of Boreal Valley Vordt,99,0,0
-400002D0,Soul of the Old Demon King,99,0,0
-400002D1,Soul of Dragonslayer Armour,99,0,0
-400002D2,Soul of the Nameless King,99,0,0
-400002D4,Soul of Pontiff Sulyvahn,99,0,0
-400002D5,Soul of Aldrich,99,0,0
-400002D6,Soul of High Lord Wolnir,99,0,0
-400002D7,Soul of the Rotted Greatwood,99,0,0
-400002D8,Soul of Rosaria,99,0,0
-400002D9,Soul of the Deacons of the Deep,99,0,0
-400002DC,Soul of Yhorm the Giant,99,0,0
-400002DD,Soul of the Lords,99,0,0
-400002E3,Soul of a Demon,99,0,0
-400002DB,Soul of the Twin Princes,99,0,0
-400002E7,Soul of a Stray Demon,99,0,0
-400002E8,Soul of Sister Friede,99,0,0
-400002E9,Soul of Slave Knight Gael,99,0,0
-400002EA,Soul of the Demon Prince,99,0,0
-400002EB,Soul of Darkeater Midir,99,0,0
+    <value>40000126,Alluring Skull,600,0,0
+400001CD,Black Bug Pellet,600,0,0
+40000129,Black Firebomb,600,0,0
+4000010E,Bloodred Moss Clump,600,0,0
+40000110,Blooming Purple Moss Clump,600,0,0
+400001CA,Blue Bug Pellet,600,0,0
+40000106,Budding Green Blossom,600,0,0
+4000014F,Carthus Rouge,600,0,0
+40000154,Charcoal Pine Bundle,600,0,0
+4000014A,Charcoal Pine Resin,600,0,0
+4000006F,Cracked Red Eye Orb,600,0,0
+400001EA,Dark Sigil,600,0,0
+400000F0,Divine Blessing,600,0,0
+40000130,Duel Charm,600,0,0
+40000125,Dung Pie,600,0,0
+400001F4,Ember,600,0,0
+4000017B,Filianore's Spear Ornament,600,0,0
+40000124,Firebomb,600,0,0
+40000170,Forked Pale Tongue,600,0,0
+40000155,Gold Pine Bundle,600,0,0
+4000014B,Gold Pine Resin,600,0,0
+40000104,Green Blossom,600,0,0
+400000F1,Hidden Blessing,600,0,0
+4000015E,Homeward Bone,600,0,0
+4000016F,Human Dregs,600,0,0
+4000014E,Human Pine Resin,600,0,0
+40000122,Kukri,600,0,0
+4000012C,Lightning Urn,600,0,0
+40000150,Pale Pine Resin,600,0,0
+40000175,Pale Tongue,600,0,0
+40000178,Pendant,600,0,0
+40000137,Poison Throwing Knife,600,0,0
+40000172,Prism Stone,600,0,0
+40000174,Proof of a Concord Kept,600,0,0
+40000171,Proof of a Concord Well Kept,600,0,0
+40000112,Purging Stone,600,0,0
+4000010F,Purple Moss Clump,600,0,0
+400001CB,Red Bug Pellet,600,0,0
+40000118,Repair Powder,600,0,0
+40000114,Rime-blue Moss Clump,600,0,0
+4000012E,Rope Black Firebomb,600,0,0
+4000012B,Rope Firebomb,600,0,0
+40000157,Rotten Pine Resin,600,0,0
+4000017C,Rubbish,600,0,0
+400001C7,Rusted Coin,600,0,0
+400001C9,Rusted Gold Coin,600,0,0
+400001B8,Seed of a Giant Tree,600,0,0
+400001C8,Siegbräu,600,0,0
+4000012F,Stalk Dung Pie,600,0,0
+40000177,Sunlight Medal,600,0,0
+40000136,Throwing Knife,600,0,0
+40000183,Twinkling Dragon Head Stone,600,0,0
+40000184,Twinkling Dragon Torso Stone,600,0,0
+40000128,Undead Hunter Charm,600,0,0
+40000176,Vertebra Shackle,600,0,0
+4000016E,Wolf's Blood Swordgrass,600,0,0
+400001CC,Yellow Bug Pellet,600,0,0
+400001C6,Young White Branch,600,0,0
+400001CF,Young White Branch,600,0,0
+40000190,Fading Soul,600,0,0
+40000191,Soul of a Deserted Corpse,600,0,0
+40000192,Large Soul of a Deserted Corpse,600,0,0
+40000193,Soul of an Unknown Traveler,600,0,0
+40000194,Large Soul of an Unknown Traveler,600,0,0
+40000195,Soul of a Nameless Soldier,600,0,0
+40000196,Large Soul of a Nameless Soldier,600,0,0
+40000197,Soul of a Weary Warrior,600,0,0
+40000198,Large Soul of a Weary Warrior,600,0,0
+40000199,Soul of a Crestfallen Knight,600,0,0
+4000019A,Large Soul of a Crestfallen Knight,600,0,0
+4000019B,Soul of a Proud Paladin,600,0,0
+4000019C,Large Soul of a Proud Paladin,600,0,0
+4000019D,Soul of an Intrepid Hero,600,0,0
+4000019E,Large Soul of an Intrepid Hero,600,0,0
+4000019F,Soul of a Seasoned Warrior,600,0,0
+400001A0,Large Soul of a Seasoned Warrior,600,0,0
+400001A1,Soul of an Old Hand,600,0,0
+400001A2,Soul of a Venerable Old Hand,600,0,0
+400001A3,Soul of a Champion,600,0,0
+400001A4,Soul of a Great Champion,600,0,0
+400002C8,Soul of Champion Gundyr,600,0,0
+400002CA,Soul of the Dancer,600,0,0
+400002CB,Soul of a Crystal Sage,600,0,0
+400002CD,Soul of the Blood of the Wolf,600,0,0
+400002CE,Soul of Consumed Oceiros,600,0,0
+400002CF,Soul of Boreal Valley Vordt,600,0,0
+400002D0,Soul of the Old Demon King,600,0,0
+400002D1,Soul of Dragonslayer Armour,600,0,0
+400002D2,Soul of the Nameless King,600,0,0
+400002D4,Soul of Pontiff Sulyvahn,600,0,0
+400002D5,Soul of Aldrich,600,0,0
+400002D6,Soul of High Lord Wolnir,600,0,0
+400002D7,Soul of the Rotted Greatwood,600,0,0
+400002D8,Soul of Rosaria,600,0,0
+400002D9,Soul of the Deacons of the Deep,600,0,0
+400002DC,Soul of Yhorm the Giant,600,0,0
+400002DD,Soul of the Lords,600,0,0
+400002E3,Soul of a Demon,600,0,0
+400002DB,Soul of the Twin Princes,600,0,0
+400002E7,Soul of a Stray Demon,600,0,0
+400002E8,Soul of Sister Friede,600,0,0
+400002E9,Soul of Slave Knight Gael,600,0,0
+400002EA,Soul of the Demon Prince,600,0,0
+400002EB,Soul of Darkeater Midir,600,0,0
 </value>
   </data>
   <data name="Spells" xml:space="preserve">
@@ -1147,25 +1147,25 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 </value>
   </data>
   <data name="Ammo" xml:space="preserve">
-    <value>00061D3C,Dark Arrow,99,0,0
-00061C10,Feather Arrow,99,0,0
-00061AE4,Fire Arrow,99,0,0
-00061BAC,Large Arrow,99,0,0
-00061C74,Moonlight Arrow,99,0,0
-00061B48,Poison Arrow,99,0,0
-00061A80,Standard Arrow,99,0,0
-00061CD8,Wood Arrow,99,0,0
-00062250,Dragonslayer Greatarrow,99,0,0
-00062318,Dragonslayer Lightning Arrow,99,0,0
-000623E0,Millwood Greatarrow,99,0,0
-0006237C,Onislayer Greatarrow,99,0,0
-00062C78,Exploding Bolt,99,0,0
-00062A84,Heavy Bolt,99,0,0
-00062BB0,Lightning Bolt,99,0,0
-00062AE8,Sniper Bolt,99,0,0
-00062C14,Splintering Bolt,99,0,0
-00062A20,Standard Bolt,99,0,0
-00062B4C,Wood Bolt,99,0,0
+    <value>00061D3C,Dark Arrow,600,0,0
+00061C10,Feather Arrow,600,0,0
+00061AE4,Fire Arrow,600,0,0
+00061BAC,Large Arrow,600,0,0
+00061C74,Moonlight Arrow,600,0,0
+00061B48,Poison Arrow,600,0,0
+00061A80,Standard Arrow,600,0,0
+00061CD8,Wood Arrow,600,0,0
+00062250,Dragonslayer Greatarrow,600,0,0
+00062318,Dragonslayer Lightning Arrow,600,0,0
+000623E0,Millwood Greatarrow,600,0,0
+0006237C,Onislayer Greatarrow,600,0,0
+00062C78,Exploding Bolt,600,0,0
+00062A84,Heavy Bolt,600,0,0
+00062BB0,Lightning Bolt,600,0,0
+00062AE8,Sniper Bolt,600,0,0
+00062C14,Splintering Bolt,600,0,0
+00062A20,Standard Bolt,600,0,0
+00062B4C,Wood Bolt,600,0,0
 </value>
   </data>
   <data name="Rings" xml:space="preserve">
@@ -1405,12 +1405,12 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 </value>
   </data>
   <data name="UpgradeMaterials" xml:space="preserve">
-    <value>400003E8,Titanite Shard,99,0,0
-400003E9,Large Titanite Shard,99,0,0
-400003EA,Titanite Chunk,99,0,0
-400003EB,Titanite Slab,99,0,0
-400003FC,Titanite Scale,99,0,0
-40000406,Twinkling Titanite,99,0,0
+    <value>400003E8,Titanite Shard,600,0,0
+400003E9,Large Titanite Shard,600,0,0
+400003EA,Titanite Chunk,600,0,0
+400003EB,Titanite Slab,600,0,0
+400003FC,Titanite Scale,600,0,0
+40000406,Twinkling Titanite,600,0,0
 4000044C,Heavy Gem,1,0,0
 40000456,Sharp Gem,1,0,0
 40000460,Refined Gem,1,0,0
@@ -1430,7 +1430,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 40000839,Giant's Coal,1,0,0
 4000083A,Profaned Coal,1,0,0
 40000838,Sage's Coal,1,0,0
-400004E2,Shriving Stone,99,0,0
+400004E2,Shriving Stone,600,0,0
 </value>
   </data>
   <data name="ItemSpawn" xml:space="preserve">

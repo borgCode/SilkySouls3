@@ -98,7 +98,7 @@ namespace SilkySouls3.Memory
             0,
             Mov64
         );
-        
+
         public static readonly Pattern GameDataMan = new Pattern(
             new byte[] { 0x05, 0x00, 0x00, 0x00, 0x00, 0x80, 0xB8, 0x82 },
             "x????xxx",
@@ -129,7 +129,6 @@ namespace SilkySouls3.Memory
             -0x7,
             Mov64
         );
-
 
 
         //Patch
@@ -184,12 +183,22 @@ namespace SilkySouls3.Memory
         );
 
         public static readonly Pattern NoRoll = new Pattern(
-            new byte[]  { 0xC6, 0x83, 0x10, 0x04, 0x00, 0x00, 0x01, 0xF3, 0x0F, 0x11, 0x83, 0x0C, 0x04, 0x00, 0x00, 0xC6 },
+            new byte[]
+            {
+                0xC6, 0x83, 0x10, 0x04, 0x00, 0x00, 0x01, 0xF3, 0x0F, 0x11, 0x83, 0x0C, 0x04, 0x00, 0x00, 0xC6
+            },
             "xxxxxxxxxxxxxxxx",
             0,
             None
         );
 
+
+        public static readonly Pattern GroupMask = new Pattern(
+            new byte[] { 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB, 0x00 },
+            "xx????xxx",
+            0,
+            Cmp
+        );
 
 
         //Hooks

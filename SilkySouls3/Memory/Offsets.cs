@@ -250,6 +250,15 @@ namespace SilkySouls3.Memory
             public const int MovementInfoPtr2 = 0x150;
         }
 
+        public static class GroupMask
+        {
+            public static IntPtr Base;
+            public const int Map = 0x0;
+            public const int Obj = 0x1;
+            public const int Chr = 0x2;
+            public const int Sfx = 0x3;
+        }
+
         public static class Patches
         {
             public static IntPtr NoLogo;

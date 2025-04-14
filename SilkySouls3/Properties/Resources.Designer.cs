@@ -60,22 +60,22 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 00061D3C,Dark Arrow,99,0,0
-        ///00061C10,Feather Arrow,99,0,0
-        ///00061AE4,Fire Arrow,99,0,0
-        ///00061BAC,Large Arrow,99,0,0
-        ///00061C74,Moonlight Arrow,99,0,0
-        ///00061B48,Poison Arrow,99,0,0
-        ///00061A80,Standard Arrow,99,0,0
-        ///00061CD8,Wood Arrow,99,0,0
-        ///00062250,Dragonslayer Greatarrow,99,0,0
-        ///00062318,Dragonslayer Lightning Arrow,99,0,0
-        ///000623E0,Millwood Greatarrow,99,0,0
-        ///0006237C,Onislayer Greatarrow,99,0,0
-        ///00062C78,Exploding Bolt,99,0,0
-        ///00062A84,Heavy Bolt,99,0,0
-        ///00062BB0,Lightning Bolt,99,0,0
-        ///00062AE8,Sniper Bol [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 00061D3C,Dark Arrow,600,0,0
+        ///00061C10,Feather Arrow,600,0,0
+        ///00061AE4,Fire Arrow,600,0,0
+        ///00061BAC,Large Arrow,600,0,0
+        ///00061C74,Moonlight Arrow,600,0,0
+        ///00061B48,Poison Arrow,600,0,0
+        ///00061A80,Standard Arrow,600,0,0
+        ///00061CD8,Wood Arrow,600,0,0
+        ///00062250,Dragonslayer Greatarrow,600,0,0
+        ///00062318,Dragonslayer Lightning Arrow,600,0,0
+        ///000623E0,Millwood Greatarrow,600,0,0
+        ///0006237C,Onislayer Greatarrow,600,0,0
+        ///00062C78,Exploding Bolt,600,0,0
+        ///00062A84,Heavy Bolt,600,0,0
+        ///00062BB0,Lightning Bolt,600,0,0
+        ///0006 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Ammo {
             get {
@@ -129,22 +129,21 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 40000126,Alluring Skull,99,0,0
-        ///400001CD,Black Bug Pellet,99,0,0
-        ///40000129,Black Firebomb,99,0,0
-        ///4000010E,Bloodred Moss Clump,99,0,0
-        ///40000110,Blooming Purple Moss Clump,99,0,0
-        ///400001CA,Blue Bug Pellet,99,0,0
-        ///40000106,Budding Green Blossom,99,0,0
-        ///4000014F,Carthus Rouge,99,0,0
-        ///40000154,Charcoal Pine Bundle,99,0,0
-        ///4000014A,Charcoal Pine Resin,99,0,0
-        ///4000006F,Cracked Red Eye Orb,99,0,0
-        ///400001EA,Dark Sigil,99,0,0
-        ///400000F0,Divine Blessing,99,0,0
-        ///40000130,Duel Charm,99,0,0
-        ///40000125,Dung Pie,99,0,0
-        ///400 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 40000126,Alluring Skull,600,0,0
+        ///400001CD,Black Bug Pellet,600,0,0
+        ///40000129,Black Firebomb,600,0,0
+        ///4000010E,Bloodred Moss Clump,600,0,0
+        ///40000110,Blooming Purple Moss Clump,600,0,0
+        ///400001CA,Blue Bug Pellet,600,0,0
+        ///40000106,Budding Green Blossom,600,0,0
+        ///4000014F,Carthus Rouge,600,0,0
+        ///40000154,Charcoal Pine Bundle,600,0,0
+        ///4000014A,Charcoal Pine Resin,600,0,0
+        ///4000006F,Cracked Red Eye Orb,600,0,0
+        ///400001EA,Dark Sigil,600,0,0
+        ///400000F0,Divine Blessing,600,0,0
+        ///40000130,Duel Charm,600,0,0
+        ///40000125,Dung P [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Consumables {
             get {
@@ -374,12 +373,12 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 400003E8,Titanite Shard,99,0,0
-        ///400003E9,Large Titanite Shard,99,0,0
-        ///400003EA,Titanite Chunk,99,0,0
-        ///400003EB,Titanite Slab,99,0,0
-        ///400003FC,Titanite Scale,99,0,0
-        ///40000406,Twinkling Titanite,99,0,0
+        ///   Looks up a localized string similar to 400003E8,Titanite Shard,600,0,0
+        ///400003E9,Large Titanite Shard,600,0,0
+        ///400003EA,Titanite Chunk,600,0,0
+        ///400003EB,Titanite Slab,600,0,0
+        ///400003FC,Titanite Scale,600,0,0
+        ///40000406,Twinkling Titanite,600,0,0
         ///4000044C,Heavy Gem,1,0,0
         ///40000456,Sharp Gem,1,0,0
         ///40000460,Refined Gem,1,0,0
@@ -391,7 +390,7 @@ namespace SilkySouls3.Properties {
         ///4000049C,Deep Gem,1,0,0
         ///400004A6,Dark Gem,1,0,0
         ///400004B0,Poison Gem,1,0,0
-        ///400004BA,Blood Gem [rest of string was truncated]&quot;;.
+        ///400004BA,Blo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string UpgradeMaterials {
             get {

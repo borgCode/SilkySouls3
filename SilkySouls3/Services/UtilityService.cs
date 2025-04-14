@@ -115,7 +115,6 @@ namespace SilkySouls3.Services
             var updateCoordsCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode;
             if (isNoClipEnabled)
             {
-                
                 var zDirectionVariable = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.ZDirectionVariable;
                 var triggerThreshold = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.TriggerThreshold;
                 _memoryIo.WriteFloat(triggerThreshold, 0.5f);
@@ -214,8 +213,8 @@ namespace SilkySouls3.Services
                 Array.Copy(bytes, 0, updateCoordsBytes, 0xDD + 1, 4);
 
                 _memoryIo.WriteBytes(updateCoordsCode, updateCoordsBytes);
-                
-                
+
+
                 _hookManager.InstallHook(inAirTimerCode.ToInt64(), inAirTimerOrigin, new byte[]
                     { 0xF3, 0x0F, 0x11, 0x81, 0xB0, 0x01, 0x00, 0x00 });
                 _hookManager.InstallHook(keyboardCheckCode.ToInt64(), keyboardOrigin, new byte[]
@@ -226,7 +225,6 @@ namespace SilkySouls3.Services
                     { 0x48, 0x8B, 0x10, 0x48, 0x89, 0xC1 });
                 _hookManager.InstallHook(updateCoordsCode.ToInt64(), updateCoordsOrigin, new byte[]
                     { 0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00 });
-                
             }
             else
             {
@@ -261,7 +259,7 @@ namespace SilkySouls3.Services
             Array.Copy(bytes, 0, setEventBytes, 0x24 + 2, 8);
             _memoryIo.AllocateAndExecute(setEventBytes);
         }
-        
+
         public void SetMultipleEvents(params ulong[] flagIds)
         {
             foreach (var flagId in flagIds)
@@ -269,5 +267,27 @@ namespace SilkySouls3.Services
                 SetEvent(flagId);
             }
         }
+
+        public void ToggleGroupMask(int offset, bool isEnabled) =>
+            _memoryIo.WriteByte(GroupMask.Base + offset, isEnabled ? 0 : 1);
+
+
+        public void ToggleTargetingView(bool isTargetingViewEnabled)
+        {
+            if (isTargetingViewEnabled)
+            {
+                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, 1);
+                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, 1);
+            }
+            else
+            {
+                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, 0);
+                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, 0);
+            }
+        }
+
+        public void ToggleEventDraw(bool isDrawEventEnabled) =>
+            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.EventDraw,
+                isDrawEventEnabled ? 1 : 0);
     }
 }

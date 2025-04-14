@@ -39,13 +39,27 @@
                               Margin="0,2"/>
                     
                     <CheckBox Content="Draw Events" 
-                              IsEnabled="{Binding IsDrawEnabled}"
                               IsChecked="{Binding IsDrawEventEnabled}"
                               Margin="0,2"/>
                     
-                    <CheckBox Content="Targeting View (Kinda useless)" 
-                              IsEnabled="{Binding IsDrawEnabled}"
+                    <CheckBox Content="Enemy Targeting View" 
                               IsChecked="{Binding IsTargetingViewEnabled}"
+                              Margin="0,2"/>
+                    
+                    <CheckBox Content="Hide Map" 
+                              IsChecked="{Binding IsHideMapEnabled}"
+                              Margin="0,2"/>
+                    
+                    <CheckBox Content="Hide Objects" 
+                              IsChecked="{Binding IsHideObjectsEnabled}"
+                              Margin="0,2"/>
+                    
+                    <CheckBox Content="Hide Characters" 
+                              IsChecked="{Binding IsHideCharactersEnabled}"
+                              Margin="0,2"/>
+                    
+                    <CheckBox Content="Hide Sfx" 
+                              IsChecked="{Binding IsHideSfxEnabled}"
                               Margin="0,2"/>
                 </UniformGrid>
             </StackPanel>

@@ -23,5 +23,11 @@ namespace SilkySouls3.Views
         {
             _itemViewModel.MassSpawn();
         }
+
+        private void LoadPreset_Click(object sender, RoutedEventArgs e)
+        {
+    
+        }
+        
     }
 }

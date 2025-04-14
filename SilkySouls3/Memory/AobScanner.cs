@@ -46,6 +46,7 @@ namespace SilkySouls3.Memory
             Offsets.PadMan.Base = FindAddressByPattern(Patterns.PadMan);
             Offsets.DamageMan.Base = FindAddressByPattern(Patterns.DamageMan);
             Offsets.FieldArea.Base = FindAddressByPattern(Patterns.FieldArea);
+            Offsets.GroupMask.Base = FindAddressByPattern(Patterns.GroupMask);
 
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
             TryPatternWithFallback("RepeatAct", Patterns.RepeatAct, addr => Offsets.Patches.RepeatAct = addr, saved);
@@ -101,6 +102,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"PadMan.Base: 0x{Offsets.PadMan.Base.ToInt64():X}");
             Console.WriteLine($"DamageMan.Base: 0x{Offsets.DamageMan.Base.ToInt64():X}");
             Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
+            Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
             
             
             

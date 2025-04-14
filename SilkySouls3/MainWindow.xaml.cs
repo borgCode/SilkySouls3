@@ -130,6 +130,7 @@ namespace SilkySouls3
         private void TryEnableFeatures()
         {
             _playerViewModel.TryEnableFeatures();
+            _utilityViewModel.TryEnableFeatures();
             _enemyViewModel.TryEnableFeatures();
             _itemViewModel.TryEnableFeatures();
 
@@ -143,7 +144,7 @@ namespace SilkySouls3
             if (gameTimeMs < 5000)
             {
                 _playerViewModel.TrySetNgPref();
-                // _itemViewModel.TrySpawnWeaponPref();
+                _itemViewModel.TrySpawnWeaponPref();
             }
         }
 
@@ -151,6 +152,7 @@ namespace SilkySouls3
         {
             _playerViewModel.DisableFeatures();
             _enemyViewModel.DisableFeatures();
+            _itemViewModel.DisableFeatures();
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

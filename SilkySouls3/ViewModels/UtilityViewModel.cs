@@ -5,6 +5,7 @@ using SilkySouls3.Memory;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
+using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.ViewModels
 {
@@ -17,6 +18,11 @@ namespace SilkySouls3.ViewModels
         private bool _isSoundViewEnabled;
         private bool _isDrawEventEnabled;
         private bool _isTargetingViewEnabled;
+        private bool _isHideMapEnabled;
+        private bool _isHideObjectsEnabled;
+        private bool _isHideCharactersEnabled;
+        private bool _isHideSfxEnabled;
+
         private bool _isNoClipEnabled;
         private bool _areButtonsEnabled;
         private bool _areAttachedOptionsEnabled;
@@ -111,40 +117,66 @@ namespace SilkySouls3.ViewModels
             }
         }
         
-        //
-        // public bool IsDrawEventEnabled
-        // {
-        //     get => _isDrawEventEnabled;
-        //     set
-        //     {
-        //         if (!SetProperty(ref _isDrawEventEnabled, value)) return;
-        //         if (_isDrawEventEnabled)
-        //         {
-        //             _utilityService.EnableDrawEvent();
-        //         }
-        //         else
-        //         {
-        //             _utilityService.DisableDrawEvent();
-        //         }
-        //     }
-        // }
-        //
-        // public bool IsTargetingViewEnabled
-        // {
-        //     get => _isTargetingViewEnabled;
-        //     set
-        //     {
-        //         if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
-        //         if (_isTargetingViewEnabled)
-        //         {
-        //             _utilityService.EnableTargetingView();
-        //         }
-        //         else
-        //         {
-        //             _utilityService.DisableTargetingView();
-        //         }
-        //     }
-        // }
+        
+        public bool IsDrawEventEnabled
+        {
+            get => _isDrawEventEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawEventEnabled, value)) return;
+                _utilityService.ToggleEventDraw(_isDrawEventEnabled);
+            }
+        }
+        
+        public bool IsTargetingViewEnabled
+        {
+            get => _isTargetingViewEnabled;
+            set
+            {
+                if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
+                _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
+            }
+        }
+        
+        public bool IsHideMapEnabled
+        {
+            get => _isHideMapEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideMapEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Map, _isHideMapEnabled);
+            }
+        }
+        
+        public bool IsHideObjectsEnabled
+        {
+            get => _isHideObjectsEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideObjectsEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Obj, _isHideObjectsEnabled);
+            }
+        }
+        
+        public bool IsHideCharactersEnabled
+        {
+            get => _isHideCharactersEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideCharactersEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Chr, _isHideCharactersEnabled);
+            }
+        }
+        
+        public bool IsHideSfxEnabled
+        {
+            get => _isHideSfxEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideSfxEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
+            }
+        }
         
         public void Warp()
         {
@@ -166,6 +198,18 @@ namespace SilkySouls3.ViewModels
         public void MovePatchesToFirelink()
         {
             _utilityService.SetMultipleEvents(EventFlags.Patches);
+        }
+
+        public void TryEnableFeatures()
+        {
+            if (IsHitboxEnabled) _utilityService.ToggleHitboxView(true);
+            if (IsSoundViewEnabled) _utilityService.ToggleSoundView(true);
+            if (IsDrawEventEnabled) _utilityService.ToggleEventDraw(true);
+            if (IsTargetingViewEnabled) _utilityService.ToggleTargetingView(true);
+            if (IsHideMapEnabled) _utilityService.ToggleGroupMask(GroupMask.Map,true);
+            if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj,true);
+            if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr,true);
+            if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx,true);
         }
     }
 }
