@@ -345,7 +345,7 @@ namespace SilkySouls3.Memory
 
         public bool IsGameLoaded()
         {
-            return ReadInt32((IntPtr)ReadInt64(Offsets.MenuMan.Base) + (int) Offsets.MenuMan.MenuManOffsets.LoadedFlag) == 1;
+            return (IntPtr) ReadUInt64((IntPtr)ReadUInt64(Offsets.WorldChrMan.Base) + Offsets.WorldChrMan.PlayerIns)!= IntPtr.Zero;
         }
         
         public void AllocCodeCave()

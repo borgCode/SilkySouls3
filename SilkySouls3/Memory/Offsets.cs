@@ -167,7 +167,6 @@ namespace SilkySouls3.Memory
             public enum MenuManOffsets
             {
                 QuitOut = 0x250,
-                LoadedFlag = 0x28C,
             }
         }
 

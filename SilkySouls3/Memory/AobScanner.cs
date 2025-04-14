@@ -118,8 +118,6 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
             Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
             
-            
-            
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
             Console.WriteLine($"Patches.GameSpeed: 0x{Offsets.Patches.GameSpeed.ToInt64():X}");
@@ -136,10 +134,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Hooks.NoClipTriggers: 0x{Offsets.Hooks.NoClipTriggers:X}");
             Console.WriteLine($"Hooks.NoClipTriggers2: 0x{Offsets.Hooks.NoClipTriggers2:X}");
             Console.WriteLine($"Hooks.NoClipUpdateCoords: 0x{Offsets.Hooks.NoClipUpdateCoords:X}");
-           
-           
             
-            // Console.WriteLine($"Hooks.TargetingView: 0x{Offsets.Hooks.TargetingView:X}");
             Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
             Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
             Console.WriteLine($"Funcs.SetEvent: 0x{Offsets.Funcs.SetEvent:X}");
