@@ -24,6 +24,8 @@ namespace SilkySouls3.ViewModels
         private string _togglePlayerSpeedHotkeyText;
         private string _increasePlayerSpeedHotkeyText;
         private string _decreasePlayerSpeedHotkeyText;
+        private string _increaseGameSpeedHotkeyText;
+        private string _decreaseGameSpeedHotkeyText;
         
         private string _setSwordPhaseHotkeyText;
         private string _setLancePhaseHotkeyText;
@@ -111,6 +113,18 @@ namespace SilkySouls3.ViewModels
         {
             get => _decreasePlayerSpeedHotkeyText;
             set => SetProperty(ref _decreasePlayerSpeedHotkeyText, value);
+        }
+        
+        public string IncreaseGameSpeedHotkeyText
+        {
+            get => _increaseGameSpeedHotkeyText;
+            set => SetProperty(ref _increaseGameSpeedHotkeyText, value);
+        }
+
+        public string DecreaseGameSpeedHotkeyText
+        {
+            get => _decreaseGameSpeedHotkeyText;
+            set => SetProperty(ref _decreaseGameSpeedHotkeyText, value);
         }
 
         public string SetSwordPhaseHotkeyText
@@ -202,6 +216,8 @@ namespace SilkySouls3.ViewModels
                 { "TogglePlayerSpeed", text => TogglePlayerSpeedHotkeyText = text },
                 { "IncreasePlayerSpeed", text => IncreasePlayerSpeedHotkeyText = text },
                 { "DecreasePlayerSpeed", text => DecreasePlayerSpeedHotkeyText = text },
+                { "IncreaseGameSpeed", text => IncreaseGameSpeedHotkeyText = text },
+                { "DecreaseGameSpeed", text => DecreaseGameSpeedHotkeyText = text },
                 // { "NoClip", text => NoClipHotkeyText = text },
                 // { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
                 

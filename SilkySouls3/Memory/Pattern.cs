@@ -288,5 +288,23 @@ namespace SilkySouls3.Memory
             "xxxxxxxxxxx",
             -0xB,
             None);
+
+        public static readonly Pattern TravelFunc = new Pattern(
+            new byte[]
+            {
+                0x40, 0x55, 0x53, 0x56, 0x57, 0x41, 0x56, 0x48, 0x8D, 0x6C, 0x24, 0xC9, 0x48, 0x81, 0xEC, 0x00, 0x01,
+                0x00, 0x00, 0x48, 0xC7, 0x45, 0x97
+            },
+            "xxxxxxxxxxxxxxxxxxxxxxx",
+            0,
+            None
+        );
+
+        public static readonly Pattern CombineMenuFlagAndEventFlag = new Pattern(
+            new byte[] { 0x81, 0xF9, 0xF3, 0x01 },
+            "xxxx",
+            0,
+            None
+        );
     }
 }

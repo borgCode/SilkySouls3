@@ -48,6 +48,7 @@ namespace SilkySouls3.Memory
             Offsets.FieldArea.Base = FindAddressByPattern(Patterns.FieldArea);
             Offsets.GroupMask.Base = FindAddressByPattern(Patterns.GroupMask);
 
+            
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
             TryPatternWithFallback("RepeatAct", Patterns.RepeatAct, addr => Offsets.Patches.RepeatAct = addr, saved);
             TryPatternWithFallback("GameSpeed", Patterns.GameSpeed, addr => Offsets.Patches.GameSpeed = addr, saved);
@@ -86,6 +87,19 @@ namespace SilkySouls3.Memory
             Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
             Offsets.Funcs.ItemSpawn = FindAddressByPattern(Patterns.ItemSpawnFunc).ToInt64();
             Offsets.Funcs.SetEvent = FindAddressByPattern(Patterns.SetEvent).ToInt64();
+            Offsets.Funcs.Travel = FindAddressByPattern(Patterns.TravelFunc).ToInt64();
+            Offsets.Funcs.LevelUp = Offsets.Funcs.Travel - 0x720;
+            Offsets.Funcs.ReinforceWeapon = Offsets.Funcs.Travel - 0x1620;
+            Offsets.Funcs.InfuseWeapon = Offsets.Funcs.Travel - 0x1CB0;
+            Offsets.Funcs.Repair = Offsets.Funcs.Travel - 0x14C0;
+            Offsets.Funcs.Attunement = Offsets.Funcs.Travel - 0xB10;
+            Offsets.Funcs.AllotEstus = Offsets.Funcs.Travel - 0x2010;
+            Offsets.Funcs.Transpose = Offsets.Funcs.Travel - 0x1A10;
+            Offsets.Funcs.RegularShop = Offsets.Funcs.Travel - 0x1B50;
+            Offsets.Funcs.CombineMenuFlagAndEventFlag =
+                FindAddressByPattern(Patterns.CombineMenuFlagAndEventFlag).ToInt64();
+            
+        
             
             Console.WriteLine($"WorldChrMan.Base: 0x{Offsets.WorldChrMan.Base.ToInt64():X}");
             Console.WriteLine($"GameMan.Base: 0x{Offsets.GameMan.Base.ToInt64():X}");
@@ -129,6 +143,13 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
             Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
             Console.WriteLine($"Funcs.SetEvent: 0x{Offsets.Funcs.SetEvent:X}");
+            Console.WriteLine($"Funcs.Travel: 0x{Offsets.Funcs.Travel:X}");
+            Console.WriteLine($"Funcs.ReinforceWeapon: 0x{Offsets.Funcs.ReinforceWeapon:X}");
+            Console.WriteLine($"Funcs.AllotEstus: 0x{Offsets.Funcs.AllotEstus:X}");
+            Console.WriteLine($"Funcs.Attunement: 0x{Offsets.Funcs.Attunement:X}");
+            Console.WriteLine($"Funcs.RegularShop: 0x{Offsets.Funcs.RegularShop:X}");
+            Console.WriteLine($"Funcs.Transpose: 0x{Offsets.Funcs.Transpose:X}");
+            Console.WriteLine($"Funcs.CombineMenuFlagAndEventFlag: 0x{Offsets.Funcs.CombineMenuFlagAndEventFlag:X}");
         }
         
         private void TryPatternWithFallback(string name, Pattern pattern, Action<IntPtr> setter, Dictionary<string, long> saved)

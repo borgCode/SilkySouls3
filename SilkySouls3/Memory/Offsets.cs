@@ -289,6 +289,18 @@ namespace SilkySouls3.Memory
             public static long Warp;
             public static long ItemSpawn;
             public static long SetEvent;
+            public static long Travel;
+            public static long LevelUp;
+            public static long ReinforceWeapon;
+            public static long InfuseWeapon;
+            public static long Repair;
+            public static long AllotEstus;
+            public static long Attunement;
+            public static long RegularShop;
+            public static long Transpose;
+            public static long CombineMenuFlagAndEventFlag;
+
+
         }
     }
 }

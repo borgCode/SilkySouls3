@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SilkySouls3.Memory;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -40,6 +41,76 @@ namespace SilkySouls3.Views
         {
             MessageBox.Show("Vertical movement with Ctrl/Space or L2/R2 on controller", "Info", MessageBoxButton.OK,
                 MessageBoxImage.Information);
+        }
+
+        private void ShrineHandmaid_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.ShrineMaiden);
+        }
+
+        private void Greirat_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.Greirat);
+        }
+
+        private void Patches_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.Patches);
+        }
+
+        private void Orbeck_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.Orbeck);
+        }
+
+        private void Cornyx_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.Cornyx);
+        }
+
+        private void Karla_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.Karla);
+        }
+
+        private void Transpose_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenRegularShop(GameIds.ShopParams.Transpose);
+        }
+
+        private void Travel_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenu(Offsets.Funcs.Travel);
+        }
+
+        private void LevelUp_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenu(Offsets.Funcs.LevelUp);
+        }
+
+        private void ReinforceWeapon_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenuWithEvent(Offsets.Funcs.ReinforceWeapon, GameIds.EventFlags.ReinforceWeaponFlagRange);
+        }
+
+        private void InfuseWeapon_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenuWithEvent(Offsets.Funcs.InfuseWeapon, GameIds.EventFlags.InfuseWeaponFlagRange);
+        }
+
+        private void Repair_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenu(Offsets.Funcs.Repair);
+        }
+
+        private void Attunement_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenu(Offsets.Funcs.Attunement);
+        }
+
+        private void AllotEstus_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.OpenMenu(Offsets.Funcs.AllotEstus);
         }
     }
 }

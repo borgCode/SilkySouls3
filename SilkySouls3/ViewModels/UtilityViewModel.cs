@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SilkySouls3.Memory;
@@ -11,8 +12,10 @@ namespace SilkySouls3.ViewModels
 {
     public class UtilityViewModel : BaseViewModel
     {
-        
+        private readonly PlayerService _playerService;
+        private readonly HotkeyManager _hotkeyManager;
         private readonly UtilityService _utilityService;
+        
         
         private bool _isHitboxEnabled;
         private bool _isSoundViewEnabled;
@@ -23,10 +26,10 @@ namespace SilkySouls3.ViewModels
         private bool _isHideCharactersEnabled;
         private bool _isHideSfxEnabled;
 
+        private float _gameSpeed;
+
         private bool _isNoClipEnabled;
         private bool _areButtonsEnabled;
-        private bool _areAttachedOptionsEnabled;
-        private bool _areAttachedOptionsRestored;
         
         private bool _wasNoDeathEnabled;
         
@@ -36,6 +39,7 @@ namespace SilkySouls3.ViewModels
         public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager)
         {
             _utilityService = utilityService;
+            _hotkeyManager = hotkeyManager;
             _warpLocations = DataLoader.GetWarpEntryDict();
             
             if (_warpLocations.Any())
@@ -48,26 +52,115 @@ namespace SilkySouls3.ViewModels
 
         private void RegisterHotkeys()
         {
-          
+            _hotkeyManager.RegisterAction("NoClip", () => { IsNoClipEnabled = !IsNoClipEnabled; });
+            _hotkeyManager.RegisterAction("IncreaseGameSpeed", () => SetSpeed(Math.Min(10, GameSpeed + 0.50f)));
+            _hotkeyManager.RegisterAction("DecreaseGameSpeed", () => SetSpeed(Math.Max(0, GameSpeed - 0.50f)));
         }
 
         public IEnumerable<KeyValuePair<string, string>> WarpLocations =>
             _warpLocations.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value.Name));
-        
+
         public KeyValuePair<string, string> SelectedWarp
         
         {
             get => _selectedWarp;
             set => SetProperty(ref _selectedWarp, value);
         }
-        
+
+
+        public bool AreButtonsEnabled
+        {
+            get => _areButtonsEnabled;
+            set => SetProperty(ref _areButtonsEnabled, value);
+        }
+
+        public bool IsHitboxEnabled
+        {
+            get => _isHitboxEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHitboxEnabled, value)) return;
+                _utilityService.ToggleHitboxView(_isHitboxEnabled);
+            }
+        }
+
+        public bool IsSoundViewEnabled
+        {
+            get => _isSoundViewEnabled;
+            set
+            {
+                if (!SetProperty(ref _isSoundViewEnabled, value)) return;
+                  _utilityService.ToggleSoundView(_isSoundViewEnabled);
+            }
+        }
+
+
+        public bool IsDrawEventEnabled
+        {
+            get => _isDrawEventEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawEventEnabled, value)) return;
+                _utilityService.ToggleEventDraw(_isDrawEventEnabled);
+            }
+        }
+
+        public bool IsTargetingViewEnabled
+        {
+            get => _isTargetingViewEnabled;
+            set
+            {
+                if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
+                _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
+            }
+        }
+
+        public bool IsHideMapEnabled
+        {
+            get => _isHideMapEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideMapEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Map, _isHideMapEnabled);
+            }
+        }
+
+        public bool IsHideObjectsEnabled
+        {
+            get => _isHideObjectsEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideObjectsEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Obj, _isHideObjectsEnabled);
+            }
+        }
+
+        public bool IsHideCharactersEnabled
+        {
+            get => _isHideCharactersEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideCharactersEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Chr, _isHideCharactersEnabled);
+            }
+        }
+
+        public bool IsHideSfxEnabled
+        {
+            get => _isHideSfxEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideSfxEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
+            }
+        }
+
         public bool IsNoClipEnabled
         {
             get => _isNoClipEnabled;
             set
             {
                 if (!SetProperty(ref _isNoClipEnabled, value)) return;
-                
                 
                 if (_isNoClipEnabled)
                 {
@@ -84,104 +177,41 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
-        // public bool AreButtonsEnabled
-        // {
-        //     get => _areButtonsEnabled;
-        //     set => SetProperty(ref _areButtonsEnabled, value);
-        // }
-        //
-        // public bool AreAttachedOptionsEnabled
-        // {
-        //     get => _areAttachedOptionsEnabled;
-        //     set => SetProperty(ref _areAttachedOptionsEnabled, value);
-        // }
 
-        public bool IsHitboxEnabled
+
+        public float GameSpeed
         {
-            get => _isHitboxEnabled;
+            get => _gameSpeed;
             set
             {
-                if (!SetProperty(ref _isHitboxEnabled, value)) return;
-                _utilityService.ToggleHitboxView(_isHitboxEnabled);
+                if (SetProperty(ref _gameSpeed, value))
+                {
+                    _utilityService.SetGameSpeed(value);
+                }
             }
         }
-        
-        public bool IsSoundViewEnabled
-        {
-            get => _isSoundViewEnabled;
-            set
-            {
-                if (!SetProperty(ref _isSoundViewEnabled, value)) return;
-                  _utilityService.ToggleSoundView(_isSoundViewEnabled);
-            }
-        }
-        
-        
-        public bool IsDrawEventEnabled
-        {
-            get => _isDrawEventEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDrawEventEnabled, value)) return;
-                _utilityService.ToggleEventDraw(_isDrawEventEnabled);
-            }
-        }
-        
-        public bool IsTargetingViewEnabled
-        {
-            get => _isTargetingViewEnabled;
-            set
-            {
-                if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
-                _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
-            }
-        }
-        
-        public bool IsHideMapEnabled
-        {
-            get => _isHideMapEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideMapEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Map, _isHideMapEnabled);
-            }
-        }
-        
-        public bool IsHideObjectsEnabled
-        {
-            get => _isHideObjectsEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideObjectsEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Obj, _isHideObjectsEnabled);
-            }
-        }
-        
-        public bool IsHideCharactersEnabled
-        {
-            get => _isHideCharactersEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideCharactersEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Chr, _isHideCharactersEnabled);
-            }
-        }
-        
-        public bool IsHideSfxEnabled
-        {
-            get => _isHideSfxEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideSfxEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
-            }
-        }
-        
+
+        public void SetSpeed(float value) => GameSpeed = value;
+
         public void Warp()
         {
             
             _ = Task.Run(() => _utilityService.Warp(_warpLocations[SelectedWarp.Key]));
+        }
+
+        public void OpenMenu(long funcAddr)
+        {
+            _utilityService.OpenMenu(funcAddr);
+        }
+
+        public void OpenMenuWithEvent(long funcAddr, int[] eventIds)
+        {
+            _utilityService.OpenMenuWithEvent(funcAddr, eventIds);
+        }
+
+        public void OpenRegularShop(ulong[] shopParams)
+        {
+            _utilityService.OpenRegularShop(shopParams);
         }
 
         public void UnlockBonfires()
@@ -192,12 +222,12 @@ namespace SilkySouls3.ViewModels
 
         public void UnlockMidir()
         {
-            _utilityService.SetEvent(EventFlags.UnlockMidir);
+            _utilityService.SetEvent(GameIds.EventFlags.UnlockMidir);
         }
 
         public void MovePatchesToFirelink()
         {
-            _utilityService.SetMultipleEvents(EventFlags.Patches);
+            _utilityService.SetMultipleEvents(GameIds.EventFlags.Patches);
         }
 
         public void TryEnableFeatures()
@@ -210,6 +240,14 @@ namespace SilkySouls3.ViewModels
             if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj,true);
             if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr,true);
             if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx,true);
+            GameSpeed = _utilityService.GetGameSpeed();
+            AreButtonsEnabled = true;
+        }
+
+        public void DisableFeatures()
+        {
+            IsNoClipEnabled = false;
+            AreButtonsEnabled = false;
         }
     }
 }

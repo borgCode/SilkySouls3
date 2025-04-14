@@ -289,5 +289,47 @@ namespace SilkySouls3.Services
         public void ToggleEventDraw(bool isDrawEventEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.EventDraw,
                 isDrawEventEnabled ? 1 : 0);
+
+        public void SetGameSpeed(float value) => _memoryIo.WriteFloat(Patches.GameSpeed, value);
+        public float GetGameSpeed() => _memoryIo.ReadFloat(Patches.GameSpeed);
+
+        public void OpenMenu(long funcAddr)
+        {
+            if (funcAddr == Funcs.Travel)
+            {
+                var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
+                _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
+            }
+            var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenu");
+            var bytes = BitConverter.GetBytes(funcAddr);
+            Array.Copy(bytes, 0, openMenuBytes, 0x9 + 2, 8);
+            _memoryIo.AllocateAndExecute(openMenuBytes);
+        }
+
+        public void OpenRegularShop(ulong[] shopParams)
+        {
+            var openRegularShopBytes = AsmLoader.GetAsmBytes("OpenRegularShop");
+            var bytes = BitConverter.GetBytes(shopParams[0]);
+            Array.Copy(bytes, 0, openRegularShopBytes, 0x4 + 2, 8);
+            bytes = BitConverter.GetBytes(shopParams[1]);
+            Array.Copy(bytes, 0, openRegularShopBytes, 0xE + 2, 8);
+            bytes = BitConverter.GetBytes(Funcs.RegularShop);
+            Array.Copy(bytes, 0, openRegularShopBytes, 0x1D + 2, 8);
+            _memoryIo.AllocateAndExecute(openRegularShopBytes);
+        }
+        
+        public void OpenMenuWithEvent(long funcAddr, int[] eventRange)
+        {
+            var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenuWithEvent");
+            var bytes = BitConverter.GetBytes(Funcs.CombineMenuFlagAndEventFlag);
+            Array.Copy(bytes, 0, openMenuBytes, 0x0 + 2, 8);
+            bytes = BitConverter.GetBytes(eventRange[0]);
+            Array.Copy(bytes, 0, openMenuBytes, 0xA + 1, 4);
+            bytes = BitConverter.GetBytes(eventRange[1]);
+            Array.Copy(bytes, 0, openMenuBytes, 0x1B + 2, 4);
+            bytes = BitConverter.GetBytes(funcAddr);
+            Array.Copy(bytes, 0, openMenuBytes, 0x2C + 2, 8);
+            _memoryIo.AllocateAndExecute(openMenuBytes);
+        }
     }
 }

@@ -151,6 +151,7 @@ namespace SilkySouls3
         private void DisableFeatures()
         {
             _playerViewModel.DisableFeatures();
+            _utilityViewModel.DisableFeatures();
             _enemyViewModel.DisableFeatures();
             _itemViewModel.DisableFeatures();
         }

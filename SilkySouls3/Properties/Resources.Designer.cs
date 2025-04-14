@@ -293,6 +293,63 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 48             sub    rsp,0x48
+        ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 48             add    rsp,0x48
+        ///c3                      ret.
+        /// </summary>
+        internal static string OpenMenu {
+            get {
+                return ResourceManager.GetString("OpenMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 49 b9 00 00 00 00 00    movabs r9,0x0
+        ///00 00 00
+        ///bb 00 00 00 00          mov    ebx,0x0
+        ///ba 01 00 00 00          mov    edx,0x1
+        ///89 d9                   mov    ecx,ebx
+        ///41 ff d1                call   r9
+        ///ff c3                   inc    ebx
+        ///81 fb 5e 01 00 00       cmp    ebx,0x15e
+        ///7e ec                   jle    
+        ///48 83 ec 48             sub    rsp,0x48
+        ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 48             [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OpenMenuWithEvent {
+            get {
+                return ResourceManager.GetString("OpenMenuWithEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 48             sub    rsp,0x48
+        ///48 ba 00 00 00 00 00    movabs rdx,0x0
+        ///00 00 00
+        ///49 b8 00 00 00 00 00    movabs r8,0x0
+        ///00 00 00
+        ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 48             add    rsp,0x48
+        ///c3                      ret.
+        /// </summary>
+        internal static string OpenRegularShop {
+            get {
+                return ResourceManager.GetString("OpenRegularShop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 2000508C,Aldrich&apos;s Ruby,1,0,0
         ///20005096,Aldrich&apos;s Sapphire,1,0,0
         ///200050E6,Ashen Estus Ring,1,0,0

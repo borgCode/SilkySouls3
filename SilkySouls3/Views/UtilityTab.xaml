@@ -1,214 +1,289 @@
 ﻿<UserControl x:Class="SilkySouls3.Views.UtilityTab"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="500">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <Border Grid.Row="0" 
-                BorderThickness="1" 
-                BorderBrush="#333" 
+
+        <Border Grid.Row="0"
+                BorderThickness="1"
+                BorderBrush="#333"
                 CornerRadius="3"
                 Margin="0,0,0,10">
             <StackPanel Margin="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
+
                     <TextBlock Text="Draw"
-                              Grid.Column="0"/>
+                               Grid.Column="0" />
                 </Grid>
-                
+
                 <UniformGrid Columns="2" Margin="20,5,0,0">
-                    <CheckBox Content="Hitbox View" 
+                    <CheckBox Content="Hitbox View"
                               IsChecked="{Binding IsHitboxEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Player Sound View" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Player Sound View"
                               IsChecked="{Binding IsSoundViewEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Draw Events" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Draw Events"
                               IsChecked="{Binding IsDrawEventEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Enemy Targeting View" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Enemy Targeting View"
                               IsChecked="{Binding IsTargetingViewEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Hide Map" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Hide Map"
                               IsChecked="{Binding IsHideMapEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Hide Objects" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Hide Objects"
                               IsChecked="{Binding IsHideObjectsEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Hide Characters" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Hide Characters"
                               IsChecked="{Binding IsHideCharactersEnabled}"
-                              Margin="0,2"/>
-                    
-                    <CheckBox Content="Hide Sfx" 
+                              Margin="0,2" />
+
+                    <CheckBox Content="Hide Sfx"
                               IsChecked="{Binding IsHideSfxEnabled}"
-                              Margin="0,2"/>
+                              Margin="0,2" />
                 </UniformGrid>
             </StackPanel>
         </Border>
-        
-        <Border Grid.Row="1" 
-                BorderThickness="1" 
-                BorderBrush="#333" 
+
+        <Border Grid.Row="1"
+                BorderThickness="1"
+                BorderBrush="#333"
                 CornerRadius="3"
                 Margin="0,0,0,10">
             <StackPanel Margin="10">
-                <UniformGrid Columns="2" Rows="2">
-                    <!-- First Row, First Column -->
+                <UniformGrid Columns="2" Rows="1">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <CheckBox Content="No Clip"
                                   IsChecked="{Binding IsNoClipEnabled}"
                                   IsEnabled="{Binding AreButtonsEnabled}"
                                   Margin="0,2"
-                                  Grid.Column="0"/>
+                                  Grid.Column="0" />
 
                         <Border
-                            Background="#3498db" 
-                            CornerRadius="10" 
-                            Width="12" 
-                            Height="12" 
-                            Margin="10,0,0,0" 
+                            Background="#3498db"
+                            CornerRadius="10"
+                            Width="12"
+                            Height="12"
+                            Margin="10,0,0,0"
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Grid.Column="1"
                             MouseLeftButtonDown="NoClipInfoBorder_MouseLeftButtonDown">
-                            <TextBlock Text="i" 
-                                       Foreground="White" 
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center" 
-                                       FontWeight="Bold" 
-                                       FontSize="10"/>
+                            <TextBlock Text="i"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       FontSize="10" />
                         </Border>
                     </Grid>
-                    <CheckBox Content="Visible Tomb of the Giants"
-                              IsChecked="{Binding IsFilterRemoveEnabled}"
-                              Margin="0,2"/>
-                    
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <xctk:DoubleUpDown x:Name="SpeedUpDown"
+                                           Value="{Binding GameSpeed}"
+                                           TextAlignment="Center"
+                                           Width="80"
+                                           Minimum="0"
+                                           Maximum="10"
+                                           Increment="0.50"
+                                           FormatString="F2"
+                                           IsEnabled="{Binding AreButtonsEnabled}"
+                                           BorderBrush="#3F3F46" />
+                        <TextBlock Text="Game Speed" VerticalAlignment="Center" Margin="10,0,0,0" />
+                    </StackPanel>
                 </UniformGrid>
             </StackPanel>
         </Border>
-        
-        <Border Grid.Row="2" 
-                BorderThickness="1" 
-                BorderBrush="#333" 
+
+        <Border Grid.Row="2"
+                BorderThickness="1"
+                BorderBrush="#333"
                 CornerRadius="3">
             <StackPanel Margin="10">
-                <TextBlock Text="Warp Locations" 
-                           FontWeight="Bold" 
-                           Margin="0,0,0,10"/>
-                
+                <TextBlock Text="Warp Locations"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10" />
+
                 <ComboBox ItemsSource="{Binding WarpLocations}"
                           DisplayMemberPath="Value"
                           SelectedItem="{Binding SelectedWarp, Mode=TwoWay}"
                           IsEnabled="{Binding AreButtonsEnabled}"
-                          Margin="0,0,0,5"/>
-                          
+                          Margin="0,0,0,5" />
+
                 <Button Content="Warp" Width="100"
                         Click="Warp_Click"
                         IsEnabled="{Binding AreButtonsEnabled}"
-                        Height="25"/>
+                        Height="25" />
             </StackPanel>
         </Border>
-        
+
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <Border Grid.Column="0" 
-                    BorderThickness="1" 
-                    BorderBrush="#333" 
+
+            <Border Grid.Column="0"
+                    BorderThickness="1"
+                    BorderBrush="#333"
                     CornerRadius="3"
                     Margin="0,0,5,0">
-                <StackPanel Margin="10">
-                    <TextBlock Text="Menu" 
-                               FontWeight="Bold" 
-                               Margin="0,0,0,5"/>
-                    
-                    <StackPanel>
-                        <Button Content="Level Up"
-                     
-                                IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="25"
-                                Margin="0,2"/>
-                                  
-                        <Button Content="Attunement"
-              
-                                IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="25"
-                                Margin="0,2"/>
-                        <Button Content="Upgrade Weapon"
-                       
-                                IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="25"
-                                Margin="0,2"/>
-                        
-                        <Button Content="Upgrade Armor"
-                               
-                                IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="25"
-                                Margin="0,2"/>
-                        <!-- <Button Content="Upgrade Armor" -->
-                        <!--         Click="UpgradeArmor_Click" -->
-                        <!--         IsEnabled="{Binding AreButtonsEnabled}" -->
-                        <!--         Height="25" -->
-                        <!--         Margin="0,2"/> -->
-                    </StackPanel>
-                </StackPanel>
+                <TabControl Margin="5">
+                    <TabItem Header="Menu">
+                        <UniformGrid Columns="2" Margin="5">
+                            <Button Content="Travel"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Travel_Click"
+                                    Width="80"
+                                    Height="25"
+                                    Margin="0,5" />
+
+                            <Button Content="Level Up"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="LevelUp_Click"
+                                    Width="80"
+                                    Height="25"
+                                    Margin="0,5" />
+
+                            <Button Content="Upgrade"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="ReinforceWeapon_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            
+                            <Button Content="Repair"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Repair_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            
+                            <Button Content="Infuse"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="InfuseWeapon_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            
+                            <Button Content="Allot Estus"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Height="25"
+                                    Click="AllotEstus_Click"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Attunement"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Height="25"
+                                    Click="Attunement_Click"
+                                    Width="80"
+                                    Margin="0,5" />
+                        </UniformGrid>
+                    </TabItem>
+
+                    <TabItem Header="Shops">
+                        <UniformGrid Columns="2" Margin="5">
+                            <Button Content="Handmaid"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="ShrineHandmaid_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Greirat"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Greirat_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Patches"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Patches_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Orbeck"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Orbeck_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Cornyx"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Cornyx_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Karla"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Karla_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                            <Button Content="Transpose"
+                                    IsEnabled="{Binding AreButtonsEnabled}"
+                                    Click="Transpose_Click"
+                                    Height="25"
+                                    Width="80"
+                                    Margin="0,5" />
+                        </UniformGrid>
+                    </TabItem>
+                </TabControl>
             </Border>
-            
-            <Border Grid.Column="1" 
-                    BorderThickness="1" 
-                    BorderBrush="#333" 
+
+            <Border Grid.Column="1"
+                    BorderThickness="1"
+                    BorderBrush="#333"
                     CornerRadius="3"
                     Margin="5,0,0,0">
                 <StackPanel Margin="10">
-                    <TextBlock Text="Event Manager" 
-                               FontWeight="Bold" 
-                               Margin="0,0,0,10"/>
-                    
+                    <TextBlock Text="Event Manager"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10" />
+
                     <StackPanel>
                         <Button Content="Unlock All Bonfires"
-                            Click="UnlockBonfires_Click"
+                                Click="UnlockBonfires_Click"
                                 IsEnabled="{Binding AreButtonsEnabled}"
                                 Height="25"
-                                Margin="0,2"/>
-                                  
+                                Margin="0,2" />
+
                         <Button Content="Unlock Midir"
-                              Click="UnlockMidir_Click"
+                                Click="UnlockMidir_Click"
                                 IsEnabled="{Binding AreButtonsEnabled}"
                                 Height="25"
-                                Margin="0,5"/>
+                                Margin="0,5" />
                         <Button Content="Patches to Firelink"
                                 Click="MovePatches_Click"
                                 IsEnabled="{Binding AreButtonsEnabled}"
                                 Height="25"
-                                Margin="0,5"/>
+                                Margin="0,5" />
                     </StackPanel>
                 </StackPanel>
             </Border>
