@@ -194,14 +194,14 @@ namespace SilkySouls3.Properties {
         ///   Looks up a localized string similar to 50                      push   rax
         ///48 b8 00 00 00 00 00    movabs rax,0x0
         ///00 00 00
-        ///48 8b 40 28             mov    rax,QWORD PTR [rax+0x28]
         ///48 39 c8                cmp    rax,rcx
-        ///75 03                   jne    17 &lt;original&gt;
+        ///75 03                   jne    13 &lt;exit&gt;
         ///0f 57 c0                xorps  xmm0,xmm0
+        ///000000000013 &lt;exit&gt;:
         ///58                      pop    rax
         ///f3 0f 11 81 b0 01 00    movss  DWORD PTR [rcx+0x1b0],xmm0
         ///00
-        ///e9 00 00 00 00          jmp    25 &lt;original+0xe&gt;.
+        ///e9 00 00 00 00          jmp    21 &lt;exit+0xe&gt;.
         /// </summary>
         internal static string NoClip_InAirTimer {
             get {
@@ -252,18 +252,18 @@ namespace SilkySouls3.Properties {
         ///   Looks up a localized string similar to 51                      push   rcx
         ///48 b9 00 00 00 00 00    movabs rcx,0x0
         ///00 00 00
-        ///48 8b 49 28             mov    rcx,QWORD PTR [rcx+0x28]
         ///48 39 d9                cmp    rcx,rbx
-        ///0f 85 bc 00 00 00       jne    d4 &lt;originalCode&gt;
+        ///0f 85 d4 00 00 00       jne    e8 &lt;originalCode&gt;
         ///50                      push   rax
         ///52                      push   rdx
+        ///41 50                   push   r8
         ///66 0f 6f b3 80 00 00    movdqa xmm6,XMMWORD PTR [rbx+0x80]
         ///00
         ///48 b9 00 00 00 00 00    movabs rcx,0x0
         ///00 00 00
-        ///f3 44 0f 10 b9 c4 01    movss  xmm15,DWORD PTR [rcx+0x1c4]
-        ///00 00
-        ///45 0f c6 ff 00          sh [rest of string was truncated]&quot;;.
+        ///8b 91 ec 03 00 00       mov    edx,DWORD PTR [rcx+0x3ec]
+        ///c1 e2 02                shl    edx,0x2
+        ///f3 44 0f 10 bc 11 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string NoClip_UpdateCoords {
             get {

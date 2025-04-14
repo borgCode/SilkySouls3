@@ -43,7 +43,6 @@ namespace SilkySouls3.Memory
             Offsets.DebugEvent.Base = FindAddressByPattern(Patterns.DebugEvent);
             Offsets.MapItemMan.Base = FindAddressByPattern(Patterns.MapItemMan);
             Offsets.GameDataMan.Base = FindAddressByPattern(Patterns.GameDataMan);
-            Offsets.PadMan.Base = FindAddressByPattern(Patterns.PadMan);
             Offsets.DamageMan.Base = FindAddressByPattern(Patterns.DamageMan);
             Offsets.FieldArea.Base = FindAddressByPattern(Patterns.FieldArea);
             Offsets.GroupMask.Base = FindAddressByPattern(Patterns.GroupMask);
@@ -62,6 +61,7 @@ namespace SilkySouls3.Memory
             TryPatternWithFallback("AddSubGoal", Patterns.AddSubGoal, addr => Offsets.Hooks.AddSubGoal = addr.ToInt64(), saved);
             TryPatternWithFallback("InAirTimer", Patterns.NoClipInAirTimer, addr => Offsets.Hooks.InAirTimer = addr.ToInt64(), saved);
             TryPatternWithFallback("NoClipKeyboard", Patterns.NoClipKeyboard, addr => Offsets.Hooks.NoClipKeyboard = addr.ToInt64(), saved);
+            // Offsets.Hooks.NoClipUpdateCoords = Offsets.Hooks.InAirTimer - 0x21;
             TryPatternWithFallback("NoClipUpdateCoords", Patterns.NoClipUpdateCoords, addr => Offsets.Hooks.NoClipUpdateCoords = addr.ToInt64(), saved);
             
             var triggers = FindAddressesByPattern(Patterns.NoClipTriggers, 2);
@@ -113,7 +113,6 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"DebugEvent.Base: 0x{Offsets.DebugEvent.Base.ToInt64():X}");
             Console.WriteLine($"MapItemMan.Base: 0x{Offsets.MapItemMan.Base.ToInt64():X}");
             Console.WriteLine($"GameDataMan.Base: 0x{Offsets.GameDataMan.Base.ToInt64():X}");
-            Console.WriteLine($"PadMan.Base: 0x{Offsets.PadMan.Base.ToInt64():X}");
             Console.WriteLine($"DamageMan.Base: 0x{Offsets.DamageMan.Base.ToInt64():X}");
             Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
             Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");

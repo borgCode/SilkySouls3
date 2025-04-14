@@ -125,31 +125,45 @@ namespace SilkySouls3.Services
                 var triggerOrigin2 = Hooks.NoClipTriggers2;
                 var updateCoordsOrigin = Hooks.NoClipUpdateCoords;
 
-                var playerCoordBase = _memoryIo.FollowPointers(WorldChrMan.Base,
-                    new[]
-                    {
-                        WorldChrMan.PlayerIns,
-                        (int)WorldChrMan.PlayerInsOffsets.UpdateCoords
-                    }, true);
+                // var playerCoordBase = _memoryIo.FollowPointers(WorldChrMan.Base,
+                //     new[]
+                //     {
+                //         WorldChrMan.PlayerIns,
+                //         (int)WorldChrMan.PlayerInsOffsets.UpdateCoords
+                //     }, true);
+                
+                var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
+                {
+                    WorldChrMan.PlayerIns,
+                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)WorldChrMan.Modules.ChrPhysicsModule,
+                }, true);
 
                 var chrExFollowCam = _memoryIo.FollowPointers(FieldArea.Base, new[]
                 {
                     FieldArea.ChrCam,
                     FieldArea.ChrExFollowCam
                 }, true);
+                
+                var padMan = _memoryIo.FollowPointers(WorldChrMan.Base,
+                    new[]
+                    {
+                        WorldChrMan.PlayerIns,
+                        (int)WorldChrMan.PlayerInsOffsets.PadMan
+                    }, true);
 
-                var movementInfo = _memoryIo.FollowPointers(PadMan.Base, new[]
-                {
-                    PadMan.MovementInfoPtr,
-                    PadMan.VirtualMultiDevice,
-                    PadMan.MovementInfoPtr2
-                }, true);
+                // var movementInfo = _memoryIo.FollowPointers(PadMan.Base, new[]
+                // {
+                //     PadMan.MovementInfoPtr,
+                //     PadMan.VirtualMultiDevice,
+                //     PadMan.MovementInfoPtr2
+                // }, true);
 
                 var inAirTimerBytes = AsmLoader.GetAsmBytes("NoClip_InAirTimer");
-                byte[] bytes = BitConverter.GetBytes(playerCoordBase.ToInt64());
+                byte[] bytes = BitConverter.GetBytes(chrPhysicsModule.ToInt64());
                 Array.Copy(bytes, 0, inAirTimerBytes, 0x1 + 2, bytes.Length);
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(inAirTimerOrigin, 8, inAirTimerCode + 0x25);
-                Array.Copy(bytes, 0, inAirTimerBytes, 0x20 + 1, bytes.Length);
+                bytes = AsmHelper.GetJmpOriginOffsetBytes(inAirTimerOrigin, 8, inAirTimerCode + 0x21);
+                Array.Copy(bytes, 0, inAirTimerBytes, 0x1C + 1, bytes.Length);
                 _memoryIo.WriteBytes(inAirTimerCode, inAirTimerBytes);
 
                 var keyboardCheckBytes = AsmLoader.GetAsmBytes("NoClip_Keyboard");
@@ -159,59 +173,59 @@ namespace SilkySouls3.Services
                     (keyboardOrigin, 7, keyboardCheckCode + 0x2A, 0x25 + 1),
                     (keyboardOrigin, 7, keyboardCheckCode + 0x38, 0x33 + 1)
                 });
-
+                
                 AsmHelper.WriteRelativeOffsets(keyboardCheckBytes, new[]
                 {
                     (keyboardCheckCode.ToInt64() + 0x1C, zDirectionVariable.ToInt64(), 7, 0x1C + 2),
                     (keyboardCheckCode.ToInt64() + 0x2A, zDirectionVariable.ToInt64(), 7, 0x2A + 2),
                 });
-
+                
                 _memoryIo.WriteBytes(keyboardCheckCode, keyboardCheckBytes);
-
+                
                 var triggerBytes = AsmLoader.GetAsmBytes("NoClip_Triggers");
-
+                
                 bytes = AsmHelper.GetJmpOriginOffsetBytes(triggerOrigin, 6, triggerCheckCode + 0x20);
                 Array.Copy(bytes, 0, triggerBytes, 0x1B + 1, 4);
-
+                
                 AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
                 {
                     (triggerCheckCode.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
                     (triggerCheckCode.ToInt64() + 0x17, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
                     (triggerCheckCode.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2),
                 });
-
+                
                 _memoryIo.WriteBytes(triggerCheckCode, triggerBytes);
-
+                
                 bytes = AsmHelper.GetJmpOriginOffsetBytes(triggerOrigin2, 6, triggerCheckCode2 + 0x20);
                 Array.Copy(bytes, 0, triggerBytes, 0x1B + 1, 4);
-
+                
                 AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
                 {
                     (triggerCheckCode2.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
                     (triggerCheckCode2.ToInt64() + 0x17, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
                     (triggerCheckCode2.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2)
                 });
-
+                
                 _memoryIo.WriteBytes(triggerCheckCode2, triggerBytes);
-
+                
                 var updateCoordsBytes = AsmLoader.GetAsmBytes("NoClip_UpdateCoords");
                 AsmHelper.WriteAbsoluteAddresses(updateCoordsBytes, new[]
                 {
-                    (playerCoordBase.ToInt64(), 0x1 + 2),
-                    (movementInfo.ToInt64(), 0x22 + 2),
-                    (chrExFollowCam.ToInt64(), 0x4D + 2),
+                    (chrPhysicsModule.ToInt64(), 0x1 + 2),
+                    (padMan.ToInt64(), 0x20 + 2),
+                    (chrExFollowCam.ToInt64(), 0x55 + 2),
                 });
-
+                
                 AsmHelper.WriteRelativeOffsets(updateCoordsBytes, new[]
                 {
-                    (updateCoordsCode.ToInt64() + 0x90, zDirectionVariable.ToInt64(), 7, 0x90 + 2),
-                    (updateCoordsCode.ToInt64() + 0xA0, zDirectionVariable.ToInt64(), 7, 0xA0 + 2),
-                    (updateCoordsCode.ToInt64() + 0xBC, zDirectionVariable.ToInt64(), 7, 0xBC + 2),
+                    (updateCoordsCode.ToInt64() + 0xA2, zDirectionVariable.ToInt64(), 7, 0xA2 + 2),
+                    (updateCoordsCode.ToInt64() + 0xB2, zDirectionVariable.ToInt64(), 7, 0xB2 + 2),
+                    (updateCoordsCode.ToInt64() + 0xCE, zDirectionVariable.ToInt64(), 7, 0xCE + 2),
                 });
-
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(updateCoordsOrigin, 8, updateCoordsCode + 0xE2);
-                Array.Copy(bytes, 0, updateCoordsBytes, 0xDD + 1, 4);
-
+                
+                bytes = AsmHelper.GetJmpOriginOffsetBytes(updateCoordsOrigin, 8, updateCoordsCode + 0xF6);
+                Array.Copy(bytes, 0, updateCoordsBytes, 0xF1 + 1, 4);
+                
                 _memoryIo.WriteBytes(updateCoordsCode, updateCoordsBytes);
 
 
@@ -224,7 +238,7 @@ namespace SilkySouls3.Services
                 _hookManager.InstallHook(triggerCheckCode2.ToInt64(), triggerOrigin2, new byte[]
                     { 0x48, 0x8B, 0x10, 0x48, 0x89, 0xC1 });
                 _hookManager.InstallHook(updateCoordsCode.ToInt64(), updateCoordsOrigin, new byte[]
-                    { 0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00 });
+                    { 0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00});
             }
             else
             {

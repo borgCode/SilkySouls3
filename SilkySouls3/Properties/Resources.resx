@@ -1446,14 +1446,14 @@ c3                      ret</value>
     <value>50                      push   rax
 48 b8 00 00 00 00 00    movabs rax,0x0
 00 00 00
-48 8b 40 28             mov    rax,QWORD PTR [rax+0x28]
 48 39 c8                cmp    rax,rcx
-75 03                   jne    17 &lt;original&gt;
+75 03                   jne    13 &lt;exit&gt;
 0f 57 c0                xorps  xmm0,xmm0
+000000000013 &lt;exit&gt;:
 58                      pop    rax
 f3 0f 11 81 b0 01 00    movss  DWORD PTR [rcx+0x1b0],xmm0
 00
-e9 00 00 00 00          jmp    25 &lt;original+0xe&gt;</value>
+e9 00 00 00 00          jmp    21 &lt;exit+0xe&gt;</value>
   </data>
   <data name="NoClip_Keyboard" xml:space="preserve">
     <value>41 ff 90 f8 00 00 00    call   QWORD PTR [r8+0xf8]
@@ -1495,57 +1495,66 @@ eb dd                   jmp    15 &lt;original&gt;</value>
     <value>51                      push   rcx
 48 b9 00 00 00 00 00    movabs rcx,0x0
 00 00 00
-48 8b 49 28             mov    rcx,QWORD PTR [rcx+0x28]
 48 39 d9                cmp    rcx,rbx
-0f 85 bc 00 00 00       jne    d4 &lt;originalCode&gt;
+0f 85 d4 00 00 00       jne    e8 &lt;originalCode&gt;
 50                      push   rax
 52                      push   rdx
+41 50                   push   r8
 66 0f 6f b3 80 00 00    movdqa xmm6,XMMWORD PTR [rbx+0x80]
 00
 48 b9 00 00 00 00 00    movabs rcx,0x0
 00 00 00
-f3 44 0f 10 b9 c4 01    movss  xmm15,DWORD PTR [rcx+0x1c4]
-00 00
+8b 91 ec 03 00 00       mov    edx,DWORD PTR [rcx+0x3ec]
+c1 e2 02                shl    edx,0x2
+f3 44 0f 10 bc 11 4c    movss  xmm15,DWORD PTR [rcx+rdx*1+0x34c]
+03 00 00
 45 0f c6 ff 00          shufps xmm15,xmm15,0x0
 b8 cd cc 4c 3e          mov    eax,0x3e4ccccd
 66 44 0f 6e f0          movd   xmm14,eax
 45 0f c6 f6 00          shufps xmm14,xmm14,0x0
 45 0f 59 fe             mulps  xmm15,xmm14
-48 ba 00 00 00 00 00    movabs rdx,0x0
+49 b8 00 00 00 00 00    movabs r8,0x0
 00 00 00
-44 0f 59 ba a0 03 00    mulps  xmm15,XMMWORD PTR [rdx+0x3a0]
+45 0f 59 b8 a0 03 00    mulps  xmm15,XMMWORD PTR [r8+0x3a0]
 00
 41 0f 58 f7             addps  xmm6,xmm15
-f3 44 0f 10 b9 c8 01    movss  xmm15,DWORD PTR [rcx+0x1c8]
-00 00
+8b 91 ec 03 00 00       mov    edx,DWORD PTR [rcx+0x3ec]
+c1 e2 02                shl    edx,0x2
+f3 44 0f 10 bc 11 9c    movss  xmm15,DWORD PTR [rcx+rdx*1+0x39c]
+03 00 00
 45 0f c6 ff 00          shufps xmm15,xmm15,0x0
 b8 9a 99 19 3e          mov    eax,0x3e19999a
 66 44 0f 6e f0          movd   xmm14,eax
 45 0f c6 f6 00          shufps xmm14,xmm14,0x0
 45 0f 59 fe             mulps  xmm15,xmm14
-44 0f 59 ba 80 03 00    mulps  xmm15,XMMWORD PTR [rdx+0x380]
+45 0f 59 b8 80 03 00    mulps  xmm15,XMMWORD PTR [r8+0x380]
 00
 41 0f 58 f7             addps  xmm6,xmm15
-80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 97 &lt;_main+0x97&gt;
-75 07                   jne    a0 &lt;check_up&gt;
+80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # a9 &lt;_main+0xa9&gt;
+75 07                   jne    b2 &lt;check_up&gt;
 b8 cd cc 4c be          mov    eax,0xbe4ccccd
-eb 0e                   jmp    ae &lt;coord_update&gt;
-80 3d 00 00 00 00 02    cmp    BYTE PTR [rip+0x0],0x2        # a7 &lt;check_up+0x7&gt;
-75 1a                   jne    c3 &lt;y&gt;
+eb 0e                   jmp    c0 &lt;coord_update&gt;
+0000000000b2 &lt;check_up&gt;:
+80 3d 00 00 00 00 02    cmp    BYTE PTR [rip+0x0],0x2        # b9 &lt;check_up+0x7&gt;
+75 1a                   jne    d5 &lt;finish&gt;
 b8 cd cc 4c 3e          mov    eax,0x3e4ccccd
+0000000000c0 &lt;coord_update&gt;:
 66 44 0f 6e f8          movd   xmm15,eax
 45 0f c6 ff e1          shufps xmm15,xmm15,0xe1
 41 0f 58 f7             addps  xmm6,xmm15
-c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # c3 &lt;y&gt;
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # d5 &lt;finish&gt;
+0000000000d5 &lt;finish&gt;:
 0f 29 b3 70 01 00 00    movaps XMMWORD PTR [rbx+0x170],xmm6
+41 58                   pop    r8
 5a                      pop    rdx
 58                      pop    rax
 45 0f 57 f6             xorps  xmm14,xmm14
 45 0f 57 ff             xorps  xmm15,xmm15
+0000000000e8 &lt;originalCode&gt;:
 59                      pop    rcx
 66 0f 7f b3 80 00 00    movdqa XMMWORD PTR [rbx+0x80],xmm6
 00
-e9 00 00 00 00          jmp    e2 &lt;originalCode+0xe&gt;</value>
+e9 00 00 00 00          jmp    f6 &lt;originalCode+0xe&gt;</value>
   </data>
   <data name="SetEvent" xml:space="preserve">
     <value>48 b9 00 00 00 00 00    movabs rcx,0x0
