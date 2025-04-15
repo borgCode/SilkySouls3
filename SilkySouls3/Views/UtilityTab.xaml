@@ -76,6 +76,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -84,6 +85,20 @@
                                   IsEnabled="{Binding AreButtonsEnabled}"
                                   Margin="0,2"
                                   Grid.Column="0" />
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,0,0,0">
+                            <xctk:DoubleUpDown x:Name="NoClipSpeedUpDown"
+                                               Value="{Binding NoClipSpeed}"
+                                               TextAlignment="Center"
+                                               Width="80"
+                                               Minimum="0.05"
+                                               Maximum="5.0"
+                                               Increment="0.50"
+                                               FormatString="F2"
+                                               IsEnabled="{Binding IsNoClipEnabled}"
+                                               BorderBrush="#3F3F46" />
+                            <TextBlock Text="Speed" VerticalAlignment="Center" Margin="5,0,0,0" />
+                        </StackPanel>
 
                         <Border
                             Background="#3498db"
@@ -94,7 +109,7 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             MouseLeftButtonDown="NoClipInfoBorder_MouseLeftButtonDown">
                             <TextBlock Text="i"
                                        Foreground="White"
@@ -119,6 +134,9 @@
                         <TextBlock Text="Game Speed" VerticalAlignment="Center" Margin="10,0,0,0" />
                     </StackPanel>
                 </UniformGrid>
+                <CheckBox Content="Disable Events"
+                          IsChecked="{Binding IsDisableEventEnabled}"
+                          Margin="0,4"/>
             </StackPanel>
         </Border>
 
@@ -178,21 +196,21 @@
                                     Height="25"
                                     Width="80"
                                     Margin="0,5" />
-                            
+
                             <Button Content="Repair"
                                     IsEnabled="{Binding AreButtonsEnabled}"
                                     Click="Repair_Click"
                                     Height="25"
                                     Width="80"
                                     Margin="0,5" />
-                            
+
                             <Button Content="Infuse"
                                     IsEnabled="{Binding AreButtonsEnabled}"
                                     Click="InfuseWeapon_Click"
                                     Height="25"
                                     Width="80"
                                     Margin="0,5" />
-                            
+
                             <Button Content="Allot Estus"
                                     IsEnabled="{Binding AreButtonsEnabled}"
                                     Height="25"

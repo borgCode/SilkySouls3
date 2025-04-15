@@ -168,6 +168,7 @@ namespace SilkySouls3.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 40002345,Applause,1,0,0
+        ///400000BE,Ashen Estus Flask,1,0,0
         ///40000845,Basin of Vows,1,0,0
         ///40002328,Beckon,1,0,0
         ///40000173,Binoculars,1,0,0
@@ -181,8 +182,7 @@ namespace SilkySouls3.Properties {
         ///4000086A,Captain&apos;s Ashes,1,0,0
         ///40000850,Carthus Pyromancy Tome,1,0,0
         ///400007DA,Cell Key,1,0,0
-        ///40000869,Champions Bones,1,0,0
-        ///4000013B,Church Guardian Shi [rest of string was truncated]&quot;;.
+        ///40000869,Champions Bones,1 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string KeyItems {
             get {

@@ -1292,6 +1292,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
   </data>
   <data name="KeyItems" xml:space="preserve">
     <value>40002345,Applause,1,0,0
+400000BE,Ashen Estus Flask,1,0,0
 40000845,Basin of Vows,1,0,0
 40002328,Beckon,1,0,0
 40000173,Binoculars,1,0,0

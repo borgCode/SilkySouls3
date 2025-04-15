@@ -25,19 +25,27 @@ namespace SilkySouls3.ViewModels
         private bool _isHideObjectsEnabled;
         private bool _isHideCharactersEnabled;
         private bool _isHideSfxEnabled;
-
+        private bool _isDisableEventEnabled;
+        
+        private const float DefaultNoclipMultiplier = 0.25f;
+        private const uint BaseXSpeedHex = 0x3e4ccccd;
+        private const uint BaseYSpeedHex = 0x3e19999a;
+        private float _noClipSpeedMultiplier = DefaultNoclipMultiplier;
         private float _gameSpeed;
 
         private bool _isNoClipEnabled;
         private bool _areButtonsEnabled;
-        
+
         private bool _wasNoDeathEnabled;
-        
+
         private readonly Dictionary<string, WarpEntry> _warpLocations;
         private KeyValuePair<string, string> _selectedWarp;
-        
-        public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager)
+        private readonly PlayerViewModel _playerViewModel;
+
+        public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager,
+            PlayerViewModel playerViewModel)
         {
+            _playerViewModel = playerViewModel;
             _utilityService = utilityService;
             _hotkeyManager = hotkeyManager;
             _warpLocations = DataLoader.GetWarpEntryDict();
@@ -53,6 +61,17 @@ namespace SilkySouls3.ViewModels
         private void RegisterHotkeys()
         {
             _hotkeyManager.RegisterAction("NoClip", () => { IsNoClipEnabled = !IsNoClipEnabled; });
+            _hotkeyManager.RegisterAction("IncreaseNoClipSpeed", () => 
+            { 
+                if (IsNoClipEnabled)
+                    NoClipSpeed = Math.Min(5, NoClipSpeed + 0.50f);
+            });
+    
+            _hotkeyManager.RegisterAction("DecreaseNoClipSpeed", () => 
+            { 
+                if (IsNoClipEnabled)
+                    NoClipSpeed = Math.Max(0.05f, NoClipSpeed - 0.50f);
+            });
             _hotkeyManager.RegisterAction("IncreaseGameSpeed", () => SetSpeed(Math.Min(10, GameSpeed + 0.50f)));
             _hotkeyManager.RegisterAction("DecreaseGameSpeed", () => SetSpeed(Math.Max(0, GameSpeed - 0.50f)));
         }
@@ -154,6 +173,16 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
             }
         }
+        
+        public bool IsDisableEventEnabled
+        {
+            get => _isDisableEventEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDisableEventEnabled, value)) return;
+                _utilityService.ToggleDisableEvent(_isDisableEventEnabled);
+            }
+        }
 
         public bool IsNoClipEnabled
         {
@@ -165,17 +194,53 @@ namespace SilkySouls3.ViewModels
                 if (_isNoClipEnabled)
                 {
                     _utilityService.ToggleNoClip(_isNoClipEnabled);
-                    // if (_playerService.IsNoDeathOn()) _wasNoDeathEnabled = true;
-                    // else _playerService.ToggleNoDeath(1);
+                    _wasNoDeathEnabled = _playerViewModel.IsNoDeathEnabled;
+                    _playerViewModel.IsNoDeathEnabled = true;
+                    _playerViewModel.IsSilentEnabled = true;
+                    _playerViewModel.IsInvisibleEnabled = true;
                 }
                 else
                 {
                     _utilityService.ToggleNoClip(_isNoClipEnabled);
-                    // _utilityService.DisableNoClip();
-                    // if (_wasNoDeathEnabled) _wasNoDeathEnabled = false;
-                    // else _playerService.ToggleNoDeath(0);
+                    _playerViewModel.IsNoDeathEnabled = _wasNoDeathEnabled;
+                    _playerViewModel.IsSilentEnabled = false;
+                    _playerViewModel.IsInvisibleEnabled = false;
+                    NoClipSpeed = DefaultNoclipMultiplier;
+
                 }
             }
+        }
+
+        public float NoClipSpeed
+        {
+            get => _noClipSpeedMultiplier;
+            set
+            {
+                if (SetProperty(ref _noClipSpeedMultiplier, value))
+                {
+                    SetNoClipSpeed(value);
+                }
+            }
+        }
+
+        public void SetNoClipSpeed(float multiplier)
+        {
+            if (!IsNoClipEnabled) return;
+            if (multiplier < 0.05f) multiplier = 0.05f;
+            else if (multiplier > 5.0f) multiplier = 5.0f;
+            
+            SetProperty(ref _noClipSpeedMultiplier, multiplier);
+            
+            float baseXFloat = BitConverter.ToSingle(BitConverter.GetBytes(BaseXSpeedHex), 0);
+            float baseYFloat = BitConverter.ToSingle(BitConverter.GetBytes(BaseYSpeedHex), 0);
+            
+            float newXFloat = baseXFloat * multiplier;
+            float newYFloat = baseYFloat * multiplier;
+            
+            byte[] xBytes = BitConverter.GetBytes(newXFloat);
+            byte[] yBytes = BitConverter.GetBytes(newYFloat);
+            
+            _utilityService.SetNoClipSpeed(xBytes, yBytes);
         }
 
 

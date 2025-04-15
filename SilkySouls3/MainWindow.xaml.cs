@@ -50,7 +50,7 @@ namespace SilkySouls3
             var settingsService = new SettingsService(_memoryIo);
 
             _playerViewModel = new PlayerViewModel(playerService, hotkeyManager);
-            _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager);
+            _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager, _playerViewModel);
             _enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager);
             _itemViewModel = new ItemViewModel(itemService);
             _settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager);

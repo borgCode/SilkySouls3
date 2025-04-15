@@ -103,6 +103,8 @@ namespace SilkySouls3.Memory
             public static IntPtr Base;
             public const int CoiledSword = 0x5A0F;
             public const byte CoiledSwordBitFlag = 1 << 2;
+            public const int Firelink = 0x5A03;
+            public const byte FirelinkBitFlag = 1 << 7;
         }
 
         public static class GameDataMan
@@ -148,7 +150,7 @@ namespace SilkySouls3.Memory
         {
             public static IntPtr Base;
             public const int EventDraw = 0xA8;
-            public const int DisableEvent = 0xD4; //TODO investigate
+            public const int DisableEvent = 0xD4;
         }
 
         public static class SoloParamRepo

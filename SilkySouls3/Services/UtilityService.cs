@@ -238,6 +238,13 @@ namespace SilkySouls3.Services
             }
         }
 
+        public void SetNoClipSpeed(byte[] xBytes, byte[] yBytes)
+        {
+            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x83 + 1, xBytes);
+            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x42 + 1, yBytes);
+        }
+        
+
         public void ToggleHitboxView(bool isHitboxEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DamageMan.Base) + DamageMan.HitboxView,
                 isHitboxEnabled ? 1 : 0);
@@ -293,6 +300,7 @@ namespace SilkySouls3.Services
                 isDrawEventEnabled ? 1 : 0);
 
         public void SetGameSpeed(float value) => _memoryIo.WriteFloat(Patches.GameSpeed, value);
+
         public float GetGameSpeed() => _memoryIo.ReadFloat(Patches.GameSpeed);
 
         public void OpenMenu(long funcAddr)
@@ -301,6 +309,7 @@ namespace SilkySouls3.Services
             {
                 var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
                 _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
+                _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.Firelink, EventFlagMan.FirelinkBitFlag, true);
             }
             var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenu");
             var bytes = BitConverter.GetBytes(funcAddr);
@@ -319,7 +328,7 @@ namespace SilkySouls3.Services
             Array.Copy(bytes, 0, openRegularShopBytes, 0x1D + 2, 8);
             _memoryIo.AllocateAndExecute(openRegularShopBytes);
         }
-        
+
         public void OpenMenuWithEvent(long funcAddr, int[] eventRange)
         {
             var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenuWithEvent");
@@ -332,6 +341,12 @@ namespace SilkySouls3.Services
             bytes = BitConverter.GetBytes(funcAddr);
             Array.Copy(bytes, 0, openMenuBytes, 0x2C + 2, 8);
             _memoryIo.AllocateAndExecute(openMenuBytes);
+        }
+
+        public void ToggleDisableEvent(bool isDisableEventEnabled)
+        {
+            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.DisableEvent,
+                isDisableEventEnabled ? 1 : 0);
         }
     }
 }

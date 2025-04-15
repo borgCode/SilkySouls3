@@ -26,6 +26,8 @@ namespace SilkySouls3.ViewModels
         private string _decreasePlayerSpeedHotkeyText;
         private string _increaseGameSpeedHotkeyText;
         private string _decreaseGameSpeedHotkeyText;
+        private string _increaseNoClipSpeedHotkeyText;
+        private string _decreaseNoClipSpeedHotkeyText;
         
         private string _disableTargetAiHotkeyText;
         private string _freezeHpHotkeyText;
@@ -138,6 +140,18 @@ namespace SilkySouls3.ViewModels
         {
             get => _decreaseGameSpeedHotkeyText;
             set => SetProperty(ref _decreaseGameSpeedHotkeyText, value);
+        }
+        
+        public string IncreaseNoClipSpeedHotkeyText
+        {
+            get => _increaseNoClipSpeedHotkeyText;
+            set => SetProperty(ref _increaseNoClipSpeedHotkeyText, value);
+        }
+
+        public string DecreaseNoClipSpeedHotkeyText
+        {
+            get => _decreaseNoClipSpeedHotkeyText;
+            set => SetProperty(ref _decreaseNoClipSpeedHotkeyText, value);
         }
         
         public string NoClipHotkeyText
@@ -304,6 +318,8 @@ namespace SilkySouls3.ViewModels
                 { "IncreaseGameSpeed", text => IncreaseGameSpeedHotkeyText = text },
                 { "DecreaseGameSpeed", text => DecreaseGameSpeedHotkeyText = text },
                 { "NoClip", text => NoClipHotkeyText = text },
+                { "IncreaseNoClipSpeed", text => IncreaseNoClipSpeedHotkeyText = text },
+                { "DecreaseNoClipSpeed", text => DecreaseNoClipSpeedHotkeyText = text },
                 { "SetSwordPhase", text => SetSwordPhaseHotkeyText = text },
                 { "SetLancePhase", text => SetLancePhaseHotkeyText = text },
                 { "SetCurvedPhase", text => SetCurvedPhaseHotkeyText = text },
@@ -494,6 +510,7 @@ namespace SilkySouls3.ViewModels
             _isEnableHotkeysEnabled = Properties.Settings.Default.EnableHotkeys;
             if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
             else _hotkeyManager.Stop();
+            OnPropertyChanged(nameof(IsEnableHotkeysEnabled));
         }
         
     }
