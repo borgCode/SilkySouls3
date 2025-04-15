@@ -106,16 +106,6 @@ namespace SilkySouls3.Memory
             Mov64
         );
 
-        public static readonly Pattern PadMan = new Pattern(
-            new byte[]
-            {
-                0x83, 0xEC, 0x20, 0x4C, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0xD9, 0x4D, 0x85, 0xC0
-            },
-            "xxxxxx????xxxxxx",
-            0x3,
-            Mov64
-        );
-
         public static readonly Pattern DamageMan = new Pattern(
             new byte[] { 0x8B, 0x53, 0x2C, 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00 },
             "xxxxxx????",

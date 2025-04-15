@@ -17,7 +17,7 @@ namespace SilkySouls3.ViewModels
         private string _restorePos1HotkeyText;
         private string _restorePos2HotkeyText;
         private string _rtsrHotkeyText;
-        // private string _noClipHotkeyText;
+        private string _noClipHotkeyText;
         private string _noDeathHotkeyText;
         private string _oneShotHotkeyText;
         
@@ -26,6 +26,19 @@ namespace SilkySouls3.ViewModels
         private string _decreasePlayerSpeedHotkeyText;
         private string _increaseGameSpeedHotkeyText;
         private string _decreaseGameSpeedHotkeyText;
+        
+        private string _disableTargetAiHotkeyText;
+        private string _freezeHpHotkeyText;
+        private string _increaseTargetSpeedHotkeyText;
+        private string _decreaseTargetSpeedHotkeyText;
+        private string _enableTargetOptionsHotkeyText;
+        private string _showAllResistancesHotkeyText;
+        private string _targetRepeatActHotkeyText;
+        
+        private string _disableAiHotkeyText;
+        private string _allNoDeathHotkeyText;
+        private string _allNoDamageHotkeyText;
+        private string _allRepeatActHotkeyText;
         
         private string _setSwordPhaseHotkeyText;
         private string _setLancePhaseHotkeyText;
@@ -126,11 +139,89 @@ namespace SilkySouls3.ViewModels
             get => _decreaseGameSpeedHotkeyText;
             set => SetProperty(ref _decreaseGameSpeedHotkeyText, value);
         }
+        
+        public string NoClipHotkeyText
+        {
+            get => _noClipHotkeyText;
+            set => SetProperty(ref _noClipHotkeyText, value);
+        }
+        
+        public string QuitoutHotkeyText
+        {
+            get => _quitoutHotkeyText;
+            set => SetProperty(ref _quitoutHotkeyText, value);
+        }
 
         public string SetSwordPhaseHotkeyText
         {
             get => _setSwordPhaseHotkeyText;
             set => SetProperty(ref _setSwordPhaseHotkeyText, value);
+        }
+        
+        public string DisableTargetAiHotkeyText
+        {
+            get => _disableTargetAiHotkeyText;
+            set => SetProperty(ref _disableTargetAiHotkeyText, value);
+        }
+        
+        public string FreezeHpHotkeyText
+        {
+            get => _freezeHpHotkeyText;
+            set => SetProperty(ref _freezeHpHotkeyText, value);
+        }
+        
+        public string TargetRepeatActHotkeyText
+        {
+            get => _targetRepeatActHotkeyText;
+            set => SetProperty(ref _targetRepeatActHotkeyText, value);
+        }
+        
+        public string IncreaseTargetSpeedHotkeyText
+        {
+            get => _increaseTargetSpeedHotkeyText;
+            set => SetProperty(ref _increaseTargetSpeedHotkeyText, value);
+        }
+        
+        public string DecreaseTargetSpeedHotkeyText
+        {
+            get => _decreaseTargetSpeedHotkeyText;
+            set => SetProperty(ref _decreaseTargetSpeedHotkeyText, value);
+        }
+        
+        public string EnableTargetOptionsHotkeyText
+        {
+            get => _enableTargetOptionsHotkeyText;
+            set => SetProperty(ref _enableTargetOptionsHotkeyText, value);
+        }
+        
+        public string ShowAllResistancesHotkeyText
+        {
+            get => _showAllResistancesHotkeyText;
+            set => SetProperty(ref _showAllResistancesHotkeyText, value);
+        }
+        
+        public string DisableAiHotkeyText
+        {
+            get => _disableAiHotkeyText;
+            set => SetProperty(ref _disableAiHotkeyText, value);
+        }
+        
+        public string AllNoDeathHotkeyText
+        {
+            get => _allNoDeathHotkeyText;
+            set => SetProperty(ref _allNoDeathHotkeyText, value);
+        }
+        
+        public string AllNoDamageHotkeyText
+        {
+            get => _allNoDamageHotkeyText;
+            set => SetProperty(ref _allNoDamageHotkeyText, value);
+        }
+        
+        public string AllRepeatActHotkeyText
+        {
+            get => _allRepeatActHotkeyText;
+            set => SetProperty(ref _allRepeatActHotkeyText, value);
         }
 
         public string SetLancePhaseHotkeyText
@@ -175,11 +266,6 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _endlessSoulmassHotkeyText, value);
         }
         
-        public string QuitoutHotkeyText
-        {
-            get => _quitoutHotkeyText;
-            set => SetProperty(ref _quitoutHotkeyText, value);
-        }
         
         #endregion
         
@@ -212,15 +298,12 @@ namespace SilkySouls3.ViewModels
                 { "RTSR", text => RtsrHotkeyText = text },
                 { "NoDeath", text => NoDeathHotkeyText = text },
                 { "OneShot", text => OneShotHotkeyText = text },
-                // { "RestoreSpellCasts", text => RestoreSpellCastsHotkeyText = text },
                 { "TogglePlayerSpeed", text => TogglePlayerSpeedHotkeyText = text },
                 { "IncreasePlayerSpeed", text => IncreasePlayerSpeedHotkeyText = text },
                 { "DecreasePlayerSpeed", text => DecreasePlayerSpeedHotkeyText = text },
                 { "IncreaseGameSpeed", text => IncreaseGameSpeedHotkeyText = text },
                 { "DecreaseGameSpeed", text => DecreaseGameSpeedHotkeyText = text },
-                // { "NoClip", text => NoClipHotkeyText = text },
-                // { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
-                
+                { "NoClip", text => NoClipHotkeyText = text },
                 { "SetSwordPhase", text => SetSwordPhaseHotkeyText = text },
                 { "SetLancePhase", text => SetLancePhaseHotkeyText = text },
                 { "SetCurvedPhase", text => SetCurvedPhaseHotkeyText = text },
@@ -229,17 +312,18 @@ namespace SilkySouls3.ViewModels
                 { "PhaseLock", text => PhaseLockHotkeyText = text },
                 { "CastSoulmass", text => CastSoulmassHotkeyText = text },
                 { "EndlessSoulmass", text => EndlessSoulmassHotkeyText = text },
-                
-                
-                // { "FreezeHp", text => FreezeHpHotkeyText = text },
+                { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
+                { "FreezeHp", text => FreezeHpHotkeyText = text },
+                { "TargetRepeatAct", text => TargetRepeatActHotkeyText = text },
+                { "IncreaseTargetSpeed", text => IncreaseTargetSpeedHotkeyText = text },
+                { "DecreaseTargetSpeed", text => DecreaseTargetSpeedHotkeyText = text },
+                { "EnableTargetOptions", text => EnableTargetOptionsHotkeyText = text },
+                { "ShowAllResistances", text => ShowAllResistancesHotkeyText = text },
+                { "DisableAi", text => DisableAiHotkeyText = text },
+                { "AllNoDeath", text => AllNoDeathHotkeyText = text },
+                { "AllNoDamage", text => AllNoDamageHotkeyText = text },
+                { "AllRepeatAct", text => AllRepeatActHotkeyText = text },
                 { "Quitout", text => QuitoutHotkeyText = text },
-                // { "DisableAi", text => DisableAiHotkeyText = text },
-                // { "AllNoDeath", text => AllNoDeathHotkeyText = text },
-                // { "AllNoDamage", text => AllNoDamageHotkeyText = text },
-                // { "IncreaseTargetSpeed", text => IncreaseTargetSpeedHotkeyText = text },
-                // { "DecreaseTargetSpeed", text => DecreaseTargetSpeedHotkeyText = text },
-                // { "EnableTargetOptions", text => EnableTargetOptionsHotkeyText = text },
-                // { "ShowAllResistances", text => ShowAllResistancesHotkeyText = text },
             };
             
             LoadHotkeyDisplays();

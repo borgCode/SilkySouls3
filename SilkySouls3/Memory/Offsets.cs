@@ -11,7 +11,6 @@ namespace SilkySouls3.Memory
 
             public enum PlayerInsOffsets
             {
-                UpdateCoords = 0x18,
                 PadMan = 0x58,
                 CharFlags1 = 0x1EE8,
                 Modules = 0x1F90,
@@ -241,15 +240,7 @@ namespace SilkySouls3.Memory
             public const int ChrCam = 0x28;
             public const int ChrExFollowCam = 0x60;
         }
-
-        // public static class PadMan
-        // {
-        //     public static IntPtr Base;
-        //     public const int MovementInfoPtr = 0x18;
-        //     public const int VirtualMultiDevice = 0x8;
-        //     public const int MovementInfoPtr2 = 0x150;
-        // }
-
+        
         public static class GroupMask
         {
             public static IntPtr Base;

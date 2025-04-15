@@ -8,7 +8,6 @@ namespace SilkySouls3.Services
     public class PlayerService
     {
         private readonly MemoryIo _memoryIo;
-        private readonly HookManager _hookManager;
         
         private readonly Dictionary<int, int> _lowLevelSoulRequirements = new Dictionary<int, int>
         {
@@ -16,10 +15,9 @@ namespace SilkySouls3.Services
             { 11, 829 },
         };
 
-        public PlayerService(MemoryIo memoryIo, HookManager hookManager)
+        public PlayerService(MemoryIo memoryIo)
         {
             _memoryIo = memoryIo;
-            _hookManager = hookManager;
         }
 
         public int GetHp() =>

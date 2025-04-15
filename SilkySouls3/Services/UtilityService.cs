@@ -124,13 +124,7 @@ namespace SilkySouls3.Services
                 var triggerOrigin = Hooks.NoClipTriggers;
                 var triggerOrigin2 = Hooks.NoClipTriggers2;
                 var updateCoordsOrigin = Hooks.NoClipUpdateCoords;
-
-                // var playerCoordBase = _memoryIo.FollowPointers(WorldChrMan.Base,
-                //     new[]
-                //     {
-                //         WorldChrMan.PlayerIns,
-                //         (int)WorldChrMan.PlayerInsOffsets.UpdateCoords
-                //     }, true);
+                
                 
                 var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
                 {
@@ -151,13 +145,7 @@ namespace SilkySouls3.Services
                         WorldChrMan.PlayerIns,
                         (int)WorldChrMan.PlayerInsOffsets.PadMan
                     }, true);
-
-                // var movementInfo = _memoryIo.FollowPointers(PadMan.Base, new[]
-                // {
-                //     PadMan.MovementInfoPtr,
-                //     PadMan.VirtualMultiDevice,
-                //     PadMan.MovementInfoPtr2
-                // }, true);
+                
 
                 var inAirTimerBytes = AsmLoader.GetAsmBytes("NoClip_InAirTimer");
                 byte[] bytes = BitConverter.GetBytes(chrPhysicsModule.ToInt64());

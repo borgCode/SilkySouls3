@@ -86,11 +86,30 @@ namespace SilkySouls3.ViewModels
             });
             _hotkeyManager.RegisterAction("FreezeHp", () => { IsFreezeHealthEnabled = !IsFreezeHealthEnabled; });
             _hotkeyManager.RegisterAction("DisableTargetAi",
-                () => { IsDisableTargetAiEnabled = !IsDisableTargetAiEnabled; });
-            _hotkeyManager.RegisterAction("IncreaseTargetSpeed", () => SetSpeed(Math.Min(5, TargetSpeed + 0.25f)));
-            _hotkeyManager.RegisterAction("DecreaseTargetSpeed", () => SetSpeed(Math.Max(0, TargetSpeed - 0.25f)));
-            //TODO repeat act
-            //TODO GLobals
+                () =>
+                {
+                    if (!IsValidTarget) return;
+                    IsDisableTargetAiEnabled = !IsDisableTargetAiEnabled;
+                });
+            _hotkeyManager.RegisterAction("IncreaseTargetSpeed", () =>
+            {
+                if (!IsValidTarget) return;
+                SetSpeed(Math.Min(5, TargetSpeed + 0.25f));
+            });
+            _hotkeyManager.RegisterAction("DecreaseTargetSpeed", () =>
+            {
+                if (!IsValidTarget) return;
+                SetSpeed(Math.Max(0, TargetSpeed - 0.25f));
+            });
+            _hotkeyManager.RegisterAction("TargetRepeatAct", () =>
+            {
+                if (!IsValidTarget) return;
+                IsRepeatActEnabled = !IsRepeatActEnabled;
+            });
+            _hotkeyManager.RegisterAction("DisableAi", () => { IsAllDisableAiEnabled = !IsAllDisableAiEnabled; });
+            _hotkeyManager.RegisterAction("AllNoDeath", () => { IsAllNoDeathEnabled = !IsAllNoDeathEnabled; });
+            _hotkeyManager.RegisterAction("AllNoDamage", () => { IsAllNoDamageEnabled = !IsAllNoDamageEnabled; });
+            _hotkeyManager.RegisterAction("AllRepeatAct", () => { IsAllRepeatActEnabled = !IsAllRepeatActEnabled; });
             _hotkeyManager.RegisterAction("SetSwordPhase", () => SetCinderPhase(0));
             _hotkeyManager.RegisterAction("SetLancePhase", () => SetCinderPhase(1));
             _hotkeyManager.RegisterAction("SetCurvedPhase", () => SetCinderPhase(2));
@@ -211,6 +230,7 @@ namespace SilkySouls3.ViewModels
                     ShowPoise = false;
                     ShowBleed = false;
                     ShowPoison = false;
+                    ShowFrost = false;
                     ShowToxic = false;
                 }
             }
@@ -224,6 +244,7 @@ namespace SilkySouls3.ViewModels
                 ShowBleed = true;
                 ShowPoise = true;
                 ShowPoison = true;
+                ShowFrost = true;
                 ShowToxic = true;
             }
             else
@@ -231,6 +252,7 @@ namespace SilkySouls3.ViewModels
                 ShowBleed = false;
                 ShowPoise = false;
                 ShowPoison = false;
+                ShowFrost = false;
                 ShowToxic = false;
             }
         }
@@ -525,9 +547,6 @@ namespace SilkySouls3.ViewModels
             _cinderService.CastSoulMass();
         }
         
-        
-        
-
         public void TryEnableFeatures()
         {
             if (IsTargetOptionsEnabled)

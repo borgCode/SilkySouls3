@@ -42,7 +42,7 @@ namespace SilkySouls3
             _aobScanner = new AoBScanner(_memoryIo);
             var hotkeyManager = new HotkeyManager(_memoryIo);
 
-            var playerService = new PlayerService(_memoryIo, _hookManager);
+            var playerService = new PlayerService(_memoryIo);
             var utilityService = new UtilityService(_memoryIo, _hookManager);
             var enemyService = new EnemyService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);
@@ -67,9 +67,7 @@ namespace SilkySouls3
             MainTabControl.Items.Add(new TabItem { Header = "Items", Content = itemTab });
             MainTabControl.Items.Add(new TabItem { Header = "Settings", Content = settingsTab });
             
-            
             _settingsViewModel.ApplyStartUpOptions();
-            
             
             _gameLoadedTimer = new DispatcherTimer
             {
