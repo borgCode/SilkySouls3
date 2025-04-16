@@ -23,13 +23,13 @@
                     <ColumnDefinition Width="Auto" MinWidth="150" />
                 </Grid.ColumnDefinitions>
 
-                <!-- <CheckBox Grid.Column="0" Content="Fast Quitout (Skips dialogs and online check)" -->
-                <!--           IsChecked="{Binding IsFastQuitoutEnabled}" -->
-                <!--           Margin="0,0,10,0" /> -->
-
+                
                 <CheckBox Grid.Column="0" Content="Enable Hotkeys"
                           IsChecked="{Binding IsEnableHotkeysEnabled}"
                           Margin="0,0,0,0" />
+                <CheckBox Grid.Column="1" Content="Stutter Fix"
+                          IsChecked="{Binding IsStutterFixEnabled}"
+                          Margin="0,0,10,0" />
             </Grid>
 
             <Separator Margin="0,0,0,10" />
@@ -38,7 +38,7 @@
             <TabControl x:Name="HotkeyCategoriesTabControl" Margin="0,5,0,0">
                 <TabItem Header="Player">
                     <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
+                        <StackPanel Margin="5,0,0,0">
                             <Grid Margin="0,5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="125" />
@@ -220,7 +220,7 @@
 
                 <TabItem Header="Utility">
                     <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
+                        <StackPanel Margin="5,0,0,0">
                             <Grid Margin="0,5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="125" />
@@ -319,8 +319,7 @@
                 
                 <TabItem Header="Enemies">
                     <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-
+                        <StackPanel Margin="5,0,0,0">
                             <Grid Margin="0,5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="125" />

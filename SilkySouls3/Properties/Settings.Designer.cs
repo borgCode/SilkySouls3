@@ -57,5 +57,17 @@ namespace SilkySouls3.Properties {
                 this["EnableHotkeys"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StutterFix {
+            get {
+                return ((bool)(this["StutterFix"]));
+            }
+            set {
+                this["StutterFix"] = value;
+            }
+        }
     }
 }

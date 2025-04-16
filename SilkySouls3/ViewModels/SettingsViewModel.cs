@@ -11,6 +11,8 @@ namespace SilkySouls3.ViewModels
     {
         #region property setters
         private bool _isEnableHotkeysEnabled;
+        private bool _isStutterFixEnabled;
+        private bool _isLoaded;
         
         private string _savePos1HotkeyText;
         private string _savePos2HotkeyText;
@@ -69,6 +71,18 @@ namespace SilkySouls3.ViewModels
                     if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
                     else _hotkeyManager.Stop();
                 }
+            }
+        }
+        
+        public bool IsStutterFixEnabled
+        {
+            get => _isStutterFixEnabled;
+            set
+            {
+                if (!SetProperty(ref _isStutterFixEnabled, value)) return;
+                Properties.Settings.Default.StutterFix = value;
+                Properties.Settings.Default.Save();
+                if (_isLoaded) _settingsService.ToggleStutterFix(_isStutterFixEnabled);
             }
         }
 
@@ -508,6 +522,12 @@ namespace SilkySouls3.ViewModels
 
             StopSettingHotkey();
         }
+        
+        public void ApplyLoadedOptions()
+        {
+            _isLoaded = true;
+            if (IsStutterFixEnabled) _settingsService.ToggleStutterFix(true);
+        }
 
         public void ApplyStartUpOptions()
         {
@@ -515,7 +535,10 @@ namespace SilkySouls3.ViewModels
             if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
             else _hotkeyManager.Stop();
             OnPropertyChanged(nameof(IsEnableHotkeysEnabled));
+            _isStutterFixEnabled = Properties.Settings.Default.StutterFix;
+            OnPropertyChanged(nameof(IsStutterFixEnabled));
         }
-        
+
+        public void ResetAttached() => _isLoaded = false;
     }
 }

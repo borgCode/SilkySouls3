@@ -196,6 +196,16 @@ namespace SilkySouls3.Memory
             Cmp
         );
 
+        public static readonly Pattern UserInputManager = new Pattern(
+            new byte[]
+            {
+                0x48, 0x89, 0x5F, 0x38, 0x48, 0x89, 0x6F, 0x58
+            },
+            "xxxxxxxx",
+            0x8,
+            Mov64
+        );
+        
 
         //Hooks
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static SilkySouls3.Memory.RipType;
 
 namespace SilkySouls3.Memory
 {
@@ -46,6 +47,7 @@ namespace SilkySouls3.Memory
             Offsets.DamageMan.Base = FindAddressByPattern(Patterns.DamageMan);
             Offsets.FieldArea.Base = FindAddressByPattern(Patterns.FieldArea);
             Offsets.GroupMask.Base = FindAddressByPattern(Patterns.GroupMask);
+            Offsets.UserInputManager.Base = FindAddressByPattern(Patterns.UserInputManager);
 
             
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
@@ -116,6 +118,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"DamageMan.Base: 0x{Offsets.DamageMan.Base.ToInt64():X}");
             Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
             Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
+            Console.WriteLine($"UserInputManager.Base: 0x{Offsets.UserInputManager.Base.ToInt64():X}");
             
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
@@ -176,26 +179,26 @@ namespace SilkySouls3.Memory
 
                 switch (pattern.RipType)
                 {
-                    case RipType.None:
+                    case None:
                         addresses[i] = instructionAddress;
                         break;
-                    case RipType.Mov64:
+                    case Mov64:
                         int stdOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
                         addresses[i] = IntPtr.Add(instructionAddress, stdOffset + 7);
                         break;
-                    case RipType.Mov32:
+                    case Mov32:
                         int mov32Offset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
                         addresses[i] = IntPtr.Add(instructionAddress, mov32Offset + 6);
                         break;
-                    case RipType.Cmp:
+                    case Cmp:
                         int cmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
                         addresses[i] = IntPtr.Add(instructionAddress, cmpOffset + 7);
                         break;
-                    case RipType.QwordCmp:
+                    case QwordCmp:
                         int qwordCmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
                         addresses[i] = IntPtr.Add(instructionAddress, qwordCmpOffset + 8);
                         break;
-                    case RipType.Call:
+                    case Call:
                         int callOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 1));
                         addresses[i] = IntPtr.Add(instructionAddress, callOffset + 5);
                         break;

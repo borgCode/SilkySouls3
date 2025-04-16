@@ -125,6 +125,7 @@ namespace SilkySouls3
             {
                 _hookManager.ClearHooks();
                 DisableFeatures();
+                _settingsViewModel.ResetAttached();
                 _loaded = false;
                 _hasAllocatedMemory = false;
                 _hasAppliedNoLogo = false;
@@ -138,7 +139,7 @@ namespace SilkySouls3
             _utilityViewModel.TryEnableFeatures();
             _enemyViewModel.TryEnableFeatures();
             _itemViewModel.TryEnableFeatures();
-
+            _settingsViewModel.ApplyLoadedOptions();
         }
 
         private void TrySetGameStartPrefs()

@@ -252,6 +252,12 @@ namespace SilkySouls3.Memory
             public const int Sfx = 0x3;
         }
 
+        public static class UserInputManager
+        {
+            public static IntPtr Base;
+            public const int SteamInputEnum = 0x24B;
+        }
+
         public static class Patches
         {
             public static IntPtr NoLogo;

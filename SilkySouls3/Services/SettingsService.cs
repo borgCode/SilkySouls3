@@ -13,18 +13,11 @@ namespace SilkySouls3.Services
             _memoryIo = memoryIo;
         }
         
-        
-
-        
         public void Quitout() =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(MenuMan.Base) + (int)MenuMan.MenuManOffsets.QuitOut, 1);
         
-        
-        //
-        // public void ToggleFastQuitout(int value)
-        // {
-        //     _memoryIo.WriteByte(Offsets.QuitoutPatch, value);
-        // }
-
+        public void ToggleStutterFix(bool isEnabled) => 
+            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(UserInputManager.Base) + UserInputManager.SteamInputEnum,
+                isEnabled? 1 : 0);
     }
 }

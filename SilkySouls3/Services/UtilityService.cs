@@ -178,7 +178,7 @@ namespace SilkySouls3.Services
                 AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
                 {
                     (triggerCheckCode.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
-                    (triggerCheckCode.ToInt64() + 0x17, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
+                    (triggerCheckCode.ToInt64() + 0x20, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
                     (triggerCheckCode.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2),
                 });
                 
@@ -190,7 +190,7 @@ namespace SilkySouls3.Services
                 AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
                 {
                     (triggerCheckCode2.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
-                    (triggerCheckCode2.ToInt64() + 0x17, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
+                    (triggerCheckCode2.ToInt64() + 0x20, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
                     (triggerCheckCode2.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2)
                 });
                 
