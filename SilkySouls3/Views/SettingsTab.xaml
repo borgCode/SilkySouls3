@@ -34,565 +34,590 @@
 
             <Separator Margin="0,0,0,10" />
             <TextBlock Text="Hotkey Bindings" FontWeight="Bold" Margin="0,0,0,10" />
+            
+            <TabControl x:Name="HotkeyCategoriesTabControl" Margin="0,5,0,0">
+                <TabItem Header="Player">
+                    <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-            <ScrollViewer MaxHeight="350" VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Save Pos 1:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding SavePos1HotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SavePos1"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-
-                        <TextBlock Grid.Column="3" Text="Restore Pos 1:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding RestorePos1HotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="RestorePos1"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
+                                <TextBlock Grid.Column="0" Text="RTSR Setup:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding RtsrHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="RTSR"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="3" Text="No Death:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding NoDeathHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="NoDeath"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="0" Text="Save Pos 2:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding SavePos2HotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SavePos2"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="One Shot:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding OneShotHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="OneShot"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="3" Text="Restore Pos 2:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding RestorePos2HotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="RestorePos2"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
+                                <TextBlock Grid.Column="3" Text="No Damage:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding NoDamagePlayerHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="PlayerNoDamage"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Save Pos 1:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding SavePos1HotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SavePos1"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Restore Pos 1:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding RestorePos1HotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="RestorePos1"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
 
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="No Death:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding NoDeathHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="NoDeath"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
+                                <TextBlock Grid.Column="0" Text="Save Pos 2:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding SavePos2HotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SavePos2"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="3" Text="Toggle Player Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding TogglePlayerSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="TogglePlayerSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
+                                <TextBlock Grid.Column="3" Text="Restore Pos 2:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding RestorePos2HotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="RestorePos2"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="One Shot:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding OneShotHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="OneShot"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="3" Text="Increase Player Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding IncreasePlayerSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="IncreasePlayerSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
+                                <TextBlock Grid.Column="0" Text="Increase Player Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding IncreasePlayerSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="IncreasePlayerSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                                <TextBlock Grid.Column="3" Text="Decrease Player Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding DecreasePlayerSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="DecreasePlayerSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="RTSR Setup:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding RtsrHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="RTSR"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
+                                <TextBlock Grid.Column="0" Text="Toggle Player Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding TogglePlayerSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="TogglePlayerSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
 
-                        <TextBlock Grid.Column="3" Text="Decrease Player Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding DecreasePlayerSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="DecreasePlayerSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
+                <TabItem Header="Utility">
+                    <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                    </Grid>
-                    
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="No Clip:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding NoClipHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="NoClip"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="0" Text="Increase Game Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding IncreaseGameSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="IncreaseGameSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Decrease Game Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding DecreaseGameSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="DecreaseGameSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="3" Text="Quitout:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding QuitoutHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="Quitout"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
 
-                        <TextBlock Grid.Column="0" Text="Increase NoClip Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding IncreaseNoClipSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="IncreaseNoClipSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Decrease NoClip Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding DecreaseNoClipSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="DecreaseNoClipSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Increase Game Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding IncreaseGameSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="IncreaseGameSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="0" Text="No Clip:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding NoClipHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="NoClip"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Quitout:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding QuitoutHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="Quitout"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="3" Text="Decrease Game Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding DecreaseGameSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="DecreaseGameSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
 
-                        <TextBlock Grid.Column="0" Text="Enable Target Options:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding EnableTargetOptionsHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="EnableTargetOptions"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-    
-                        <TextBlock Grid.Column="3" Text="Show Target Resist:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding ShowAllResistancesHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="ShowAllResistances"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <TextBlock Grid.Column="0" Text="Freeze HP:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding FreezeHpHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="FreezeHp"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        <TextBlock Grid.Column="3" Text="Disable Target AI:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding DisableTargetAiHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="DisableTargetAi"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <TextBlock Grid.Column="0" Text="Target Repeat Action:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding TargetRepeatActHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="TargetRepeatAct"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        <!-- <TextBlock Grid.Column="3" Text="Disable Target AI:" VerticalAlignment="Center" -->
-                        <!--            HorizontalAlignment="Left" /> -->
-                        <!-- <TextBox Grid.Column="4" -->
-                        <!--          Margin="5,0,-10,0" -->
-                        <!--          Text="{Binding DisableTargetAiHotkeyText}" -->
-                        <!--          Style="{StaticResource HotkeyTextBoxStyle}" -->
-                        <!--          GotFocus="HotkeyTextBox_GotFocus" -->
-                        <!--          LostFocus="HotkeyTextBox_LostFocus" -->
-                        <!--          Tag="DisableTargetAi" -->
-                        <!--          KeyDown="HotkeyTextBox_KeyDown" /> -->
-                    </Grid>
-                    
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Increase Target Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding IncreaseTargetSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="IncreaseTargetSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-    
-                        <TextBlock Grid.Column="3" Text="Decrease Target Speed:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding DecreaseTargetSpeedHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="DecreaseTargetSpeed"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
+                                <TextBlock Grid.Column="0" Text="Increase NoClip Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding IncreaseNoClipSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="IncreaseNoClipSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <TextBlock Grid.Column="0" Text="All No Damage:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding AllNoDamageHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="AllNoDamage"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Disable All AI:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding DisableAiHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="DisableAi"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
+                                <TextBlock Grid.Column="3" Text="Decrease NoClip Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding DecreaseNoClipSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="DecreaseNoClipSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                
+                <TabItem Header="Enemies">
+                    <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
 
-                    </Grid>
-                    
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="All No Death:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding AllNoDeathHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="AllNoDeath"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="All Repeat Action:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding AllRepeatActHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="AllRepeatAct"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="All No Damage:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding AllNoDamageHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="AllNoDamage"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="0" Text="Cinder Sword Phase:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding SetSwordPhaseHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SetSwordPhase"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Cinder Lance Phase:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding SetLancePhaseHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SetLancePhase"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="3" Text="Disable All AI:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding DisableAiHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="DisableAi"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
 
-                        <TextBlock Grid.Column="0" Text="Cinder Curved Phase:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding SetCurvedPhaseHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SetCurvedPhase"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Cinder Staff Phase:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding SetStaffPhaseHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SetStaffPhase"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            </Grid>
 
-                        <TextBlock Grid.Column="0" Text="Cinder Gwyn Phase:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding SetGwynPhaseHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="SetGwynPhase"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Cinder Phase Lock:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding PhaseLockHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="PhaseLock"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="125"/>
-                            <ColumnDefinition Width="85" />
-                            <ColumnDefinition Width="20" />
-                            <ColumnDefinition Width="125" />
-                            <ColumnDefinition Width="85" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Cinder Cast Soulmass:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="1"
-                                 Text="{Binding CastSoulmassHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="CastSoulmass"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                        
-                        <TextBlock Grid.Column="3" Text="Cinder Endless Soulmass:" VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />
-                        <TextBox Grid.Column="4"
-                                 Margin="5,0,-10,0"
-                                 Text="{Binding EndlessSoulmassHotkeyText}"
-                                 Style="{StaticResource HotkeyTextBoxStyle}"
-                                 GotFocus="HotkeyTextBox_GotFocus"
-                                 LostFocus="HotkeyTextBox_LostFocus"
-                                 Tag="EndlessSoulmass"
-                                 KeyDown="HotkeyTextBox_KeyDown" />
-                    </Grid>
-                </StackPanel>
-            </ScrollViewer>
+                                <TextBlock Grid.Column="0" Text="All No Death:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding AllNoDeathHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="AllNoDeath"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="All Repeat Action:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding AllRepeatActHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="AllRepeatAct"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Enable Target Options:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding EnableTargetOptionsHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="EnableTargetOptions"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Freeze HP:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding FreezeHpHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="FreezeHp"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Target Repeat Action:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding TargetRepeatActHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="TargetRepeatAct"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                                <TextBlock Grid.Column="3" Text="Disable Target AI:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding DisableTargetAiHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="DisableTargetAi"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Increase Target Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding IncreaseTargetSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="IncreaseTargetSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Decrease Target Speed:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding DecreaseTargetSpeedHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="DecreaseTargetSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Show Target Resist:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding ShowAllResistancesHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="ShowAllResistances"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Cinder Sword Phase:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding SetSwordPhaseHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SetSwordPhase"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Cinder Lance Phase:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding SetLancePhaseHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SetLancePhase"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Cinder Curved Phase:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding SetCurvedPhaseHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SetCurvedPhase"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Cinder Staff Phase:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding SetStaffPhaseHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SetStaffPhase"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Cinder Gwyn Phase:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding SetGwynPhaseHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="SetGwynPhase"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Cinder Phase Lock:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding PhaseLockHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="PhaseLock"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="125" />
+                                    <ColumnDefinition Width="85" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Cinder Cast Soulmass:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding CastSoulmassHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="CastSoulmass"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+
+                                <TextBlock Grid.Column="3" Text="Cinder Endless Soulmass:" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding EndlessSoulmassHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="EndlessSoulmass"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
         </StackPanel>
     </Border>
 </UserControl>

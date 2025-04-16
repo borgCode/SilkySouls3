@@ -55,13 +55,13 @@ namespace SilkySouls3.Memory
             TryPatternWithFallback("PlayerSoundView", Patterns.PlayerSoundView, addr => Offsets.Patches.PlayerSoundView = addr, saved);
             TryPatternWithFallback("DebugFont", Patterns.DebugFont, addr => Offsets.Patches.DebugFont = addr, saved);
             TryPatternWithFallback("NoRoll", Patterns.NoRoll, addr => Offsets.Patches.NoRoll = addr, saved);
+            TryPatternWithFallback("TargetingView", Patterns.TargetingView, addr => Offsets.Patches.TargetingView = addr, saved);
             
             TryPatternWithFallback("LastLockedTarget", Patterns.LockedTarget, addr => Offsets.Hooks.LastLockedTarget = addr.ToInt64(), saved);
             TryPatternWithFallback("WarpCoordWrite", Patterns.WarpCoordWrite, addr => Offsets.Hooks.WarpCoordWrite = addr.ToInt64(), saved);
             TryPatternWithFallback("AddSubGoal", Patterns.AddSubGoal, addr => Offsets.Hooks.AddSubGoal = addr.ToInt64(), saved);
             TryPatternWithFallback("InAirTimer", Patterns.NoClipInAirTimer, addr => Offsets.Hooks.InAirTimer = addr.ToInt64(), saved);
             TryPatternWithFallback("NoClipKeyboard", Patterns.NoClipKeyboard, addr => Offsets.Hooks.NoClipKeyboard = addr.ToInt64(), saved);
-            // Offsets.Hooks.NoClipUpdateCoords = Offsets.Hooks.InAirTimer - 0x21;
             TryPatternWithFallback("NoClipUpdateCoords", Patterns.NoClipUpdateCoords, addr => Offsets.Hooks.NoClipUpdateCoords = addr.ToInt64(), saved);
             
             var triggers = FindAddressesByPattern(Patterns.NoClipTriggers, 2);
@@ -124,6 +124,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Patches.PlayerSoundView: 0x{Offsets.Patches.PlayerSoundView.ToInt64():X}");
             Console.WriteLine($"Patches.DebugFont: 0x{Offsets.Patches.DebugFont.ToInt64():X}");
             Console.WriteLine($"Patches.NoRoll: 0x{Offsets.Patches.NoRoll.ToInt64():X}");
+            Console.WriteLine($"Patches.TargetingView: 0x{Offsets.Patches.TargetingView.ToInt64():X}");
  
             Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
             Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");

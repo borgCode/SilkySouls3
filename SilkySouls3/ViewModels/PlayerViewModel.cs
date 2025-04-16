@@ -93,6 +93,7 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction("RTSR", () => SetHp(1));
             _hotkeyManager.RegisterAction("NoDeath", () => { IsNoDeathEnabled = !IsNoDeathEnabled; });
             _hotkeyManager.RegisterAction("OneShot", () => { IsOneShotEnabled = !IsOneShotEnabled; });
+            _hotkeyManager.RegisterAction("PlayerNoDamage", () => { IsNoDamageEnabled = !IsNoDamageEnabled; });
             _hotkeyManager.RegisterAction("TogglePlayerSpeed", ToggleSpeed);
             _hotkeyManager.RegisterAction("IncreasePlayerSpeed", () => SetSpeed(Math.Min(10, PlayerSpeed + 0.25f)));
             _hotkeyManager.RegisterAction("DecreasePlayerSpeed", () => SetSpeed(Math.Max(0, PlayerSpeed - 0.25f)));
@@ -112,7 +113,7 @@ namespace SilkySouls3.ViewModels
             SoulLevel = _playerService.GetPlayerStat(Stats.SoulLevel);
             Souls = _playerService.GetPlayerStat(Stats.Souls);
             NewGame = _playerService.GetNewGame();
-            // PlayerSpeed = _playerService.GetSetPlayerSpeed(null);
+            PlayerSpeed = _playerService.GetPlayerSpeed();
         }
 
 

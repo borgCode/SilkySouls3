@@ -20,6 +20,7 @@ namespace SilkySouls3.ViewModels
         private string _noClipHotkeyText;
         private string _noDeathHotkeyText;
         private string _oneShotHotkeyText;
+        private string _noDamageHotkeyText;
         
         private string _togglePlayerSpeedHotkeyText;
         private string _increasePlayerSpeedHotkeyText;
@@ -111,6 +112,12 @@ namespace SilkySouls3.ViewModels
         {
             get => _oneShotHotkeyText;
             set => SetProperty(ref _oneShotHotkeyText, value);
+        }
+        
+        public string NoDamagePlayerHotkeyText
+        {
+            get => _noDamageHotkeyText;
+            set => SetProperty(ref _noDamageHotkeyText, value);
         }
         
         public string TogglePlayerSpeedHotkeyText
@@ -283,13 +290,9 @@ namespace SilkySouls3.ViewModels
         
         #endregion
         
-        private bool _isLoaded;
-        
         private string _currentSettingHotkeyId;
         private LowLevelKeyboardHook _tempHook;
         private Keys _currentKeys;
-        
-        
         
         private readonly Dictionary<string, Action<string>> _propertySetters;
         
@@ -312,6 +315,7 @@ namespace SilkySouls3.ViewModels
                 { "RTSR", text => RtsrHotkeyText = text },
                 { "NoDeath", text => NoDeathHotkeyText = text },
                 { "OneShot", text => OneShotHotkeyText = text },
+                { "PlayerNoDamage", text => NoDamagePlayerHotkeyText = text },
                 { "TogglePlayerSpeed", text => TogglePlayerSpeedHotkeyText = text },
                 { "IncreasePlayerSpeed", text => IncreasePlayerSpeedHotkeyText = text },
                 { "DecreasePlayerSpeed", text => DecreasePlayerSpeedHotkeyText = text },

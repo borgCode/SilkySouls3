@@ -81,7 +81,8 @@ namespace SilkySouls3
         private bool _loaded;
         private bool _hasScanned;
         private bool _hasAllocatedMemory;
-        
+        private bool _hasAppliedNoLogo;
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (_memoryIo.IsAttached)
@@ -92,9 +93,14 @@ namespace SilkySouls3
                 {
                     _aobScanner.Scan();
                     _hasScanned = true;
-                    ApplyNoLogo();
                 }
 
+                if (!_hasAppliedNoLogo)
+                {
+                    _memoryIo.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes("NoLogo"));
+                    _hasAppliedNoLogo = true;
+                }
+                
                 if (!_hasAllocatedMemory)
                 {
                     _memoryIo.AllocCodeCave();
@@ -121,6 +127,7 @@ namespace SilkySouls3
                 DisableFeatures();
                 _loaded = false;
                 _hasAllocatedMemory = false;
+                _hasAppliedNoLogo = false;
                 IsAttachedText.Text = "Not attached";
             }
         }
@@ -179,9 +186,5 @@ namespace SilkySouls3
             Close();
         }
         
-        private void ApplyNoLogo()
-        {
-            _memoryIo.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes("NoLogo"));
-        }
     }
 }

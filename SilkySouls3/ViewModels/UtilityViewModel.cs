@@ -12,7 +12,6 @@ namespace SilkySouls3.ViewModels
 {
     public class UtilityViewModel : BaseViewModel
     {
-        private readonly PlayerService _playerService;
         private readonly HotkeyManager _hotkeyManager;
         private readonly UtilityService _utilityService;
         

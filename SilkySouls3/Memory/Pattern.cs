@@ -124,7 +124,13 @@ namespace SilkySouls3.Memory
         //Patch
 
 
-        //TODO Look into other patches
+        public static readonly Pattern TargetingView = new Pattern(
+            new byte[] { 0x80, 0x78, 0x65, 0x00 },
+            "xxxx",
+            0,
+            None
+        );
+        
         public static readonly Pattern NoLogo = new Pattern(
             new byte[]
             {

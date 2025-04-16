@@ -173,6 +173,8 @@ namespace SilkySouls3.Services
             
             int currentSoulLevel = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.SoulLevel);
             int newLevel = currentSoulLevel + (validatedStat - currentVal);
+            
+            _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.SoulLevel, newLevel);
             if (newLevel < currentSoulLevel) return;
             
             int totalSoulsRequired = CalculateTotalSoulsRequired(currentSoulLevel, newLevel);

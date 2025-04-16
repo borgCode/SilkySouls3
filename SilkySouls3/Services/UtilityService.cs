@@ -285,11 +285,13 @@ namespace SilkySouls3.Services
         {
             if (isTargetingViewEnabled)
             {
+                _memoryIo.WriteByte(Patches.TargetingView + 0x3, 1);
                 _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, 1);
                 _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, 1);
             }
             else
             {
+                _memoryIo.WriteByte(Patches.TargetingView + 0x3, 0);
                 _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, 0);
                 _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, 0);
             }
