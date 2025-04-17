@@ -58,6 +58,7 @@ namespace SilkySouls3.Memory
             TryPatternWithFallback("DebugFont", Patterns.DebugFont, addr => Offsets.Patches.DebugFont = addr, saved);
             TryPatternWithFallback("NoRoll", Patterns.NoRoll, addr => Offsets.Patches.NoRoll = addr, saved);
             TryPatternWithFallback("TargetingView", Patterns.TargetingView, addr => Offsets.Patches.TargetingView = addr, saved);
+            TryPatternWithFallback("FreeCam", Patterns.FreeCamPatch, addr => Offsets.Patches.FreeCam = addr, saved);
             
             TryPatternWithFallback("LastLockedTarget", Patterns.LockedTarget, addr => Offsets.Hooks.LastLockedTarget = addr.ToInt64(), saved);
             TryPatternWithFallback("WarpCoordWrite", Patterns.WarpCoordWrite, addr => Offsets.Hooks.WarpCoordWrite = addr.ToInt64(), saved);
@@ -128,6 +129,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Patches.DebugFont: 0x{Offsets.Patches.DebugFont.ToInt64():X}");
             Console.WriteLine($"Patches.NoRoll: 0x{Offsets.Patches.NoRoll.ToInt64():X}");
             Console.WriteLine($"Patches.TargetingView: 0x{Offsets.Patches.TargetingView.ToInt64():X}");
+            Console.WriteLine($"Patches.FreeCam: 0x{Offsets.Patches.FreeCam.ToInt64():X}");
  
             Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
             Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");

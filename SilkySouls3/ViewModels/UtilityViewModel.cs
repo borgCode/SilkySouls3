@@ -15,7 +15,6 @@ namespace SilkySouls3.ViewModels
         private readonly HotkeyManager _hotkeyManager;
         private readonly UtilityService _utilityService;
         
-        
         private bool _isHitboxEnabled;
         private bool _isSoundViewEnabled;
         private bool _isDrawEventEnabled;
@@ -25,6 +24,9 @@ namespace SilkySouls3.ViewModels
         private bool _isHideCharactersEnabled;
         private bool _isHideSfxEnabled;
         private bool _isDisableEventEnabled;
+        private bool _isFreeCamEnabled;
+        private int _freeCamMode = 1;
+
         
         private const float DefaultNoclipMultiplier = 0.25f;
         private const uint BaseXSpeedHex = 0x3e4ccccd;
@@ -54,6 +56,7 @@ namespace SilkySouls3.ViewModels
                 var firstLocation = _warpLocations.First();
                 _selectedWarp = new KeyValuePair<string, string>(firstLocation.Key, firstLocation.Value.Name);
             }
+            
             RegisterHotkeys();
         }
 
@@ -111,8 +114,7 @@ namespace SilkySouls3.ViewModels
                   _utilityService.ToggleSoundView(_isSoundViewEnabled);
             }
         }
-
-
+        
         public bool IsDrawEventEnabled
         {
             get => _isDrawEventEnabled;
@@ -180,6 +182,55 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _isDisableEventEnabled, value)) return;
                 _utilityService.ToggleDisableEvent(_isDisableEventEnabled);
+            }
+        }
+        
+        public bool IsFreeCamEnabled
+        {
+            get => _isFreeCamEnabled;
+            set
+            {
+                if (!SetProperty(ref _isFreeCamEnabled, value)) return;
+                if (_isFreeCamEnabled)
+                {
+                    int modeNumber = IsFreeCamMode1Selected ? 1 : 2;
+                    _utilityService.SetFreeCamState(true, modeNumber);
+                }
+                else _utilityService.SetFreeCamState(false, 0);
+            }
+        }
+
+        
+
+        public int FreeCamMode
+        {
+            get => _freeCamMode;
+            set
+            {
+                if (SetProperty(ref _freeCamMode, value) && IsFreeCamEnabled)
+                {
+                    _utilityService.SetFreeCamState(true, value);
+                }
+            }
+        }
+
+        public bool IsFreeCamMode1Selected
+        {
+            get => _freeCamMode == 1;
+            set
+            {
+                if (value) FreeCamMode = 1;
+         
+            }
+        }
+
+        public bool IsFreeCamMode2Selected
+        {
+            get => _freeCamMode == 2;
+            set
+            {
+                if (value) FreeCamMode = 2;
+                
             }
         }
 

@@ -350,5 +350,30 @@ namespace SilkySouls3.Services
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.DisableEvent,
                 isDisableEventEnabled ? 1 : 0);
         }
+
+        public void SetFreeCamState(bool isEnabled, int mode)
+        {
+            var debugFreeModePtr = _memoryIo.FollowPointers(FieldArea.Base, new[]
+            {
+                FieldArea.GameRend,
+                FieldArea.DbgFreeCamMode
+            }, false);
+            var moveMapStepPatch = Patches.FreeCam + 0x6;
+            switch (isEnabled)
+            {
+                case false:
+                    _memoryIo.WriteByte(debugFreeModePtr, 0);
+                    _memoryIo.WriteByte(moveMapStepPatch, 0);
+                    break;
+                case true when mode == 1:
+                    _memoryIo.WriteByte(debugFreeModePtr, 1);
+                    _memoryIo.WriteByte(moveMapStepPatch, 1);
+                    break;
+                case true when mode == 2:
+                    _memoryIo.WriteByte(moveMapStepPatch, 0);
+                    _memoryIo.WriteByte(debugFreeModePtr, 2);
+                    break;
+            }
+        }
     }
 }

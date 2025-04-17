@@ -112,5 +112,13 @@ namespace SilkySouls3.Views
         {
             _utilityViewModel.OpenMenu(Offsets.Funcs.AllotEstus);
         }
+
+        private void FreeCamInfoBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Only works with controller for now\n\nMode 1: Freezes both the player and enemies\nMode 2: Does not freeze the player and enemies", 
+                "Free Cam Information", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Information);
+        }
     }
 }

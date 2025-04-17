@@ -239,6 +239,8 @@ namespace SilkySouls3.Memory
         public static class FieldArea
         {
             public static IntPtr Base;
+            public const int GameRend = 0x18;
+            public const int DbgFreeCamMode = 0xE0;
             public const int ChrCam = 0x28;
             public const int ChrExFollowCam = 0x60;
         }
@@ -268,6 +270,7 @@ namespace SilkySouls3.Memory
             public static IntPtr DebugFont;
             public static IntPtr NoRoll;
             public static IntPtr TargetingView;
+            public static IntPtr FreeCam;
         }
         
         

@@ -91,7 +91,6 @@
     <Compile Include="Memory\AobScanner.cs" />
     <Compile Include="Memory\CodeCaveOffsets.cs" />
     <Compile Include="Memory\GameIds.cs" />
-    <Compile Include="Memory\Pointers.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\WarpEntry.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

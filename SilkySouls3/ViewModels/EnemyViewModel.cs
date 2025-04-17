@@ -227,6 +227,7 @@ namespace SilkySouls3.ViewModels
                     _targetOptionsTimer.Stop();
                     IsRepeatActEnabled = false;
                     _enemyService.UninstallTargetHook();
+                    IsCinderPhasedLocked = false;
                     ShowPoise = false;
                     ShowBleed = false;
                     ShowPoison = false;
@@ -562,6 +563,7 @@ namespace SilkySouls3.ViewModels
         {
             _targetOptionsTimer.Stop();
             IsFreezeHealthEnabled = false;
+            IsCinderPhasedLocked = false;
             AreOptionsEnabled = false;
         }
     }

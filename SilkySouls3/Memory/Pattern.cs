@@ -188,6 +188,12 @@ namespace SilkySouls3.Memory
             None
         );
 
+        public static readonly Pattern FreeCamPatch = new Pattern(
+            new byte[] { 0x80, 0xBB, 0x98, 0x00, 0x00, 0x00, 0x00, 0x0F, 0x84 },
+            "xxxxxxxxx",
+            0,
+            None
+        );
 
         public static readonly Pattern GroupMask = new Pattern(
             new byte[] { 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB, 0x00 },
