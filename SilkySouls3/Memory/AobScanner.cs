@@ -37,7 +37,6 @@ namespace SilkySouls3.Memory
             Offsets.LuaEventMan.Base = FindAddressByPattern(Patterns.LuaEventMan);
             Offsets.SoloParamRepo.Base = FindAddressByPattern(Patterns.SoloParamRepo);
             Offsets.AiTargetingFlags.Base = FindAddressByPattern(Patterns.AiTargetingFlags);
-            Offsets.WorldAiMan.Base = FindAddressByPattern(Patterns.WorldAiMan);
             Offsets.EventFlagMan.Base = FindAddressByPattern(Patterns.EventFlagMan);
             Offsets.MenuMan.Base = FindAddressByPattern(Patterns.MenuMan);
             Offsets.DebugFlags.Base = FindAddressByPattern(Patterns.DebugFlags);
@@ -110,7 +109,6 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"EventFlagMan.Base: 0x{Offsets.EventFlagMan.Base.ToInt64():X}");
             Console.WriteLine($"SoloParamRepo.Base: 0x{Offsets.SoloParamRepo.Base.ToInt64():X}");
             Console.WriteLine($"AiTargetingFlags.Base: 0x{Offsets.AiTargetingFlags.Base.ToInt64():X}");
-            Console.WriteLine($"WorldAiMan.Base: 0x{Offsets.WorldAiMan.Base.ToInt64():X}");
             Console.WriteLine($"MenuMan.Base: 0x{Offsets.MenuMan.Base.ToInt64():X}");
             Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
             Console.WriteLine($"DebugEvent.Base: 0x{Offsets.DebugEvent.Base.ToInt64():X}");

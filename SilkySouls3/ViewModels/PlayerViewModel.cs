@@ -83,7 +83,7 @@ namespace SilkySouls3.ViewModels
                 }
             };
         }
-
+        public bool IsHealthTyping { get; set; } = false;
         private void RegisterHotkeys()
         {
             _hotkeyManager.RegisterAction("SavePos1", () => SavePos(0));

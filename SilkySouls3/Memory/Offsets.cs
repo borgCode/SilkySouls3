@@ -184,12 +184,7 @@ namespace SilkySouls3.Memory
             public const int Height = 0x4;
             public const int Width = 0x5;
         }
-
-        public static class WorldAiMan
-        {
-            public static IntPtr Base;
-        }
-
+        
         public static class MapItemMan
         {
             public static IntPtr Base;

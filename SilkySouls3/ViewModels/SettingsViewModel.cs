@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using H.Hooks;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
@@ -12,6 +13,7 @@ namespace SilkySouls3.ViewModels
         #region property setters
         private bool _isEnableHotkeysEnabled;
         private bool _isStutterFixEnabled;
+        private bool _isAlwaysOnTopEnabled;
         private bool _isLoaded;
         
         private string _savePos1HotkeyText;
@@ -83,6 +85,19 @@ namespace SilkySouls3.ViewModels
                 Properties.Settings.Default.StutterFix = value;
                 Properties.Settings.Default.Save();
                 if (_isLoaded) _settingsService.ToggleStutterFix(_isStutterFixEnabled);
+            }
+        }
+        
+        public bool IsAlwaysOnTopEnabled
+        {
+            get => _isAlwaysOnTopEnabled;
+            set
+            {
+                if (!SetProperty(ref _isAlwaysOnTopEnabled, value)) return;
+                Properties.Settings.Default.AlwaysOnTop = value;
+                Properties.Settings.Default.Save();
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow != null) mainWindow.Topmost = _isAlwaysOnTopEnabled;
             }
         }
 
@@ -537,6 +552,7 @@ namespace SilkySouls3.ViewModels
             OnPropertyChanged(nameof(IsEnableHotkeysEnabled));
             _isStutterFixEnabled = Properties.Settings.Default.StutterFix;
             OnPropertyChanged(nameof(IsStutterFixEnabled));
+            IsAlwaysOnTopEnabled = Properties.Settings.Default.AlwaysOnTop;
         }
 
         public void ResetAttached() => _isLoaded = false;

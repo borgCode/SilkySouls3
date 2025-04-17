@@ -435,6 +435,18 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _isFrostImmune, value);
         }
 
+        public bool ShowAllResistances
+        {
+            get => _showAllResistances;
+            set
+            {
+                if (SetProperty(ref _showAllResistances, value))
+                {
+                    UpdateResistancesDisplay();
+                }
+            }
+        }
+
 
         public float TargetSpeed
         {

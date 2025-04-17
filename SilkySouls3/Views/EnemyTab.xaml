@@ -23,15 +23,15 @@
                 BorderThickness="1"
                 BorderBrush="#333"
                 CornerRadius="3"
-                Margin="0,0,0,10">
-            <StackPanel Margin="10">
+                Margin="0,0,0,5">
+            <StackPanel Margin="5">
                 <TextBlock Text="Target Controls"
                            FontWeight="Bold"
-                           Margin="0,0,0,10" />
+                           Margin="0,0,0,5" />
 
                 <CheckBox Content="Enable Target Options"
                           IsChecked="{Binding IsTargetOptionsEnabled}"
-                          Margin="0,0,0,10" />
+                          Margin="0,0,0,0" />
 
                 <StackPanel Visibility="{Binding IsTargetOptionsEnabled, Converter={StaticResource BoolToVis}}">
                     <TextBlock HorizontalAlignment="Center" Margin="0,0,0,5">
@@ -146,6 +146,8 @@
                                           IsChecked="{Binding ShowToxic, FallbackValue=False}" />
                                 <CheckBox Content="Frost" Margin="0,5"
                                           IsChecked="{Binding ShowFrost, FallbackValue=False}" />
+                                <CheckBox Content="Show All" Margin="0,5"
+                                          IsChecked="{Binding ShowAllResistances, FallbackValue=False}" />
                             </StackPanel>
 
                             <Grid Grid.Column="1">
@@ -198,8 +200,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-
-                                    <!-- Bleed Bar (Top-Left) -->
+                                    
                                     <StackPanel Grid.Row="0" Grid.Column="0"
                                                 Visibility="{Binding ShowBleed, Converter={StaticResource BoolToVis}, FallbackValue=Visible}"
                                                 Margin="0,0,5,5">

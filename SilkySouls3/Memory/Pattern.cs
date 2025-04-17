@@ -47,16 +47,7 @@ namespace SilkySouls3.Memory
             3,
             QwordCmp
         );
-
-
-        //TODO Maybe not neceessary
-        public static readonly Pattern WorldAiMan = new Pattern(
-            new byte[] { 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x48, 0x89, 0x7C, 0x24, 0x30, 0x8B, 0x78, 0x10 },
-            "xxx????xxxxxxxx",
-            0,
-            Mov64
-        );
-
+        
         public static readonly Pattern AiTargetingFlags = new Pattern(
             new byte[] { 0x81, 0xE2, 0xFF, 0x7F, 0xFD },
             "xxxxx",
