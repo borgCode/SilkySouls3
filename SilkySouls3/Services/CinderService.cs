@@ -174,7 +174,7 @@ namespace SilkySouls3.Services
             var soulmassPtr = _memoryIo.FollowPointers(Offsets.SoloParamRepo.Base,
                 new[]
                 {
-                    Offsets.SoloParamRepo.ParamResCap,
+                    Offsets.SoloParamRepo.SpEffectParamResCap,
                     Offsets.SoloParamRepo.SpEffectPtr1,
                     Offsets.SoloParamRepo.SpEffectPtr2,
                     Offsets.SoloParamRepo.CinderSoulmass

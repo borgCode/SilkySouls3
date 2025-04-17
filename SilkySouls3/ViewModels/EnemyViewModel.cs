@@ -567,7 +567,6 @@ namespace SilkySouls3.ViewModels
                 _enemyService.InstallTargetHook();
                 _targetOptionsTimer.Start();
             }
-
             AreOptionsEnabled = true;
         }
 

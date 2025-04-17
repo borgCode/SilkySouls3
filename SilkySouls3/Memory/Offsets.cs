@@ -156,10 +156,15 @@ namespace SilkySouls3.Memory
         public static class SoloParamRepo
         {
             public static IntPtr Base;
-            public const int ParamResCap = 0x4A8;
+            public const int SpEffectParamResCap = 0x4A8;
             public const int SpEffectPtr1 = 0x68;
             public const int SpEffectPtr2 = 0x68;
             public const int CinderSoulmass = 0x126730;
+
+            public const int CamParamResCap = 0x928;
+            public const int CamPtr1 = 0x68;
+            public const int CamPtr2 = 0x68;
+            public const int CamFov = 0xD8C;
         }
 
         public static class MenuMan
@@ -188,6 +193,14 @@ namespace SilkySouls3.Memory
         public static class MapItemMan
         {
             public static IntPtr Base;
+        }
+
+        public static class HitIns
+        {
+            public static IntPtr Base;
+            public const int LowHit = 0x0;
+            public const int HighHit = 0x1;
+            public const int ChrRagdoll = 0x3;
         }
         
         public static class EnemyIns
@@ -236,6 +249,8 @@ namespace SilkySouls3.Memory
             public static IntPtr Base;
             public const int GameRend = 0x18;
             public const int DbgFreeCamMode = 0xE0;
+            public const int DbgFreeCam = 0xE8;
+            public const int DbgFreeCamCoords = 0x40;
             public const int ChrCam = 0x28;
             public const int ChrExFollowCam = 0x60;
             public const int CameraDownLimit = 0x200;

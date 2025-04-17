@@ -19,6 +19,9 @@ namespace SilkySouls3.ViewModels
         private bool _isSoundViewEnabled;
         private bool _isDrawEventEnabled;
         private bool _isTargetingViewEnabled;
+        private bool _isDrawLowHitEnabled;
+        private bool _isDrawHighHitEnabled;
+        private bool _isDrawChrRagdollEnabled;
         private bool _isHideMapEnabled;
         private bool _isHideObjectsEnabled;
         private bool _isHideCharactersEnabled;
@@ -34,6 +37,7 @@ namespace SilkySouls3.ViewModels
         private const uint BaseYSpeedHex = 0x3e19999a;
         private float _noClipSpeedMultiplier = DefaultNoclipMultiplier;
         private float _gameSpeed;
+        private int _cameraFov;
 
         private bool _isNoClipEnabled;
         private bool _areButtonsEnabled;
@@ -63,7 +67,11 @@ namespace SilkySouls3.ViewModels
 
         private void RegisterHotkeys()
         {
-            _hotkeyManager.RegisterAction("NoClip", () => { IsNoClipEnabled = !IsNoClipEnabled; });
+            _hotkeyManager.RegisterAction("NoClip", () =>
+            {
+                if (!AreButtonsEnabled) return;
+                IsNoClipEnabled = !IsNoClipEnabled;
+            });
             _hotkeyManager.RegisterAction("IncreaseNoClipSpeed", () => 
             { 
                 if (IsNoClipEnabled)
@@ -77,6 +85,12 @@ namespace SilkySouls3.ViewModels
             });
             _hotkeyManager.RegisterAction("IncreaseGameSpeed", () => SetSpeed(Math.Min(10, GameSpeed + 0.50f)));
             _hotkeyManager.RegisterAction("DecreaseGameSpeed", () => SetSpeed(Math.Max(0, GameSpeed - 0.50f)));
+            _hotkeyManager.RegisterAction("EnableFreeCam", () =>
+            {
+                if (!AreButtonsEnabled) return;
+                IsFreeCamEnabled = !IsFreeCamEnabled;
+            });
+            _hotkeyManager.RegisterAction("MoveCamToPlayer", MoveCamToPlayer);
         }
 
         public IEnumerable<KeyValuePair<string, string>> WarpLocations =>
@@ -175,7 +189,39 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
             }
         }
-        
+
+        public bool IsDrawLowHitEnabled
+        {
+            get => _isDrawLowHitEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawLowHitEnabled, value)) return;
+                IsHideMapEnabled = _isDrawLowHitEnabled;
+                _utilityService.ToggleHitIns(HitIns.LowHit, _isDrawLowHitEnabled);
+            }
+        }
+
+        public bool IsDrawHighHitEnabled
+        {
+            get => _isDrawHighHitEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawHighHitEnabled, value)) return;
+                IsHideMapEnabled = _isDrawHighHitEnabled;
+                _utilityService.ToggleHitIns(HitIns.HighHit, _isDrawHighHitEnabled);
+            }
+        }
+
+        public bool IsDrawChrRagdollEnabled
+        {
+            get => _isDrawChrRagdollEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawChrRagdollEnabled, value)) return;
+                _utilityService.ToggleHitIns(HitIns.ChrRagdoll, _isDrawChrRagdollEnabled);
+            }
+        }
+
         public bool IsDisableEventEnabled
         {
             get => _isDisableEventEnabled;
@@ -316,6 +362,18 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
+        
+        public int CameraFov
+        {
+            get => _cameraFov;
+            set
+            {
+                if (SetProperty(ref _cameraFov, value))
+                {
+                    _utilityService.SetFov(Convert.ToSingle(_cameraFov));
+                }
+            }
+        }
 
         public void SetSpeed(float value) => GameSpeed = value;
 
@@ -366,19 +424,44 @@ namespace SilkySouls3.ViewModels
             if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj,true);
             if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr,true);
             if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx,true);
+            if (IsDrawLowHitEnabled)
+            {
+                IsHideMapEnabled = true;
+                _utilityService.ToggleHitIns(HitIns.LowHit, true);
+            }
+
+            if (IsDrawHighHitEnabled)
+            {
+                IsHideMapEnabled = true;
+                _utilityService.ToggleHitIns(HitIns.HighHit, true);
+            }
+            if (IsDrawChrRagdollEnabled) _utilityService.ToggleHitIns(HitIns.ChrRagdoll, true);
             GameSpeed = _utilityService.GetGameSpeed();
+            CameraFov = _utilityService.GetCameraFov();
             AreButtonsEnabled = true;
         }
 
         public void DisableFeatures()
         {
             IsNoClipEnabled = false;
+            IsFreeCamEnabled = false;
             AreButtonsEnabled = false;
         }
 
         public void TryApplyOneTimeFeatures()
         {
             if (IsCamVertIncreaseEnabled) _utilityService.ToggleCamVertIncrease(true);
+        }
+
+        public void MoveCamToPlayer()
+        {
+            if (IsFreeCamEnabled) _utilityService.MoveCamToPlayer();
+        }
+
+        public void SetDefaultFov()
+        {
+            _utilityService.SetFov(43.0f);
+            CameraFov = _utilityService.GetCameraFov();
         }
     }
 }

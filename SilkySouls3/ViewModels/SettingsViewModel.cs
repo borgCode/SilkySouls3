@@ -22,6 +22,9 @@ namespace SilkySouls3.ViewModels
         private string _restorePos2HotkeyText;
         private string _rtsrHotkeyText;
         private string _noClipHotkeyText;
+        private string _enableFreeCamHotkeyText;
+        private string _moveCamToPlayerHotkeyText;
+        
         private string _noDeathHotkeyText;
         private string _oneShotHotkeyText;
         private string _noDamageHotkeyText;
@@ -183,7 +186,7 @@ namespace SilkySouls3.ViewModels
             get => _increaseNoClipSpeedHotkeyText;
             set => SetProperty(ref _increaseNoClipSpeedHotkeyText, value);
         }
-
+        
         public string DecreaseNoClipSpeedHotkeyText
         {
             get => _decreaseNoClipSpeedHotkeyText;
@@ -194,6 +197,18 @@ namespace SilkySouls3.ViewModels
         {
             get => _noClipHotkeyText;
             set => SetProperty(ref _noClipHotkeyText, value);
+        }
+        
+        public string EnableFreeCamHotkeyText
+        {
+            get => _enableFreeCamHotkeyText;
+            set => SetProperty(ref _enableFreeCamHotkeyText, value);
+        }
+        
+        public string MoveCamToPlayerHotkeyText
+        {
+            get => _moveCamToPlayerHotkeyText;
+            set => SetProperty(ref _moveCamToPlayerHotkeyText, value);
         }
         
         public string QuitoutHotkeyText
@@ -373,6 +388,8 @@ namespace SilkySouls3.ViewModels
                 { "AllNoDamage", text => AllNoDamageHotkeyText = text },
                 { "AllRepeatAct", text => AllRepeatActHotkeyText = text },
                 { "Quitout", text => QuitoutHotkeyText = text },
+                { "EnableFreeCam", text => EnableFreeCamHotkeyText = text },
+                { "MoveCamToPlayer", text => MoveCamToPlayerHotkeyText = text },
             };
             
             LoadHotkeyDisplays();

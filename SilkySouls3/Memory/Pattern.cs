@@ -47,7 +47,7 @@ namespace SilkySouls3.Memory
             3,
             QwordCmp
         );
-        
+
         public static readonly Pattern AiTargetingFlags = new Pattern(
             new byte[] { 0x81, 0xE2, 0xFF, 0x7F, 0xFD },
             "xxxxx",
@@ -121,7 +121,7 @@ namespace SilkySouls3.Memory
             0,
             None
         );
-        
+
         public static readonly Pattern NoLogo = new Pattern(
             new byte[]
             {
@@ -202,8 +202,14 @@ namespace SilkySouls3.Memory
             0x8,
             Mov64
         );
-        
 
+        public static readonly Pattern HitIns = new Pattern(
+            new byte[] { 0x44, 0x0F, 0xB6, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x45 },
+            "xxxx????x",
+            0,
+            MovzxByte
+        );
+        
         //Hooks
 
         public static readonly Pattern LockedTarget = new Pattern(

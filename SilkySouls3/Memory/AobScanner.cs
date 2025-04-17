@@ -47,6 +47,7 @@ namespace SilkySouls3.Memory
             Offsets.FieldArea.Base = FindAddressByPattern(Patterns.FieldArea);
             Offsets.GroupMask.Base = FindAddressByPattern(Patterns.GroupMask);
             Offsets.UserInputManager.Base = FindAddressByPattern(Patterns.UserInputManager);
+            Offsets.HitIns.Base = FindAddressByPattern(Patterns.HitIns);
 
             
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
@@ -119,6 +120,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
             Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
             Console.WriteLine($"UserInputManager.Base: 0x{Offsets.UserInputManager.Base.ToInt64():X}");
+            Console.WriteLine($"Mesh.Base: 0x{Offsets.HitIns.Base.ToInt64():X}");
             
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
@@ -203,6 +205,10 @@ namespace SilkySouls3.Memory
                     case Call:
                         int callOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 1));
                         addresses[i] = IntPtr.Add(instructionAddress, callOffset + 5);
+                        break;
+                    case MovzxByte:
+                        int movzxOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 4));
+                        addresses[i] = IntPtr.Add(instructionAddress, movzxOffset + 8);
                         break;
                 }
             }

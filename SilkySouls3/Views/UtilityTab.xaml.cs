@@ -106,5 +106,15 @@ namespace SilkySouls3.Views
         {
             _utilityViewModel.OpenMenu(Offsets.Funcs.AllotEstus);
         }
+
+        private void MoveCamToPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.MoveCamToPlayer();
+        }
+
+        private void SetDefaultFov_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.SetDefaultFov();
+        }
     }
 }

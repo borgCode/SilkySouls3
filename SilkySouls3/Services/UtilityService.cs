@@ -12,6 +12,7 @@ namespace SilkySouls3.Services
     {
         private readonly MemoryIo _memoryIo;
         private readonly HookManager _hookManager;
+        private bool _isFreeCamActive;
 
         public UtilityService(MemoryIo memoryIo, HookManager hookManager)
         {
@@ -366,17 +367,55 @@ namespace SilkySouls3.Services
                 case false:
                     _memoryIo.WriteByte(debugFreeModePtr, 0);
                     _memoryIo.WriteByte(moveMapStepPatch, 0);
+                    _isFreeCamActive = false;
                     break;
                 case true when mode == 1:
                     _memoryIo.WriteByte(debugFreeModePtr, 1);
                     _memoryIo.WriteByte(moveMapStepPatch, 1);
+                    if (!_isFreeCamActive)
+                    {
+                        MoveCamToPlayer();
+                        _isFreeCamActive = true;
+                    }
+
                     break;
                 case true when mode == 2:
+
                     _memoryIo.WriteByte(moveMapStepPatch, 0);
                     _memoryIo.WriteByte(debugFreeModePtr, 2);
+                    if (!_isFreeCamActive)
+                    {
+                        MoveCamToPlayer();
+                        _isFreeCamActive = true;
+                    }
+
                     break;
             }
         }
+
+        public void MoveCamToPlayer()
+        {
+            var dbgCamCoords = _memoryIo.FollowPointers(FieldArea.Base, new[]
+            {
+                FieldArea.GameRend,
+                FieldArea.DbgFreeCam,
+                FieldArea.DbgFreeCamCoords
+            }, false);
+
+            var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
+            {
+                WorldChrMan.PlayerIns,
+                (int)WorldChrMan.PlayerInsOffsets.Modules,
+                (int)WorldChrMan.Modules.ChrPhysicsModule,
+            }, true);
+
+            var bytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Coords, 12);
+            float z = BitConverter.ToSingle(bytes, 4);
+            z += 5.0f;
+            Array.Copy(BitConverter.GetBytes(z), 0, bytes, 4, 4);
+            _memoryIo.WriteBytes(dbgCamCoords, bytes);
+        }
+
 
         public void ToggleCamVertIncrease(bool isCamVertIncreaseEnabled)
         {
@@ -406,5 +445,23 @@ namespace SilkySouls3.Services
                 _memoryIo.WriteFloat(camVertDown, 1.22f);
             }
         }
+
+        public void SetFov(float fov) => _memoryIo.WriteFloat(GetFovPtr(), fov);
+
+        public int GetCameraFov() => Convert.ToInt32(Math.Round(_memoryIo.ReadFloat(GetFovPtr())));
+
+        private IntPtr GetFovPtr()
+        {
+            return _memoryIo.FollowPointers(SoloParamRepo.Base, new[]
+            {
+                SoloParamRepo.CamParamResCap,
+                SoloParamRepo.CamPtr1,
+                SoloParamRepo.CamPtr2,
+                SoloParamRepo.CamFov
+            }, false);
+        }
+
+        public void ToggleHitIns(int offset, bool isEnabled) =>
+            _memoryIo.WriteByte(HitIns.Base + offset, isEnabled ? 1 : 0);
     }
 }

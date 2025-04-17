@@ -7,6 +7,7 @@
         Mov32,
         Cmp,
         QwordCmp,
-        Call
+        Call,
+        MovzxByte
     }
 }
