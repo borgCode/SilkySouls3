@@ -220,6 +220,14 @@ namespace SilkySouls3.Memory
             None
         );
 
+        public static readonly Pattern CameraUpLimit = new Pattern(
+            new byte[] { 0xF3, 0x0F, 0x11, 0x86, 0xFC, 0x01 },
+            "xxxxxx",
+            0,
+            None
+        );
+
+
         public static readonly Pattern AddSubGoal = new Pattern(
             new byte[]
             {

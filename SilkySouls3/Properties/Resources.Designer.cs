@@ -109,6 +109,21 @@ namespace SilkySouls3.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
+        ///b8 00 00 c0 bf          mov    eax,0xbfc00000
+        ///66 0f 6e c0             movd   xmm0,eax
+        ///58                      pop    rax
+        ///f3 0f 11 86 fc 01 00    movss  DWORD PTR [rsi+0x1fc],xmm0
+        ///00
+        ///e9 00 00 00 00          jmp    18 &lt;_main+0x18&gt;.
+        /// </summary>
+        internal static string CamVertUp {
+            get {
+                return ResourceManager.GetString("CamVertUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
         ///66 0f 7e d8             movd   eax,xmm3
         ///3d 00 40 9c 46          cmp    eax,0x469c4000
         ///74 25                   je     31 &lt;ret&gt;

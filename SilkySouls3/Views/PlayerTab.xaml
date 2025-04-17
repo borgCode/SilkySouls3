@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:SilkySouls3.Views"
              xmlns:converters="clr-namespace:SilkySouls3.Converters"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
@@ -389,20 +388,37 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            
+    
                             <StackPanel Grid.Column="0">
-                                <CheckBox Content="Auto set NG+7"
-                                          IsChecked="{Binding IsAutoSetNewGameSevenEnabled}"
-                                          Margin="0,2" />
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Content="Auto set NG+7"
+                                              IsChecked="{Binding IsAutoSetNewGameSevenEnabled}"
+                                              Margin="0,2" />
+                      
+                                    <Border
+                                        Background="#3498db"
+                                        CornerRadius="10"
+                                        Width="12"
+                                        Height="12"
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        ToolTip="Automatically sets the game to New Game+7 when starting a new game">
+                                        <TextBlock Text="i"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   FontSize="10" />
+                                    </Border>
+                                </StackPanel>
+        
                                 <CheckBox Content="Disable Roll"
                                           IsChecked="{Binding IsNoRollEnabled}"
                                           Margin="0,2" />
-                                
+        
                             </StackPanel>
-                            
-                            <StackPanel Grid.Column="1">
-                               
-                            </StackPanel>
+    
+                            <StackPanel Grid.Column="1" />
                         </Grid>
                     </Border>
                 </Grid>

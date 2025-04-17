@@ -26,6 +26,7 @@ namespace SilkySouls3.ViewModels
         private bool _isDisableEventEnabled;
         private bool _isFreeCamEnabled;
         private int _freeCamMode = 1;
+        private bool _isCamVertIncreaseEnabled;
 
         
         private const float DefaultNoclipMultiplier = 0.25f;
@@ -233,6 +234,16 @@ namespace SilkySouls3.ViewModels
                 
             }
         }
+        
+        public bool IsCamVertIncreaseEnabled
+        {
+            get => _isCamVertIncreaseEnabled;
+            set
+            {
+                if (!SetProperty(ref _isCamVertIncreaseEnabled, value)) return;
+                _utilityService.ToggleCamVertIncrease(_isCamVertIncreaseEnabled);
+            }
+        }
 
         public bool IsNoClipEnabled
         {
@@ -363,6 +374,11 @@ namespace SilkySouls3.ViewModels
         {
             IsNoClipEnabled = false;
             AreButtonsEnabled = false;
+        }
+
+        public void TryApplyOneTimeFeatures()
+        {
+            if (IsCamVertIncreaseEnabled) _utilityService.ToggleCamVertIncrease(true);
         }
     }
 }

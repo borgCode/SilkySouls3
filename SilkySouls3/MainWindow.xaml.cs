@@ -82,6 +82,7 @@ namespace SilkySouls3
         private bool _hasScanned;
         private bool _hasAllocatedMemory;
         private bool _hasAppliedNoLogo;
+        private bool _appliedOneTimeFeatures;
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -114,6 +115,9 @@ namespace SilkySouls3
                     _loaded = true;
                     TryEnableFeatures();
                     TrySetGameStartPrefs();
+                    if (_appliedOneTimeFeatures) return;
+                    ApplyOneTimeFeatures();
+                    _appliedOneTimeFeatures = true;
                 }
                 else if (_loaded)
                 {
@@ -129,6 +133,7 @@ namespace SilkySouls3
                 _loaded = false;
                 _hasAllocatedMemory = false;
                 _hasAppliedNoLogo = false;
+                _appliedOneTimeFeatures = false;
                 IsAttachedText.Text = "Not attached";
             }
         }
@@ -152,6 +157,11 @@ namespace SilkySouls3
                 _playerViewModel.TrySetNgPref();
                 _itemViewModel.TrySpawnWeaponPref();
             }
+        }
+
+        private void ApplyOneTimeFeatures()
+        {
+            _utilityViewModel.TryApplyOneTimeFeatures();
         }
 
         private void DisableFeatures()

@@ -1611,4 +1611,13 @@ ff d0                   call   rax
 48 83 c4 48             add    rsp,0x48
 c3    </value>
   </data>
+  <data name="CamVertUp" xml:space="preserve">
+    <value>50                      push   rax
+b8 00 00 c0 bf          mov    eax,0xbfc00000
+66 0f 6e c0             movd   xmm0,eax
+58                      pop    rax
+f3 0f 11 86 fc 01 00    movss  DWORD PTR [rsi+0x1fc],xmm0
+00
+e9 00 00 00 00          jmp    18 &lt;_main+0x18&gt;</value>
+  </data>
 </root>

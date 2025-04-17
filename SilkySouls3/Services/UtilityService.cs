@@ -124,8 +124,8 @@ namespace SilkySouls3.Services
                 var triggerOrigin = Hooks.NoClipTriggers;
                 var triggerOrigin2 = Hooks.NoClipTriggers2;
                 var updateCoordsOrigin = Hooks.NoClipUpdateCoords;
-                
-                
+
+
                 var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
                 {
                     WorldChrMan.PlayerIns,
@@ -138,14 +138,14 @@ namespace SilkySouls3.Services
                     FieldArea.ChrCam,
                     FieldArea.ChrExFollowCam
                 }, true);
-                
+
                 var padMan = _memoryIo.FollowPointers(WorldChrMan.Base,
                     new[]
                     {
                         WorldChrMan.PlayerIns,
                         (int)WorldChrMan.PlayerInsOffsets.PadMan
                     }, true);
-                
+
 
                 var inAirTimerBytes = AsmLoader.GetAsmBytes("NoClip_InAirTimer");
                 byte[] bytes = BitConverter.GetBytes(chrPhysicsModule.ToInt64());
@@ -161,41 +161,41 @@ namespace SilkySouls3.Services
                     (keyboardOrigin, 7, keyboardCheckCode + 0x2A, 0x25 + 1),
                     (keyboardOrigin, 7, keyboardCheckCode + 0x38, 0x33 + 1)
                 });
-                
+
                 AsmHelper.WriteRelativeOffsets(keyboardCheckBytes, new[]
                 {
                     (keyboardCheckCode.ToInt64() + 0x1C, zDirectionVariable.ToInt64(), 7, 0x1C + 2),
                     (keyboardCheckCode.ToInt64() + 0x2A, zDirectionVariable.ToInt64(), 7, 0x2A + 2),
                 });
-                
+
                 _memoryIo.WriteBytes(keyboardCheckCode, keyboardCheckBytes);
-                
+
                 var triggerBytes = AsmLoader.GetAsmBytes("NoClip_Triggers");
-                
+
                 bytes = AsmHelper.GetJmpOriginOffsetBytes(triggerOrigin, 6, triggerCheckCode + 0x20);
                 Array.Copy(bytes, 0, triggerBytes, 0x1B + 1, 4);
-                
+
                 AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
                 {
                     (triggerCheckCode.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
                     (triggerCheckCode.ToInt64() + 0x20, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
                     (triggerCheckCode.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2),
                 });
-                
+
                 _memoryIo.WriteBytes(triggerCheckCode, triggerBytes);
-                
+
                 bytes = AsmHelper.GetJmpOriginOffsetBytes(triggerOrigin2, 6, triggerCheckCode2 + 0x20);
                 Array.Copy(bytes, 0, triggerBytes, 0x1B + 1, 4);
-                
+
                 AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
                 {
                     (triggerCheckCode2.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
                     (triggerCheckCode2.ToInt64() + 0x20, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
                     (triggerCheckCode2.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2)
                 });
-                
+
                 _memoryIo.WriteBytes(triggerCheckCode2, triggerBytes);
-                
+
                 var updateCoordsBytes = AsmLoader.GetAsmBytes("NoClip_UpdateCoords");
                 AsmHelper.WriteAbsoluteAddresses(updateCoordsBytes, new[]
                 {
@@ -203,17 +203,17 @@ namespace SilkySouls3.Services
                     (padMan.ToInt64(), 0x20 + 2),
                     (chrExFollowCam.ToInt64(), 0x55 + 2),
                 });
-                
+
                 AsmHelper.WriteRelativeOffsets(updateCoordsBytes, new[]
                 {
                     (updateCoordsCode.ToInt64() + 0xA2, zDirectionVariable.ToInt64(), 7, 0xA2 + 2),
                     (updateCoordsCode.ToInt64() + 0xB2, zDirectionVariable.ToInt64(), 7, 0xB2 + 2),
                     (updateCoordsCode.ToInt64() + 0xCE, zDirectionVariable.ToInt64(), 7, 0xCE + 2),
                 });
-                
+
                 bytes = AsmHelper.GetJmpOriginOffsetBytes(updateCoordsOrigin, 8, updateCoordsCode + 0xF6);
                 Array.Copy(bytes, 0, updateCoordsBytes, 0xF1 + 1, 4);
-                
+
                 _memoryIo.WriteBytes(updateCoordsCode, updateCoordsBytes);
 
 
@@ -226,7 +226,7 @@ namespace SilkySouls3.Services
                 _hookManager.InstallHook(triggerCheckCode2.ToInt64(), triggerOrigin2, new byte[]
                     { 0x48, 0x8B, 0x10, 0x48, 0x89, 0xC1 });
                 _hookManager.InstallHook(updateCoordsCode.ToInt64(), updateCoordsOrigin, new byte[]
-                    { 0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00});
+                    { 0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00 });
             }
             else
             {
@@ -240,10 +240,11 @@ namespace SilkySouls3.Services
 
         public void SetNoClipSpeed(byte[] xBytes, byte[] yBytes)
         {
-            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x83 + 1, xBytes);
-            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x42 + 1, yBytes);
+            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x83 + 1,
+                xBytes);
+            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x42 + 1,
+                yBytes);
         }
-        
 
         public void ToggleHitboxView(bool isHitboxEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DamageMan.Base) + DamageMan.HitboxView,
@@ -280,7 +281,6 @@ namespace SilkySouls3.Services
         public void ToggleGroupMask(int offset, bool isEnabled) =>
             _memoryIo.WriteByte(GroupMask.Base + offset, isEnabled ? 0 : 1);
 
-
         public void ToggleTargetingView(bool isTargetingViewEnabled)
         {
             if (isTargetingViewEnabled)
@@ -310,9 +310,11 @@ namespace SilkySouls3.Services
             if (funcAddr == Funcs.Travel)
             {
                 var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
-                _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
+                _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag,
+                    true);
                 _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.Firelink, EventFlagMan.FirelinkBitFlag, true);
             }
+
             var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenu");
             var bytes = BitConverter.GetBytes(funcAddr);
             Array.Copy(bytes, 0, openMenuBytes, 0x9 + 2, 8);
@@ -373,6 +375,35 @@ namespace SilkySouls3.Services
                     _memoryIo.WriteByte(moveMapStepPatch, 0);
                     _memoryIo.WriteByte(debugFreeModePtr, 2);
                     break;
+            }
+        }
+
+        public void ToggleCamVertIncrease(bool isCamVertIncreaseEnabled)
+        {
+            var camVertUpHook = Hooks.CameraUpLimit;
+            var customCode = CodeCaveOffsets.Base + CodeCaveOffsets.CamVertUp;
+            var camVertDown = _memoryIo.FollowPointers(FieldArea.Base, new[]
+            {
+                FieldArea.ChrCam,
+                FieldArea.ChrExFollowCam,
+                FieldArea.CameraDownLimit
+            }, false);
+
+            if (isCamVertIncreaseEnabled)
+            {
+                var camVertUpBytes = AsmLoader.GetAsmBytes("CamVertUp");
+                var jumpBytes = AsmHelper.GetJmpOriginOffsetBytes(camVertUpHook, 8, customCode + 0x18);
+                Array.Copy(jumpBytes, 0, camVertUpBytes, 0x13 + 1, 4);
+                _memoryIo.WriteBytes(customCode, camVertUpBytes);
+                _hookManager.InstallHook(customCode.ToInt64(), camVertUpHook, new byte[]
+                    { 0xF3, 0x0F, 0x11, 0x86, 0xFC, 0x01, 0x00, 0x00 }
+                );
+                _memoryIo.WriteFloat(camVertDown, 1.5f);
+            }
+            else
+            {
+                _hookManager.UninstallHook(customCode.ToInt64());
+                _memoryIo.WriteFloat(camVertDown, 1.22f);
             }
         }
     }

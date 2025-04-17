@@ -238,6 +238,7 @@ namespace SilkySouls3.Memory
             public const int DbgFreeCamMode = 0xE0;
             public const int ChrCam = 0x28;
             public const int ChrExFollowCam = 0x60;
+            public const int CameraDownLimit = 0x200;
         }
         
         public static class GroupMask
@@ -279,6 +280,7 @@ namespace SilkySouls3.Memory
             public static long NoClipTriggers;
             public static long NoClipTriggers2;
             public static long NoClipUpdateCoords;
+            public static long CameraUpLimit;
 
         }
 
@@ -297,8 +299,6 @@ namespace SilkySouls3.Memory
             public static long RegularShop;
             public static long Transpose;
             public static long CombineMenuFlagAndEventFlag;
-
-
         }
     }
 }

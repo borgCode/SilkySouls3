@@ -318,13 +318,7 @@ namespace SilkySouls3.ViewModels
         public bool IsAutoSetNewGameSevenEnabled
         {
             get => _isAutoSetNewGameSevenEnabled;
-            set
-            {
-                if (SetProperty(ref _isAutoSetNewGameSevenEnabled, value))
-                {
-                    if (_isAutoSetNewGameSevenEnabled && AreOptionsEnabled) SetNewGame(8);
-                }
-            }
+            set => SetProperty(ref _isAutoSetNewGameSevenEnabled, value);
         }
 
         public bool IsNoRollEnabled

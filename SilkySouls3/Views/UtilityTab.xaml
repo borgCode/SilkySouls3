@@ -87,9 +87,8 @@
                             Width="12"
                             Height="12"
                             Margin="5,0,10,0"
-                            Cursor="Hand"
                             VerticalAlignment="Center"
-                            MouseLeftButtonDown="NoClipInfoBorder_MouseLeftButtonDown">
+                            ToolTip="Vertical movement with Ctrl/Space or L2/R2 on controller">
                             <TextBlock Text="i"
                                        Foreground="White"
                                        HorizontalAlignment="Center"
@@ -155,9 +154,8 @@
                             Width="12"
                             Height="12"
                             Margin="15,0,0,0"
-                            Cursor="Hand"
                             VerticalAlignment="Center"
-                            MouseLeftButtonDown="FreeCamInfoBorder_MouseLeftButtonDown">
+                            ToolTip="Only works with controller for now&#x0a;&#x0a;Mode 1: Freezes both the player and enemies&#x0a;Mode 2: Does not freeze">
                             <TextBlock Text="i"
                                        Foreground="White"
                                        HorizontalAlignment="Center"
@@ -167,6 +165,19 @@
                         </Border>
                     </StackPanel>
                 </UniformGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <CheckBox Content="Increase Camera Vertical limits" 
+                              VerticalAlignment="Center" 
+                              IsChecked="{Binding IsCamVertIncreaseEnabled}"
+                              Margin="0,0,10,0" />
+              
+                    <CheckBox Content="Option 2" 
+                              VerticalAlignment="Center" 
+                              Margin="0,0,10,0" />
+              
+                    <CheckBox Content="Option 3" 
+                              VerticalAlignment="Center" />
+                </StackPanel>
             </StackPanel>
         </Border>
 

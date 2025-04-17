@@ -65,6 +65,7 @@ namespace SilkySouls3.Memory
             TryPatternWithFallback("InAirTimer", Patterns.NoClipInAirTimer, addr => Offsets.Hooks.InAirTimer = addr.ToInt64(), saved);
             TryPatternWithFallback("NoClipKeyboard", Patterns.NoClipKeyboard, addr => Offsets.Hooks.NoClipKeyboard = addr.ToInt64(), saved);
             TryPatternWithFallback("NoClipUpdateCoords", Patterns.NoClipUpdateCoords, addr => Offsets.Hooks.NoClipUpdateCoords = addr.ToInt64(), saved);
+            TryPatternWithFallback("CameraUpLimit", Patterns.CameraUpLimit, addr => Offsets.Hooks.CameraUpLimit = addr.ToInt64(), saved);
             
             var triggers = FindAddressesByPattern(Patterns.NoClipTriggers, 2);
             if (triggers[0] == IntPtr.Zero && saved.TryGetValue("NoClipTriggers", out var value))
@@ -137,6 +138,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Hooks.NoClipTriggers: 0x{Offsets.Hooks.NoClipTriggers:X}");
             Console.WriteLine($"Hooks.NoClipTriggers2: 0x{Offsets.Hooks.NoClipTriggers2:X}");
             Console.WriteLine($"Hooks.NoClipUpdateCoords: 0x{Offsets.Hooks.NoClipUpdateCoords:X}");
+            Console.WriteLine($"Hooks.CameraUpLimit: 0x{Offsets.Hooks.CameraUpLimit:X}");
             
             Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
             Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
