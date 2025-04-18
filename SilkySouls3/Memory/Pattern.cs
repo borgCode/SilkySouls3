@@ -123,7 +123,7 @@ namespace SilkySouls3.Memory
         //Patch
 
 
-        public static readonly Pattern TargetingView = new Pattern(
+        public static readonly Pattern DbgDrawFlag = new Pattern(
             new byte[] { 0x80, 0x78, 0x65, 0x00 },
             "xxxx",
             0,

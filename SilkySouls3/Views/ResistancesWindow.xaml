@@ -8,6 +8,7 @@
         Height="Auto" Width="180" 
         SizeToContent="Height"
         AllowsTransparency="True" 
+        ResizeMode="CanResize"
         WindowStyle="None"
         ShowInTaskbar="False"
         Background="#80000000">

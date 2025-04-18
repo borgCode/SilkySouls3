@@ -77,9 +77,7 @@ namespace SilkySouls3
             MainTabControl.Items.Add(new TabItem { Header = "Settings", Content = settingsTab });
             
             _settingsViewModel.ApplyStartUpOptions();
-            
-            
-            this.Closing += MainWindow_Closing;
+            Closing += MainWindow_Closing;
             
             _gameLoadedTimer = new DispatcherTimer
             {
@@ -204,16 +202,8 @@ namespace SilkySouls3
             }
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-        
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
       
@@ -221,5 +211,7 @@ namespace SilkySouls3
             Properties.Settings.Default.WindowTop = Top;
             Properties.Settings.Default.Save();
         }
+        
+        private void LaunchGame_Click(object sender, RoutedEventArgs e) => GameLauncher.LaunchDarkSouls3();
     }
 }

@@ -169,7 +169,8 @@
                                 Height="12"
                                 Margin="5,0,10,0"
                                 VerticalAlignment="Center"
-                                ToolTip="Vertical movement with Ctrl/Space or L2/R2 on controller">
+                                ToolTip="Vertical movement with Ctrl/Space or L2/R2 on controller"
+                                ToolTipService.InitialShowDelay='100'>
                                 <TextBlock Text="i"
                                            Foreground="White"
                                            HorizontalAlignment="Center"
@@ -217,7 +218,8 @@
                                     Height="12"
                                     Margin="5,0,10,0"
                                     VerticalAlignment="Center"
-                                    ToolTip="Only works with controller for now&#x0a;&#x0a;Mode 1: Freezes both the player and enemies&#x0a;Mode 2: Does not freeze">
+                                    ToolTip="Only works with controller for now&#x0a;&#x0a;Mode 1: Freezes both the player and enemies&#x0a;Mode 2: Does not freeze"
+                                    ToolTipService.InitialShowDelay='100'>
                                     <TextBlock Text="i"
                                                Foreground="White"
                                                HorizontalAlignment="Center"

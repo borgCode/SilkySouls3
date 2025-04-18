@@ -93,10 +93,16 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            
-            <TextBlock x:Name="IsAttachedText" Text=""
-                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,10,0" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Launch Game"
+                        Click="LaunchGame_Click"
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"/>
+                <TextBlock x:Name="IsAttachedText" Text=""
+                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                           Width="100"
+                           Margin="0,0,10,0" />
+            </StackPanel>
         </Grid>
 
         <TabControl x:Name="MainTabControl"

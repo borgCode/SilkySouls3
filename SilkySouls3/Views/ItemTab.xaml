@@ -107,7 +107,8 @@
                             Height="12"
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            ToolTip="Automatically spawns the selected weapon when starting a new game.">
+                            ToolTip="Automatically spawns the selected weapon when starting a new game."
+                            ToolTipService.InitialShowDelay='100'>
                         <TextBlock Text="i"
                                    Foreground="White"
                                    HorizontalAlignment="Center"

@@ -284,19 +284,11 @@ namespace SilkySouls3.Services
 
         public void ToggleTargetingView(bool isTargetingViewEnabled)
         {
-            if (isTargetingViewEnabled)
-            {
-                _memoryIo.WriteByte(Patches.TargetingView + 0x3, 1);
-                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, 1);
-                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, 1);
-            }
-            else
-            {
-                _memoryIo.WriteByte(Patches.TargetingView + 0x3, 0);
-                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, 0);
-                _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, 0);
-            }
+            _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, isTargetingViewEnabled ? 1 : 0);
+            _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, isTargetingViewEnabled ? 1 : 0);
         }
+
+        public void PatchDebugDraw(bool isEnabled) => _memoryIo.WriteByte(Patches.DbgDrawFlag + 0x3, isEnabled ? 1 : 0);
 
         public void ToggleEventDraw(bool isDrawEventEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.EventDraw,
@@ -473,11 +465,6 @@ namespace SilkySouls3.Services
         public void SetFps(float value)
         {
             _memoryIo.WriteFloat((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.Fps, value);
-        }
-        
-        public float GetFps()
-        {
-            return _memoryIo.ReadFloat((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.Fps);
         }
     }
 }

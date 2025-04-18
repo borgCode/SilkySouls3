@@ -112,10 +112,7 @@ namespace SilkySouls3.ViewModels
                 Items = _itemsByCategory[_selectedCategory];
                 SelectedItem = Items.FirstOrDefault();
 
-                if (!string.IsNullOrEmpty(SearchText))
-                {
-                    ApplyFilter();
-                }
+                if (!string.IsNullOrEmpty(SearchText)) ApplyFilter();
             }
         }
 

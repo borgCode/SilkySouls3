@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 using SilkySouls3.Utilities;
 using SilkySouls3.ViewModels;
 
@@ -15,14 +15,23 @@ namespace SilkySouls3.Views
             InitializeComponent();
 
             MouseLeftButtonDown += (s, e) => DragMove();
-            Background = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromArgb(128, 0, 0, 0));
+            Background = new SolidColorBrush(
+                Color.FromArgb(128, 0, 0, 0));
 
 
             Loaded += (s, e) =>
             {
                 IntPtr hwnd = new WindowInteropHelper(this).Handle;
                 User32.SetTopmost(hwnd);
+                
+                if (Application.Current.MainWindow != null)
+                {
+                    Application.Current.MainWindow.Closing += (sender, args) =>
+                    {
+             
+                        Close();
+                    };
+                }
             };
         }
 

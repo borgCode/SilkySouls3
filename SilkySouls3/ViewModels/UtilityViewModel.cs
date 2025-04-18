@@ -149,6 +149,7 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
+                _utilityService.PatchDebugDraw(_isTargetingViewEnabled || IsDrawChrRagdollEnabled);
                 _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
             }
         }
@@ -221,6 +222,7 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isDrawChrRagdollEnabled, value)) return;
+                _utilityService.PatchDebugDraw(_isDrawChrRagdollEnabled || IsTargetingViewEnabled);
                 _utilityService.ToggleHitIns(HitIns.ChrRagdoll, _isDrawChrRagdollEnabled);
             }
         }
@@ -446,7 +448,11 @@ namespace SilkySouls3.ViewModels
             if (IsHitboxEnabled) _utilityService.ToggleHitboxView(true);
             if (IsSoundViewEnabled) _utilityService.ToggleSoundView(true);
             if (IsDrawEventEnabled) _utilityService.ToggleEventDraw(true);
-            if (IsTargetingViewEnabled) _utilityService.ToggleTargetingView(true);
+            if (IsTargetingViewEnabled)
+            {
+                _utilityService.PatchDebugDraw(true);
+                _utilityService.ToggleTargetingView(true);
+            }
             if (IsHideMapEnabled) _utilityService.ToggleGroupMask(GroupMask.Map,true);
             if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj,true);
             if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr,true);
@@ -462,7 +468,12 @@ namespace SilkySouls3.ViewModels
                 IsHideMapEnabled = true;
                 _utilityService.ToggleHitIns(HitIns.HighHit, true);
             }
-            if (IsDrawChrRagdollEnabled) _utilityService.ToggleHitIns(HitIns.ChrRagdoll, true);
+
+            if (IsDrawChrRagdollEnabled)
+            {
+                _utilityService.PatchDebugDraw(true);
+                _utilityService.ToggleHitIns(HitIns.ChrRagdoll, true);
+            }
             GameSpeed = _utilityService.GetGameSpeed();
             CameraFov = _utilityService.GetCameraFov();
             AreButtonsEnabled = true;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
@@ -56,7 +55,7 @@ namespace SilkySouls3.ViewModels
         private bool _areCinderOptionsEnabled;
         private bool _isCinderPhaseLocked;
         private bool _isEndlessSoulmassEnabled;
-        
+
         private bool _isAllDisableAiEnabled;
         private bool _isAllNoDamageEnabled;
         private bool _isAllNoDeathEnabled;
@@ -122,7 +121,8 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction("SetGwynPhase", () => SetCinderPhase(4));
             _hotkeyManager.RegisterAction("PhaseLock", () => IsCinderPhasedLocked = !IsCinderPhasedLocked);
             _hotkeyManager.RegisterAction("CastSoulmass", CastSoulmass);
-            _hotkeyManager.RegisterAction("EndlessSoulmass", () => IsEndlessSoulmassEnabled = !IsEndlessSoulmassEnabled);
+            _hotkeyManager.RegisterAction("EndlessSoulmass",
+                () => IsEndlessSoulmassEnabled = !IsEndlessSoulmassEnabled);
         }
 
         private void TargetOptionsTimerTick(object sender, EventArgs e)
@@ -136,9 +136,9 @@ namespace SilkySouls3.ViewModels
             IsValidTarget = true;
             TargetCurrentHealth = _enemyService.GetTargetHp();
             TargetMaxHealth = _enemyService.GetTargetMaxHp();
-      
+
             ulong targetId = _enemyService.GetTargetId();
-      
+
             if (targetId != _currentTargetId)
             {
                 IsDisableTargetAiEnabled = _enemyService.IsTargetAiDisabled();
@@ -160,6 +160,9 @@ namespace SilkySouls3.ViewModels
                     ? 0
                     : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.FrostMax);
                 AreCinderOptionsEnabled = _cinderService.IsTargetCinder();
+                if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+                _resistancesWindowWindow.DataContext = null;
+                _resistancesWindowWindow.DataContext = this;
             }
 
             TargetSpeed = _enemyService.GetTargetSpeed();
@@ -226,6 +229,7 @@ namespace SilkySouls3.ViewModels
                 {
                     _enemyService.InstallTargetHook();
                     _targetOptionsTimer.Start();
+                    ShowAllResistances = true;
                 }
                 else
                 {
@@ -269,7 +273,7 @@ namespace SilkySouls3.ViewModels
             _resistancesWindowWindow.DataContext = null;
             _resistancesWindowWindow.DataContext = this;
         }
-        
+
         public bool IsResistancesWindowOpen
         {
             get => _isResistancesWindowOpen;
@@ -325,7 +329,6 @@ namespace SilkySouls3.ViewModels
                         _enemyService.ToggleTargetRepeatAct(false);
                         break;
                 }
-                
             }
         }
 
@@ -361,7 +364,7 @@ namespace SilkySouls3.ViewModels
         public bool ShowPoisonAndNotImmune => ShowPoison && !IsPoisonImmune;
         public bool ShowToxicAndNotImmune => ShowToxic && !IsToxicImmune;
         public bool ShowFrostAndNotImmune => ShowFrost && !IsFrostImmune;
-        
+
 
         public float TargetCurrentPoise
         {
@@ -384,7 +387,13 @@ namespace SilkySouls3.ViewModels
         public bool ShowPoise
         {
             get => _showPoise;
-            set => SetProperty(ref _showPoise, value);
+            set
+            {
+                SetProperty(ref _showPoise, value);
+                if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+                _resistancesWindowWindow.DataContext = null;
+                _resistancesWindowWindow.DataContext = this;
+            }
         }
 
         public int TargetCurrentBleed
@@ -402,7 +411,13 @@ namespace SilkySouls3.ViewModels
         public bool ShowBleed
         {
             get => _showBleed;
-            set => SetProperty(ref _showBleed, value);
+            set
+            {
+                SetProperty(ref _showBleed, value);
+                if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+                _resistancesWindowWindow.DataContext = null;
+                _resistancesWindowWindow.DataContext = this;
+            }
         }
 
         public bool IsBleedImmune
@@ -426,7 +441,13 @@ namespace SilkySouls3.ViewModels
         public bool ShowPoison
         {
             get => _showPoison;
-            set => SetProperty(ref _showPoison, value);
+            set
+            {
+                SetProperty(ref _showPoison, value);
+                if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+                _resistancesWindowWindow.DataContext = null;
+                _resistancesWindowWindow.DataContext = this;
+            }
         }
 
         public bool IsPoisonImmune
@@ -450,7 +471,13 @@ namespace SilkySouls3.ViewModels
         public bool ShowToxic
         {
             get => _showToxic;
-            set => SetProperty(ref _showToxic, value);
+            set
+            {
+                SetProperty(ref _showToxic, value);
+                if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+                _resistancesWindowWindow.DataContext = null;
+                _resistancesWindowWindow.DataContext = this;
+            }
         }
 
         public bool IsToxicImmune
@@ -474,7 +501,13 @@ namespace SilkySouls3.ViewModels
         public bool ShowFrost
         {
             get => _showFrost;
-            set => SetProperty(ref _showFrost, value);
+            set
+            {
+                SetProperty(ref _showFrost, value);
+                if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+                _resistancesWindowWindow.DataContext = null;
+                _resistancesWindowWindow.DataContext = this;
+            }
         }
 
         public bool IsFrostImmune
@@ -525,7 +558,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsAllDisableAiEnabled
         {
             get => _isAllDisableAiEnabled;
@@ -537,7 +570,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsAllNoDamageEnabled
         {
             get => _isAllNoDamageEnabled;
@@ -549,7 +582,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsAllNoDeathEnabled
         {
             get => _isAllNoDeathEnabled;
@@ -561,7 +594,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsAllRepeatActEnabled
         {
             get => _isAllRepeatActEnabled;
@@ -598,15 +631,8 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        public void SetCinderPhase(int phaseIndex)
-        {
-            _cinderService.ForcePhaseTransition(phaseIndex);
-        }
-
-        public void CastSoulmass()
-        {
-            _cinderService.CastSoulMass();
-        }
+        public void SetCinderPhase(int phaseIndex) => _cinderService.ForcePhaseTransition(phaseIndex);
+        public void CastSoulmass() => _cinderService.CastSoulMass();
         
         public void TryEnableFeatures()
         {
@@ -615,6 +641,11 @@ namespace SilkySouls3.ViewModels
                 _enemyService.InstallTargetHook();
                 _targetOptionsTimer.Start();
             }
+
+            if (IsAllDisableAiEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.DisableAllAi, 1);
+            if (IsAllNoDamageEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDamage, 1);
+            if (IsAllNoDeathEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDeath, 1);
+            if (IsAllRepeatActEnabled) _enemyService.ToggleAllRepeatAct(true);
             AreOptionsEnabled = true;
         }
 

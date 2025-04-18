@@ -287,7 +287,7 @@ namespace SilkySouls3.Memory
             public static IntPtr PlayerSoundView;
             public static IntPtr DebugFont;
             public static IntPtr NoRoll;
-            public static IntPtr TargetingView;
+            public static IntPtr DbgDrawFlag;
             public static IntPtr FreeCam;
         }
         
