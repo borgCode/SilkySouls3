@@ -73,6 +73,10 @@ namespace SilkySouls3.Views
                 e.Handled = true;
             }
         }
-        
+
+        private void GiveSouls_Click(object sender, RoutedEventArgs e)
+        {
+            _playerViewModel.GiveSouls();
+        }
     }
 }

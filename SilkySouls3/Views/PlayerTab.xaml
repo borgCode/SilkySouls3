@@ -315,6 +315,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
                         <xctk:IntegerUpDown x:Name="SoulsUpDown"
                                             Value="{Binding Souls}"
                                             TextAlignment="Center"
@@ -322,10 +327,20 @@
                                             Minimum="0"
                                             Maximum="999999999"
                                             Grid.Column="0"
-
+                                            Grid.Row="0"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
-                        <TextBlock Text="Souls" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
+                        <TextBlock Text="Souls" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+
+                        <Button Content="Give 10k Souls"
+                                Click="GiveSouls_Click"
+                                IsEnabled="{Binding AreOptionsEnabled}"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Margin="0,5,0,0"
+                                Width="120"
+                                Height="25" />
                     </Grid>
                 </StackPanel>
             </Grid>
@@ -337,7 +352,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
+
                     <StackPanel Grid.Column="0" Width="180">
                         <Grid Margin="0,2">
                             <Grid.ColumnDefinitions>
@@ -376,25 +391,25 @@
                             <TextBlock Text="New Game" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
                         </Grid>
                     </StackPanel>
-                    
+
                     <Border Grid.Column="1"
                             BorderThickness="1"
                             BorderBrush="#333"
                             CornerRadius="3"
-                            Margin="5,0,0,0"
+                            Margin="5,30,0,0"
                             Padding="10">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-    
+
                             <StackPanel Grid.Column="0">
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox Content="Auto set NG+7"
                                               IsChecked="{Binding IsAutoSetNewGameSevenEnabled}"
                                               Margin="0,2" />
-                      
+
                                     <Border
                                         Background="#3498db"
                                         CornerRadius="10"
@@ -411,13 +426,13 @@
                                                    FontSize="10" />
                                     </Border>
                                 </StackPanel>
-        
+
                                 <CheckBox Content="Disable Roll"
                                           IsChecked="{Binding IsNoRollEnabled}"
                                           Margin="0,2" />
-        
+
                             </StackPanel>
-    
+
                             <StackPanel Grid.Column="1" />
                         </Grid>
                     </Border>

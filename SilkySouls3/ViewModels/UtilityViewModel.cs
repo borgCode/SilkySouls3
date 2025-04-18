@@ -240,6 +240,7 @@ namespace SilkySouls3.ViewModels
                 if (!SetProperty(ref _isFreeCamEnabled, value)) return;
                 if (_isFreeCamEnabled)
                 {
+                    IsNoClipEnabled = false;
                     int modeNumber = IsFreeCamMode1Selected ? 1 : 2;
                     _utilityService.SetFreeCamState(true, modeNumber);
                 }
@@ -300,6 +301,7 @@ namespace SilkySouls3.ViewModels
                 
                 if (_isNoClipEnabled)
                 {
+                    IsFreeCamEnabled = false;
                     _utilityService.ToggleNoClip(_isNoClipEnabled);
                     _wasNoDeathEnabled = _playerViewModel.IsNoDeathEnabled;
                     _playerViewModel.IsNoDeathEnabled = true;

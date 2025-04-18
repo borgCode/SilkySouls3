@@ -80,6 +80,7 @@ namespace SilkySouls3.ViewModels
 
             SelectedCategory = Categories.FirstOrDefault();
             SelectedMassSpawnCategory = Categories.FirstOrDefault();
+            SelectedAutoSpawnWeapon = WeaponList.FirstOrDefault();
 
         }
 
@@ -106,18 +107,14 @@ namespace SilkySouls3.ViewModels
             get => _selectedCategory;
             set
             {
-                if (SetProperty(ref _selectedCategory, value) && value != null)
-                {
-                    if (_selectedCategory != null)
-                    {
-                        Items = _itemsByCategory[_selectedCategory];
-                        SelectedItem = Items.FirstOrDefault();
+                if (!SetProperty(ref _selectedCategory, value) || value == null) return;
+                if (_selectedCategory == null) return;
+                Items = _itemsByCategory[_selectedCategory];
+                SelectedItem = Items.FirstOrDefault();
 
-                        if (!string.IsNullOrEmpty(SearchText))
-                        {
-                            ApplyFilter();
-                        }
-                    }
+                if (!string.IsNullOrEmpty(SearchText))
+                {
+                    ApplyFilter();
                 }
             }
         }
@@ -157,9 +154,12 @@ namespace SilkySouls3.ViewModels
             get => _searchText;
             set
             {
-                if (SetProperty(ref _searchText, value))
+                if (!SetProperty(ref _searchText, value)) return;
+                ApplyFilter();
+                    
+                if (string.IsNullOrEmpty(value))
                 {
-                    ApplyFilter();
+                    ResetAllViews();
                 }
             }
         }
@@ -177,6 +177,18 @@ namespace SilkySouls3.ViewModels
                 view.Filter = item => ((Item)item).Name.ToLower().Contains(SearchText.ToLower());
             }
         }
+        
+        private void ResetAllViews()
+        {
+            foreach (var category in Categories)
+            {
+                var tempItems = _itemsByCategory[category];
+                var view = CollectionViewSource.GetDefaultView(tempItems);
+                view.Filter = null;
+            }
+            
+            ApplyFilter();
+        }
 
         public Item SelectedItem
         {
@@ -184,19 +196,21 @@ namespace SilkySouls3.ViewModels
             set
             {
                 SetProperty(ref _selectedItem, value);
-                if (_selectedItem != null)
+                if (_selectedItem == null) return;
+                QuantityEnabled = _selectedItem.StackSize > 1;
+                MaxQuantity = _selectedItem.StackSize;
+                SelectedQuantity = _selectedItem.StackSize;
+                if (SelectedCategory == "Weapons")
                 {
-                    QuantityEnabled = _selectedItem.StackSize > 1;
-                    MaxQuantity = _selectedItem.StackSize;
-                    SelectedQuantity = _selectedItem.StackSize;
-
-                    CanInfuse = _selectedItem.Infusable;
-                    if (!CanInfuse) SelectedInfusionType = "Normal";
-                    CanUpgrade = _selectedItem.UpgradeType > 0;
-                    if (!CanUpgrade) SelectedUpgrade = 0;
-                    else MaxUpgradeLevel = _selectedItem.UpgradeType == 1 ? 10 : 5;
-                    if (SelectedUpgrade > MaxUpgradeLevel) SelectedUpgrade = MaxUpgradeLevel;
+                    QuantityEnabled = true;
+                    MaxQuantity = 99;
                 }
+                CanInfuse = _selectedItem.Infusable;
+                if (!CanInfuse) SelectedInfusionType = "Normal";
+                CanUpgrade = _selectedItem.UpgradeType > 0;
+                if (!CanUpgrade) SelectedUpgrade = 0;
+                else MaxUpgradeLevel = _selectedItem.UpgradeType == 1 ? 10 : 5;
+                if (SelectedUpgrade > MaxUpgradeLevel) SelectedUpgrade = MaxUpgradeLevel;
             }
         }
 
@@ -251,13 +265,12 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _selectedAutoSpawnWeapon, value);
         }
         
-        public ObservableCollection<Item> WeaponList => _itemsByCategory["Weapons"];
+        public ObservableCollection<Item> WeaponList => new ObservableCollection<Item>(_itemsByCategory["Weapons"]);
 
         private readonly string[] _sensitiveCategories = { "Ammo", "Consumables", "Upgrade Materials" };
         
         public void MassSpawn()
         {
-            
             bool isSensitiveCategory = _sensitiveCategories.Contains(SelectedMassSpawnCategory);
 
             if (isSensitiveCategory && !ConfirmSpawn()) return;

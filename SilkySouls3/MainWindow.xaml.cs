@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,6 +39,14 @@ namespace SilkySouls3
             
             InitializeComponent();
             
+            if (Properties.Settings.Default.WindowLeft != 0 || Properties.Settings.Default.WindowTop != 0)
+            {
+                Left = Properties.Settings.Default.WindowLeft;
+                Top = Properties.Settings.Default.WindowTop;
+            }
+            else WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            
+            
             _hookManager = new HookManager(_memoryIo);
             _aobScanner = new AoBScanner(_memoryIo);
             var hotkeyManager = new HotkeyManager(_memoryIo);
@@ -69,6 +78,9 @@ namespace SilkySouls3
             
             _settingsViewModel.ApplyStartUpOptions();
             
+            
+            this.Closing += MainWindow_Closing;
+            
             _gameLoadedTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(1)
@@ -78,10 +90,15 @@ namespace SilkySouls3
             
             
         }
+
         private bool _loaded;
+
         private bool _hasScanned;
+
         private bool _hasAllocatedMemory;
+
         private bool _hasAppliedNoLogo;
+
         private bool _appliedOneTimeFeatures;
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -197,5 +214,12 @@ namespace SilkySouls3
             Close();
         }
         
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+      
+            Properties.Settings.Default.WindowLeft = Left;
+            Properties.Settings.Default.WindowTop = Top;
+            Properties.Settings.Default.Save();
+        }
     }
 }

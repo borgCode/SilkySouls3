@@ -547,5 +547,10 @@ namespace SilkySouls3.ViewModels
             _playerService.SetNewGame(8);
             NewGame = _playerService.GetNewGame();
         }
+
+        public void GiveSouls()
+        {
+            _playerService.GiveSouls();
+        }
     }
 }

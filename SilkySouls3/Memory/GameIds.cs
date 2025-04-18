@@ -21,7 +21,5 @@
             public static readonly ulong[] Transpose = { 0x7530, 0x7918 };
             
         }
-
-        
     }
 }

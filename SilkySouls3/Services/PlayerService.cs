@@ -182,6 +182,13 @@ namespace SilkySouls3.Services
             _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls, totalSoulsRequired + currentTotalSouls);
         }
 
+        public void GiveSouls()
+        {
+            var statsBasePtr = (IntPtr) _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.PlayerGameData);
+            int currentVal = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.Souls);
+            HandleSoulEdit(statsBasePtr, currentVal + 10000, currentVal);
+        }
+
         private int CalculateTotalSoulsRequired(int startLevel, int endLevel)
         {
             startLevel = Math.Max(1, startLevel);
@@ -204,6 +211,7 @@ namespace SilkySouls3.Services
         }
 
         public float GetPlayerSpeed() => _memoryIo.ReadFloat(GetPlayerSpeedPtr());
+
         public void SetPlayerSpeed(float speed) => _memoryIo.WriteFloat(GetPlayerSpeedPtr(), speed);
 
         private IntPtr GetPlayerSpeedPtr()
@@ -217,7 +225,7 @@ namespace SilkySouls3.Services
                     (int)WorldChrMan.ChrBehaviorModule.AnimSpeed
                 }, false);
         }
-        
+
 
         public void ToggleNoRoll(bool isNoRollEnabled)
         {
