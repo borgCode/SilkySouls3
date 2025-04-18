@@ -111,6 +111,14 @@ namespace SilkySouls3.Memory
             Mov64
         );
 
+        public static readonly Pattern SprjFlipper = new Pattern(
+            new byte[] { 0x45, 0x89, 0x58, 0x5C },
+            "xxxx",
+            0x4,
+            Mov64
+            
+        );
+
 
         //Patch
 
@@ -209,7 +217,7 @@ namespace SilkySouls3.Memory
             0,
             MovzxByte
         );
-        
+
         //Hooks
 
         public static readonly Pattern LockedTarget = new Pattern(

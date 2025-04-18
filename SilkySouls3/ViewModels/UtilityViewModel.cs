@@ -27,6 +27,8 @@ namespace SilkySouls3.ViewModels
         private bool _isHideCharactersEnabled;
         private bool _isHideSfxEnabled;
         private bool _isDisableEventEnabled;
+        private bool _isDbgFpsEnabled;
+        private float _fps = 75;
         private bool _isFreeCamEnabled;
         private int _freeCamMode = 1;
         private bool _isCamVertIncreaseEnabled;
@@ -353,6 +355,27 @@ namespace SilkySouls3.ViewModels
         }
 
 
+        public bool IsDbgFpsEnabled
+        {
+            get => _isDbgFpsEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDbgFpsEnabled, value)) return;
+                _utilityService.ToggleDbgFps(_isDbgFpsEnabled);
+            }
+        }
+
+        public float Fps
+        {
+            get => _fps;
+            set
+            {
+                if (!SetProperty(ref _fps, value)) return;
+                _utilityService.SetFps(value);
+            }
+        }
+
+
         public float GameSpeed
         {
             get => _gameSpeed;
@@ -453,6 +476,11 @@ namespace SilkySouls3.ViewModels
         public void TryApplyOneTimeFeatures()
         {
             if (IsCamVertIncreaseEnabled) _utilityService.ToggleCamVertIncrease(true);
+            if (IsDbgFpsEnabled)
+            {
+                _utilityService.ToggleDbgFps(true);
+                _utilityService.SetFps(Fps);
+            }
         }
 
         public void MoveCamToPlayer()

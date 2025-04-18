@@ -48,6 +48,7 @@ namespace SilkySouls3.Memory
             Offsets.GroupMask.Base = FindAddressByPattern(Patterns.GroupMask);
             Offsets.UserInputManager.Base = FindAddressByPattern(Patterns.UserInputManager);
             Offsets.HitIns.Base = FindAddressByPattern(Patterns.HitIns);
+            Offsets.SprjFlipper.Base = FindAddressByPattern(Patterns.SprjFlipper);
 
             
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
@@ -121,6 +122,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
             Console.WriteLine($"UserInputManager.Base: 0x{Offsets.UserInputManager.Base.ToInt64():X}");
             Console.WriteLine($"Mesh.Base: 0x{Offsets.HitIns.Base.ToInt64():X}");
+            Console.WriteLine($"SprjFlipper.Base: 0x{Offsets.SprjFlipper.Base.ToInt64():X}");
             
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");

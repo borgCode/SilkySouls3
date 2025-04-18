@@ -271,6 +271,13 @@ namespace SilkySouls3.Memory
             public const int SteamInputEnum = 0x24B;
         }
 
+        public static class SprjFlipper
+        {
+            public static IntPtr Base;
+            public const int Fps = 0x354;
+            public const int DebugFpsToggle = 0x358;
+        }
+
         public static class Patches
         {
             public static IntPtr NoLogo;

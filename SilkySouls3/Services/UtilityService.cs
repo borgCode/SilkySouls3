@@ -463,5 +463,21 @@ namespace SilkySouls3.Services
 
         public void ToggleHitIns(int offset, bool isEnabled) =>
             _memoryIo.WriteByte(HitIns.Base + offset, isEnabled ? 1 : 0);
+
+        public void ToggleDbgFps(bool isDbgFpsEnabled)
+        {
+            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.DebugFpsToggle,
+                isDbgFpsEnabled ? 1 : 0);
+        }
+
+        public void SetFps(float value)
+        {
+            _memoryIo.WriteFloat((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.Fps, value);
+        }
+        
+        public float GetFps()
+        {
+            return _memoryIo.ReadFloat((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.Fps);
+        }
     }
 }
