@@ -33,8 +33,8 @@
                                         TextAlignment="Center"
                                         Width="100"
                                         PreviewKeyDown="HealthUpDown_PreviewKeyDown"
-                                        GotFocus="PauseUpdates_GotFocus"
                                         LostFocus="HealthUpDown_LostFocus"
+                                        Loaded="HealthUpDown_Loaded"
                                         IsEnabled="{Binding AreOptionsEnabled}"
                                         BorderBrush="#3F3F46" />
                     <TextBlock Text="{Binding CurrentMaxHp, StringFormat=Max: {0}}"
@@ -159,9 +159,12 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
                                             IsEnabled="{Binding AreOptionsEnabled}"
-                                            BorderBrush="#3F3F46" />
+                                            BorderBrush="#3F3F46" 
+                                            Tag="Vigor"/>
                         <TextBlock Text="Vigor" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
                     </Grid>
 
@@ -177,7 +180,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Attunement"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Attunement" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -195,7 +201,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Endurance"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Endurance" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -213,7 +222,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Strength"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Strength" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -231,7 +243,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Dexterity"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Dexterity" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -250,7 +265,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Intelligence"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Intelligence" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -268,7 +286,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Faith"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Faith" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -279,14 +300,17 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <xctk:IntegerUpDown x:Name="LuckUpdown"
+                        <xctk:IntegerUpDown x:Name="LuckUpDown"
                                             Value="{Binding Luck}"
                                             TextAlignment="Center"
                                             Width="80"
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Luck"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Luck" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -304,7 +328,10 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Vitality"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Vitality" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
@@ -328,6 +355,10 @@
                                             Maximum="999999999"
                                             Grid.Column="0"
                                             Grid.Row="0"
+                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
+                                            LostFocus="Stat_LostFocus"
+                                            Loaded="StatUpDowns_Loaded"
+                                            Tag="Souls"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
                         <TextBlock Text="Souls" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"

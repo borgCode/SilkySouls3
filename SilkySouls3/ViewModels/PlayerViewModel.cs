@@ -83,7 +83,6 @@ namespace SilkySouls3.ViewModels
                 }
             };
         }
-        public bool IsHealthTyping { get; set; } = false;
         private void RegisterHotkeys()
         {
             _hotkeyManager.RegisterAction("SavePos1", () => SavePos(0));
@@ -371,109 +370,55 @@ namespace SilkySouls3.ViewModels
         public int Vigor
         {
             get => _vigor;
-            set
-            {
-                if (SetProperty(ref _vigor, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Vigor, value);
-                }
-            }
+            set => SetProperty(ref _vigor, value);
         }
 
         public int Attunement
         {
             get => _attunement;
-            set
-            {
-                if (SetProperty(ref _attunement, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Attunement, value);
-                }
-            }
+            set => SetProperty(ref _attunement, value);
         }
 
         public int Endurance
         {
             get => _endurance;
-            set
-            {
-                if (SetProperty(ref _endurance, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Endurance, value);
-                }
-            }
+            set => SetProperty(ref _endurance, value);
         }
 
         public int Strength
         {
             get => _strength;
-            set
-            {
-                if (SetProperty(ref _strength, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Strength, value);
-                }
-            }
+            set => SetProperty(ref _strength, value);
         }
 
         public int Dexterity
         {
             get => _dexterity;
-            set
-            {
-                if (SetProperty(ref _dexterity, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Dexterity, value);
-                }
-            }
+            set => SetProperty(ref _dexterity, value);
         }
 
         public int Intelligence
         {
             get => _intelligence;
-            set
-            {
-                if (SetProperty(ref _intelligence, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Intelligence, value);
-                }
-            }
+            set => SetProperty(ref _intelligence, value);
         }
 
         public int Faith
         {
             get => _faith;
-            set
-            {
-                if (SetProperty(ref _faith, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Faith, value);
-                }
-            }
+            set => SetProperty(ref _faith, value);
         }
 
         public int Luck
         {
             get => _luck;
-            set
-            {
-                if (SetProperty(ref _luck, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Luck, value);
-                }
-            }
+            set => SetProperty(ref _luck, value);
         }
 
         public int Vitality
         {
             get => _vitality;
-            set
-            {
-                if (SetProperty(ref _vitality, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Vitality, value);
-                }
-            }
+            set => SetProperty(ref _vitality, value);
         }
 
         public int SoulLevel
@@ -482,16 +427,16 @@ namespace SilkySouls3.ViewModels
             private set => SetProperty(ref _soulLevel, value);
         }
 
+        public void SetStat(string statName, int value)
+        {
+            Stats stat = (Stats)Enum.Parse(typeof(Stats), statName);
+            _playerService.SetPlayerStat(stat, value);
+        }
+
         public int Souls
         {
             get => _souls;
-            set
-            {
-                if (SetProperty(ref _souls, value))
-                {
-                    _playerService.SetPlayerStat(Stats.Souls, value);
-                }
-            }
+            set => SetProperty(ref _souls, value);
         }
 
         public int NewGame
@@ -519,6 +464,7 @@ namespace SilkySouls3.ViewModels
         }
 
         public void SetNewGame(int value) => NewGame = value;
+
         public void SetSpeed(float value) => PlayerSpeed = value;
 
         private void ToggleSpeed()
