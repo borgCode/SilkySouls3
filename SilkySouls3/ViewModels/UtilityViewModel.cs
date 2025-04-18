@@ -28,7 +28,7 @@ namespace SilkySouls3.ViewModels
         private bool _isHideSfxEnabled;
         private bool _isDisableEventEnabled;
         private bool _isDbgFpsEnabled;
-        private float _fps = 75;
+        private float _fps;
         private bool _isFreeCamEnabled;
         private int _freeCamMode = 1;
         private bool _isCamVertIncreaseEnabled;
@@ -63,7 +63,8 @@ namespace SilkySouls3.ViewModels
                 var firstLocation = _warpLocations.First();
                 _selectedWarp = new KeyValuePair<string, string>(firstLocation.Key, firstLocation.Value.Name);
             }
-            
+
+            Fps = 75f;
             RegisterHotkeys();
         }
 
@@ -362,6 +363,7 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _isDbgFpsEnabled, value)) return;
                 _utilityService.ToggleDbgFps(_isDbgFpsEnabled);
+                _utilityService.SetFps(Fps);
             }
         }
 
