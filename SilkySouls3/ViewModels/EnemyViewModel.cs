@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
+using SilkySouls3.Views;
 
 namespace SilkySouls3.ViewModels
 {
@@ -20,6 +22,9 @@ namespace SilkySouls3.ViewModels
         private bool _isFreezeHealthEnabled;
         private bool _isDisableTargetAiEnabled;
         private bool _isRepeatActEnabled;
+
+        private ResistancesWindow _resistancesWindowWindow;
+        private bool _isResistancesWindowOpen;
 
         private float _targetCurrentPoise;
         private float _targetMaxPoise;
@@ -226,8 +231,11 @@ namespace SilkySouls3.ViewModels
                 {
                     _targetOptionsTimer.Stop();
                     IsRepeatActEnabled = false;
-                    _enemyService.UninstallTargetHook();
                     IsCinderPhasedLocked = false;
+                    ShowAllResistances = false;
+                    IsResistancesWindowOpen = false;
+                    IsFreezeHealthEnabled = false;
+                    _enemyService.UninstallTargetHook();
                     ShowPoise = false;
                     ShowBleed = false;
                     ShowPoison = false;
@@ -256,6 +264,41 @@ namespace SilkySouls3.ViewModels
                 ShowFrost = false;
                 ShowToxic = false;
             }
+
+            if (!IsResistancesWindowOpen || _resistancesWindowWindow == null) return;
+            _resistancesWindowWindow.DataContext = null;
+            _resistancesWindowWindow.DataContext = this;
+        }
+        
+        public bool IsResistancesWindowOpen
+        {
+            get => _isResistancesWindowOpen;
+            set
+            {
+                if (!SetProperty(ref _isResistancesWindowOpen, value)) return;
+                if (value)
+                    OpenResistancesWindow();
+                else
+                    CloseResistancesWindow();
+            }
+        }
+
+        private void OpenResistancesWindow()
+        {
+            if (_resistancesWindowWindow != null && _resistancesWindowWindow.IsVisible) return;
+            _resistancesWindowWindow = new ResistancesWindow
+            {
+                DataContext = this
+            };
+            _resistancesWindowWindow.Closed += (s, e) => _isResistancesWindowOpen = false;
+            _resistancesWindowWindow.Show();
+        }
+
+        private void CloseResistancesWindow()
+        {
+            if (_resistancesWindowWindow == null || !_resistancesWindowWindow.IsVisible) return;
+            _resistancesWindowWindow.Close();
+            _resistancesWindowWindow = null;
         }
 
         public bool AreCinderOptionsEnabled
@@ -314,6 +357,11 @@ namespace SilkySouls3.ViewModels
             }
         }
 
+        public bool ShowBleedAndNotImmune => ShowBleed && !IsBleedImmune;
+        public bool ShowPoisonAndNotImmune => ShowPoison && !IsPoisonImmune;
+        public bool ShowToxicAndNotImmune => ShowToxic && !IsToxicImmune;
+        public bool ShowFrostAndNotImmune => ShowFrost && !IsFrostImmune;
+        
 
         public float TargetCurrentPoise
         {
