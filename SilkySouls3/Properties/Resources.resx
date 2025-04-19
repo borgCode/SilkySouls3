@@ -1620,4 +1620,8 @@ f3 0f 11 86 fc 01 00    movss  DWORD PTR [rsi+0x1fc],xmm0
 00
 e9 00 00 00 00          jmp    18 &lt;_main+0x18&gt;</value>
   </data>
+  <data name="ItemLotBase" xml:space="preserve">
+    <value>b8 01 00 00 00          mov    eax,0x1
+c3                      ret</value>
+  </data>
 </root>

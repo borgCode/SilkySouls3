@@ -167,6 +167,16 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to b8 01 00 00 00          mov    eax,0x1
+        ///c3                      ret.
+        /// </summary>
+        internal static string ItemLotBase {
+            get {
+                return ResourceManager.GetString("ItemLotBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
         ///4c 8d 05 00 00 00 00    lea    r8,[rip+0x0]        # e &lt;_main+0xe&gt;
         ///48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 15 &lt;_main+0x15&gt;

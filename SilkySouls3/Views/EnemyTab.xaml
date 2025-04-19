@@ -141,7 +141,8 @@
                                 Height="12"
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Center"
-                                ToolTip="Will only stay on top of game in windowed mode">
+                                ToolTip="Will only stay on top of game in windowed mode"
+                                ToolTipService.InitialShowDelay='100'>
                                 <TextBlock Text="i"
                                            Foreground="White"
                                            HorizontalAlignment="Center"

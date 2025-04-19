@@ -9,7 +9,6 @@ namespace SilkySouls3.Views
 {
     public partial class ResistancesWindow
     {
-        
         public ResistancesWindow()
         {
             InitializeComponent();
@@ -23,14 +22,10 @@ namespace SilkySouls3.Views
             {
                 IntPtr hwnd = new WindowInteropHelper(this).Handle;
                 User32.SetTopmost(hwnd);
-                
+
                 if (Application.Current.MainWindow != null)
                 {
-                    Application.Current.MainWindow.Closing += (sender, args) =>
-                    {
-             
-                        Close();
-                    };
+                    Application.Current.MainWindow.Closing += (sender, args) => { Close(); };
                 }
             };
         }
@@ -41,7 +36,25 @@ namespace SilkySouls3.Views
             {
                 viewModel.IsResistancesWindowOpen = false;
             }
+
             Close();
-        } 
+        }
+
+
+        private void DecreaseSize_Click(object sender, RoutedEventArgs e)
+        {
+            ContentScale.ScaleX -= 0.2;
+            ContentScale.ScaleY -= 0.2;
+            Width *= ContentScale.ScaleX / (ContentScale.ScaleX + 0.2);
+            Height *= ContentScale.ScaleY / (ContentScale.ScaleY + 0.2);
+        }
+
+        private void IncreaseSize_Click(object sender, RoutedEventArgs e)
+        {
+            ContentScale.ScaleX += 0.2;
+            ContentScale.ScaleY += 0.2;
+            Width *= ContentScale.ScaleX / (ContentScale.ScaleX - 0.2);
+            Height *= ContentScale.ScaleY / (ContentScale.ScaleY - 0.2);
+        }
     }
 }

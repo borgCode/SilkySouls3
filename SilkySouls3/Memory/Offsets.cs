@@ -226,6 +226,7 @@ namespace SilkySouls3.Memory
 
             public enum SpEffectImmunityOffsets
             {
+                Stagger = 0x50,
                 Poison = 0x60,
                 Toxic = 0x64,
                 Bleed = 0x170,
@@ -303,6 +304,7 @@ namespace SilkySouls3.Memory
             public static long NoClipTriggers2;
             public static long NoClipUpdateCoords;
             public static long CameraUpLimit;
+            public static long ItemLotBase;
 
         }
 

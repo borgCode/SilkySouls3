@@ -466,5 +466,23 @@ namespace SilkySouls3.Services
         {
             _memoryIo.WriteFloat((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.Fps, value);
         }
+
+        public void Toggle100Drop(bool is100DropEnabled)
+        {
+            var customCode = CodeCaveOffsets.Base + CodeCaveOffsets.ItemLotBase;
+          
+            if (is100DropEnabled)
+            {
+                var hookLoc = Hooks.ItemLotBase;
+                var bytes = AsmLoader.GetAsmBytes("ItemLotBase");
+                _memoryIo.WriteBytes(customCode, bytes);
+                _hookManager.InstallHook(customCode.ToInt64(), hookLoc, new byte[]
+                    { 0x45, 0x0F, 0xB7, 0x41, 0x40 });
+            }
+            else
+            {
+                _hookManager.UninstallHook(customCode.ToInt64());
+            }
+        }
     }
 }

@@ -259,7 +259,13 @@ namespace SilkySouls3.Memory
             None
         );
 
-
+        public static readonly Pattern ItemLotBase = new Pattern(
+            new byte[] { 0x45, 0x0F, 0xB7, 0x41, 0x40, 0x41 },
+            "xxxxxx",
+            0,
+            None
+        );
+        
         public static readonly Pattern NoClipKeyboard = new Pattern(
             new byte[] { 0x49, 0xC1, 0xE8, 0x05, 0x48, 0x8B, 0x93 },
             "xxxxxxx",

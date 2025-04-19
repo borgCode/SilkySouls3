@@ -118,6 +118,10 @@
                                       IsChecked="{Binding IsDisableEventEnabled}"
                                       VerticalAlignment="Center"
                                       Margin="0,0,20,0" />
+                            <CheckBox Content="100% Drop"
+                                      IsChecked="{Binding Is100DropEnabled}"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,20,0" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">

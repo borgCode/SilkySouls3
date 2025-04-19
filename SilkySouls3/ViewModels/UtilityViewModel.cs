@@ -26,9 +26,12 @@ namespace SilkySouls3.ViewModels
         private bool _isHideObjectsEnabled;
         private bool _isHideCharactersEnabled;
         private bool _isHideSfxEnabled;
+        
         private bool _isDisableEventEnabled;
+        private bool _is100DropEnabled;
         private bool _isDbgFpsEnabled;
         private float _fps;
+        
         private bool _isFreeCamEnabled;
         private int _freeCamMode = 1;
         private bool _isCamVertIncreaseEnabled;
@@ -234,6 +237,16 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _isDisableEventEnabled, value)) return;
                 _utilityService.ToggleDisableEvent(_isDisableEventEnabled);
+            }
+        }
+        
+        public bool Is100DropEnabled
+        {
+            get => _is100DropEnabled;
+            set
+            {
+                if (!SetProperty(ref _is100DropEnabled, value)) return;
+                _utilityService.Toggle100Drop(_is100DropEnabled);
             }
         }
         
@@ -489,6 +502,7 @@ namespace SilkySouls3.ViewModels
         public void TryApplyOneTimeFeatures()
         {
             if (IsCamVertIncreaseEnabled) _utilityService.ToggleCamVertIncrease(true);
+            if (Is100DropEnabled) _utilityService.Toggle100Drop(true);
             if (IsDbgFpsEnabled)
             {
                 _utilityService.ToggleDbgFps(true);

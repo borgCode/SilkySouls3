@@ -12,6 +12,7 @@
         <Color x:Key="BorderColor">#333333</Color>
         <Color x:Key="ControlBackgroundColor">#252525</Color>
         
+        
         <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" />
         <SolidColorBrush x:Key="PanelBrush" Color="{StaticResource PanelColor}" />
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
@@ -19,6 +20,8 @@
         <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}" />
         <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
         <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{StaticResource ControlBackgroundColor}" />
+        <SolidColorBrush x:Key="AttachedBrush" Color="#4CAF50" />
+        <SolidColorBrush x:Key="NotAttachedBrush" Color="#D32F2F" />
 
         <Style TargetType="Window">
             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />

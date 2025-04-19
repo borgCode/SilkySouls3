@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using SilkySouls3.Memory;
 using SilkySouls3.Utilities;
@@ -99,54 +100,59 @@ namespace SilkySouls3.Services
         public void CastSoulMass()
         {
             if (!IsTargetCinder()) return;
-            const int soulmassEzStateId = 3003;
-            const string soulmassAnimationName = "Attack3003";
-            const int stringLength = 20;
-            const int maxWaitTime = 500;
 
-            var targetPtr = (IntPtr)_memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
-            var currentPhaseAddr = targetPtr + Offsets.EnemyIns.CurrentPhaseOffset;
-            int phaseBeforeSoulmass = _memoryIo.ReadInt32(currentPhaseAddr);
-            if (phaseBeforeSoulmass == 0) phaseBeforeSoulmass = 1 << 1;
-
-            ForceAnimation(_phaseAnimations[3]);
-
-            if (!WaitForGameState(
-                    () => _memoryIo.ReadInt32(currentPhaseAddr) == 1 << 3,
-                    maxWaitTime,
-                    "Something went wrong with the forced transition, please try again or reload the game"))
+            Task.Run(() =>
             {
-                return;
-            }
+                const int soulmassEzStateId = 3003;
+                const string soulmassAnimationName = "Attack3003";
+                const int stringLength = 20;
+                const int maxWaitTime = 500;
 
-            var modulesPtr = (IntPtr)_memoryIo.ReadInt64(targetPtr + (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules);
-            var chrEventModulePtr =
-                (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)Offsets.WorldChrMan.Modules.ChrEventModule);
-            _memoryIo.WriteInt32(chrEventModulePtr + Offsets.WorldChrMan.ForceAnimationOffset, soulmassEzStateId);
+                var targetPtr = (IntPtr)_memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
+                var currentPhaseAddr = targetPtr + Offsets.EnemyIns.CurrentPhaseOffset;
+                int phaseBeforeSoulmass = _memoryIo.ReadInt32(currentPhaseAddr);
+                if (phaseBeforeSoulmass == 0) phaseBeforeSoulmass = 1 << 1;
 
-            var chrBehaviorModulePtr =
-                (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)Offsets.WorldChrMan.Modules.ChrBehaviorModule);
+                ForceAnimation(_phaseAnimations[3]);
 
-            if (!WaitForGameState(
-                    () => _memoryIo.ReadString(
-                        chrBehaviorModulePtr + (int)Offsets.WorldChrMan.ChrBehaviorModule.CurrentAnimation,
-                        stringLength) == soulmassAnimationName, maxWaitTime,
-                    "Something went wrong with the forced soulmass, please try again or reload the game"))
-            {
-                return;
-            }
+                if (!WaitForGameState(
+                        () => _memoryIo.ReadInt32(currentPhaseAddr) == 1 << 3,
+                        maxWaitTime,
+                        "Something went wrong with the forced transition, please try again or reload the game"))
+                {
+                    return;
+                }
 
-            if (!WaitForGameState(
-                    () => _memoryIo.ReadString(
-                        chrBehaviorModulePtr + (int)Offsets.WorldChrMan.ChrBehaviorModule.CurrentAnimation,
-                        stringLength) != soulmassAnimationName, maxWaitTime,
-                    "Soulmass animation didn't start in time"))
-            {
-                return;
-            }
+                var modulesPtr =
+                    (IntPtr)_memoryIo.ReadInt64(targetPtr + (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules);
+                var chrEventModulePtr =
+                    (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)Offsets.WorldChrMan.Modules.ChrEventModule);
+                _memoryIo.WriteInt32(chrEventModulePtr + Offsets.WorldChrMan.ForceAnimationOffset, soulmassEzStateId);
 
-            int previousPhase = _currentPhaseLookUp[phaseBeforeSoulmass];
-            ForceAnimation(_phaseAnimations[previousPhase]);
+                var chrBehaviorModulePtr =
+                    (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)Offsets.WorldChrMan.Modules.ChrBehaviorModule);
+
+                if (!WaitForGameState(
+                        () => _memoryIo.ReadString(
+                            chrBehaviorModulePtr + (int)Offsets.WorldChrMan.ChrBehaviorModule.CurrentAnimation,
+                            stringLength) == soulmassAnimationName, maxWaitTime,
+                        "Something went wrong with the forced soulmass, please try again or reload the game"))
+                {
+                    return;
+                }
+
+                if (!WaitForGameState(
+                        () => _memoryIo.ReadString(
+                            chrBehaviorModulePtr + (int)Offsets.WorldChrMan.ChrBehaviorModule.CurrentAnimation,
+                            stringLength) != soulmassAnimationName, maxWaitTime,
+                        "Soulmass animation didn't start in time"))
+                {
+                    return;
+                }
+
+                int previousPhase = _currentPhaseLookUp[phaseBeforeSoulmass];
+                ForceAnimation(_phaseAnimations[previousPhase]);
+            });
         }
 
         private bool WaitForGameState(Func<bool> condition, int maxWaitTime, string errorMessage)
@@ -179,7 +185,11 @@ namespace SilkySouls3.Services
                     Offsets.SoloParamRepo.SpEffectPtr2,
                     Offsets.SoloParamRepo.CinderSoulmass
                 }, false);
-            if (isEnabled) _memoryIo.WriteFloat(soulmassPtr + 0x8,-1.0f);
+            if (isEnabled)
+            {
+                _memoryIo.WriteFloat(soulmassPtr + 0x8,-1.0f);
+                CastSoulMass();
+            }
             else _memoryIo.WriteFloat(soulmassPtr + 0x8, 40.0f);
         }
 

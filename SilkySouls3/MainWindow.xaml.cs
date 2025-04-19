@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
@@ -104,6 +105,7 @@ namespace SilkySouls3
             if (_memoryIo.IsAttached)
             {
                 IsAttachedText.Text = "Attached to game";
+                IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["AttachedBrush"];
                 
                 if (!_hasScanned)
                 {
@@ -150,6 +152,7 @@ namespace SilkySouls3
                 _hasAppliedNoLogo = false;
                 _appliedOneTimeFeatures = false;
                 IsAttachedText.Text = "Not attached";
+                IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["NotAttachedBrush"];
             }
         }
 

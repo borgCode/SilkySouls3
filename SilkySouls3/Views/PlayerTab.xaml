@@ -416,7 +416,6 @@
                                                 Minimum="0"
                                                 Maximum="7"
                                                 Grid.Column="0"
-
                                                 IsEnabled="{Binding AreOptionsEnabled}"
                                                 BorderBrush="#3F3F46" />
                             <TextBlock Text="New Game" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
