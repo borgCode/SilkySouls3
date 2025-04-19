@@ -21,6 +21,7 @@ namespace SilkySouls3.ViewModels
         private bool _isFreezeHealthEnabled;
         private bool _isDisableTargetAiEnabled;
         private bool _isRepeatActEnabled;
+        private bool _isCinderNoStaggerEnabled;
 
         private ResistancesWindow _resistancesWindowWindow;
         private bool _isResistancesWindowOpen;
@@ -630,7 +631,19 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-
+        
+        public bool IsCinderNoStaggerEnabled
+        {
+            get => _isCinderNoStaggerEnabled;
+            set
+            {
+                if (SetProperty(ref _isCinderNoStaggerEnabled, value))
+                {
+                    _cinderService.ToggleCinderStagger(_isCinderNoStaggerEnabled);
+                }
+            }
+        }
+        
         public void SetCinderPhase(int phaseIndex) => _cinderService.ForcePhaseTransition(phaseIndex);
         public void CastSoulmass() => _cinderService.CastSoulMass();
         
@@ -654,6 +667,8 @@ namespace SilkySouls3.ViewModels
             _targetOptionsTimer.Stop();
             IsFreezeHealthEnabled = false;
             IsCinderPhasedLocked = false;
+            IsCinderNoStaggerEnabled = false;
+            IsEndlessSoulmassEnabled = false;
             AreOptionsEnabled = false;
         }
     }

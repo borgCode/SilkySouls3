@@ -85,10 +85,10 @@ namespace SilkySouls3.Services
                 }, true);
 
             return (
-                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectImmunityOffsets.Poison) == 30000,
-                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectImmunityOffsets.Toxic) == 30010,
-                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectImmunityOffsets.Bleed) == 30020,
-                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectImmunityOffsets.FrostBite) == 30040
+                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectOffsets.Poison) == 30000,
+                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectOffsets.Toxic) == 30010,
+                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectOffsets.Bleed) == 30020,
+                _memoryIo.ReadInt32(spEffectBasePtr + (int)Offsets.EnemyIns.SpEffectOffsets.FrostBite) == 30040
                 );
         }
 

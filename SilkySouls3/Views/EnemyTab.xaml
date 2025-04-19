@@ -127,7 +127,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Text="Show:" Margin="0,0,0,5" />
-                        
+
                         <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
                             <CheckBox Content="Pop out Resistances"
                                       IsEnabled="{Binding IsTargetOptionsEnabled}"
@@ -199,9 +199,9 @@
                                                         <TextBlock HorizontalAlignment="Center"
                                                                    VerticalAlignment="Center"
                                                                    Foreground="White" FontWeight="SemiBold">
-                                                            <Run Text="{Binding TargetCurrentPoise, Mode=OneWay}" />
+                                                            <Run Text="{Binding TargetCurrentPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
                                                             <Run Text="/" />
-                                                            <Run Text="{Binding TargetMaxPoise, Mode=OneWay}" />
+                                                            <Run Text="{Binding TargetMaxPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
                                                         </TextBlock>
                                                     </Grid>
                                                 </Border>
@@ -222,7 +222,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    
+
                                     <StackPanel Grid.Row="0" Grid.Column="0"
                                                 Visibility="{Binding ShowBleed, Converter={StaticResource BoolToVis}, FallbackValue=Visible}"
                                                 Margin="0,0,5,5">
@@ -549,19 +549,32 @@
                     </WrapPanel>
 
                     <StackPanel Margin="0,0,0,5">
-                        <Button Content="Cast Soulmass"
-                                Margin="0,0,0,5"
-                                Padding="8,3"
-                                Click="CastSoulmass"
-                                HorizontalAlignment="Left"
-                                Width="120">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="AreOptionsEnabled" />
-                                    <Binding Path="AreCinderOptionsEnabled" />
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Cast Soulmass"
+                                    Margin="0,0,0,5"
+                                    Padding="8,3"
+                                    Click="CastSoulmass"
+                                    HorizontalAlignment="Left"
+                                    Width="120">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                        <Binding Path="AreOptionsEnabled" />
+                                        <Binding Path="AreCinderOptionsEnabled" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                            </Button>
+                            <CheckBox Content="Endless Soulmass"
+                                      Margin="15,0,0,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsEndlessSoulmassEnabled}">
+                                <CheckBox.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                        <Binding Path="AreOptionsEnabled" />
+                                        <Binding Path="AreCinderOptionsEnabled" />
+                                    </MultiBinding>
+                                </CheckBox.IsEnabled>
+                            </CheckBox>
+                        </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <CheckBox Content="Lock Phase"
@@ -575,10 +588,10 @@
                                     </MultiBinding>
                                 </CheckBox.IsEnabled>
                             </CheckBox>
-                            <CheckBox Content="Endless Soulmass"
+                            <CheckBox Content="No Stagger"
                                       Margin="0,0,0,0"
                                       VerticalAlignment="Center"
-                                      IsChecked="{Binding IsEndlessSoulmassEnabled}">
+                                      IsChecked="{Binding IsCinderNoStaggerEnabled}">
                                 <CheckBox.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                         <Binding Path="AreOptionsEnabled" />

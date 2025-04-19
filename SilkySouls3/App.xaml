@@ -161,6 +161,7 @@
             </Setter>
         </Style>
         
+        
         <Style TargetType="ComboBox">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -422,8 +423,31 @@
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#667C3AED" /> <!-- Accent color with 40% opacity -->
+            <Setter Property="Width" Value="8" /> <!-- Slimmer scrollbar for modern look -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                                <Track.Thumb>
+                                    <Thumb Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollBarThumbStyle}" />
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        
+        <Style x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Rectangle Fill="{TemplateBinding Background}" RadiusX="4" RadiusY="4" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="wpfTool:IntegerUpDown" xmlns:wpfTool="http://schemas.xceed.com/wpf/xaml/toolkit">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />

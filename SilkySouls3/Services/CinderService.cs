@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using SilkySouls3.Memory;
 using SilkySouls3.Utilities;
+using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
 {
@@ -12,7 +13,7 @@ namespace SilkySouls3.Services
     {
         private readonly MemoryIo _memoryIo;
         private readonly HookManager _hookManager;
-        
+
         private readonly Dictionary<int, int> _phaseAnimations = new Dictionary<int, int>
         {
             { 0, 20000 }, //Sword
@@ -51,9 +52,9 @@ namespace SilkySouls3.Services
             var forceAnimationPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
                 new[]
                 {
-                    (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules,
-                    (int)Offsets.WorldChrMan.Modules.ChrEventModule,
-                    Offsets.WorldChrMan.ForceAnimationOffset
+                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    (int)WorldChrMan.Modules.ChrEventModule,
+                    WorldChrMan.ForceAnimationOffset
                 }, false
             );
             _memoryIo.WriteInt32(forceAnimationPtr, phaseAnimation);
@@ -64,14 +65,14 @@ namespace SilkySouls3.Services
             var luaNumbersPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
                 new[]
                 {
-                    Offsets.EnemyIns.ComManipulator,
-                    (int)Offsets.EnemyIns.ComManipOffsets.AiIns,
-                    (int)Offsets.EnemyIns.AiInsOffsets.LuaNumbers
+                    EnemyIns.ComManipulator,
+                    (int)EnemyIns.ComManipOffsets.AiIns,
+                    (int)EnemyIns.AiInsOffsets.LuaNumbers
                 }, false);
 
-            _memoryIo.WriteFloat(luaNumbersPtr + (int)Offsets.EnemyIns.LuaNumbers.Gwyn5HitComboNumberIndex * 4, 0);
-            _memoryIo.WriteFloat(luaNumbersPtr + (int)Offsets.EnemyIns.LuaNumbers.GwynLightningRainNumberIndex * 4, 0);
-            _memoryIo.WriteFloat(luaNumbersPtr + (int)Offsets.EnemyIns.LuaNumbers.PhaseTransitionCounterNumberIndex * 4,
+            _memoryIo.WriteFloat(luaNumbersPtr + (int)EnemyIns.LuaNumbers.Gwyn5HitComboNumberIndex * 4, 0);
+            _memoryIo.WriteFloat(luaNumbersPtr + (int)EnemyIns.LuaNumbers.GwynLightningRainNumberIndex * 4, 0);
+            _memoryIo.WriteFloat(luaNumbersPtr + (int)EnemyIns.LuaNumbers.PhaseTransitionCounterNumberIndex * 4,
                 0);
         }
 
@@ -82,7 +83,7 @@ namespace SilkySouls3.Services
             var cinderPhaseLockCode = CodeCaveOffsets.Base + CodeCaveOffsets.CinderPhaseLock;
             if (enable)
             {
-                var addSubGoalHook = Offsets.Hooks.AddSubGoal;
+                var addSubGoalHook = Hooks.AddSubGoal;
                 byte[] phaseLockBytes = AsmLoader.GetAsmBytes("CinderPhaseLock");
                 byte[] jmpBytes =
                     AsmHelper.GetRelOffsetBytes(cinderPhaseLockCode.ToInt64() + 0x2C, addSubGoalHook + 10, 5);
@@ -109,7 +110,7 @@ namespace SilkySouls3.Services
                 const int maxWaitTime = 500;
 
                 var targetPtr = (IntPtr)_memoryIo.ReadInt64(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr);
-                var currentPhaseAddr = targetPtr + Offsets.EnemyIns.CurrentPhaseOffset;
+                var currentPhaseAddr = targetPtr + EnemyIns.CurrentPhaseOffset;
                 int phaseBeforeSoulmass = _memoryIo.ReadInt32(currentPhaseAddr);
                 if (phaseBeforeSoulmass == 0) phaseBeforeSoulmass = 1 << 1;
 
@@ -124,17 +125,17 @@ namespace SilkySouls3.Services
                 }
 
                 var modulesPtr =
-                    (IntPtr)_memoryIo.ReadInt64(targetPtr + (int)Offsets.WorldChrMan.PlayerInsOffsets.Modules);
+                    (IntPtr)_memoryIo.ReadInt64(targetPtr + (int)WorldChrMan.PlayerInsOffsets.Modules);
                 var chrEventModulePtr =
-                    (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)Offsets.WorldChrMan.Modules.ChrEventModule);
-                _memoryIo.WriteInt32(chrEventModulePtr + Offsets.WorldChrMan.ForceAnimationOffset, soulmassEzStateId);
+                    (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)WorldChrMan.Modules.ChrEventModule);
+                _memoryIo.WriteInt32(chrEventModulePtr + WorldChrMan.ForceAnimationOffset, soulmassEzStateId);
 
                 var chrBehaviorModulePtr =
-                    (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)Offsets.WorldChrMan.Modules.ChrBehaviorModule);
+                    (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)WorldChrMan.Modules.ChrBehaviorModule);
 
                 if (!WaitForGameState(
                         () => _memoryIo.ReadString(
-                            chrBehaviorModulePtr + (int)Offsets.WorldChrMan.ChrBehaviorModule.CurrentAnimation,
+                            chrBehaviorModulePtr + (int)WorldChrMan.ChrBehaviorModule.CurrentAnimation,
                             stringLength) == soulmassAnimationName, maxWaitTime,
                         "Something went wrong with the forced soulmass, please try again or reload the game"))
                 {
@@ -143,7 +144,7 @@ namespace SilkySouls3.Services
 
                 if (!WaitForGameState(
                         () => _memoryIo.ReadString(
-                            chrBehaviorModulePtr + (int)Offsets.WorldChrMan.ChrBehaviorModule.CurrentAnimation,
+                            chrBehaviorModulePtr + (int)WorldChrMan.ChrBehaviorModule.CurrentAnimation,
                             stringLength) != soulmassAnimationName, maxWaitTime,
                         "Soulmass animation didn't start in time"))
                 {
@@ -177,17 +178,17 @@ namespace SilkySouls3.Services
         public void ToggleEndlessSoulmass(bool isEnabled)
         {
             if (!IsTargetCinder()) return;
-            var soulmassPtr = _memoryIo.FollowPointers(Offsets.SoloParamRepo.Base,
+            var soulmassPtr = _memoryIo.FollowPointers(SoloParamRepo.Base,
                 new[]
                 {
-                    Offsets.SoloParamRepo.SpEffectParamResCap,
-                    Offsets.SoloParamRepo.SpEffectPtr1,
-                    Offsets.SoloParamRepo.SpEffectPtr2,
-                    Offsets.SoloParamRepo.CinderSoulmass
+                    SoloParamRepo.SpEffectParamResCap,
+                    SoloParamRepo.SpEffectPtr1,
+                    SoloParamRepo.SpEffectPtr2,
+                    SoloParamRepo.CinderSoulmass
                 }, false);
             if (isEnabled)
             {
-                _memoryIo.WriteFloat(soulmassPtr + 0x8,-1.0f);
+                _memoryIo.WriteFloat(soulmassPtr + 0x8, -1.0f);
                 CastSoulMass();
             }
             else _memoryIo.WriteFloat(soulmassPtr + 0x8, 40.0f);
@@ -198,10 +199,24 @@ namespace SilkySouls3.Services
             var enemyIdPtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
                 new[]
                 {
-                    Offsets.EnemyIns.ComManipulator,
-                    (int)Offsets.EnemyIns.ComManipOffsets.EnemyId
+                    EnemyIns.ComManipulator,
+                    (int)EnemyIns.ComManipOffsets.EnemyId
                 }, false);
             return _memoryIo.ReadInt32(enemyIdPtr) == 528000;
+        }
+
+        public void ToggleCinderStagger(bool isCinderNoStaggerEnabled)
+        {
+            var spEffectBasePtr = _memoryIo.FollowPointers(CodeCaveOffsets.Base + CodeCaveOffsets.LockedTargetPtr,
+                new[]
+                {
+                    EnemyIns.ComManipulator,
+                    (int)EnemyIns.ComManipOffsets.AiIns,
+                    (int)EnemyIns.AiInsOffsets.SpEffectPtr
+                }, true);
+
+            _memoryIo.WriteInt32(spEffectBasePtr + (int)EnemyIns.SpEffectOffsets.Stagger,
+                isCinderNoStaggerEnabled ? 0 : 5360);
         }
     }
 }

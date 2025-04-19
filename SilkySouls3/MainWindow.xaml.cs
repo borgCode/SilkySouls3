@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -215,6 +216,6 @@ namespace SilkySouls3
             Properties.Settings.Default.Save();
         }
         
-        private void LaunchGame_Click(object sender, RoutedEventArgs e) => GameLauncher.LaunchDarkSouls3();
+        private void LaunchGame_Click(object sender, RoutedEventArgs e) => Task.Run(GameLauncher.LaunchDarkSouls3);
     }
 }

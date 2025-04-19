@@ -224,7 +224,7 @@ namespace SilkySouls3.Memory
             public const int ForceActPtr = 0x8;
             public const int ForceActOffset = 0xB681;
 
-            public enum SpEffectImmunityOffsets
+            public enum SpEffectOffsets
             {
                 Stagger = 0x50,
                 Poison = 0x60,

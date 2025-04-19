@@ -470,6 +470,7 @@ namespace SilkySouls3.ViewModels
             if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj,true);
             if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr,true);
             if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx,true);
+            if (IsDisableEventEnabled) _utilityService.ToggleDisableEvent(true);
             if (IsDrawLowHitEnabled)
             {
                 IsHideMapEnabled = true;
