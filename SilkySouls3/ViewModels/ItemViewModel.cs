@@ -38,8 +38,7 @@ namespace SilkySouls3.ViewModels
 
         private string _preSearchCategory;
         private bool _isSearchActive;
-        private ObservableCollection<Item> _searchResultsCollection = new ObservableCollection<Item>();
-        private ObservableCollection<Item> _originalItemsCollection;
+        private readonly ObservableCollection<Item> _searchResultsCollection = new ObservableCollection<Item>();
 
         private ObservableCollection<string> _loadouts;
         private string _selectedLoadoutName;

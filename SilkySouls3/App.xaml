@@ -423,8 +423,8 @@
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Foreground" Value="#667C3AED" /> <!-- Accent color with 40% opacity -->
-            <Setter Property="Width" Value="8" /> <!-- Slimmer scrollbar for modern look -->
+            <Setter Property="Foreground" Value="#667C3AED" /> 
+            <Setter Property="Width" Value="8" /> 
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
