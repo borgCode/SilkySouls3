@@ -7,5 +7,6 @@
         public int StackSize { get; set; }
         public int UpgradeType { get; set; }
         public bool Infusable { get; set; }
+        public string CategoryName { get; set; }
     }
 }

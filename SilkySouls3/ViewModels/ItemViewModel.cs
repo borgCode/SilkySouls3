@@ -36,10 +36,15 @@ namespace SilkySouls3.ViewModels
         private ObservableCollection<string> _categories = new ObservableCollection<string>();
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
 
-        public ObservableCollection<string> _loadouts;
+        private string _preSearchCategory;
+        private bool _isSearchActive;
+        private ObservableCollection<Item> _searchResultsCollection = new ObservableCollection<Item>();
+        private ObservableCollection<Item> _originalItemsCollection;
+
+        private ObservableCollection<string> _loadouts;
         private string _selectedLoadoutName;
         private Dictionary<string, LoadoutTemplate> _loadoutTemplatesByName = new Dictionary<string, LoadoutTemplate>();
-        
+
         private string _selectedMassSpawnCategory;
 
         private bool _autoSpawnEnabled;
@@ -86,12 +91,11 @@ namespace SilkySouls3.ViewModels
             _allItems = _itemsByCategory.Values.SelectMany(x => x).ToLookup(i => i.Name);
             _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
             _loadouts = new ObservableCollection<string>(_loadoutTemplatesByName.Keys);
-            
+
             SelectedLoadoutName = Loadouts.FirstOrDefault();
             SelectedCategory = Categories.FirstOrDefault();
             SelectedMassSpawnCategory = Categories.FirstOrDefault();
             SelectedAutoSpawnWeapon = WeaponList.FirstOrDefault();
-
         }
 
         public bool AreOptionsEnabled
@@ -111,13 +115,13 @@ namespace SilkySouls3.ViewModels
             get => _items;
             set => SetProperty(ref _items, value);
         }
-        
+
         public ObservableCollection<string> Loadouts
         {
             get => _loadouts;
             private set => SetProperty(ref _loadouts, value);
         }
-        
+
         public string SelectedLoadoutName
         {
             get => _selectedLoadoutName;
@@ -131,10 +135,17 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _selectedCategory, value) || value == null) return;
                 if (_selectedCategory == null) return;
+                
+                if (_isSearchActive)
+                {
+                    IsSearchActive = false;
+                    _searchText = string.Empty;
+                    OnPropertyChanged(nameof(SearchText));
+                    _preSearchCategory = null;
+                }
+
                 Items = _itemsByCategory[_selectedCategory];
                 SelectedItem = Items.FirstOrDefault();
-
-                if (!string.IsNullOrEmpty(SearchText)) ApplyFilter();
             }
         }
 
@@ -167,46 +178,67 @@ namespace SilkySouls3.ViewModels
             get => _maxQuantity;
             private set => SetProperty(ref _maxQuantity, value);
         }
+        
+        public bool IsSearchActive
+        {
+            get => _isSearchActive;
+            private set => SetProperty(ref _isSearchActive, value);
+        }
 
         public string SearchText
         {
             get => _searchText;
             set
             {
-                if (!SetProperty(ref _searchText, value)) return;
-                ApplyFilter();
-                    
+                if (!SetProperty(ref _searchText, value))
+                {
+                    return;
+                }
+
                 if (string.IsNullOrEmpty(value))
                 {
-                    ResetAllViews();
+                    _isSearchActive = false;
+
+                    if (_preSearchCategory != null)
+                    {
+                        _selectedCategory = _preSearchCategory;
+                        Items = _itemsByCategory[_selectedCategory];
+                        SelectedItem = Items.FirstOrDefault();
+                        _preSearchCategory = null;
+                    }
+                    
+                }
+                else
+                {
+                    if (!_isSearchActive)
+                    {
+                        _preSearchCategory = SelectedCategory;
+                        _isSearchActive = true;
+                    }
+                    
+                    ApplyFilter();
                 }
             }
         }
 
         private void ApplyFilter()
         {
-            ICollectionView view = CollectionViewSource.GetDefaultView(Items);
-
-            if (string.IsNullOrEmpty(SearchText))
-            {
-                view.Filter = null;
-            }
-            else
-            {
-                view.Filter = item => ((Item)item).Name.ToLower().Contains(SearchText.ToLower());
-            }
-        }
-        
-        private void ResetAllViews()
-        {
-            foreach (var category in Categories)
-            {
-                var tempItems = _itemsByCategory[category];
-                var view = CollectionViewSource.GetDefaultView(tempItems);
-                view.Filter = null;
-            }
             
-            ApplyFilter();
+            _searchResultsCollection.Clear();
+            var searchTextLower = SearchText.ToLower();
+            
+            foreach (var category in _itemsByCategory)
+            {
+                foreach (var item in category.Value)
+                {
+                    if (item.Name.ToLower().Contains(searchTextLower))
+                    {
+                        item.CategoryName = category.Key;
+                        _searchResultsCollection.Add(item);
+                    }
+                }
+            }
+            Items = _searchResultsCollection;
         }
 
         public Item SelectedItem
@@ -224,6 +256,7 @@ namespace SilkySouls3.ViewModels
                     QuantityEnabled = true;
                     MaxQuantity = 99;
                 }
+
                 CanInfuse = _selectedItem.Infusable;
                 if (!CanInfuse) SelectedInfusionType = "Normal";
                 CanUpgrade = _selectedItem.UpgradeType > 0;
@@ -267,7 +300,7 @@ namespace SilkySouls3.ViewModels
 
         public void SpawnLoadout()
         {
-            if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName)) 
+            if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
                 return;
 
             var selectedTemplate = _loadoutTemplatesByName[SelectedLoadoutName];
@@ -326,7 +359,7 @@ namespace SilkySouls3.ViewModels
                 "Confirm Mass Spawn",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
-        
+
             return result == MessageBoxResult.Yes;
         }
 
