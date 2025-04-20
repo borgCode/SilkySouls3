@@ -59,7 +59,12 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <UniformGrid Grid.Row="1" Rows="2" Columns="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <UniformGrid Grid.Row="0" Grid.Column="0" Rows="1" Columns="2">
                         <Button Content="Save Pos 1"
                                 Click="SavePos_Click" CommandParameter="0"
                                 Margin="0,0,5,5"
@@ -75,7 +80,13 @@
                                 </MultiBinding>
                             </Button.IsEnabled>
                         </Button>
+                    </UniformGrid>
 
+                    <CheckBox Grid.Row="0" Grid.Column="1" Content="Include State"
+                              VerticalAlignment="Center" Margin="10,0,0,5"
+                              IsChecked="{Binding IsStateIncluded}" />
+
+                    <UniformGrid Grid.Row="1" Grid.Column="0" Rows="1" Columns="2">
                         <Button Content="Save Pos 2"
                                 Click="SavePos_Click" CommandParameter="1"
                                 Margin="0,5,5,0"
@@ -92,6 +103,16 @@
                             </Button.IsEnabled>
                         </Button>
                     </UniformGrid>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="10,5,0,0"
+                                HorizontalAlignment="Left">
+                        <xctk:DoubleUpDown Width="60" Margin="0,0,5,0" Value="{Binding PosX}" FormatString="F1"
+                                           IsEnabled="{Binding AreOptionsEnabled}" />
+                        <xctk:DoubleUpDown Width="60" Margin="0,0,5,0" Value="{Binding PosY}" FormatString="F1"
+                                           IsEnabled="{Binding AreOptionsEnabled}" />
+                        <xctk:DoubleUpDown Width="60" Value="{Binding PosZ}" FormatString="F1"
+                                           IsEnabled="{Binding AreOptionsEnabled}" />
+                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -163,8 +184,8 @@
                                             LostFocus="Stat_LostFocus"
                                             Loaded="StatUpDowns_Loaded"
                                             IsEnabled="{Binding AreOptionsEnabled}"
-                                            BorderBrush="#3F3F46" 
-                                            Tag="Vigor"/>
+                                            BorderBrush="#3F3F46"
+                                            Tag="Vigor" />
                         <TextBlock Text="Vigor" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
                     </Grid>
 

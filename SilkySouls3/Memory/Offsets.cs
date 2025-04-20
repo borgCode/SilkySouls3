@@ -41,6 +41,8 @@ namespace SilkySouls3.Memory
             {
                 Hp = 0xD8,
                 MaxHp = 0xDC,
+                Mp = 0xE4,
+                Stam = 0xF0,
                 ChrFlags2 = 0x1C0
             }
 
@@ -82,7 +84,9 @@ namespace SilkySouls3.Memory
             public enum ChrPhysicsModule
             {
                 Angle = 0x74,
-                Coords = 0x80,
+                X = 0x80,
+                Z = 0x84,
+                Y = 0x88,
             }
         }
 

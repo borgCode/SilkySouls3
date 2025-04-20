@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
+using SilkySouls3.Models;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
@@ -14,6 +15,13 @@ namespace SilkySouls3.ViewModels
 
         private bool _isPos1Saved;
         private bool _isPos2Saved;
+        private bool _isStateIncluded;
+        private (float x, float y, float z) _coords;
+        private float _posX;
+        private float _posZ;
+        private float _posY;
+        private CharacterState _saveState1 = new CharacterState();
+        private CharacterState _saveState2 = new CharacterState();
 
         private bool _isNoDeathEnabled;
         private bool _isNoDamageEnabled;
@@ -75,6 +83,10 @@ namespace SilkySouls3.ViewModels
                 Souls = _playerService.GetPlayerStat(Stats.Souls);
                 PlayerSpeed = _playerService.GetPlayerSpeed();
                 int newSoulLevel = _playerService.GetPlayerStat(Stats.SoulLevel);
+                _coords = _playerService.GetCoords();
+                PosX = _coords.x;
+                PosY = _coords.y;
+                PosZ = _coords.z;
                 if (_currentSoulLevel != newSoulLevel)
                 {
                     SoulLevel = newSoulLevel;
@@ -83,6 +95,7 @@ namespace SilkySouls3.ViewModels
                 }
             };
         }
+
         private void RegisterHotkeys()
         {
             _hotkeyManager.RegisterAction("SavePos1", () => SavePos(0));
@@ -126,7 +139,6 @@ namespace SilkySouls3.ViewModels
             _pauseUpdates = false;
         }
 
-
         public bool AreOptionsEnabled
         {
             get => _areOptionsEnabled;
@@ -156,7 +168,6 @@ namespace SilkySouls3.ViewModels
             _playerService.SetHp(CurrentMaxHp);
         }
 
-
         public bool IsPos1Saved
         {
             get => _isPos1Saved;
@@ -171,15 +182,72 @@ namespace SilkySouls3.ViewModels
 
         public void SavePos(int index)
         {
+            var state = index == 0 ? _saveState1 : _saveState2;
             if (index == 0) IsPos1Saved = true;
             else IsPos2Saved = true;
+
+            if (IsStateIncluded)
+            {
+                state.Hp = CurrentHp;
+                state.Mp = _playerService.GetMp();
+                state.Sp = _playerService.GetSp();
+            }
             _playerService.SavePos(index);
         }
 
         public void RestorePos(int index)
         {
             _playerService.RestorePos(index);
+            if (!IsStateIncluded) return;
+
+            var state = index == 0 ? _saveState1 : _saveState2;
+            _playerService.SetHp(state.Hp);
+            _playerService.SetMp(state.Mp);
+            _playerService.SetSp(state.Sp);
         }
+
+        public bool IsStateIncluded
+        {
+            get => _isStateIncluded;
+            set => SetProperty(ref _isStateIncluded, value);
+        }
+
+        public float PosX
+        {
+            get => _posX;
+            set
+            {
+                if (SetProperty(ref _posX, value))
+                {
+                    _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.X, value);
+                }
+            }
+        }
+
+        public float PosZ
+        {
+            get => _posZ;
+            set
+            {
+                if (SetProperty(ref _posZ, value))
+                {
+                    _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.Z, value);
+                }
+            }
+        }
+
+        public float PosY
+        {
+            get => _posY;
+            set
+            {
+                if (SetProperty(ref _posY, value))
+                {
+                    _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.Y, value);
+                }
+            }
+        }
+
 
         public bool IsNoDeathEnabled
         {

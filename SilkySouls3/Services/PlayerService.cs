@@ -50,14 +50,9 @@ namespace SilkySouls3.Services
 
         public void SavePos(int index)
         {
-            var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
-            {
-                WorldChrMan.PlayerIns,
-                (int)WorldChrMan.PlayerInsOffsets.Modules,
-                (int)WorldChrMan.Modules.ChrPhysicsModule,
-            }, true);
+            var chrPhysicsModule = GetChrPhysicsModule();
 
-            byte[] positionBytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Coords, 12);
+            byte[] positionBytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.X, 12);
             float angle = _memoryIo.ReadFloat(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Angle);
 
             byte[] angleBytes = BitConverter.GetBytes(angle);
@@ -69,6 +64,16 @@ namespace SilkySouls3.Services
             else _memoryIo.WriteBytes(CodeCaveOffsets.Base + CodeCaveOffsets.SavePos2, data);
         }
 
+        private IntPtr GetChrPhysicsModule()
+        {
+            return _memoryIo.FollowPointers(WorldChrMan.Base, new[]
+            {
+                WorldChrMan.PlayerIns,
+                (int)WorldChrMan.PlayerInsOffsets.Modules,
+                (int)WorldChrMan.Modules.ChrPhysicsModule,
+            }, true);
+        }
+
         public void RestorePos(int index)
         {
             byte[] positionBytes;
@@ -77,18 +82,25 @@ namespace SilkySouls3.Services
 
             float angle = BitConverter.ToSingle(positionBytes, 12);
 
-            var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
-            {
-                WorldChrMan.PlayerIns,
-                (int)WorldChrMan.PlayerInsOffsets.Modules,
-                (int)WorldChrMan.Modules.ChrPhysicsModule,
-            }, true);
+            var chrPhysicsModule = GetChrPhysicsModule();
 
             byte[] xyzBytes = new byte[12];
             Buffer.BlockCopy(positionBytes, 0, xyzBytes, 0, 12);
 
-            _memoryIo.WriteBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Coords, xyzBytes);
+            _memoryIo.WriteBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.X, xyzBytes);
             _memoryIo.WriteFloat(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Angle, angle);
+        }
+
+        public void SetAxis(WorldChrMan.ChrPhysicsModule axis, float value) =>
+            _memoryIo.WriteFloat(GetChrPhysicsModule() + (int) axis, value);
+
+        public (float x, float y, float z) GetCoords()
+        {
+            var coordBytes = _memoryIo.ReadBytes(GetChrPhysicsModule() + (int)WorldChrMan.ChrPhysicsModule.X, 12);
+            float x = BitConverter.ToSingle(coordBytes, 0);
+            float z = BitConverter.ToSingle(coordBytes, 4);
+            float y = BitConverter.ToSingle(coordBytes, 8);
+            return (x, y, z); 
         }
 
         public void ToggleDebugFlag(int offset, int value)
@@ -240,5 +252,11 @@ namespace SilkySouls3.Services
                 _memoryIo.WriteByte(Patches.NoRoll + 0x15, 1);
             }
         }
+
+        public int GetMp() => _memoryIo.ReadInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Mp));
+        public int GetSp() => _memoryIo.ReadInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Stam));
+
+        public void SetMp(int val) => _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Mp), val);
+        public void SetSp(int val) => _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Stam), val);
     }
 }

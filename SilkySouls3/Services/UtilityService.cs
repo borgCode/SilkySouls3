@@ -401,7 +401,7 @@ namespace SilkySouls3.Services
                 (int)WorldChrMan.Modules.ChrPhysicsModule,
             }, true);
 
-            var bytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Coords, 12);
+            var bytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.X, 12);
             float z = BitConverter.ToSingle(bytes, 4);
             z += 5.0f;
             Array.Copy(BitConverter.GetBytes(z), 0, bytes, 4, 4);
