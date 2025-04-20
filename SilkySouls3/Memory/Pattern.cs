@@ -116,7 +116,13 @@ namespace SilkySouls3.Memory
             "xxxx",
             0x4,
             Mov64
-            
+        );
+
+        public static readonly Pattern WorldObjManImpl = new Pattern(
+            new byte[] { 0x48, 0x83, 0xEC, 0x20, 0x83, 0x3A, 0xFF, 0x48, 0x8B, 0xDA, 0x75, 0x28 },
+            "xxxxxxxxxxxx",
+            0xE,
+            Mov64
         );
 
 
@@ -265,7 +271,7 @@ namespace SilkySouls3.Memory
             0,
             None
         );
-        
+
         public static readonly Pattern NoClipKeyboard = new Pattern(
             new byte[] { 0x49, 0xC1, 0xE8, 0x05, 0x48, 0x8B, 0x93 },
             "xxxxxxx",
@@ -300,6 +306,21 @@ namespace SilkySouls3.Memory
             0,
             None
         );
+
+        public static readonly Pattern BreakAllObjects = new Pattern(
+            new byte[] { 0x48, 0x83, 0xEC, 0x28, 0x8B, 0x81, 0xE8, 0x00, 0x02, 0x00, 0x85, 0xC0, 0x74, 0x6D },
+            "xxxxxxxxxxxxxx",
+            0,
+            None
+        );
+
+        public static readonly Pattern RestoreAllObjects = new Pattern(
+            new byte[] { 0x48, 0x83, 0xEC, 0x28, 0x8B, 0x81, 0xE8, 0x00, 0x02, 0x00, 0x85, 0xC0, 0x74, 0x62 },
+            "xxxxxxxxxxxxxx",
+            0,
+            None
+        );
+
 
         public static readonly Pattern ItemSpawnFunc = new Pattern(
             new byte[]

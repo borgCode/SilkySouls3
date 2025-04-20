@@ -49,6 +49,7 @@ namespace SilkySouls3.Memory
             Offsets.UserInputManager.Base = FindAddressByPattern(Patterns.UserInputManager);
             Offsets.HitIns.Base = FindAddressByPattern(Patterns.HitIns);
             Offsets.SprjFlipper.Base = FindAddressByPattern(Patterns.SprjFlipper);
+            Offsets.WorldObjMan.Base = FindAddressByPattern(Patterns.WorldObjManImpl);
 
             
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
@@ -92,6 +93,8 @@ namespace SilkySouls3.Memory
 
             Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
             Offsets.Funcs.ItemSpawn = FindAddressByPattern(Patterns.ItemSpawnFunc).ToInt64();
+            Offsets.Funcs.BreakAllObjects = FindAddressByPattern(Patterns.BreakAllObjects).ToInt64();
+            Offsets.Funcs.RestoreAllObjects = FindAddressByPattern(Patterns.RestoreAllObjects).ToInt64();
             Offsets.Funcs.SetEvent = FindAddressByPattern(Patterns.SetEvent).ToInt64();
             Offsets.Funcs.Travel = FindAddressByPattern(Patterns.TravelFunc).ToInt64();
             Offsets.Funcs.LevelUp = Offsets.Funcs.Travel - 0x720;
@@ -124,6 +127,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"UserInputManager.Base: 0x{Offsets.UserInputManager.Base.ToInt64():X}");
             Console.WriteLine($"Mesh.Base: 0x{Offsets.HitIns.Base.ToInt64():X}");
             Console.WriteLine($"SprjFlipper.Base: 0x{Offsets.SprjFlipper.Base.ToInt64():X}");
+            Console.WriteLine($"WorldObjMan.Base: 0x{Offsets.WorldObjMan.Base.ToInt64():X}");
             
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
@@ -156,6 +160,8 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Funcs.RegularShop: 0x{Offsets.Funcs.RegularShop:X}");
             Console.WriteLine($"Funcs.Transpose: 0x{Offsets.Funcs.Transpose:X}");
             Console.WriteLine($"Funcs.CombineMenuFlagAndEventFlag: 0x{Offsets.Funcs.CombineMenuFlagAndEventFlag:X}");
+            Console.WriteLine($"Funcs.BreakAllObjects: 0x{Offsets.Funcs.BreakAllObjects:X}");
+            Console.WriteLine($"Funcs.RestoreAllObjects: 0x{Offsets.Funcs.RestoreAllObjects:X}");
         }
         
         private void TryPatternWithFallback(string name, Pattern pattern, Action<IntPtr> setter, Dictionary<string, long> saved)

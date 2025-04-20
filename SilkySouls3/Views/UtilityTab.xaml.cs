@@ -116,5 +116,15 @@ namespace SilkySouls3.Views
         {
             _utilityViewModel.SetDefaultFov();
         }
+
+        private void BreakObjects_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.ToggleObjects(true);
+        }
+
+        private void RestoreObjects_Click(object sender, RoutedEventArgs e)
+        {
+            _utilityViewModel.ToggleObjects(false);
+        }
     }
 }

@@ -22,6 +22,9 @@ namespace SilkySouls3.ViewModels
         private bool _isDisableTargetAiEnabled;
         private bool _isRepeatActEnabled;
         private bool _isCinderNoStaggerEnabled;
+        
+        private int _lastAct;
+        private int _forceAct;
 
         private ResistancesWindow _resistancesWindowWindow;
         private bool _isResistancesWindowOpen;
@@ -143,7 +146,19 @@ namespace SilkySouls3.ViewModels
             if (targetId != _currentTargetId)
             {
                 IsDisableTargetAiEnabled = _enemyService.IsTargetAiDisabled();
-                IsRepeatActEnabled = _enemyService.IsTargetRepeating();
+                int forceActValue = _enemyService.GetForceAct();
+                if (forceActValue != 0)
+                {
+                    IsRepeatActEnabled = true;
+                    ForceAct = forceActValue;
+                }
+                else
+                {
+                    ForceAct = 0;
+                    IsRepeatActEnabled = false;
+                }
+                
+                
                 IsFreezeHealthEnabled = _enemyService.IsTargetNoDamageEnabled();
                 _currentTargetId = targetId;
                 TargetMaxPoise = _enemyService.GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule.MaxPoise);
@@ -181,6 +196,7 @@ namespace SilkySouls3.ViewModels
             TargetCurrentFrost = IsFrostImmune
                 ? 0
                 : _enemyService.GetTargetResistance(Offsets.WorldChrMan.ChrResistModule.FrostCurrent);
+            LastAct = _enemyService.GetLastAct();
         }
 
 
@@ -325,13 +341,33 @@ namespace SilkySouls3.ViewModels
                 {
                     case true when !isRepeating:
                         _enemyService.ToggleTargetRepeatAct(true);
+                        ForceAct = _enemyService.GetLastAct();
                         break;
                     case false when isRepeating:
                         _enemyService.ToggleTargetRepeatAct(false);
+                        ForceAct = 0;
                         break;
                 }
             }
         }
+
+        public int LastAct
+        {
+            get => _lastAct;
+            set => SetProperty(ref _lastAct, value);
+        }
+        
+        public int ForceAct
+        {
+            get => _forceAct;
+            set
+            {
+                if (!SetProperty(ref _forceAct, value)) return;
+                _enemyService.ForceAct(_forceAct);
+                if (_forceAct == 0) IsRepeatActEnabled = false;
+            }
+        }
+
 
         public int TargetCurrentHealth
         {
@@ -667,6 +703,8 @@ namespace SilkySouls3.ViewModels
             _targetOptionsTimer.Stop();
             IsFreezeHealthEnabled = false;
             IsCinderPhasedLocked = false;
+            LastAct = 0;
+            ForceAct = 0;
             IsCinderNoStaggerEnabled = false;
             IsEndlessSoulmassEnabled = false;
             AreOptionsEnabled = false;

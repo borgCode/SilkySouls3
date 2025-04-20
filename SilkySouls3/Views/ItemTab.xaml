@@ -34,6 +34,29 @@
                      SelectedItem="{Binding SelectedCategory}"
                      BorderThickness="1"
                      BorderBrush="#333">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="Border" 
+                                            Background="Transparent"
+                                            Padding="8,4">
+                                        <ContentPresenter />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="{StaticResource HoverBrush}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" />
@@ -278,16 +301,12 @@
                                 Height="25" />
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" IsEnabled="False">
+                    
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,0">
                         <TextBlock Text="Loadouts" FontWeight="Bold" Margin="0,0,0,5" />
                         <ComboBox ItemsSource="{Binding Loadouts}"
-                                  SelectedItem="{Binding SelectedLoadout}"
+                                  SelectedItem="{Binding SelectedLoadoutName}"
                                   Margin="0,0,0,5">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
                         </ComboBox>
                         <Button Content="Load Selected Preset"
                                 Click="LoadPreset_Click"

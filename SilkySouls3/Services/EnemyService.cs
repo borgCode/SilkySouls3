@@ -208,5 +208,10 @@ namespace SilkySouls3.Services
         {
             _memoryIo.WriteByte(Offsets.Patches.RepeatAct, isAllRepeatActEnabled ? 0x82 : 0x81);
         }
+
+        public void ForceAct(int forceAct) => _memoryIo.WriteUInt8(GetForceActPtr(), (byte)forceAct);
+        public int GetLastAct() => _memoryIo.ReadUInt8(GetForceActPtr() + 1);
+        public int GetForceAct()=> _memoryIo.ReadUInt8(GetForceActPtr());
+       
     }
 }

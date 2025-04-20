@@ -199,9 +199,11 @@
                                                         <TextBlock HorizontalAlignment="Center"
                                                                    VerticalAlignment="Center"
                                                                    Foreground="White" FontWeight="SemiBold">
-                                                            <Run Text="{Binding TargetCurrentPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
+                                                            <Run
+                                                                Text="{Binding TargetCurrentPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
                                                             <Run Text="/" />
-                                                            <Run Text="{Binding TargetMaxPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
+                                                            <Run
+                                                                Text="{Binding TargetMaxPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
                                                         </TextBlock>
                                                     </Grid>
                                                 </Border>
@@ -386,7 +388,8 @@
                     <Grid Margin="0,10,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0"
@@ -411,9 +414,8 @@
                                 </MultiBinding>
                             </xctk:DoubleUpDown.IsEnabled>
                         </xctk:DoubleUpDown>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <CheckBox Content="Disable Target AI" Margin="10,0,0,0">
+
+                        <CheckBox Grid.Column="2" Content="Disable Target AI" Margin="15,0,0,0">
                             <CheckBox.IsEnabled>
                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                     <Binding Path="AreOptionsEnabled" />
@@ -424,8 +426,9 @@
                                 <Binding Path="IsDisableTargetAiEnabled" />
                             </CheckBox.IsChecked>
                         </CheckBox>
-
-                        <CheckBox x:Name="RepeatActCheckbox" Content="Repeat Act" Margin="20,0,0,0">
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <CheckBox x:Name="RepeatActCheckbox" Content="Repeat Last Act" Margin="10,0,0,0">
                             <CheckBox.IsEnabled>
                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                     <Binding Path="AreOptionsEnabled" />
@@ -436,6 +439,38 @@
                                 <Binding Path="IsRepeatActEnabled" />
                             </CheckBox.IsChecked>
                         </CheckBox>
+                        <TextBlock Text="Last Act: " Margin="20,0,0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding LastAct}" VerticalAlignment="Center" Width="20" TextAlignment="Right" />
+
+                        <TextBlock Text="Force Act: " Margin="30,0,10,0" VerticalAlignment="Center" />
+                        <xctk:IntegerUpDown Width="50" Height="20"
+                                            Value="{Binding ForceAct, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="0"
+                                            Maximum="255"
+                                            VerticalAlignment="Center">
+                            <xctk:IntegerUpDown.IsEnabled>
+                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                    <Binding Path="AreOptionsEnabled" />
+                                    <Binding Path="IsValidTarget" />
+                                </MultiBinding>
+                            </xctk:IntegerUpDown.IsEnabled>
+                        </xctk:IntegerUpDown>
+                        <Border
+                            Background="#3498db"
+                            CornerRadius="10"
+                            Width="12"
+                            Height="12"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            ToolTip="Force Act:&#x0A;• Enter 0 for normal behavior&#x0A;• Enter a number to repeat a specific action&#x0A;• Numbers exceeding available acts will be ignored"
+                            ToolTipService.InitialShowDelay='100'>
+                            <TextBlock Text="i"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       FontSize="10" />
+                        </Border>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

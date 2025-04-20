@@ -484,5 +484,20 @@ namespace SilkySouls3.Services
                 _hookManager.UninstallHook(customCode.ToInt64());
             }
         }
+
+        public void ToggleObjects(bool isBreaking)
+        {
+            var worldObjManPtr = _memoryIo.ReadInt64(WorldObjMan.Base);
+            var funcAddr = isBreaking ? Funcs.BreakAllObjects : Funcs.RestoreAllObjects;
+
+            var codeBytes = AsmLoader.GetAsmBytes("ObjMan");
+            AsmHelper.WriteAbsoluteAddresses(codeBytes, new []
+            {
+                (worldObjManPtr, 0x2),
+                (funcAddr, 0x1C + 0x2) 
+            });
+            
+            _memoryIo.AllocateAndExecute(codeBytes);
+        }
     }
 }

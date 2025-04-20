@@ -318,6 +318,28 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 bf 00 00 00 00 00    movabs rdi,0x0
+        ///00 00 00
+        ///000000000000000a &lt;start&gt;:
+        ///48 63 cb                movsxd rcx,ebx
+        ///48 69 c9 88 02 04 00    imul   rcx,rcx,0x40288
+        ///48 03 4f 28             add    rcx,QWORD PTR [rdi+0x28]
+        ///48 83 ec 28             sub    rsp,0x28
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///ff c3                   inc    ebx
+        ///3b 5f 20                cmp    ebx,DWORD PTR [rdi+0x20]
+        ///7c d7                   jl    [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ObjMan {
+            get {
+                return ResourceManager.GetString("ObjMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 83 ec 48             sub    rsp,0x48
         ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
         ///48 b8 00 00 00 00 00    movabs rax,0x0

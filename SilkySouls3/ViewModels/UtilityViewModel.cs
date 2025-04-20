@@ -521,5 +521,10 @@ namespace SilkySouls3.ViewModels
             _utilityService.SetFov(43.0f);
             CameraFov = _utilityService.GetCameraFov();
         }
+
+        public void ToggleObjects(bool isBreaking)
+        {
+            _utilityService.ToggleObjects(isBreaking);
+        }
     }
 }

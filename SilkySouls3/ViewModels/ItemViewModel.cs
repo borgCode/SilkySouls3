@@ -31,9 +31,14 @@ namespace SilkySouls3.ViewModels
         private readonly Dictionary<string, ObservableCollection<Item>> _itemsByCategory =
             new Dictionary<string, ObservableCollection<Item>>();
 
+        private ILookup<string, Item> _allItems;
+
         private ObservableCollection<string> _categories = new ObservableCollection<string>();
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
-        
+
+        public ObservableCollection<string> _loadouts;
+        private string _selectedLoadoutName;
+        private Dictionary<string, LoadoutTemplate> _loadoutTemplatesByName = new Dictionary<string, LoadoutTemplate>();
         
         private string _selectedMassSpawnCategory;
 
@@ -78,6 +83,11 @@ namespace SilkySouls3.ViewModels
                 new ObservableCollection<Item>(DataLoader.GetItemList("UpgradeMaterials")));
             _itemsByCategory.Add("Weapons", new ObservableCollection<Item>(DataLoader.GetItemList("Weapons")));
 
+            _allItems = _itemsByCategory.Values.SelectMany(x => x).ToLookup(i => i.Name);
+            _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
+            _loadouts = new ObservableCollection<string>(_loadoutTemplatesByName.Keys);
+            
+            SelectedLoadoutName = Loadouts.FirstOrDefault();
             SelectedCategory = Categories.FirstOrDefault();
             SelectedMassSpawnCategory = Categories.FirstOrDefault();
             SelectedAutoSpawnWeapon = WeaponList.FirstOrDefault();
@@ -100,6 +110,18 @@ namespace SilkySouls3.ViewModels
         {
             get => _items;
             set => SetProperty(ref _items, value);
+        }
+        
+        public ObservableCollection<string> Loadouts
+        {
+            get => _loadouts;
+            private set => SetProperty(ref _loadouts, value);
+        }
+        
+        public string SelectedLoadoutName
+        {
+            get => _selectedLoadoutName;
+            set => SetProperty(ref _selectedLoadoutName, value);
         }
 
         public string SelectedCategory
@@ -242,14 +264,33 @@ namespace SilkySouls3.ViewModels
             if (CanUpgrade) itemId += SelectedUpgrade;
             _itemService.SpawnItem(itemId, SelectedQuantity);
         }
-        
-        
+
+        public void SpawnLoadout()
+        {
+            if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName)) 
+                return;
+
+            var selectedTemplate = _loadoutTemplatesByName[SelectedLoadoutName];
+
+            foreach (var template in selectedTemplate.Items)
+            {
+                foreach (var item in _allItems[template.ItemName])
+                {
+                    int itemId = item.Id;
+                    itemId += InfusionTypes[template.Infusion];
+                    itemId += template.Upgrade;
+                    _itemService.SpawnItem(itemId, item.StackSize);
+                }
+            }
+        }
+
+
         public string SelectedMassSpawnCategory
         {
             get => _selectedMassSpawnCategory;
             set => SetProperty(ref _selectedMassSpawnCategory, value);
         }
-        
+
         public bool AutoSpawnEnabled
         {
             get => _autoSpawnEnabled;
@@ -261,11 +302,11 @@ namespace SilkySouls3.ViewModels
             get => _selectedAutoSpawnWeapon;
             set => SetProperty(ref _selectedAutoSpawnWeapon, value);
         }
-        
+
         public ObservableCollection<Item> WeaponList => new ObservableCollection<Item>(_itemsByCategory["Weapons"]);
 
         private readonly string[] _sensitiveCategories = { "Ammo", "Consumables", "Upgrade Materials" };
-        
+
         public void MassSpawn()
         {
             bool isSensitiveCategory = _sensitiveCategories.Contains(SelectedMassSpawnCategory);

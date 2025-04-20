@@ -25,7 +25,7 @@ namespace SilkySouls3.Views
 
         private void LoadPreset_Click(object sender, RoutedEventArgs e)
         {
-    
+            _itemViewModel.SpawnLoadout();
         }
         
     }

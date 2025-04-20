@@ -202,6 +202,11 @@ namespace SilkySouls3.Memory
             public const int HighHit = 0x1;
             public const int ChrRagdoll = 0x3;
         }
+
+        public static class WorldObjMan
+        {
+            public static IntPtr Base;
+        }
         
         public static class EnemyIns
         {
@@ -323,6 +328,8 @@ namespace SilkySouls3.Memory
             public static long RegularShop;
             public static long Transpose;
             public static long CombineMenuFlagAndEventFlag;
+            public static long BreakAllObjects;
+            public static long RestoreAllObjects;
         }
     }
 }
