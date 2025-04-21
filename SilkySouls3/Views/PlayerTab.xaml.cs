@@ -20,23 +20,6 @@ namespace SilkySouls3.Views
             DataContext = _playerViewModel;
         }
 
-        private void SavePos_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            string parameter = button.CommandParameter.ToString();
-            int index = int.Parse(parameter);
-            _playerViewModel.SavePos(index);
-        }
-
-
-        private void RestorePos_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            string parameter = button.CommandParameter.ToString();
-            int index = int.Parse(parameter);
-            _playerViewModel.RestorePos(index);
-        }
-
         private void SetRtsrClick(object sender, RoutedEventArgs e)
         {
             _playerViewModel.SetHp(1);
@@ -68,7 +51,7 @@ namespace SilkySouls3.Views
             if (decField?.GetValue(spinner) is ButtonBase decBtn)
                 decBtn.Click += SpinnerSetHp;
         }
-        
+
 
         private void PauseUpdates_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -98,20 +81,34 @@ namespace SilkySouls3.Views
 
         private void HealthUpDown_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter || e.Key == Key.Return)
+            if (e.Key != Key.Enter && e.Key != Key.Return) return;
+            if (HealthUpDown.Value.HasValue)
             {
-                if (HealthUpDown.Value.HasValue)
-                {
-                    _playerViewModel.SetHp(HealthUpDown.Value.Value);
-                }
-
-                Focus();
-
-                e.Handled = true;
+                _playerViewModel.SetHp(HealthUpDown.Value.Value);
             }
+
+            Focus();
+
+            e.Handled = true;
         }
         
-        
+        private void SavePos_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            string parameter = button.CommandParameter.ToString();
+            int index = int.Parse(parameter);
+            _playerViewModel.SavePos(index);
+        }
+
+
+        private void RestorePos_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            string parameter = button.CommandParameter.ToString();
+            int index = int.Parse(parameter);
+            _playerViewModel.RestorePos(index);
+        }
+
         private void StatUpDowns_Loaded(object sender, RoutedEventArgs e)
         {
             HookIntegerUpDownSpinner(VigorUpDown, "Vigor");
@@ -173,6 +170,7 @@ namespace SilkySouls3.Views
             {
                 _playerViewModel.SetStat(statName, upDown.Value.Value);
             }
+            _playerViewModel.ResumeUpdates();
         }
 
         private void GiveSouls_Click(object sender, RoutedEventArgs e)

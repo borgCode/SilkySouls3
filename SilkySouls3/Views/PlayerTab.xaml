@@ -405,6 +405,7 @@
                                             PreviewKeyDown="StatUpDown_PreviewKeyDown"
                                             LostFocus="Stat_LostFocus"
                                             Loaded="StatUpDowns_Loaded"
+                                            GotFocus="PauseUpdates_GotFocus"
                                             Tag="Souls"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />

@@ -1224,7 +1224,6 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 20005000,Knight Slayer's Ring,1,0,0
 20004FEC,Knight's Ring,1,0,0
 20004EE8,Leo Ring,1,0,0
-20004F88,Leo Ring,1,0,0
 20004E20,Life Ring,1,0,0
 20004E21,Life Ring+1,1,0,0
 20004E22,Life Ring+2,1,0,0

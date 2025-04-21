@@ -530,9 +530,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-
-        public void SetNewGame(int value) => NewGame = value;
-
+        
         public void SetSpeed(float value) => PlayerSpeed = value;
 
         private void ToggleSpeed()
