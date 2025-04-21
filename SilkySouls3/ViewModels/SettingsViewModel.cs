@@ -71,8 +71,8 @@ namespace SilkySouls3.ViewModels
             {
                 if (SetProperty(ref _isEnableHotkeysEnabled, value))
                 {
-                    Properties.Settings.Default.EnableHotkeys = value;
-                    Properties.Settings.Default.Save();
+                    SettingsManager.Default.EnableHotkeys = value;
+                    SettingsManager.Default.Save();
                     if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
                     else _hotkeyManager.Stop();
                 }
@@ -85,8 +85,8 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isStutterFixEnabled, value)) return;
-                Properties.Settings.Default.StutterFix = value;
-                Properties.Settings.Default.Save();
+                SettingsManager.Default.StutterFix = value;
+                SettingsManager.Default.Save();
                 if (_isLoaded) _settingsService.ToggleStutterFix(_isStutterFixEnabled);
             }
         }
@@ -97,8 +97,8 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isAlwaysOnTopEnabled, value)) return;
-                Properties.Settings.Default.AlwaysOnTop = value;
-                Properties.Settings.Default.Save();
+                SettingsManager.Default.AlwaysOnTop = value;
+                SettingsManager.Default.Save();
                 var mainWindow = Application.Current.MainWindow;
                 if (mainWindow != null) mainWindow.Topmost = _isAlwaysOnTopEnabled;
             }
@@ -400,7 +400,7 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction("Quitout", () => _settingsService.Quitout());
         }
 
-
+#region hotkeyStuff
         private void LoadHotkeyDisplays()
         {
             foreach (var entry in _propertySetters)
@@ -554,6 +554,7 @@ namespace SilkySouls3.ViewModels
 
             StopSettingHotkey();
         }
+        #endregion
         
         public void ApplyLoadedOptions()
         {
@@ -563,13 +564,13 @@ namespace SilkySouls3.ViewModels
 
         public void ApplyStartUpOptions()
         {
-            _isEnableHotkeysEnabled = Properties.Settings.Default.EnableHotkeys;
+            _isEnableHotkeysEnabled = SettingsManager.Default.EnableHotkeys;
             if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
             else _hotkeyManager.Stop();
             OnPropertyChanged(nameof(IsEnableHotkeysEnabled));
-            _isStutterFixEnabled = Properties.Settings.Default.StutterFix;
+            _isStutterFixEnabled = SettingsManager.Default.StutterFix;
             OnPropertyChanged(nameof(IsStutterFixEnabled));
-            IsAlwaysOnTopEnabled = Properties.Settings.Default.AlwaysOnTop;
+            IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
         }
 
         public void ResetAttached() => _isLoaded = false;

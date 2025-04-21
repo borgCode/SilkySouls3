@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:converters="clr-namespace:SilkySouls3.Converters"
         mc:Ignorable="d"
-        Height="Auto" Width="180"
-        SizeToContent="Height"
+        Height="238" Width="180"
+        SizeToContent="Manual"
         AllowsTransparency="True"
         WindowStyle="None"
         ShowInTaskbar="False"
@@ -39,19 +39,23 @@
                         <Button Content="−" Width="20" Height="20" FontSize="14"
                                 Background="Transparent"
                                 BorderThickness="0" Foreground="#CCFFFFFF"
-                                Click="DecreaseSize_Click"/>
+                                Click="DecreaseSize_Click"
+                                Cursor="Hand"/>
                         <Button Content="+" Width="20" Height="20" FontSize="14"
                                 Background="Transparent"
                                 BorderThickness="0" Foreground="#CCFFFFFF"
                                 Margin="2,0,0,0"
-                                Click="IncreaseSize_Click"/>
+                                Click="IncreaseSize_Click"
+                                Cursor="Hand"/>
+
                     </StackPanel>
         
                     <Button Content="✕" Width="16" Height="16" FontSize="8"
                             HorizontalAlignment="Right"
                             Background="Transparent"
                             BorderThickness="0" Foreground="#CCFFFFFF"
-                            Click="CloseButton_Click"/>
+                            Click="CloseButton_Click"
+                            Cursor="Hand"/>
                 </DockPanel>
             </Grid>
 

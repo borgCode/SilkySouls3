@@ -415,7 +415,7 @@
                             </xctk:DoubleUpDown.IsEnabled>
                         </xctk:DoubleUpDown>
 
-                        <CheckBox Grid.Column="2" Content="Disable Target AI" Margin="15,0,0,0">
+                        <CheckBox Grid.Column="2" Content="Freeze Target AI" Margin="15,0,0,0">
                             <CheckBox.IsEnabled>
                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
                                     <Binding Path="AreOptionsEnabled" />

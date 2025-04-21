@@ -19,7 +19,7 @@ namespace SilkySouls3.Memory
         {
             string appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SilkySouls3");
             Directory.CreateDirectory(appData);
-            string savePath = Path.Combine(appData, "hook_addresses.txt");
+            string savePath = Path.Combine(appData, "backup_addresses.txt");
             
             Dictionary<string, long> saved = new Dictionary<string, long>();
             if (File.Exists(savePath))
@@ -109,59 +109,59 @@ namespace SilkySouls3.Memory
                 FindAddressByPattern(Patterns.CombineMenuFlagAndEventFlag).ToInt64();
             
         
-            
-            Console.WriteLine($"WorldChrMan.Base: 0x{Offsets.WorldChrMan.Base.ToInt64():X}");
-            Console.WriteLine($"GameMan.Base: 0x{Offsets.GameMan.Base.ToInt64():X}");
-            Console.WriteLine($"LuaEventMan.Base: 0x{Offsets.LuaEventMan.Base.ToInt64():X}");
-            Console.WriteLine($"EventFlagMan.Base: 0x{Offsets.EventFlagMan.Base.ToInt64():X}");
-            Console.WriteLine($"SoloParamRepo.Base: 0x{Offsets.SoloParamRepo.Base.ToInt64():X}");
-            Console.WriteLine($"AiTargetingFlags.Base: 0x{Offsets.AiTargetingFlags.Base.ToInt64():X}");
-            Console.WriteLine($"MenuMan.Base: 0x{Offsets.MenuMan.Base.ToInt64():X}");
-            Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
-            Console.WriteLine($"DebugEvent.Base: 0x{Offsets.DebugEvent.Base.ToInt64():X}");
-            Console.WriteLine($"MapItemMan.Base: 0x{Offsets.MapItemMan.Base.ToInt64():X}");
-            Console.WriteLine($"GameDataMan.Base: 0x{Offsets.GameDataMan.Base.ToInt64():X}");
-            Console.WriteLine($"DamageMan.Base: 0x{Offsets.DamageMan.Base.ToInt64():X}");
-            Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
-            Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
-            Console.WriteLine($"UserInputManager.Base: 0x{Offsets.UserInputManager.Base.ToInt64():X}");
-            Console.WriteLine($"Mesh.Base: 0x{Offsets.HitIns.Base.ToInt64():X}");
-            Console.WriteLine($"SprjFlipper.Base: 0x{Offsets.SprjFlipper.Base.ToInt64():X}");
-            Console.WriteLine($"WorldObjMan.Base: 0x{Offsets.WorldObjMan.Base.ToInt64():X}");
-            
-            Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
-            Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
-            Console.WriteLine($"Patches.GameSpeed: 0x{Offsets.Patches.GameSpeed.ToInt64():X}");
-            Console.WriteLine($"Patches.InfiniteDurability: 0x{Offsets.Patches.InfiniteDurability.ToInt64():X}");
-            Console.WriteLine($"Patches.PlayerSoundView: 0x{Offsets.Patches.PlayerSoundView.ToInt64():X}");
-            Console.WriteLine($"Patches.DebugFont: 0x{Offsets.Patches.DebugFont.ToInt64():X}");
-            Console.WriteLine($"Patches.NoRoll: 0x{Offsets.Patches.NoRoll.ToInt64():X}");
-            Console.WriteLine($"Patches.TargetingView: 0x{Offsets.Patches.DbgDrawFlag.ToInt64():X}");
-            Console.WriteLine($"Patches.FreeCam: 0x{Offsets.Patches.FreeCam.ToInt64():X}");
- 
-            Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
-            Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
-            Console.WriteLine($"Hooks.AddSubGoal: 0x{Offsets.Hooks.AddSubGoal:X}");
-            Console.WriteLine($"Hooks.InAirTimer: 0x{Offsets.Hooks.InAirTimer:X}");
-            Console.WriteLine($"Hooks.NoClipKeyboard: 0x{Offsets.Hooks.NoClipKeyboard:X}");
-            Console.WriteLine($"Hooks.NoClipTriggers: 0x{Offsets.Hooks.NoClipTriggers:X}");
-            Console.WriteLine($"Hooks.NoClipTriggers2: 0x{Offsets.Hooks.NoClipTriggers2:X}");
-            Console.WriteLine($"Hooks.NoClipUpdateCoords: 0x{Offsets.Hooks.NoClipUpdateCoords:X}");
-            Console.WriteLine($"Hooks.CameraUpLimit: 0x{Offsets.Hooks.CameraUpLimit:X}");
-            Console.WriteLine($"Hooks.ItemLotBase: 0x{Offsets.Hooks.ItemLotBase:X}");
-            
-            Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
-            Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
-            Console.WriteLine($"Funcs.SetEvent: 0x{Offsets.Funcs.SetEvent:X}");
-            Console.WriteLine($"Funcs.Travel: 0x{Offsets.Funcs.Travel:X}");
-            Console.WriteLine($"Funcs.ReinforceWeapon: 0x{Offsets.Funcs.ReinforceWeapon:X}");
-            Console.WriteLine($"Funcs.AllotEstus: 0x{Offsets.Funcs.AllotEstus:X}");
-            Console.WriteLine($"Funcs.Attunement: 0x{Offsets.Funcs.Attunement:X}");
-            Console.WriteLine($"Funcs.RegularShop: 0x{Offsets.Funcs.RegularShop:X}");
-            Console.WriteLine($"Funcs.Transpose: 0x{Offsets.Funcs.Transpose:X}");
-            Console.WriteLine($"Funcs.CombineMenuFlagAndEventFlag: 0x{Offsets.Funcs.CombineMenuFlagAndEventFlag:X}");
-            Console.WriteLine($"Funcs.BreakAllObjects: 0x{Offsets.Funcs.BreakAllObjects:X}");
-            Console.WriteLine($"Funcs.RestoreAllObjects: 0x{Offsets.Funcs.RestoreAllObjects:X}");
+            //
+            // Console.WriteLine($"WorldChrMan.Base: 0x{Offsets.WorldChrMan.Base.ToInt64():X}");
+            // Console.WriteLine($"GameMan.Base: 0x{Offsets.GameMan.Base.ToInt64():X}");
+            // Console.WriteLine($"LuaEventMan.Base: 0x{Offsets.LuaEventMan.Base.ToInt64():X}");
+            // Console.WriteLine($"EventFlagMan.Base: 0x{Offsets.EventFlagMan.Base.ToInt64():X}");
+            // Console.WriteLine($"SoloParamRepo.Base: 0x{Offsets.SoloParamRepo.Base.ToInt64():X}");
+            // Console.WriteLine($"AiTargetingFlags.Base: 0x{Offsets.AiTargetingFlags.Base.ToInt64():X}");
+            // Console.WriteLine($"MenuMan.Base: 0x{Offsets.MenuMan.Base.ToInt64():X}");
+            // Console.WriteLine($"DebugFlags.Base: 0x{Offsets.DebugFlags.Base.ToInt64():X}");
+            // Console.WriteLine($"DebugEvent.Base: 0x{Offsets.DebugEvent.Base.ToInt64():X}");
+            // Console.WriteLine($"MapItemMan.Base: 0x{Offsets.MapItemMan.Base.ToInt64():X}");
+            // Console.WriteLine($"GameDataMan.Base: 0x{Offsets.GameDataMan.Base.ToInt64():X}");
+            // Console.WriteLine($"DamageMan.Base: 0x{Offsets.DamageMan.Base.ToInt64():X}");
+            // Console.WriteLine($"FieldArea.Base: 0x{Offsets.FieldArea.Base.ToInt64():X}");
+            // Console.WriteLine($"GroupMask.Base: 0x{Offsets.GroupMask.Base.ToInt64():X}");
+            // Console.WriteLine($"UserInputManager.Base: 0x{Offsets.UserInputManager.Base.ToInt64():X}");
+            // Console.WriteLine($"Mesh.Base: 0x{Offsets.HitIns.Base.ToInt64():X}");
+            // Console.WriteLine($"SprjFlipper.Base: 0x{Offsets.SprjFlipper.Base.ToInt64():X}");
+            // Console.WriteLine($"WorldObjMan.Base: 0x{Offsets.WorldObjMan.Base.ToInt64():X}");
+            //
+            // Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
+            // Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
+            // Console.WriteLine($"Patches.GameSpeed: 0x{Offsets.Patches.GameSpeed.ToInt64():X}");
+            // Console.WriteLine($"Patches.InfiniteDurability: 0x{Offsets.Patches.InfiniteDurability.ToInt64():X}");
+            // Console.WriteLine($"Patches.PlayerSoundView: 0x{Offsets.Patches.PlayerSoundView.ToInt64():X}");
+            // Console.WriteLine($"Patches.DebugFont: 0x{Offsets.Patches.DebugFont.ToInt64():X}");
+            // Console.WriteLine($"Patches.NoRoll: 0x{Offsets.Patches.NoRoll.ToInt64():X}");
+            // Console.WriteLine($"Patches.TargetingView: 0x{Offsets.Patches.DbgDrawFlag.ToInt64():X}");
+            // Console.WriteLine($"Patches.FreeCam: 0x{Offsets.Patches.FreeCam.ToInt64():X}");
+            //
+            // Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
+            // Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
+            // Console.WriteLine($"Hooks.AddSubGoal: 0x{Offsets.Hooks.AddSubGoal:X}");
+            // Console.WriteLine($"Hooks.InAirTimer: 0x{Offsets.Hooks.InAirTimer:X}");
+            // Console.WriteLine($"Hooks.NoClipKeyboard: 0x{Offsets.Hooks.NoClipKeyboard:X}");
+            // Console.WriteLine($"Hooks.NoClipTriggers: 0x{Offsets.Hooks.NoClipTriggers:X}");
+            // Console.WriteLine($"Hooks.NoClipTriggers2: 0x{Offsets.Hooks.NoClipTriggers2:X}");
+            // Console.WriteLine($"Hooks.NoClipUpdateCoords: 0x{Offsets.Hooks.NoClipUpdateCoords:X}");
+            // Console.WriteLine($"Hooks.CameraUpLimit: 0x{Offsets.Hooks.CameraUpLimit:X}");
+            // Console.WriteLine($"Hooks.ItemLotBase: 0x{Offsets.Hooks.ItemLotBase:X}");
+            //
+            // Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
+            // Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");
+            // Console.WriteLine($"Funcs.SetEvent: 0x{Offsets.Funcs.SetEvent:X}");
+            // Console.WriteLine($"Funcs.Travel: 0x{Offsets.Funcs.Travel:X}");
+            // Console.WriteLine($"Funcs.ReinforceWeapon: 0x{Offsets.Funcs.ReinforceWeapon:X}");
+            // Console.WriteLine($"Funcs.AllotEstus: 0x{Offsets.Funcs.AllotEstus:X}");
+            // Console.WriteLine($"Funcs.Attunement: 0x{Offsets.Funcs.Attunement:X}");
+            // Console.WriteLine($"Funcs.RegularShop: 0x{Offsets.Funcs.RegularShop:X}");
+            // Console.WriteLine($"Funcs.Transpose: 0x{Offsets.Funcs.Transpose:X}");
+            // Console.WriteLine($"Funcs.CombineMenuFlagAndEventFlag: 0x{Offsets.Funcs.CombineMenuFlagAndEventFlag:X}");
+            // Console.WriteLine($"Funcs.BreakAllObjects: 0x{Offsets.Funcs.BreakAllObjects:X}");
+            // Console.WriteLine($"Funcs.RestoreAllObjects: 0x{Offsets.Funcs.RestoreAllObjects:X}");
         }
         
         private void TryPatternWithFallback(string name, Pattern pattern, Action<IntPtr> setter, Dictionary<string, long> saved)

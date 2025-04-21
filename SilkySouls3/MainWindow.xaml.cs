@@ -41,10 +41,10 @@ namespace SilkySouls3
             
             InitializeComponent();
             
-            if (Properties.Settings.Default.WindowLeft != 0 || Properties.Settings.Default.WindowTop != 0)
+            if (SettingsManager.Default.WindowLeft != 0 || SettingsManager.Default.WindowTop != 0)
             {
-                Left = Properties.Settings.Default.WindowLeft;
-                Top = Properties.Settings.Default.WindowTop;
+                Left = SettingsManager.Default.WindowLeft;
+                Top = SettingsManager.Default.WindowTop;
             }
             else WindowStartupLocation = WindowStartupLocation.CenterScreen;
             
@@ -107,6 +107,7 @@ namespace SilkySouls3
             {
                 IsAttachedText.Text = "Attached to game";
                 IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["AttachedBrush"];
+                LaunchGameButton.IsEnabled = false;
                 
                 if (!_hasScanned)
                 {
@@ -154,6 +155,7 @@ namespace SilkySouls3
                 _appliedOneTimeFeatures = false;
                 IsAttachedText.Text = "Not attached";
                 IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["NotAttachedBrush"];
+                LaunchGameButton.IsEnabled = true;
             }
         }
 
@@ -211,9 +213,9 @@ namespace SilkySouls3
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
       
-            Properties.Settings.Default.WindowLeft = Left;
-            Properties.Settings.Default.WindowTop = Top;
-            Properties.Settings.Default.Save();
+            SettingsManager.Default.WindowLeft = Left;
+            SettingsManager.Default.WindowTop = Top;
+            SettingsManager.Default.Save();
         }
         
         private void LaunchGame_Click(object sender, RoutedEventArgs e) => Task.Run(GameLauncher.LaunchDarkSouls3);

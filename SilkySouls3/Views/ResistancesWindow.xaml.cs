@@ -20,6 +20,25 @@ namespace SilkySouls3.Views
 
             Loaded += (s, e) =>
             {
+                
+                if (SettingsManager.Default.ResistancesWindowLeft > 0)
+                    Left = SettingsManager.Default.ResistancesWindowLeft;
+                
+                if (SettingsManager.Default.ResistancesWindowTop > 0)
+                    Top = SettingsManager.Default.ResistancesWindowTop;
+                
+                if (SettingsManager.Default.ResistancesWindowScaleX > 0)
+                {
+                    ContentScale.ScaleX = SettingsManager.Default.ResistancesWindowScaleX;
+                    ContentScale.ScaleY = SettingsManager.Default.ResistancesWindowScaleY;
+                }
+                
+                if (SettingsManager.Default.ResistancesWindowWidth > 0)
+                    Width = SettingsManager.Default.ResistancesWindowWidth;
+    
+                if (SettingsManager.Default.ResistancesWindowHeight > 0)
+                    Height = SettingsManager.Default.ResistancesWindowHeight;
+                
                 IntPtr hwnd = new WindowInteropHelper(this).Handle;
                 User32.SetTopmost(hwnd);
 
@@ -38,6 +57,19 @@ namespace SilkySouls3.Views
             }
 
             Close();
+        }
+        
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            
+            SettingsManager.Default.ResistancesWindowScaleX = ContentScale.ScaleX;
+            SettingsManager.Default.ResistancesWindowScaleY = ContentScale.ScaleY;
+            SettingsManager.Default.ResistancesWindowWidth = Width;
+            SettingsManager.Default.ResistancesWindowHeight = Height;
+            SettingsManager.Default.ResistancesWindowLeft = Left;
+            SettingsManager.Default.ResistancesWindowTop = Top;
+            SettingsManager.Default.Save();
         }
 
 
