@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:converters="clr-namespace:SilkySouls3.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="500">
+    
+    <UserControl.Resources>
+        <converters:BooleanAndConverter x:Key="BooleanAndConverter" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -268,10 +274,12 @@
                         <StackPanel Grid.Column="1" HorizontalAlignment="Right">
                             <CheckBox Content="Increase Camera Vertical limits"
                                       VerticalAlignment="Center"
+                                      IsEnabled="{Binding IsFreeCamEnabled, Converter={StaticResource InverseBooleanConverter}}"
                                       IsChecked="{Binding IsCamVertIncreaseEnabled}"
                                       Margin="0,0,0,15" />
 
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                        IsEnabled="{Binding IsFreeCamEnabled, Converter={StaticResource InverseBooleanConverter}}">
                                 <xctk:IntegerUpDown x:Name="FovUpDown"
                                                     Value="{Binding CameraFov}"
                                                     TextAlignment="Center"
@@ -287,10 +295,16 @@
                             <Button Content="Set Default FOV"
                                     Click="SetDefaultFov_Click"
                                     HorizontalAlignment="Right"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
                                     Padding="5,2"
                                     Margin="0,0,0,0"
-                                    Width="100" />
+                                    Width="100">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                        <Binding Path="AreButtonsEnabled"/>
+                                        <Binding Path="IsFreeCamEnabled" Converter="{StaticResource InverseBooleanConverter}"/>
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </TabItem>

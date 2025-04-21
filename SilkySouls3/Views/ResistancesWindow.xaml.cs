@@ -9,6 +9,7 @@ namespace SilkySouls3.Views
 {
     public partial class ResistancesWindow
     {
+        private double _scaleMultiplier = 1.0;
         public ResistancesWindow()
         {
             InitializeComponent();
@@ -20,31 +21,33 @@ namespace SilkySouls3.Views
 
             Loaded += (s, e) =>
             {
-                
                 if (SettingsManager.Default.ResistancesWindowLeft > 0)
                     Left = SettingsManager.Default.ResistancesWindowLeft;
-                
+        
                 if (SettingsManager.Default.ResistancesWindowTop > 0)
                     Top = SettingsManager.Default.ResistancesWindowTop;
-                
+        
                 if (SettingsManager.Default.ResistancesWindowScaleX > 0)
                 {
-                    ContentScale.ScaleX = SettingsManager.Default.ResistancesWindowScaleX;
-                    ContentScale.ScaleY = SettingsManager.Default.ResistancesWindowScaleY;
+                    _scaleMultiplier = SettingsManager.Default.ResistancesWindowScaleX;
+                    ContentScale.ScaleX = _scaleMultiplier;
+                    ContentScale.ScaleY = _scaleMultiplier;
                 }
-                
-                if (SettingsManager.Default.ResistancesWindowWidth > 0)
-                    Width = SettingsManager.Default.ResistancesWindowWidth;
-    
-                if (SettingsManager.Default.ResistancesWindowHeight > 0)
-                    Height = SettingsManager.Default.ResistancesWindowHeight;
-                
                 IntPtr hwnd = new WindowInteropHelper(this).Handle;
                 User32.SetTopmost(hwnd);
 
                 if (Application.Current.MainWindow != null)
                 {
                     Application.Current.MainWindow.Closing += (sender, args) => { Close(); };
+                }
+                
+                
+            };
+            ContentRendered += (s, e) =>
+            {
+                if (SettingsManager.Default.ResistancesWindowWidth > 0)
+                {
+                    Width = SettingsManager.Default.ResistancesWindowWidth;
                 }
             };
         }
@@ -62,31 +65,35 @@ namespace SilkySouls3.Views
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-            
-            SettingsManager.Default.ResistancesWindowScaleX = ContentScale.ScaleX;
-            SettingsManager.Default.ResistancesWindowScaleY = ContentScale.ScaleY;
-            SettingsManager.Default.ResistancesWindowWidth = Width;
-            SettingsManager.Default.ResistancesWindowHeight = Height;
+
+            SettingsManager.Default.ResistancesWindowScaleX = _scaleMultiplier;
             SettingsManager.Default.ResistancesWindowLeft = Left;
             SettingsManager.Default.ResistancesWindowTop = Top;
+            SettingsManager.Default.ResistancesWindowWidth = Width;
             SettingsManager.Default.Save();
         }
 
 
         private void DecreaseSize_Click(object sender, RoutedEventArgs e)
         {
-            ContentScale.ScaleX -= 0.2;
-            ContentScale.ScaleY -= 0.2;
-            Width *= ContentScale.ScaleX / (ContentScale.ScaleX + 0.2);
-            Height *= ContentScale.ScaleY / (ContentScale.ScaleY + 0.2);
+            if (_scaleMultiplier > 0.6)
+            {
+                Width *= _scaleMultiplier / (_scaleMultiplier + 0.2);
+                _scaleMultiplier -= 0.2;
+                ContentScale.ScaleX = _scaleMultiplier;
+                ContentScale.ScaleY = _scaleMultiplier;
+            }
         }
 
         private void IncreaseSize_Click(object sender, RoutedEventArgs e)
         {
-            ContentScale.ScaleX += 0.2;
-            ContentScale.ScaleY += 0.2;
-            Width *= ContentScale.ScaleX / (ContentScale.ScaleX - 0.2);
-            Height *= ContentScale.ScaleY / (ContentScale.ScaleY - 0.2);
+            if (_scaleMultiplier < 3.0)
+            {
+                Width *= (_scaleMultiplier + 0.2) / _scaleMultiplier;
+                _scaleMultiplier += 0.2;
+                ContentScale.ScaleX = _scaleMultiplier;
+                ContentScale.ScaleY = _scaleMultiplier;
+            }
         }
     }
 }

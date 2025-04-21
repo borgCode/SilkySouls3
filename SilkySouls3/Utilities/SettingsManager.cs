@@ -18,7 +18,6 @@ namespace SilkySouls3.Utilities
         public double ResistancesWindowScaleX { get; set; } = 1.0;
         public double ResistancesWindowScaleY { get; set; } = 1.0;
         public double ResistancesWindowWidth { get; set; }
-        public double ResistancesWindowHeight { get; set; }
         public double ResistancesWindowLeft { get; set; }
         public double ResistancesWindowTop { get; set; }
 
@@ -45,7 +44,6 @@ namespace SilkySouls3.Utilities
                     $"ResistancesWindowScaleX={ResistancesWindowScaleX}",
                     $"ResistancesWindowScaleY={ResistancesWindowScaleY}",
                     $"ResistancesWindowWidth={ResistancesWindowWidth}",
-                    $"ResistancesWindowHeight={ResistancesWindowHeight}",
                     $"ResistancesWindowLeft={ResistancesWindowLeft}",
                     $"ResistancesWindowTop={ResistancesWindowTop}",
                 };
@@ -117,10 +115,6 @@ namespace SilkySouls3.Utilities
                                 case "ResistancesWindowWidth":
                                     double.TryParse(value, out double rww);
                                     settings.ResistancesWindowWidth = rww;
-                                    break;
-                                case "ResistancesWindowHeight":
-                                    double.TryParse(value, out double rwh);
-                                    settings.ResistancesWindowHeight = rwh;
                                     break;
                             }
                         }
