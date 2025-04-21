@@ -258,14 +258,26 @@
         <Style TargetType="ComboBoxItem">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{StaticResource HoverBrush}" />
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="0"
+                                Padding="8,4">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource AccentBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         
         <Style TargetType="ListBox">
