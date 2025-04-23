@@ -88,7 +88,8 @@ namespace SilkySouls3
             _gameLoadedTimer.Tick += Timer_Tick;
             _gameLoadedTimer.Start();
             
-            
+      
+            VersionChecker.CheckForUpdates(AppVersion, this);
         }
 
         private bool _loaded;
@@ -219,5 +220,7 @@ namespace SilkySouls3
         }
         
         private void LaunchGame_Click(object sender, RoutedEventArgs e) => Task.Run(GameLauncher.LaunchDarkSouls3);
+
+        private void CheckUpdate_Click(object sender, RoutedEventArgs e) => VersionChecker.CheckForUpdates(AppVersion, this);
     }
 }
