@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
@@ -250,12 +248,6 @@ namespace SilkySouls3.ViewModels
                 QuantityEnabled = _selectedItem.StackSize > 1;
                 MaxQuantity = _selectedItem.StackSize;
                 SelectedQuantity = _selectedItem.StackSize;
-                if (SelectedCategory == "Weapons")
-                {
-                    QuantityEnabled = true;
-                    MaxQuantity = 99;
-                }
-
                 CanInfuse = _selectedItem.Infusable;
                 if (!CanInfuse) SelectedInfusionType = "Normal";
                 CanUpgrade = _selectedItem.UpgradeType > 0;

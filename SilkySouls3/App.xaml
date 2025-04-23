@@ -11,8 +11,8 @@
         <Color x:Key="HoverColor">#6B21A8</Color>
         <Color x:Key="BorderColor">#333333</Color>
         <Color x:Key="ControlBackgroundColor">#252525</Color>
-        
-        
+
+
         <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}" />
         <SolidColorBrush x:Key="PanelBrush" Color="{StaticResource PanelColor}" />
         <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
@@ -32,14 +32,14 @@
             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         </Style>
-        
+
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         </Style>
 
         <Color x:Key="TitleBarColor">#491A8C</Color>
         <SolidColorBrush x:Key="TitleBarBrush" Color="{StaticResource TitleBarColor}" />
-        
+
         <Style TargetType="Button">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -73,7 +73,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="ToolTip">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -114,7 +114,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="Margin" Value="0,2" />
@@ -160,8 +160,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        
+
+
         <Style TargetType="ComboBox">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -194,7 +194,8 @@
                                                 <ContentPresenter Grid.Column="0"
                                                                   Margin="5,0,0,0"
                                                                   HorizontalAlignment="Left"
-                                                                  VerticalAlignment="Center" />
+                                                                  VerticalAlignment="Center"
+                                                                  x:Name="ContentPresenter" />
                                                 <Path x:Name="Arrow"
                                                       Grid.Column="1"
                                                       HorizontalAlignment="Center"
@@ -212,17 +213,43 @@
                                                 <Setter TargetName="Border" Property="Background"
                                                         Value="{StaticResource HoverBrush}" />
                                             </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Opacity" Value="0.5" />
+                                            </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </ToggleButton.Template>
                             </ToggleButton>
-                            <ContentPresenter IsHitTestVisible="False"
+
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Margin="3,3,23,3"
+                                     Padding="2"
+                                     Background="{TemplateBinding Background}"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     BorderBrush="Transparent"
+                                     BorderThickness="0"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     Visibility="Hidden"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border x:Name="PART_ContentHost"
+                                                Background="Transparent"
+                                                Focusable="True" />
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              IsHitTestVisible="False"
                                               Margin="5,3,23,3"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               Content="{TemplateBinding SelectionBoxItem}"
                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+
                             <Popup x:Name="Popup"
                                    AllowsTransparency="True"
                                    Focusable="False"
@@ -238,7 +265,6 @@
                                             BorderThickness="1"
                                             CornerRadius="0 0 3 3" />
                                     <ScrollViewer Margin="4,6,4,6"
-                                                  CanContentScroll="True"
                                                   SnapsToDevicePixels="True">
                                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
@@ -249,19 +275,24 @@
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.5" />
                             </Trigger>
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter Property="IsTabStop" Value="False" />
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ContentPresenter" Property="Visibility" Value="Hidden" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="ComboBoxItem">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBoxItem">
-                        <Border x:Name="Border" 
+                        <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="0"
                                 Padding="8,4">
@@ -279,14 +310,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="ListBox">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
-        
+
         <Style TargetType="ListBoxItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -302,14 +333,14 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style TargetType="ListView">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
-        
+
         <Style TargetType="ListViewItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -357,13 +388,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="TabControl">
             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
-        
+
         <Style TargetType="TabItem">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
@@ -397,11 +428,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="Border">
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
         </Style>
-        
+
         <Style TargetType="ProgressBar">
             <Setter Property="Background" Value="#222222" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
@@ -427,23 +458,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="ScrollViewer">
             <Setter Property="Background" Value="Transparent" />
         </Style>
-        
+
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Foreground" Value="#667C3AED" /> 
-            <Setter Property="Width" Value="8" /> 
+            <Setter Property="Foreground" Value="#667C3AED" />
+            <Setter Property="Width" Value="8" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true"
+                                   IsEnabled="{TemplateBinding IsMouseOver}">
                                 <Track.Thumb>
-                                    <Thumb Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollBarThumbStyle}" />
+                                    <Thumb Background="{TemplateBinding Foreground}"
+                                           Style="{DynamicResource ScrollBarThumbStyle}" />
                                 </Track.Thumb>
                             </Track>
                         </Grid>
@@ -465,13 +498,13 @@
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
         </Style>
-        
+
         <Style TargetType="wpfTool:DoubleUpDown" xmlns:wpfTool="http://schemas.xceed.com/wpf/xaml/toolkit">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
         </Style>
-        
+
         <Style x:Key="HotkeyTextBoxStyle" TargetType="TextBox">
             <Setter Property="IsReadOnly" Value="True" />
             <Setter Property="Focusable" Value="False" />
@@ -508,7 +541,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="GridViewColumnHeader">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -555,7 +588,7 @@
             </Setter>
         </Style>
 
- 
+
         <Style TargetType="DataGrid">
             <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />

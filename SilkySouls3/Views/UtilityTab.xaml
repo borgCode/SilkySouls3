@@ -330,7 +330,9 @@
                           IsEnabled="{Binding AreButtonsEnabled}"
                           Grid.Column="1"
                           VerticalAlignment="Center"
-                          Margin="0,0,15,0" />
+                          Margin="0,0,15,0"
+                          PreviewMouseDown="WarpLocationsCombo_PreviewMouseDown"
+                          TextSearch.TextPath="Value" />
 
                 <Button Content="Warp"
                         Width="80"
