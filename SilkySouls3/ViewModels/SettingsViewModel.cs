@@ -24,6 +24,7 @@ namespace SilkySouls3.ViewModels
         private string _noClipHotkeyText;
         private string _enableFreeCamHotkeyText;
         private string _moveCamToPlayerHotkeyText;
+        private string _enableDeathCamHotkeyText;
         
         private string _noDeathHotkeyText;
         private string _oneShotHotkeyText;
@@ -216,6 +217,12 @@ namespace SilkySouls3.ViewModels
             get => _quitoutHotkeyText;
             set => SetProperty(ref _quitoutHotkeyText, value);
         }
+        
+        public string EnableDeathCamHotkeyText
+        {
+            get => _enableDeathCamHotkeyText;
+            set => SetProperty(ref _enableDeathCamHotkeyText, value);
+        }
 
         public string SetSwordPhaseHotkeyText
         {
@@ -366,6 +373,7 @@ namespace SilkySouls3.ViewModels
                 { "IncreaseGameSpeed", text => IncreaseGameSpeedHotkeyText = text },
                 { "DecreaseGameSpeed", text => DecreaseGameSpeedHotkeyText = text },
                 { "NoClip", text => NoClipHotkeyText = text },
+                { "EnableDeathCam", text => EnableDeathCamHotkeyText = text },
                 { "IncreaseNoClipSpeed", text => IncreaseNoClipSpeedHotkeyText = text },
                 { "DecreaseNoClipSpeed", text => DecreaseNoClipSpeedHotkeyText = text },
                 { "SetSwordPhase", text => SetSwordPhaseHotkeyText = text },

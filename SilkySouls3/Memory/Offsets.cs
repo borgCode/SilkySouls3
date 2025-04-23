@@ -8,6 +8,7 @@ namespace SilkySouls3.Memory
         {
             public static IntPtr Base;
             public const int PlayerIns = 0x80;
+            public const int DeathCam = 0x90;
 
             public enum PlayerInsOffsets
             {

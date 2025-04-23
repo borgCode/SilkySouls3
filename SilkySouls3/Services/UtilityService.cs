@@ -499,5 +499,9 @@ namespace SilkySouls3.Services
             
             _memoryIo.AllocateAndExecute(codeBytes);
         }
+
+        public void ToggleDeathCam(bool isDeathCamEnabled) =>
+            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.DeathCam,
+                isDeathCamEnabled ? 1 : 0);
     }
 }

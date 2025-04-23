@@ -28,6 +28,7 @@ namespace SilkySouls3.ViewModels
         private bool _isHideSfxEnabled;
         
         private bool _isDisableEventEnabled;
+        private bool _isDeathCamEnabled;
         private bool _is100DropEnabled;
         private bool _isDbgFpsEnabled;
         private float _fps;
@@ -77,6 +78,11 @@ namespace SilkySouls3.ViewModels
             {
                 if (!AreButtonsEnabled) return;
                 IsNoClipEnabled = !IsNoClipEnabled;
+            });
+            _hotkeyManager.RegisterAction("EnableDeathCam", () =>
+            {
+                if (!AreButtonsEnabled) return;
+                IsDeathCamEnabled = !IsDeathCamEnabled;
             });
             _hotkeyManager.RegisterAction("IncreaseNoClipSpeed", () => 
             { 
@@ -237,6 +243,16 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _isDisableEventEnabled, value)) return;
                 _utilityService.ToggleDisableEvent(_isDisableEventEnabled);
+            }
+        }
+        
+        public bool IsDeathCamEnabled
+        {
+            get => _isDeathCamEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDeathCamEnabled, value)) return;
+                _utilityService.ToggleDeathCam(_isDeathCamEnabled);
             }
         }
         
@@ -496,6 +512,7 @@ namespace SilkySouls3.ViewModels
         public void DisableFeatures()
         {
             IsNoClipEnabled = false;
+            IsDeathCamEnabled = false;
             IsFreeCamEnabled = false;
             AreButtonsEnabled = false;
         }
