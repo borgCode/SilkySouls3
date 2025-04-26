@@ -20,7 +20,7 @@ namespace SilkySouls3.Utilities
 
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.UserAgent.Add(
-                    new ProductInfoHeaderValue("SilkySouls", currentVersion.ToString()));
+                    new ProductInfoHeaderValue("SilkySouls3", currentVersion.ToString()));
 
                 var response = await client.GetStringAsync(
                     "https://api.github.com/repos/borgCode/SilkySouls3/releases/latest");
