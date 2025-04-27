@@ -86,7 +86,11 @@ namespace SilkySouls3.ViewModels
             _itemsByCategory.Add("Weapons", new ObservableCollection<Item>(DataLoader.GetItemList("Weapons")));
 
             _allItems = _itemsByCategory.Values.SelectMany(x => x).ToLookup(i => i.Name);
+            
+            
             _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
+            
+            
             _loadouts = new ObservableCollection<string>(_loadoutTemplatesByName.Keys);
 
             SelectedLoadoutName = Loadouts.FirstOrDefault();
@@ -369,5 +373,7 @@ namespace SilkySouls3.ViewModels
             if (!AutoSpawnEnabled || SelectedAutoSpawnWeapon == null) return;
             _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
         }
+        
+        
     }
 }

@@ -96,6 +96,14 @@ namespace SilkySouls3.ViewModels
                 _showAllResistances = !_showAllResistances;
                 UpdateResistancesDisplay();
             });
+            _hotkeyManager.RegisterAction("KillTarget", () => {
+                if (!IsValidTarget) return;
+                SetTargetHealth(0);
+            });
+            _hotkeyManager.RegisterAction("TargetView", () => {
+                if (!IsValidTarget) return;
+                IsTargetingViewEnabled = !IsTargetingViewEnabled;
+            });
             _hotkeyManager.RegisterAction("FreezeHp", () => { IsFreezeHealthEnabled = !IsFreezeHealthEnabled; });
             _hotkeyManager.RegisterAction("DisableTargetAi",
                 () =>
@@ -606,12 +614,9 @@ namespace SilkySouls3.ViewModels
             get => _isTargetingViewEnabled;
             set
             {
-                if (SetProperty(ref _isTargetingViewEnabled, value))
-                {
-                    if (value) _debugDrawService.RequestDebugDraw();
-                    Console.WriteLine("Target Id = " + _enemyService.GetTargetId());
-                    _enemyService.ToggleTargetingView(_isTargetingViewEnabled);
-                }
+                if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
+                if (value) _debugDrawService.RequestDebugDraw();
+                _enemyService.ToggleTargetingView(_isTargetingViewEnabled);
             }
         }
 
