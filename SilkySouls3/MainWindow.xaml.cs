@@ -32,6 +32,8 @@ namespace SilkySouls3
         private readonly EnemyViewModel _enemyViewModel;
         private readonly ItemViewModel _itemViewModel;
         private readonly SettingsViewModel _settingsViewModel;
+
+        private readonly DebugDrawService _debugDrawService;
         
         public MainWindow()
         {
@@ -59,10 +61,11 @@ namespace SilkySouls3
             var cinderService = new CinderService(_memoryIo, _hookManager);
             var itemService = new ItemService(_memoryIo, _hookManager);
             var settingsService = new SettingsService(_memoryIo);
+            _debugDrawService = new DebugDrawService(_memoryIo);
 
             _playerViewModel = new PlayerViewModel(playerService, hotkeyManager);
-            _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager, _playerViewModel);
-            _enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager);
+            _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager, _playerViewModel, _debugDrawService);
+            _enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager, _debugDrawService);
             _itemViewModel = new ItemViewModel(itemService);
             _settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager);
 
@@ -143,6 +146,7 @@ namespace SilkySouls3
                 else if (_loaded)
                 {
                     DisableFeatures();
+                    _debugDrawService.Reset();
                     _loaded = false;
                 }
             }

@@ -287,9 +287,7 @@ namespace SilkySouls3.Services
             _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, isTargetingViewEnabled ? 1 : 0);
             _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, isTargetingViewEnabled ? 1 : 0);
         }
-
-        public void PatchDebugDraw(bool isEnabled) => _memoryIo.WriteByte(Patches.DbgDrawFlag + 0x3, isEnabled ? 1 : 0);
-
+        
         public void ToggleEventDraw(bool isDrawEventEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.EventDraw,
                 isDrawEventEnabled ? 1 : 0);

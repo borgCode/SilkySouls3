@@ -53,12 +53,15 @@ namespace SilkySouls3.ViewModels
         private readonly Dictionary<string, WarpEntry> _warpLocations;
         private KeyValuePair<string, string> _selectedWarp;
         private readonly PlayerViewModel _playerViewModel;
+        
+        private readonly DebugDrawService _debugDrawService;
 
         public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager,
-            PlayerViewModel playerViewModel)
+            PlayerViewModel playerViewModel, DebugDrawService debugDrawService)
         {
             _playerViewModel = playerViewModel;
             _utilityService = utilityService;
+            _debugDrawService = debugDrawService;
             _hotkeyManager = hotkeyManager;
             _warpLocations = DataLoader.GetWarpEntryDict();
             
@@ -158,7 +161,11 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
-                _utilityService.PatchDebugDraw(_isTargetingViewEnabled || IsDrawChrRagdollEnabled);
+                if (value)
+                    _debugDrawService.RequestDebugDraw();
+                else
+                    _debugDrawService.ReleaseDebugDraw();
+            
                 _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
             }
         }
@@ -231,7 +238,11 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isDrawChrRagdollEnabled, value)) return;
-                _utilityService.PatchDebugDraw(_isDrawChrRagdollEnabled || IsTargetingViewEnabled);
+                if (value)
+                    _debugDrawService.RequestDebugDraw();
+                else
+                    _debugDrawService.ReleaseDebugDraw();
+
                 _utilityService.ToggleHitIns(HitIns.ChrRagdoll, _isDrawChrRagdollEnabled);
             }
         }
@@ -479,7 +490,7 @@ namespace SilkySouls3.ViewModels
             if (IsDrawEventEnabled) _utilityService.ToggleEventDraw(true);
             if (IsTargetingViewEnabled)
             {
-                _utilityService.PatchDebugDraw(true);
+                _debugDrawService.RequestDebugDraw();
                 _utilityService.ToggleTargetingView(true);
             }
             if (IsHideMapEnabled) _utilityService.ToggleGroupMask(GroupMask.Map,true);
@@ -501,7 +512,7 @@ namespace SilkySouls3.ViewModels
 
             if (IsDrawChrRagdollEnabled)
             {
-                _utilityService.PatchDebugDraw(true);
+                _debugDrawService.RequestDebugDraw();
                 _utilityService.ToggleHitIns(HitIns.ChrRagdoll, true);
             }
             GameSpeed = _utilityService.GetGameSpeed();

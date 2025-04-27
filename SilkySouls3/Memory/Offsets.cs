@@ -231,10 +231,13 @@ namespace SilkySouls3.Memory
                 AiFunc = 0x8,
                 SpEffectPtr = 0x20,
                 LuaNumbers = 0x6BC,
+                TargetingSystem = 0x7AB8,
             }
 
             public const int ForceActPtr = 0x8;
             public const int ForceActOffset = 0xB681;
+
+            public const int TargetingView = 0x3C;
 
             public enum SpEffectOffsets
             {

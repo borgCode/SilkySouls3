@@ -20,6 +20,7 @@ namespace SilkySouls3.ViewModels
         private float _targetSpeed;
         private bool _isFreezeHealthEnabled;
         private bool _isDisableTargetAiEnabled;
+        private bool _isTargetingViewEnabled;
         private bool _isRepeatActEnabled;
         private bool _isCinderNoStaggerEnabled;
         
@@ -68,11 +69,14 @@ namespace SilkySouls3.ViewModels
         private readonly EnemyService _enemyService;
         private readonly CinderService _cinderService;
         private readonly HotkeyManager _hotkeyManager;
+        private readonly DebugDrawService _debugDrawService;
 
-        public EnemyViewModel(EnemyService enemyService, CinderService cinderService, HotkeyManager hotkeyManager)
+        public EnemyViewModel(EnemyService enemyService, CinderService cinderService, HotkeyManager hotkeyManager,
+            DebugDrawService debugDrawService)
         {
             _enemyService = enemyService;
             _cinderService = cinderService;
+            _debugDrawService = debugDrawService;
             _hotkeyManager = hotkeyManager;
             RegisterHotkeys();
 
@@ -146,6 +150,7 @@ namespace SilkySouls3.ViewModels
             if (targetId != _currentTargetId)
             {
                 IsDisableTargetAiEnabled = _enemyService.IsTargetAiDisabled();
+                IsTargetingViewEnabled = _enemyService.IsTargetViewEnabled();
                 int forceActValue = _enemyService.GetForceAct();
                 if (forceActValue != 0)
                 {
@@ -592,6 +597,20 @@ namespace SilkySouls3.ViewModels
                 if (SetProperty(ref _isDisableTargetAiEnabled, value))
                 {
                     _enemyService.ToggleTargetAi(_isDisableTargetAiEnabled);
+                }
+            }
+        }
+        
+        public bool IsTargetingViewEnabled
+        {
+            get => _isTargetingViewEnabled;
+            set
+            {
+                if (SetProperty(ref _isTargetingViewEnabled, value))
+                {
+                    if (value) _debugDrawService.RequestDebugDraw();
+                    Console.WriteLine("Target Id = " + _enemyService.GetTargetId());
+                    _enemyService.ToggleTargetingView(_isTargetingViewEnabled);
                 }
             }
         }

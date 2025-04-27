@@ -117,6 +117,7 @@
     <Compile Include="Models\Loadout.cs" />
     <Compile Include="Models\WarpEntry.cs" />
     <Compile Include="Services\CinderService.cs" />
+    <Compile Include="Services\DebugDrawService.cs" />
     <Compile Include="Services\EnemyService.cs" />
     <Compile Include="Services\ItemService.cs" />
     <Compile Include="Services\PlayerService.cs" />
