@@ -192,6 +192,7 @@ namespace SilkySouls3.ViewModels
                 state.Mp = _playerService.GetMp();
                 state.Sp = _playerService.GetSp();
             }
+
             _playerService.SavePos(index);
         }
 
@@ -215,37 +216,37 @@ namespace SilkySouls3.ViewModels
         public float PosX
         {
             get => _posX;
-            set
-            {
-                if (SetProperty(ref _posX, value))
-                {
-                    _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.X, value);
-                }
-            }
-        }
-
-        public float PosZ
-        {
-            get => _posZ;
-            set
-            {
-                if (SetProperty(ref _posZ, value))
-                {
-                    _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.Z, value);
-                }
-            }
+            set => SetProperty(ref _posX, value);
         }
 
         public float PosY
         {
             get => _posY;
-            set
-            {
-                if (SetProperty(ref _posY, value))
-                {
-                    _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.Y, value);
-                }
-            }
+            set => SetProperty(ref _posY, value);
+        }
+
+        public float PosZ
+        {
+            get => _posZ;
+            set => SetProperty(ref _posZ, value);
+        }
+
+        public void SetPosX(float value)
+        {
+            _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.X, value);
+            PosX = value;
+        }
+
+        public void SetPosY(float value)
+        {
+            _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.Y, value);
+            PosY = value;
+        }
+
+        public void SetPosZ(float value)
+        {
+            _playerService.SetAxis(WorldChrMan.ChrPhysicsModule.Z, value);
+            PosZ = value;
         }
 
 
@@ -530,7 +531,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public void SetSpeed(float value) => PlayerSpeed = value;
 
         private void ToggleSpeed()

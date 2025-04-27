@@ -76,7 +76,7 @@ namespace SilkySouls3.Services
                     while (_memoryIo.IsGameLoaded() && Environment.TickCount - start < 10000)
                         Thread.Sleep(50);
                 }
-
+                
                 _hookManager.InstallHook(coordsCustomCode.ToInt64(), coordsOrigin,
                     new byte[] { 0x66, 0x0F, 0x7F, 0x80, 0x40, 0x0A, 0x00, 0x00 });
                 _hookManager.InstallHook(angleCustomCode.ToInt64(), angleOrigin,

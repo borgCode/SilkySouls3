@@ -90,6 +90,7 @@ namespace SilkySouls3
             
       
             VersionChecker.CheckForUpdates(AppVersion, this);
+            GameLauncher.SetVersionOffsets();
         }
 
         private bool _loaded;

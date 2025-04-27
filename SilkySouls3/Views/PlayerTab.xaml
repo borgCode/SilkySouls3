@@ -127,16 +127,26 @@
 
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="10,5,0,0"
                                 HorizontalAlignment="Left">
-                        <xctk:DoubleUpDown Width="70" Margin="5,0,0,0"
+                        <xctk:DoubleUpDown x:Name="PosXUpDown" Width="70" Margin="5,0,0,0"
                                            Padding="0,0,5,0"
                                            Value="{Binding PosX}" FormatString="F1"
+                                           Loaded="CoordinateUpDown_Loaded"
+                                           LostFocus="PosX_LostFocus" 
+                                           PreviewKeyDown="PosX_PreviewKeyDown"
                                            IsEnabled="{Binding AreOptionsEnabled}" />
-                        <xctk:DoubleUpDown Width="70" Margin="5,0,5,0"
+                        <xctk:DoubleUpDown x:Name="PosYUpDown" Width="70" Margin="5,0,5,0"
                                            Padding="0,0,5,0"
                                            Value="{Binding PosY}" FormatString="F1"
+                                           Loaded="CoordinateUpDown_Loaded"
+                                           LostFocus="PosY_LostFocus"
+                                           PreviewKeyDown="PosY_PreviewKeyDown"
                                            IsEnabled="{Binding AreOptionsEnabled}" />
-                        <xctk:DoubleUpDown Width="70" Value="{Binding PosZ}" FormatString="F1"
+                        <xctk:DoubleUpDown x:Name="PosZUpDown" Width="70" Value="{Binding PosZ}" 
                                            Padding="0,0,5,0"
+                                           FormatString="F1"
+                                           Loaded="CoordinateUpDown_Loaded"
+                                           LostFocus="PosZ_LostFocus"
+                                           PreviewKeyDown="PosZ_PreviewKeyDown"
                                            IsEnabled="{Binding AreOptionsEnabled}" />
                     </StackPanel>
                 </Grid>

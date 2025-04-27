@@ -10,12 +10,14 @@ namespace SilkySouls3.Memory
             public const int PlayerIns = 0x80;
             public const int DeathCam = 0x90;
 
-            public enum PlayerInsOffsets
+
+            public static class PlayerInsOffsets
             {
-                PadMan = 0x58,
-                CharFlags1 = 0x1EE8,
-                Modules = 0x1F90,
+                public const int PadMan = 0x58;
+                public static int CharFlags1;
+                public static int Modules;
             }
+          
             
             public enum ChrFlag1BitFlag
             {

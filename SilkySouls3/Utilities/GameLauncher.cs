@@ -5,6 +5,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Microsoft.Win32;
+using SilkySouls3.Memory;
 
 namespace SilkySouls3.Utilities
 {
@@ -27,6 +28,39 @@ namespace SilkySouls3.Utilities
             {
                 MessageBox.Show($"Failed to launch Dark Souls III: {ex.Message}", 
                     "Launch Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        
+        public static void SetVersionOffsets()
+        {
+            try
+            {
+                string exePath = GetDarkSouls3ExePath();
+                if (exePath == null)
+                {
+                    return;
+                }
+        
+                FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(exePath);
+                
+                int major = versionInfo.FileMajorPart;
+                int minor = versionInfo.FileMinorPart;
+                
+                if (major == 1 && minor <= 12)
+                {
+                    Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1 = 0x1EE0;
+                    Offsets.WorldChrMan.PlayerInsOffsets.Modules = 0x1F88;
+                }
+                else
+                {
+                    Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1 = 0x1EE8;
+                    Offsets.WorldChrMan.PlayerInsOffsets.Modules = 0x1F90;
+                }
+            }
+            catch (Exception)
+            {
+                Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1 = 0x1EE8;
+                Offsets.WorldChrMan.PlayerInsOffsets.Modules = 0x1F90;
             }
         }
         
