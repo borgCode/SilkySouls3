@@ -54,6 +54,7 @@ namespace SilkySouls3.Memory
 
 
             TryPatternWithFallback("NoLogo", Patterns.NoLogo, addr => Offsets.Patches.NoLogo = addr, saved);
+            TryPatternWithFallback("AccessFullShop", Patterns.AccessFullShop, addr => Offsets.Patches.AccessFullShop = addr, saved);
             TryPatternWithFallback("RepeatAct", Patterns.RepeatAct, addr => Offsets.Patches.RepeatAct = addr, saved);
             TryPatternWithFallback("GameSpeed", Patterns.GameSpeed, addr => Offsets.Patches.GameSpeed = addr, saved);
             TryPatternWithFallback("InfiniteDurability", Patterns.InfiniteDurability,
@@ -142,6 +143,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"WorldObjMan.Base: 0x{Offsets.WorldObjMan.Base.ToInt64():X}");
             
             Console.WriteLine($"Patches.NoLogo: 0x{Offsets.Patches.NoLogo.ToInt64():X}");
+            Console.WriteLine($"Patches.AccessFullShop: 0x{Offsets.Patches.AccessFullShop.ToInt64():X}");
             Console.WriteLine($"Patches.RepeatAct: 0x{Offsets.Patches.RepeatAct.ToInt64():X}");
             Console.WriteLine($"Patches.GameSpeed: 0x{Offsets.Patches.GameSpeed.ToInt64():X}");
             Console.WriteLine($"Patches.InfiniteDurability: 0x{Offsets.Patches.InfiniteDurability.ToInt64():X}");

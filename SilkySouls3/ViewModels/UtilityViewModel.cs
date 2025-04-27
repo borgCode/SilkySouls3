@@ -14,7 +14,7 @@ namespace SilkySouls3.ViewModels
     {
         private readonly HotkeyManager _hotkeyManager;
         private readonly UtilityService _utilityService;
-        
+
         private bool _isHitboxEnabled;
         private bool _isSoundViewEnabled;
         private bool _isDrawEventEnabled;
@@ -26,24 +26,26 @@ namespace SilkySouls3.ViewModels
         private bool _isHideObjectsEnabled;
         private bool _isHideCharactersEnabled;
         private bool _isHideSfxEnabled;
-        
+
         private bool _isDisableEventEnabled;
         private bool _isDeathCamEnabled;
         private bool _is100DropEnabled;
         private bool _isDbgFpsEnabled;
         private float _fps;
-        
+
         private bool _isFreeCamEnabled;
         private int _freeCamMode = 1;
         private bool _isCamVertIncreaseEnabled;
 
-        
+
         private const float DefaultNoclipMultiplier = 0.25f;
         private const uint BaseXSpeedHex = 0x3e4ccccd;
         private const uint BaseYSpeedHex = 0x3e19999a;
         private float _noClipSpeedMultiplier = DefaultNoclipMultiplier;
         private float _gameSpeed;
         private int _cameraFov;
+
+        private bool _isFullLineUpEnabled;
 
         private bool _isNoClipEnabled;
         private bool _areButtonsEnabled;
@@ -53,7 +55,7 @@ namespace SilkySouls3.ViewModels
         private readonly Dictionary<string, WarpEntry> _warpLocations;
         private KeyValuePair<string, string> _selectedWarp;
         private readonly PlayerViewModel _playerViewModel;
-        
+
         private readonly DebugDrawService _debugDrawService;
 
         public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager,
@@ -64,7 +66,7 @@ namespace SilkySouls3.ViewModels
             _debugDrawService = debugDrawService;
             _hotkeyManager = hotkeyManager;
             _warpLocations = DataLoader.GetWarpEntryDict();
-            
+
             if (_warpLocations.Any())
             {
                 var firstLocation = _warpLocations.First();
@@ -87,14 +89,14 @@ namespace SilkySouls3.ViewModels
                 if (!AreButtonsEnabled) return;
                 IsDeathCamEnabled = !IsDeathCamEnabled;
             });
-            _hotkeyManager.RegisterAction("IncreaseNoClipSpeed", () => 
-            { 
+            _hotkeyManager.RegisterAction("IncreaseNoClipSpeed", () =>
+            {
                 if (IsNoClipEnabled)
                     NoClipSpeed = Math.Min(5, NoClipSpeed + 0.50f);
             });
-    
-            _hotkeyManager.RegisterAction("DecreaseNoClipSpeed", () => 
-            { 
+
+            _hotkeyManager.RegisterAction("DecreaseNoClipSpeed", () =>
+            {
                 if (IsNoClipEnabled)
                     NoClipSpeed = Math.Max(0.05f, NoClipSpeed - 0.50f);
             });
@@ -112,7 +114,7 @@ namespace SilkySouls3.ViewModels
             _warpLocations.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value.Name));
 
         public KeyValuePair<string, string> SelectedWarp
-        
+
         {
             get => _selectedWarp;
             set => SetProperty(ref _selectedWarp, value);
@@ -141,10 +143,10 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isSoundViewEnabled, value)) return;
-                  _utilityService.ToggleSoundView(_isSoundViewEnabled);
+                _utilityService.ToggleSoundView(_isSoundViewEnabled);
             }
         }
-        
+
         public bool IsDrawEventEnabled
         {
             get => _isDrawEventEnabled;
@@ -165,7 +167,7 @@ namespace SilkySouls3.ViewModels
                     _debugDrawService.RequestDebugDraw();
                 else
                     _debugDrawService.ReleaseDebugDraw();
-            
+
                 _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
             }
         }
@@ -256,7 +258,7 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleDisableEvent(_isDisableEventEnabled);
             }
         }
-        
+
         public bool IsDeathCamEnabled
         {
             get => _isDeathCamEnabled;
@@ -266,7 +268,7 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleDeathCam(_isDeathCamEnabled);
             }
         }
-        
+
         public bool Is100DropEnabled
         {
             get => _is100DropEnabled;
@@ -277,6 +279,16 @@ namespace SilkySouls3.ViewModels
             }
         }
         
+        public bool IsFullLineUpEnabled
+        {
+            get => _isFullLineUpEnabled;
+            set
+            {
+                if (!SetProperty(ref _isFullLineUpEnabled, value)) return;
+                _utilityService.ToggleFullLineUp(_isFullLineUpEnabled);
+            }
+        }
+
         public bool IsFreeCamEnabled
         {
             get => _isFreeCamEnabled;
@@ -293,7 +305,6 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        
 
         public int FreeCamMode
         {
@@ -313,7 +324,6 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (value) FreeCamMode = 1;
-         
             }
         }
 
@@ -323,10 +333,9 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (value) FreeCamMode = 2;
-                
             }
         }
-        
+
         public bool IsCamVertIncreaseEnabled
         {
             get => _isCamVertIncreaseEnabled;
@@ -343,7 +352,7 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isNoClipEnabled, value)) return;
-                
+
                 if (_isNoClipEnabled)
                 {
                     IsFreeCamEnabled = false;
@@ -360,7 +369,6 @@ namespace SilkySouls3.ViewModels
                     _playerViewModel.IsSilentEnabled = false;
                     _playerViewModel.IsInvisibleEnabled = false;
                     NoClipSpeed = DefaultNoclipMultiplier;
-
                 }
             }
         }
@@ -382,18 +390,18 @@ namespace SilkySouls3.ViewModels
             if (!IsNoClipEnabled) return;
             if (multiplier < 0.05f) multiplier = 0.05f;
             else if (multiplier > 5.0f) multiplier = 5.0f;
-            
+
             SetProperty(ref _noClipSpeedMultiplier, multiplier);
-            
+
             float baseXFloat = BitConverter.ToSingle(BitConverter.GetBytes(BaseXSpeedHex), 0);
             float baseYFloat = BitConverter.ToSingle(BitConverter.GetBytes(BaseYSpeedHex), 0);
-            
+
             float newXFloat = baseXFloat * multiplier;
             float newYFloat = baseYFloat * multiplier;
-            
+
             byte[] xBytes = BitConverter.GetBytes(newXFloat);
             byte[] yBytes = BitConverter.GetBytes(newYFloat);
-            
+
             _utilityService.SetNoClipSpeed(xBytes, yBytes);
         }
 
@@ -431,7 +439,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public int CameraFov
         {
             get => _cameraFov;
@@ -448,7 +456,6 @@ namespace SilkySouls3.ViewModels
 
         public void Warp()
         {
-            
             _ = Task.Run(() => _utilityService.Warp(_warpLocations[SelectedWarp.Key]));
         }
 
@@ -493,10 +500,11 @@ namespace SilkySouls3.ViewModels
                 _debugDrawService.RequestDebugDraw();
                 _utilityService.ToggleTargetingView(true);
             }
-            if (IsHideMapEnabled) _utilityService.ToggleGroupMask(GroupMask.Map,true);
-            if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj,true);
-            if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr,true);
-            if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx,true);
+
+            if (IsHideMapEnabled) _utilityService.ToggleGroupMask(GroupMask.Map, true);
+            if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj, true);
+            if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr, true);
+            if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx, true);
             if (IsDisableEventEnabled) _utilityService.ToggleDisableEvent(true);
             if (IsDrawLowHitEnabled)
             {
@@ -515,6 +523,7 @@ namespace SilkySouls3.ViewModels
                 _debugDrawService.RequestDebugDraw();
                 _utilityService.ToggleHitIns(HitIns.ChrRagdoll, true);
             }
+
             GameSpeed = _utilityService.GetGameSpeed();
             CameraFov = _utilityService.GetCameraFov();
             AreButtonsEnabled = true;
@@ -537,6 +546,7 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleDbgFps(true);
                 _utilityService.SetFps(Fps);
             }
+            if (IsFullLineUpEnabled) _utilityService.ToggleFullLineUp(true);
         }
 
         public void MoveCamToPlayer()

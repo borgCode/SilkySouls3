@@ -76,7 +76,7 @@ namespace SilkySouls3.Services
                     while (_memoryIo.IsGameLoaded() && Environment.TickCount - start < 10000)
                         Thread.Sleep(50);
                 }
-                
+
                 _hookManager.InstallHook(coordsCustomCode.ToInt64(), coordsOrigin,
                     new byte[] { 0x66, 0x0F, 0x7F, 0x80, 0x40, 0x0A, 0x00, 0x00 });
                 _hookManager.InstallHook(angleCustomCode.ToInt64(), angleOrigin,
@@ -287,7 +287,7 @@ namespace SilkySouls3.Services
             _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, isTargetingViewEnabled ? 1 : 0);
             _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, isTargetingViewEnabled ? 1 : 0);
         }
-        
+
         public void ToggleEventDraw(bool isDrawEventEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.EventDraw,
                 isDrawEventEnabled ? 1 : 0);
@@ -468,7 +468,7 @@ namespace SilkySouls3.Services
         public void Toggle100Drop(bool is100DropEnabled)
         {
             var customCode = CodeCaveOffsets.Base + CodeCaveOffsets.ItemLotBase;
-          
+
             if (is100DropEnabled)
             {
                 var hookLoc = Hooks.ItemLotBase;
@@ -489,17 +489,22 @@ namespace SilkySouls3.Services
             var funcAddr = isBreaking ? Funcs.BreakAllObjects : Funcs.RestoreAllObjects;
 
             var codeBytes = AsmLoader.GetAsmBytes("ObjMan");
-            AsmHelper.WriteAbsoluteAddresses(codeBytes, new []
+            AsmHelper.WriteAbsoluteAddresses(codeBytes, new[]
             {
                 (worldObjManPtr, 0x2),
-                (funcAddr, 0x1C + 0x2) 
+                (funcAddr, 0x1C + 0x2)
             });
-            
+
             _memoryIo.AllocateAndExecute(codeBytes);
         }
 
         public void ToggleDeathCam(bool isDeathCamEnabled) =>
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.DeathCam,
                 isDeathCamEnabled ? 1 : 0);
+
+        public void ToggleFullLineUp(bool isFullLineUpEnabled) =>
+            _memoryIo.WriteBytes(Patches.AccessFullShop, isFullLineUpEnabled
+                ? new byte[] { 0x90, 0x90, 0x90, 0x90 }
+                : new byte[] { 0x84, 0xC0, 0x74, 0x14 });
     }
 }

@@ -115,7 +115,7 @@ namespace SilkySouls3.Utilities
             {
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                 {
-                    FileName = "https://github.com/borgCode/SilkySouls/releases/latest",
+                    FileName = "https://github.com/borgCode/SilkySouls3/releases/latest",
                     UseShellExecute = true
                 });
                 updateWindow.Close();

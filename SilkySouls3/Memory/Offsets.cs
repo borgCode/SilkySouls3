@@ -305,6 +305,7 @@ namespace SilkySouls3.Memory
             public static IntPtr NoRoll;
             public static IntPtr DbgDrawFlag;
             public static IntPtr FreeCam;
+            public static IntPtr AccessFullShop;
         }
         
         

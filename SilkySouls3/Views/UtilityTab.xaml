@@ -350,7 +350,7 @@
 
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -462,6 +462,11 @@
                                     Click="Transpose_Click"
                                     Height="24"
                                     Width="80"
+                                    Margin="3" />
+                            <CheckBox Content="Access full shop lineup"
+                                    IsChecked="{Binding IsFullLineUpEnabled}"
+                                    Height="24"
+                                    Width="160"
                                     Margin="3" />
                         </WrapPanel>
                     </TabItem>

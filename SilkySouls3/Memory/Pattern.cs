@@ -148,6 +148,14 @@ namespace SilkySouls3.Memory
         );
 
 
+        public static readonly Pattern AccessFullShop = new Pattern(
+            new byte[] { 0x84, 0xC0, 0x74, 0x14, 0x48, 0x8D, 0x54, 0x24, 0x38 },
+            "xxxxxxxxx",
+            0,
+            None
+        );
+
+
         public static readonly Pattern RepeatAct = new Pattern(
             new byte[] { 0x0F, 0xBE, 0x80, 0x81 },
             "xxxx",
