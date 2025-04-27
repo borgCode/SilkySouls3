@@ -308,7 +308,9 @@ namespace SilkySouls3.ViewModels
                     int itemId = item.Id;
                     itemId += InfusionTypes[template.Infusion];
                     itemId += template.Upgrade;
-                    _itemService.SpawnItem(itemId, item.StackSize);
+                    
+                    int quantity = template.Quantity > 0 ? template.Quantity : item.StackSize;
+                    _itemService.SpawnItem(itemId, quantity);
                 }
             }
         }

@@ -11,9 +11,10 @@
         AllowsTransparency="True"
         ResizeMode="NoResize">
     
+    
+    
     <Grid Margin="0">
         <Grid.RowDefinitions>
-            
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

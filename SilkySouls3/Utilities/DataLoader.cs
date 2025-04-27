@@ -130,20 +130,24 @@ namespace SilkySouls3.Utilities
                 {
                     foreach (var loadout in customLoadouts.Values)
                     {
-                        writer.WriteLine($"LOADOUT,{loadout.Name}");
-                        
-                        foreach (var item in loadout.Items)
+                        if (!string.IsNullOrEmpty(loadout.Name))
                         {
-                            writer.WriteLine($"ITEM,{item.ItemName},{item.Infusion},{item.Upgrade}");
+                            writer.WriteLine($"LOADOUT,{loadout.Name}");
+
+                            foreach (var item in loadout.Items)
+                            {
+                                writer.WriteLine(
+                                    $"ITEM,{item.ItemName},{item.Infusion},{item.Upgrade},{item.Quantity}");
+                            }
+
+                            writer.WriteLine("END");
                         }
-                        
-                        writer.WriteLine("END");
                     }
                 }
             }
             catch (Exception ex)
             {
-                //
+                //Log exception if needed
             }
         }
 
@@ -171,7 +175,7 @@ namespace SilkySouls3.Utilities
                     {
                         string[] parts = line.Split(',');
 
-                        if (parts[0] == "LOADOUT")
+                        if (parts[0] == "LOADOUT" && parts.Length > 1)
                         {
                             currentLoadout = new LoadoutTemplate
                             {
@@ -181,11 +185,21 @@ namespace SilkySouls3.Utilities
                         }
                         else if (parts[0] == "ITEM" && currentLoadout != null)
                         {
+                            // Default quantity to 1 if not specified
+                            int quantity = 1;
+
+                            // Handle older saved files that don't have quantity
+                            if (parts.Length > 4)
+                            {
+                                int.TryParse(parts[4], out quantity);
+                            }
+
                             currentLoadout.Items.Add(new ItemTemplate
                             {
                                 ItemName = parts[1],
                                 Infusion = parts[2],
-                                Upgrade = int.Parse(parts[3])
+                                Upgrade = int.Parse(parts[3]),
+                                Quantity = quantity
                             });
                         }
                         else if (parts[0] == "END" && currentLoadout != null)

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SilkySouls3.Models;
 
 namespace SilkySouls3.Views
@@ -27,6 +28,9 @@ namespace SilkySouls3.Views
         private int _maxUpgradeLevel = 10;
         private bool _canUpgrade;
         private bool _canInfuse;
+        private int _selectedQuantity = 1;
+        private bool _quantityEnabled;
+        private int _maxQuantity = 99;
 
         private string _searchText = string.Empty;
         private bool _isSearchActive;
@@ -116,7 +120,7 @@ namespace SilkySouls3.Views
                 {
                     if (_isSearchActive)
                     {
-                        _isSearchActive = false;
+                        IsSearchActive = false;
                         _searchText = string.Empty;
                         OnPropertyChanged(nameof(SearchText));
                         OnPropertyChanged(nameof(IsSearchActive));
@@ -164,6 +168,10 @@ namespace SilkySouls3.Views
                     {
                         SelectedUpgrade = MaxUpgradeLevel;
                     }
+                    
+                    QuantityEnabled = _selectedItem.StackSize > 1;
+                    MaxQuantity = _selectedItem.StackSize;
+                    SelectedQuantity = _selectedItem.StackSize;
                 }
 
                 OnPropertyChanged(nameof(SelectedItem));
@@ -197,6 +205,36 @@ namespace SilkySouls3.Views
             {
                 _canInfuse = value;
                 OnPropertyChanged(nameof(CanInfuse));
+            }
+        }
+        
+        public int SelectedQuantity
+        {
+            get => _selectedQuantity;
+            set
+            {
+                _selectedQuantity = Math.Max(1, Math.Min(value, MaxQuantity));
+                OnPropertyChanged(nameof(SelectedQuantity));
+            }
+        }
+
+        public bool QuantityEnabled
+        {
+            get => _quantityEnabled;
+            set
+            {
+                _quantityEnabled = value;
+                OnPropertyChanged(nameof(QuantityEnabled));
+            }
+        }
+
+        public int MaxQuantity
+        {
+            get => _maxQuantity;
+            set
+            {
+                _maxQuantity = value;
+                OnPropertyChanged(nameof(MaxQuantity));
             }
         }
 
@@ -243,10 +281,13 @@ namespace SilkySouls3.Views
 
                     if (_preSearchCategory != null)
                     {
-                        _selectedCategory = _preSearchCategory;
-                        Items = _itemsByCategory[_selectedCategory];
-                        SelectedItem = Items.FirstOrDefault();
+                        SelectedCategory = _preSearchCategory;
                         _preSearchCategory = null;
+                        
+                        foreach (var item in Items)
+                        {
+                            item.CategoryName = null;
+                        }
                     }
                 }
                 else
@@ -259,7 +300,7 @@ namespace SilkySouls3.Views
 
                     ApplyFilter();
                 }
-
+                
                 OnPropertyChanged(nameof(SearchText));
                 OnPropertyChanged(nameof(IsSearchActive));
             }
@@ -427,7 +468,8 @@ namespace SilkySouls3.Views
             {
                 ItemName = SelectedItem.Name,
                 Infusion = SelectedInfusionType,
-                Upgrade = SelectedUpgrade
+                Upgrade = SelectedUpgrade,
+                Quantity = SelectedQuantity
             };
             
             SelectedLoadout.Items.Add(itemTemplate);
@@ -474,5 +516,23 @@ namespace SilkySouls3.Views
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                if (WindowState == WindowState.Maximized)
+                    WindowState = WindowState.Normal;
+                else
+                    WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                DragMove();
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

@@ -7,6 +7,7 @@ namespace SilkySouls3.Models
         public string ItemName { get; set; }
         public string Infusion { get; set; } = "Normal";
         public int Upgrade { get; set; }
+        public int Quantity { get; set; } = 1; 
     }
 
     public class LoadoutTemplate
