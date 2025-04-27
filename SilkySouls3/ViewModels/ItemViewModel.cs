@@ -375,14 +375,16 @@ namespace SilkySouls3.ViewModels
             _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
         }
 
-        private void ShowCreateLoadoutWindow()
+        public void ShowCreateLoadoutWindow()
         {
             var createLoadoutWindow = new CreateLoadoutWindow(_categories, _itemsByCategory, _loadoutTemplatesByName,
                 _customLoadoutTemplates, InfusionTypes);
             
-            createLoadoutWindow.ShowDialog();
             
-            RefreshLoadouts();
+            if (createLoadoutWindow.ShowDialog() == true)
+            {
+                RefreshLoadouts();
+            }
         }
 
         private void RefreshLoadouts()
@@ -391,39 +393,36 @@ namespace SilkySouls3.ViewModels
             
             foreach (var loadout in _customLoadoutTemplates.Values)
             {
-                _loadoutTemplatesByName[loadout.Name] = loadout;
+                if (!string.IsNullOrEmpty(loadout.Name))
+                {
+                    _loadoutTemplatesByName[loadout.Name] = loadout;
+                }
             }
             
             _loadouts.Clear();
-            foreach (var name in _loadoutTemplatesByName.Keys)
+            foreach (var entry in _loadoutTemplatesByName)
             {
-                _loadouts.Add(name);
+                if (!string.IsNullOrEmpty(entry.Key))
+                {
+                    _loadouts.Add(entry.Key);
+                }
             }
             
-            if (!_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
+            if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
             {
                 SelectedLoadoutName = _loadouts.FirstOrDefault();
             }
+            SaveCustomLoadouts();
         }
         private Dictionary<string, LoadoutTemplate> _customLoadoutTemplates = new Dictionary<string, LoadoutTemplate>();
 
-        private void AddCustomLoadout(LoadoutTemplate loadout)
-        {
-            _customLoadoutTemplates[loadout.Name] = loadout;
-            _loadoutTemplatesByName[loadout.Name] = loadout;
+      
 
-            _loadouts.Add(loadout.Name);
-
-            SaveCustomLoadouts();
-        }
-
-        private void SaveCustomLoadouts()
-        {
-            
-        }
+        private void SaveCustomLoadouts() => DataLoader.SaveCustomLoadouts(_customLoadoutTemplates);
 
         private void LoadCustomLoadouts()
         {
+            _customLoadoutTemplates = DataLoader.LoadCustomLoadouts();
             foreach (var loadout in _customLoadoutTemplates.Values)
             {
                 _loadoutTemplatesByName[loadout.Name] = loadout;

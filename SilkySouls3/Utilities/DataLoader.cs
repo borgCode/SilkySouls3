@@ -114,5 +114,94 @@ namespace SilkySouls3.Utilities
 
             return items;
         }
+
+        public static void SaveCustomLoadouts(Dictionary<string, LoadoutTemplate> customLoadouts)
+        {
+            string appDataPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SilkySouls3");
+
+            Directory.CreateDirectory(appDataPath);
+            string filePath = Path.Combine(appDataPath, "CustomLoadouts.csv");
+
+            try
+            {
+                using (var writer = new StreamWriter(filePath))
+                {
+                    foreach (var loadout in customLoadouts.Values)
+                    {
+                        writer.WriteLine($"LOADOUT,{loadout.Name}");
+                        
+                        foreach (var item in loadout.Items)
+                        {
+                            writer.WriteLine($"ITEM,{item.ItemName},{item.Infusion},{item.Upgrade}");
+                        }
+                        
+                        writer.WriteLine("END");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //
+            }
+        }
+
+        public static Dictionary<string, LoadoutTemplate> LoadCustomLoadouts()
+        {
+            Dictionary<string, LoadoutTemplate> customLoadouts = new Dictionary<string, LoadoutTemplate>();
+
+            string appDataPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SilkySouls3");
+
+            string filePath = Path.Combine(appDataPath, "CustomLoadouts.csv");
+
+            if (!File.Exists(filePath))
+                return customLoadouts;
+
+            try
+            {
+                LoadoutTemplate currentLoadout = null;
+
+                using (var reader = new StreamReader(filePath))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] parts = line.Split(',');
+
+                        if (parts[0] == "LOADOUT")
+                        {
+                            currentLoadout = new LoadoutTemplate
+                            {
+                                Name = parts[1],
+                                Items = new List<ItemTemplate>()
+                            };
+                        }
+                        else if (parts[0] == "ITEM" && currentLoadout != null)
+                        {
+                            currentLoadout.Items.Add(new ItemTemplate
+                            {
+                                ItemName = parts[1],
+                                Infusion = parts[2],
+                                Upgrade = int.Parse(parts[3])
+                            });
+                        }
+                        else if (parts[0] == "END" && currentLoadout != null)
+                        {
+                            customLoadouts[currentLoadout.Name] = currentLoadout;
+                            currentLoadout = null;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // ignored
+            }
+
+            return customLoadouts;
+        }
     }
 }

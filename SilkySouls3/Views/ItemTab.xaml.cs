@@ -60,5 +60,7 @@ namespace SilkySouls3.Views
             combo.DropDownClosed -= AutoSpawn_DropDownClosed;
             combo.PreviewMouseDown += AutoSpawn_PreviewMouseDown;
         }
+
+        private void Create_Click(object sender, RoutedEventArgs e) => _itemViewModel.ShowCreateLoadoutWindow();
     }
 }
