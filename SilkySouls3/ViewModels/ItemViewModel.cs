@@ -6,6 +6,7 @@ using System.Windows;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
+using SilkySouls3.Views;
 
 namespace SilkySouls3.ViewModels
 {
@@ -86,11 +87,12 @@ namespace SilkySouls3.ViewModels
             _itemsByCategory.Add("Weapons", new ObservableCollection<Item>(DataLoader.GetItemList("Weapons")));
 
             _allItems = _itemsByCategory.Values.SelectMany(x => x).ToLookup(i => i.Name);
-            
-            
+
+
             _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
-            
-            
+
+            LoadCustomLoadouts();
+
             _loadouts = new ObservableCollection<string>(_loadoutTemplatesByName.Keys);
 
             SelectedLoadoutName = Loadouts.FirstOrDefault();
@@ -136,7 +138,7 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _selectedCategory, value) || value == null) return;
                 if (_selectedCategory == null) return;
-                
+
                 if (_isSearchActive)
                 {
                     IsSearchActive = false;
@@ -179,7 +181,7 @@ namespace SilkySouls3.ViewModels
             get => _maxQuantity;
             private set => SetProperty(ref _maxQuantity, value);
         }
-        
+
         public bool IsSearchActive
         {
             get => _isSearchActive;
@@ -207,7 +209,6 @@ namespace SilkySouls3.ViewModels
                         SelectedItem = Items.FirstOrDefault();
                         _preSearchCategory = null;
                     }
-                    
                 }
                 else
                 {
@@ -216,7 +217,7 @@ namespace SilkySouls3.ViewModels
                         _preSearchCategory = SelectedCategory;
                         _isSearchActive = true;
                     }
-                    
+
                     ApplyFilter();
                 }
             }
@@ -224,10 +225,9 @@ namespace SilkySouls3.ViewModels
 
         private void ApplyFilter()
         {
-            
             _searchResultsCollection.Clear();
             var searchTextLower = SearchText.ToLower();
-            
+
             foreach (var category in _itemsByCategory)
             {
                 foreach (var item in category.Value)
@@ -239,6 +239,7 @@ namespace SilkySouls3.ViewModels
                     }
                 }
             }
+
             Items = _searchResultsCollection;
         }
 
@@ -373,7 +374,60 @@ namespace SilkySouls3.ViewModels
             if (!AutoSpawnEnabled || SelectedAutoSpawnWeapon == null) return;
             _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
         }
-        
-        
+
+        private void ShowCreateLoadoutWindow()
+        {
+            var createLoadoutWindow = new CreateLoadoutWindow(_categories, _itemsByCategory, _loadoutTemplatesByName,
+                _customLoadoutTemplates, InfusionTypes);
+            
+            createLoadoutWindow.ShowDialog();
+            
+            RefreshLoadouts();
+        }
+
+        private void RefreshLoadouts()
+        {
+            _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
+            
+            foreach (var loadout in _customLoadoutTemplates.Values)
+            {
+                _loadoutTemplatesByName[loadout.Name] = loadout;
+            }
+            
+            _loadouts.Clear();
+            foreach (var name in _loadoutTemplatesByName.Keys)
+            {
+                _loadouts.Add(name);
+            }
+            
+            if (!_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
+            {
+                SelectedLoadoutName = _loadouts.FirstOrDefault();
+            }
+        }
+        private Dictionary<string, LoadoutTemplate> _customLoadoutTemplates = new Dictionary<string, LoadoutTemplate>();
+
+        private void AddCustomLoadout(LoadoutTemplate loadout)
+        {
+            _customLoadoutTemplates[loadout.Name] = loadout;
+            _loadoutTemplatesByName[loadout.Name] = loadout;
+
+            _loadouts.Add(loadout.Name);
+
+            SaveCustomLoadouts();
+        }
+
+        private void SaveCustomLoadouts()
+        {
+            
+        }
+
+        private void LoadCustomLoadouts()
+        {
+            foreach (var loadout in _customLoadoutTemplates.Values)
+            {
+                _loadoutTemplatesByName[loadout.Name] = loadout;
+            }
+        }
     }
 }
