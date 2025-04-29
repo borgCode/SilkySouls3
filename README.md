@@ -28,7 +28,10 @@ Usage:
 Unzip the download and run the exe, it does not matter if you open the app before the game or after.
 
 Thanks to Faladryn for the app icon
+
 Thanks to jamesq7 for stutter fix
+
+Thanks to Eloise for help with offsets
 
 Made by Shilkey
 
