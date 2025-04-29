@@ -50,6 +50,7 @@ namespace SilkySouls3
             }
             else WindowStartupLocation = WindowStartupLocation.CenterScreen;
             
+            GameLauncher.SetVersionOffsets();
             
             _hookManager = new HookManager(_memoryIo);
             _aobScanner = new AoBScanner(_memoryIo);
@@ -93,7 +94,6 @@ namespace SilkySouls3
             
       
             VersionChecker.CheckForUpdates(AppVersion, this);
-            GameLauncher.SetVersionOffsets();
         }
 
         private bool _loaded;

@@ -8,7 +8,7 @@ namespace SilkySouls3.Memory
         {
             public static IntPtr Base;
             public const int PlayerIns = 0x80;
-            public const int DeathCam = 0x90;
+            public static int DeathCam = 0x90;
 
 
             public static class PlayerInsOffsets
@@ -68,12 +68,13 @@ namespace SilkySouls3.Memory
                 FrostMax = 0x34
             }
 
-            public enum ChrBehaviorModule
-            {
-                AnimSpeed = 0xA58,
-                CurrentAnimation = 0x898,
-            }
 
+            public static class ChrBehaviorModule
+            {
+                public static int AnimSpeed = 0xA58;
+                public static int CurrentAnimation = 0x898;
+            }
+       
             public enum ChrSuperArmorModule
             {
                 InfinitePoise = 0x10,

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SilkySouls3.Memory;
+using SilkySouls3.Utilities;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -17,6 +18,12 @@ namespace SilkySouls3.Views
             InitializeComponent();
             _utilityViewModel = utilityViewModel;
             DataContext = utilityViewModel;
+            
+            if (!GameLauncher.IsDlc2Available)
+            {
+                UnlockMidirButton.IsEnabled = false;
+                UnlockMidirButton.ToolTip = "Requires DLC2";
+            }
         }
 
         private void WarpLocationsCombo_PreviewMouseDown(object sender, MouseButtonEventArgs e)

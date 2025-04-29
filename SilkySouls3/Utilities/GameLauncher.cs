@@ -11,6 +11,8 @@ namespace SilkySouls3.Utilities
 {
     public static class GameLauncher
     {
+        public static bool IsDlc2Available { get; private set; } = true;
+        
         public static void LaunchDarkSouls3()
         {
             try
@@ -45,16 +47,30 @@ namespace SilkySouls3.Utilities
 
                 int major = versionInfo.FileMajorPart;
                 int minor = versionInfo.FileMinorPart;
+                
+                if (major == 1 && minor <= 8)
+                {
+                    Offsets.WorldChrMan.ChrBehaviorModule.AnimSpeed = 0xA38;
+                    IsDlc2Available = false;
+                }
 
-                if (major == 1 && minor <= 12)
+                if (major == 1 && minor < 12)
+                {
+                    Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1 = 0x1ED8;
+                    Offsets.WorldChrMan.PlayerInsOffsets.Modules = 0x1F80;
+                    Offsets.WorldChrMan.DeathCam = 0x88;
+                }
+                else if (major == 1 && minor == 12)
                 {
                     Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1 = 0x1EE0;
                     Offsets.WorldChrMan.PlayerInsOffsets.Modules = 0x1F88;
+                    Offsets.WorldChrMan.DeathCam = 0x90;
                 }
                 else
                 {
                     Offsets.WorldChrMan.PlayerInsOffsets.CharFlags1 = 0x1EE8;
                     Offsets.WorldChrMan.PlayerInsOffsets.Modules = 0x1F90;
+                    Offsets.WorldChrMan.DeathCam = 0x90;
                 }
             }
             catch (Exception)

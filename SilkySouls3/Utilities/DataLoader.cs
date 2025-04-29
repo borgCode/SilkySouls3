@@ -22,13 +22,16 @@ namespace SilkySouls3.Utilities
                 while ((line = reader.ReadLine()) != null)
                 {
                     if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
+                    
+                    if (!GameLauncher.IsDlc2Available && line.StartsWith("2,"))
+                        continue;
 
                     string[] parts = line.Split(',');
-                    if (parts.Length < 4) continue;
+                    if (parts.Length < 5) continue;
 
-                    string name = parts[0];
+                    string name = parts[1];
 
-                    string offsetStr = parts[1];
+                    string offsetStr = parts[2];
                     int? offset = null;
 
                     if (offsetStr.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
@@ -38,19 +41,19 @@ namespace SilkySouls3.Utilities
                         offset = o;
 
 
-                    byte? bitPos = byte.TryParse(parts[2], NumberStyles.Integer, CultureInfo.InvariantCulture,
+                    byte? bitPos = byte.TryParse(parts[3], NumberStyles.Integer, CultureInfo.InvariantCulture,
                         out var b)
                         ? (byte?)b
                         : null;
 
-                    int bonfireId = int.Parse(parts[3], NumberStyles.Integer, CultureInfo.InvariantCulture);
+                    int bonfireId = int.Parse(parts[4], NumberStyles.Integer, CultureInfo.InvariantCulture);
 
                     float[] coords = null;
                     float angle = 0f;
 
-                    if (parts.Length > 4 && !string.IsNullOrWhiteSpace(parts[4]))
+                    if (parts.Length > 5 && !string.IsNullOrWhiteSpace(parts[5]))
                     {
-                        var coordParts = parts[4].Split('|');
+                        var coordParts = parts[5].Split('|');
                         coords = new float[coordParts.Length];
                         for (int i = 0; i < coordParts.Length; i++)
                         {
@@ -58,9 +61,9 @@ namespace SilkySouls3.Utilities
                         }
                     }
 
-                    if (parts.Length > 5 && !string.IsNullOrWhiteSpace(parts[5]))
+                    if (parts.Length > 6 && !string.IsNullOrWhiteSpace(parts[6]))
                     {
-                        angle = float.Parse(parts[5], CultureInfo.InvariantCulture);
+                        angle = float.Parse(parts[6], CultureInfo.InvariantCulture);
                     }
 
                     string key = $"{bonfireId},{name}";
@@ -96,17 +99,20 @@ namespace SilkySouls3.Utilities
                 while ((line = reader.ReadLine()) != null)
                 {
                     if (string.IsNullOrWhiteSpace(line)) continue;
+                    
+                    if (!GameLauncher.IsDlc2Available && line.StartsWith("2,"))
+                        continue;
 
                     string[] parts = line.Split(',');
-                    if (parts.Length >= 5)
+                    if (parts.Length >= 6)
                     {
                         items.Add(new Item
                         {
-                            Id = int.Parse(parts[0], NumberStyles.HexNumber),
-                            Name = parts[1],
-                            StackSize = int.Parse(parts[2]),
-                            UpgradeType = int.Parse(parts[3]),
-                            Infusable = parts[4] == "1"
+                            Id = int.Parse(parts[1], NumberStyles.HexNumber),
+                            Name = parts[2],
+                            StackSize = int.Parse(parts[3]),
+                            UpgradeType = int.Parse(parts[4]),
+                            Infusable = parts[5] == "1"
                         });
                     }
                 }
@@ -185,10 +191,8 @@ namespace SilkySouls3.Utilities
                         }
                         else if (parts[0] == "ITEM" && currentLoadout != null)
                         {
-                            // Default quantity to 1 if not specified
                             int quantity = 1;
-
-                            // Handle older saved files that don't have quantity
+                            
                             if (parts.Length > 4)
                             {
                                 int.TryParse(parts[4], out quantity);
