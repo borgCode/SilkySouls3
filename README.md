@@ -1,4 +1,4 @@
-An offline practice tool for challenge running in Dark Souls 3.
+An offline practice tool for challenge running in Dark Souls 3 on patches 1.08+
 
 This tool is strictly for offline practice only, it directly manipulates game memory which violates Terms of Service and will most likely lead to a ban if you use this online.
 
