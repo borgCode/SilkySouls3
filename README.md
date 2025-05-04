@@ -1,4 +1,4 @@
-An offline practice tool for challenge running in Dark Souls 3.
+An offline practice tool for challenge running in Dark Souls 3 on patches 1.08+
 
 This tool is strictly for offline practice only, it directly manipulates game memory which violates Terms of Service and will most likely lead to a ban if you use this online.
 
@@ -28,7 +28,10 @@ Usage:
 Unzip the download and run the exe, it does not matter if you open the app before the game or after.
 
 Thanks to Faladryn for the app icon
+
 Thanks to jamesq7 for stutter fix
+
+Thanks to Eloise for help with offsets
 
 Made by Shilkey
 
