@@ -25,8 +25,7 @@ namespace SilkySouls3
         private readonly AoBScanner _aobScanner;
         private readonly DispatcherTimer _gameLoadedTimer;
         private readonly HookManager _hookManager;
-
-
+        
         private readonly PlayerViewModel _playerViewModel;
         private readonly UtilityViewModel _utilityViewModel;
         private readonly EnemyViewModel _enemyViewModel;
@@ -60,7 +59,7 @@ namespace SilkySouls3
             var utilityService = new UtilityService(_memoryIo, _hookManager);
             var enemyService = new EnemyService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);
-            var itemService = new ItemService(_memoryIo, _hookManager);
+            var itemService = new ItemService(_memoryIo);
             var settingsService = new SettingsService(_memoryIo);
             _debugDrawService = new DebugDrawService(_memoryIo);
 
@@ -92,8 +91,12 @@ namespace SilkySouls3
             _gameLoadedTimer.Tick += Timer_Tick;
             _gameLoadedTimer.Start();
             
-      
-            VersionChecker.CheckForUpdates(AppVersion, this);
+            VersionChecker.UpdateVersionText(AppVersion);
+            
+            if (SettingsManager.Default.EnableUpdateChecks)
+            {
+                VersionChecker.CheckForUpdates(this);
+            }
         }
 
         private bool _loaded;
@@ -225,6 +228,7 @@ namespace SilkySouls3
         }
         
         private void LaunchGame_Click(object sender, RoutedEventArgs e) => Task.Run(GameLauncher.LaunchDarkSouls3);
-        
+
+        private void CheckUpdate_Click(object sender, RoutedEventArgs e) => VersionChecker.CheckForUpdates(this, true);
     }
 }

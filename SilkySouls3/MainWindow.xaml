@@ -91,15 +91,23 @@
 
         <Grid Grid.Row="1" Margin="0,5,0,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="AppVersion" Text=""
                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                       Width="100"
+                       Width="40"
                        Margin="10,0,0,0" />
             
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="CheckUpdateButton" Content="Check for Updates"
+                    Grid.Column="1"
+                    Click="CheckUpdate_Click"
+                    Margin="5,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"/>
+            
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="LaunchGameButton" Content="Launch Game"
                         Click="LaunchGame_Click"
                         Margin="0,0,10,0"

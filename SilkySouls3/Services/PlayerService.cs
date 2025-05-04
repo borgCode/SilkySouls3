@@ -42,7 +42,7 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     WorldChrMan.PlayerIns,
-                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    WorldChrMan.PlayerInsOffsets.Modules,
                     (int)WorldChrMan.Modules.ChrDataModule,
                     fieldOffset
                 }, false);
@@ -69,7 +69,7 @@ namespace SilkySouls3.Services
             return _memoryIo.FollowPointers(WorldChrMan.Base, new[]
             {
                 WorldChrMan.PlayerIns,
-                (int)WorldChrMan.PlayerInsOffsets.Modules,
+                WorldChrMan.PlayerInsOffsets.Modules,
                 (int)WorldChrMan.Modules.ChrPhysicsModule,
             }, true);
         }
@@ -119,7 +119,7 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     WorldChrMan.PlayerIns,
-                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    WorldChrMan.PlayerInsOffsets.Modules,
                     (int) WorldChrMan.Modules.ChrSuperArmorModule,
                     (int) WorldChrMan.ChrSuperArmorModule.InfinitePoise,
                 }, false);
@@ -133,7 +133,7 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     WorldChrMan.PlayerIns,
-                    (int)WorldChrMan.PlayerInsOffsets.CharFlags1
+                    WorldChrMan.PlayerInsOffsets.CharFlags1
                 }, false);
             var flagMask = (int)WorldChrMan.ChrFlag1BitFlag.NoGoodsConsume;
             _memoryIo.SetBit32(noGoodsConsumePtr, flagMask, setValue);
@@ -232,9 +232,9 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     WorldChrMan.PlayerIns,
-                    (int)WorldChrMan.PlayerInsOffsets.Modules,
+                    WorldChrMan.PlayerInsOffsets.Modules,
                     (int)WorldChrMan.Modules.ChrBehaviorModule,
-                    (int)WorldChrMan.ChrBehaviorModule.AnimSpeed
+                    WorldChrMan.ChrBehaviorModule.AnimSpeed
                 }, false);
         }
 

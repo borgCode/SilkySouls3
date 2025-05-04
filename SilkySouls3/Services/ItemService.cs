@@ -8,11 +8,9 @@ namespace SilkySouls3.Services
     {
         
         private readonly MemoryIo _memoryIo;
-        private readonly HookManager _hookManager;
-        public ItemService(MemoryIo memoryIo, HookManager hookManager)
+        public ItemService(MemoryIo memoryIo)
         {
             _memoryIo = memoryIo;
-            _hookManager = hookManager;
         }
 
         public void SpawnItem(int itemId, int quantity)

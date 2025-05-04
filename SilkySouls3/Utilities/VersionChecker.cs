@@ -44,16 +44,23 @@ namespace SilkySouls3.Utilities
             }
         }
 
-        public static async void CheckForUpdates(TextBlock versionText, Window parentWindow)
+        public static async void CheckForUpdates(Window parentWindow, bool showNoUpdateMessage = false)
         {
             var (hasUpdate, currentVersion, webVersion) = await CheckForUpdate();
-
-            if (currentVersion != null)
+    
+            if (!hasUpdate || webVersion == null || currentVersion == null)
             {
-                versionText.Text = $"v{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}";
+                if (showNoUpdateMessage)
+                {
+                    MessageBox.Show(
+                        "Your application is up to date.",
+                        "Update Check",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+                return;
             }
-
-            if (!hasUpdate || webVersion == null || currentVersion == null) return;
+            
             var updateWindow = new Window
             {
                 Title = "Update Available",
@@ -96,7 +103,20 @@ namespace SilkySouls3.Utilities
             };
             Grid.SetRow(message, 1);
             grid.Children.Add(message);
-                
+            
+            var dontShowCheckbox = new CheckBox
+            {
+                Content = "Don't show on app launch",
+                Foreground = (SolidColorBrush)Application.Current.Resources["TextBrush"],
+                Margin = new Thickness(20, 5, 20, 0),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                IsChecked = !SettingsManager.Default.EnableUpdateChecks
+            };
+            Grid.SetRow(dontShowCheckbox, 1);
+            grid.Children.Add(dontShowCheckbox);
+
+            
             var buttonPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -113,6 +133,12 @@ namespace SilkySouls3.Utilities
             };
             downloadButton.Click += (s, e) => 
             {
+                if (dontShowCheckbox.IsChecked == true)
+                {
+                    SettingsManager.Default.EnableUpdateChecks = false;
+                    SettingsManager.Default.Save();
+                }
+                
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                 {
                     FileName = "https://github.com/borgCode/SilkySouls3/releases/latest",
@@ -128,7 +154,17 @@ namespace SilkySouls3.Utilities
                 Height = 25,
                 Margin = new Thickness(5)
             };
-            laterButton.Click += (s, e) => updateWindow.Close();
+            
+            laterButton.Click += (s, e) => 
+            {
+                if (dontShowCheckbox.IsChecked == true)
+                {
+                    SettingsManager.Default.EnableUpdateChecks = false;
+                    SettingsManager.Default.Save();
+                }
+    
+                updateWindow.Close();
+            };
 
             buttonPanel.Children.Add(downloadButton);
             buttonPanel.Children.Add(laterButton);
@@ -140,6 +176,15 @@ namespace SilkySouls3.Utilities
             titleBar.MouseLeftButtonDown += (s, e) => updateWindow.DragMove();
 
             updateWindow.ShowDialog();
+        }
+
+        public static void UpdateVersionText(TextBlock appVersion)
+        {
+            var currentVersion = Assembly.GetEntryAssembly()?.GetName().Version;
+            if (currentVersion != null)
+            {
+                appVersion.Text = $"v{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}";
+            }
         }
     }
 }

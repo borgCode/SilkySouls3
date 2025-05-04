@@ -10,12 +10,12 @@ namespace SilkySouls3.Utilities
 {
     public class HotkeyManager
     {
-        
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-        
+
         private readonly MemoryIo _memoryIo;
         private readonly LowLevelKeyboardHook _keyboardHook;
         private readonly Dictionary<string, Keys> _hotkeyMappings;
@@ -30,12 +30,12 @@ namespace SilkySouls3.Utilities
 
             _keyboardHook = new LowLevelKeyboardHook();
             _keyboardHook.HandleModifierKeys = true;
-            
+
             _keyboardHook.Down += KeyboardHook_Down;
-            
+
             LoadHotkeys();
 
-           if (SettingsManager.Default.EnableHotkeys) _keyboardHook.Start();
+            if (SettingsManager.Default.EnableHotkeys) _keyboardHook.Start();
         }
 
         public void Start()
@@ -66,6 +66,7 @@ namespace SilkySouls3.Utilities
                 {
                     action.Invoke();
                 }
+
                 break;
             }
         }
@@ -73,7 +74,7 @@ namespace SilkySouls3.Utilities
         private bool IsGameFocused()
         {
             if (_memoryIo.TargetProcess == null || _memoryIo.TargetProcess.Id == 0) return false;
-         
+
             IntPtr foregroundWindow = GetForegroundWindow();
             GetWindowThreadProcessId(foregroundWindow, out uint foregroundProcessId);
             return foregroundProcessId == (uint)_memoryIo.TargetProcess.Id;
@@ -106,17 +107,14 @@ namespace SilkySouls3.Utilities
         {
             try
             {
-                SettingsManager.Default.HotkeyActionIds = "";
-                SettingsManager.Default.HotkeyValues = "";
-                
-                if (_hotkeyMappings.Count > 0)
+                var mappingPairs = new List<string>();
+
+                foreach (var mapping in _hotkeyMappings)
                 {
-                    SettingsManager.Default.HotkeyActionIds = string.Join(";", _hotkeyMappings.Keys);
-                    
-                    var hotkeyStrings = _hotkeyMappings.Values.Select(k => k.ToString());
-                    SettingsManager.Default.HotkeyValues = string.Join(";", hotkeyStrings);
+                    mappingPairs.Add($"{mapping.Key}={mapping.Value}");
                 }
-                
+
+                SettingsManager.Default.HotkeyActionIds = string.Join(";", mappingPairs);
                 SettingsManager.Default.Save();
             }
             catch (Exception ex)
@@ -124,22 +122,42 @@ namespace SilkySouls3.Utilities
                 Console.WriteLine($"Error saving hotkeys: {ex.Message}");
             }
         }
-
         public void LoadHotkeys()
         {
             try
             {
+                _hotkeyMappings.Clear();
+
                 string actionIdsString = SettingsManager.Default.HotkeyActionIds;
                 string hotkeyValuesString = SettingsManager.Default.HotkeyValues;
-                
-                if (!string.IsNullOrEmpty(actionIdsString) && !string.IsNullOrEmpty(hotkeyValuesString))
+
+                if (!string.IsNullOrEmpty(actionIdsString) && actionIdsString.Contains("="))
+                {
+                    string[] pairs = actionIdsString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string pair in pairs)
+                    {
+                        int separatorIndex = pair.IndexOf('=');
+                        if (separatorIndex > 0)
+                        {
+                            string actionId = pair.Substring(0, separatorIndex);
+                            string keyValue = pair.Substring(separatorIndex + 1);
+
+                            if (!string.IsNullOrEmpty(keyValue))
+                            {
+                                _hotkeyMappings[actionId] = Keys.Parse(keyValue);
+                            }
+                        }
+                    }
+                }
+                else if (!string.IsNullOrEmpty(actionIdsString) && !string.IsNullOrEmpty(hotkeyValuesString))
                 {
                     string[] actionIds = actionIdsString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    string[] hotkeyStrings = hotkeyValuesString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    
+                    string[] hotkeyStrings =
+                        hotkeyValuesString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
                     if (actionIds.Length == hotkeyStrings.Length)
                     {
-                        
                         for (int i = 0; i < actionIds.Length; i++)
                         {
                             _hotkeyMappings[actionIds[i]] = Keys.Parse(hotkeyStrings[i]);

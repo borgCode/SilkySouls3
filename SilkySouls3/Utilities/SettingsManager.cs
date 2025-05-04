@@ -20,6 +20,7 @@ namespace SilkySouls3.Utilities
         public double ResistancesWindowWidth { get; set; }
         public double ResistancesWindowLeft { get; set; }
         public double ResistancesWindowTop { get; set; }
+        public bool EnableUpdateChecks { get; set; } = true;
 
         private static string SettingsPath => Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -46,6 +47,7 @@ namespace SilkySouls3.Utilities
                     $"ResistancesWindowWidth={ResistancesWindowWidth}",
                     $"ResistancesWindowLeft={ResistancesWindowLeft}",
                     $"ResistancesWindowTop={ResistancesWindowTop}",
+                    $"EnableUpdateChecks={EnableUpdateChecks}",
                 };
 
                 File.WriteAllLines(SettingsPath, lines);
@@ -115,6 +117,10 @@ namespace SilkySouls3.Utilities
                                 case "ResistancesWindowWidth":
                                     double.TryParse(value, out double rww);
                                     settings.ResistancesWindowWidth = rww;
+                                    break;
+                                case "EnableUpdateChecks":
+                                    bool.TryParse(value, out bool euc);
+                                    settings.EnableUpdateChecks = euc;
                                     break;
                             }
                         }
