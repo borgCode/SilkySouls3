@@ -8,13 +8,13 @@ namespace SilkySouls3.Utilities
 {
     public static class DataLoader
     {
-        public static Dictionary<string, WarpEntry> GetWarpEntryDict()
+        public static Dictionary<string, List<WarpLocation>> GetWarpLocations()
         {
-            Dictionary<string, WarpEntry> entries = new Dictionary<string, WarpEntry>();
+            Dictionary<string, List<WarpLocation>> warpDict = new Dictionary<string, List<WarpLocation>>();
             string csvData = Properties.Resources.WarpEntries;
 
             if (string.IsNullOrWhiteSpace(csvData))
-                return entries;
+                return warpDict;
 
             using (StringReader reader = new StringReader(csvData))
             {
@@ -22,38 +22,44 @@ namespace SilkySouls3.Utilities
                 while ((line = reader.ReadLine()) != null)
                 {
                     if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
-                    
+
                     if (!GameLauncher.IsDlc2Available && line.StartsWith("2,"))
                         continue;
 
                     string[] parts = line.Split(',');
-                    if (parts.Length < 5) continue;
+                    if (parts.Length < 6) continue;
 
-                    string name = parts[1];
+                    string mainArea = parts[1];
+                    string name = parts[2];
 
-                    string offsetStr = parts[2];
+                    string offsetStr = parts[3];
                     int? offset = null;
 
-                    if (offsetStr.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                        offsetStr = offsetStr.Substring(2);
+                    if (!string.IsNullOrWhiteSpace(offsetStr))
+                    {
+                        if (offsetStr.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                            offsetStr = offsetStr.Substring(2);
 
-                    if (int.TryParse(offsetStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var o))
-                        offset = o;
+                        if (int.TryParse(offsetStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var o))
+                            offset = o;
+                    }
 
+                    byte? bitPos = null;
+                    if (!string.IsNullOrWhiteSpace(parts[4]))
+                    {
+                        bitPos = byte.TryParse(parts[4], NumberStyles.Integer, CultureInfo.InvariantCulture, out var b)
+                            ? (byte?)b
+                            : null;
+                    }
 
-                    byte? bitPos = byte.TryParse(parts[3], NumberStyles.Integer, CultureInfo.InvariantCulture,
-                        out var b)
-                        ? (byte?)b
-                        : null;
-
-                    int bonfireId = int.Parse(parts[4], NumberStyles.Integer, CultureInfo.InvariantCulture);
+                    int bonfireId = int.Parse(parts[5], NumberStyles.Integer, CultureInfo.InvariantCulture);
 
                     float[] coords = null;
                     float angle = 0f;
 
-                    if (parts.Length > 5 && !string.IsNullOrWhiteSpace(parts[5]))
+                    if (parts.Length > 6 && !string.IsNullOrWhiteSpace(parts[6]))
                     {
-                        var coordParts = parts[5].Split('|');
+                        var coordParts = parts[6].Split('|');
                         coords = new float[coordParts.Length];
                         for (int i = 0; i < coordParts.Length; i++)
                         {
@@ -61,25 +67,32 @@ namespace SilkySouls3.Utilities
                         }
                     }
 
-                    if (parts.Length > 6 && !string.IsNullOrWhiteSpace(parts[6]))
+                    if (parts.Length > 7 && !string.IsNullOrWhiteSpace(parts[7]))
                     {
-                        angle = float.Parse(parts[6], CultureInfo.InvariantCulture);
+                        angle = float.Parse(parts[7], CultureInfo.InvariantCulture);
                     }
 
-                    string key = $"{bonfireId},{name}";
-                    entries.Add(key, new WarpEntry
+                    WarpLocation location = new WarpLocation
                     {
                         Name = name,
+                        MainArea = mainArea,
                         Offset = offset,
                         BitPosition = bitPos,
-                        BonfireID = bonfireId,
+                        BonfireId = bonfireId,
                         Coords = coords,
                         Angle = angle
-                    });
+                    };
+
+                    if (!warpDict.ContainsKey(mainArea))
+                    {
+                        warpDict[mainArea] = new List<WarpLocation>();
+                    }
+
+                    warpDict[mainArea].Add(location);
                 }
             }
 
-            return entries;
+            return warpDict;
         }
 
         public static List<Item> GetItemList(string listName)
@@ -99,7 +112,7 @@ namespace SilkySouls3.Utilities
                 while ((line = reader.ReadLine()) != null)
                 {
                     if (string.IsNullOrWhiteSpace(line)) continue;
-                    
+
                     if (!GameLauncher.IsDlc2Available && line.StartsWith("2,"))
                         continue;
 
@@ -192,7 +205,7 @@ namespace SilkySouls3.Utilities
                         else if (parts[0] == "ITEM" && currentLoadout != null)
                         {
                             int quantity = 1;
-                            
+
                             if (parts.Length > 4)
                             {
                                 int.TryParse(parts[4], out quantity);

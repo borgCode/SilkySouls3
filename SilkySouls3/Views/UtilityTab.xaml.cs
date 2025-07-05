@@ -57,16 +57,6 @@ namespace SilkySouls3.Views
             combo.PreviewMouseDown += WarpLocationsCombo_PreviewMouseDown;
         }
         
-        
-        private void Warp_Click(object sender, RoutedEventArgs e)
-        {
-            _utilityViewModel.Warp();
-        }
-
-        private void UnlockBonfires_Click(object sender, RoutedEventArgs e)
-        {
-            _utilityViewModel.UnlockBonfires();
-        }
 
         private void UnlockMidir_Click(object sender, RoutedEventArgs e)
         {

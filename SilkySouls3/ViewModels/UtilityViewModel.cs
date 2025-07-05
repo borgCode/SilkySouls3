@@ -52,8 +52,6 @@ namespace SilkySouls3.ViewModels
 
         private bool _wasNoDeathEnabled;
 
-        private readonly Dictionary<string, WarpEntry> _warpLocations;
-        private KeyValuePair<string, string> _selectedWarp;
         private readonly PlayerViewModel _playerViewModel;
 
         private readonly DebugDrawService _debugDrawService;
@@ -65,14 +63,6 @@ namespace SilkySouls3.ViewModels
             _utilityService = utilityService;
             _debugDrawService = debugDrawService;
             _hotkeyManager = hotkeyManager;
-            _warpLocations = DataLoader.GetWarpEntryDict();
-
-            if (_warpLocations.Any())
-            {
-                var firstLocation = _warpLocations.First();
-                _selectedWarp = new KeyValuePair<string, string>(firstLocation.Key, firstLocation.Value.Name);
-            }
-
             Fps = 75f;
             RegisterHotkeys();
         }
@@ -109,17 +99,7 @@ namespace SilkySouls3.ViewModels
             });
             _hotkeyManager.RegisterAction("MoveCamToPlayer", MoveCamToPlayer);
         }
-
-        public IEnumerable<KeyValuePair<string, string>> WarpLocations =>
-            _warpLocations.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value.Name));
-
-        public KeyValuePair<string, string> SelectedWarp
-
-        {
-            get => _selectedWarp;
-            set => SetProperty(ref _selectedWarp, value);
-        }
-
+        
 
         public bool AreButtonsEnabled
         {
@@ -453,11 +433,7 @@ namespace SilkySouls3.ViewModels
         }
 
         public void SetSpeed(float value) => GameSpeed = value;
-
-        public void Warp()
-        {
-            _ = Task.Run(() => _utilityService.Warp(_warpLocations[SelectedWarp.Key]));
-        }
+        
 
         public void OpenMenu(long funcAddr)
         {
@@ -473,12 +449,6 @@ namespace SilkySouls3.ViewModels
         {
             _utilityService.OpenRegularShop(shopParams);
         }
-
-        public void UnlockBonfires()
-        {
-            _utilityService.UnlockBonfires(_warpLocations.Values.Where(w => w.IsStandardWarp));
-        }
-
 
         public void UnlockMidir()
         {

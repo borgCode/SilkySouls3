@@ -314,41 +314,8 @@
                 </TabItem>
             </TabControl>
         </Border>
-        <Border Grid.Row="2" BorderThickness="1" BorderBrush="#333" CornerRadius="3">
-            <Grid Margin="10,8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Warp Locations"
-                           FontWeight="Bold"
-                           Grid.Column="0"
-                           VerticalAlignment="Center"
-                           Margin="0,0,15,0" />
-
-                <ComboBox ItemsSource="{Binding WarpLocations}"
-                          DisplayMemberPath="Value"
-                          SelectedItem="{Binding SelectedWarp, Mode=TwoWay}"
-                          IsEnabled="{Binding AreButtonsEnabled}"
-                          Grid.Column="1"
-                          VerticalAlignment="Center"
-                          Margin="0,0,15,0"
-                          PreviewMouseDown="WarpLocationsCombo_PreviewMouseDown"
-                          TextSearch.TextPath="Value" />
-
-                <Button Content="Warp"
-                        Width="80"
-                        Click="Warp_Click"
-                        IsEnabled="{Binding AreButtonsEnabled}"
-                        Height="25"
-                        Grid.Column="2"
-                        Padding="5,0" />
-            </Grid>
-        </Border>
-
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="*" />
@@ -484,11 +451,6 @@
                                Margin="0,0,0,10" />
 
                     <StackPanel>
-                        <Button Content="Unlock All Bonfires"
-                                Click="UnlockBonfires_Click"
-                                IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="20"
-                                Margin="0,2" />
 
                         <Button x:Name="UnlockMidirButton"  Content="Unlock Midir"
                                 Click="UnlockMidir_Click"

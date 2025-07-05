@@ -514,18 +514,16 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,Cemetery of Ash,0x5A03,6,4001951,,
-        ///0,Iudex Gundyr,0x5A03,5,4001952,,
-        ///0,Firelink Shrine,0x5A03,7,4001950,,
-        ///0,Untended Graves,0x5A03,4,4001953,,
-        ///0,Champion Gundyr (Fog Gate),,,4001953,124.44|-63.98|554.00,-2.95
-        ///0,Champion Gundyr,0x5A03,3,4001954,,
-        ///0,High Wall of Lothric,0xF02,6,3001950,,
-        ///0,Tower on the Wall,0xF03,2,3001955,,,
-        ///0,Vordt of the Boreal Valley,0xF03,5,3001952,,
-        ///0,Vordt (Fog Gate),,,3001955,27.61|-25.49|51.48,-0.01
-        ///0,Dancer of the Boreal Valley,0xF03,3,3001954,,
-        ///0,Dancer (Fog Gate),,,30 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,Boss,Iudex Gundyr,,,4001952,123.96|-63.95|554.54,-2.71
+        ///0,Boss,Champion Gundyr,,,4001953,124.44|-63.98|554.00,-2.95
+        ///0,Boss,Vordt,,,3001955,27.61|-25.49|51.48,-0.01
+        ///0,Boss,Dancer,,,3001955,27.54|-8.58|126.75,3.14
+        ///0,Boss,Oceiros,,,3001954,-73.99|-49.43|360.94,2.89
+        ///0,Boss,Greatwood,,,3101953,134.07|-180.74|-874.74,-0.31
+        ///0,Boss,Crystal Sage,,,3301957,-156.24|-249.25|-424.70,1.84
+        ///0,Boss,Abyss Watchers,,,3301958,272.16|-248.78|-485.06,-1.50
+        ///0,Boss,Deacons,,,3501950,-449.63|-196.57|-617.35,1.09
+        ///0,Boss,Hi [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WarpEntries {
             get {

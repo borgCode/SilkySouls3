@@ -138,105 +138,115 @@ e9 00 00 00 00          jmp    31 &lt;ret&gt;
 c3                      ret</value>
   </data>
   <data name="WarpEntries" xml:space="preserve">
-    <value>0,Cemetery of Ash,0x5A03,6,4001951,,
-0,Iudex Gundyr,0x5A03,5,4001952,,
-0,Firelink Shrine,0x5A03,7,4001950,,
-0,Untended Graves,0x5A03,4,4001953,,
-0,Champion Gundyr (Fog Gate),,,4001953,124.44|-63.98|554.00,-2.95
-0,Champion Gundyr,0x5A03,3,4001954,,
-0,High Wall of Lothric,0xF02,6,3001950,,
-0,Tower on the Wall,0xF03,2,3001955,,,
-0,Vordt of the Boreal Valley,0xF03,5,3001952,,
-0,Vordt (Fog Gate),,,3001955,27.61|-25.49|51.48,-0.01
-0,Dancer of the Boreal Valley,0xF03,3,3001954,,
-0,Dancer (Fog Gate),,,3001955,27.54|-8.58|126.75,3.14
-0,Oceiros the Consumed King,0xF03,6,3001951
-0,Oceiros (Fog Gate),,,3001954,-73.99|-49.43|360.94,2.89
-0,Foot of the High Wall,0x1903,3,3101954
-0,Undead Settlement,0x1903,7,3101950
-0,Dilapidated Bridge,0x1903,4,3101953
-0,Greatwood (Fog Gate),,,3101953,134.07|-180.74|-874.74,-0.31
-0,Cliff Underside,0x1903,5,3101952
-0,Pit of Hollows,0x1903,1,3101951
-0,Road of Sacrifices,0x2D03,1,3301956
-0,Halfway Fortress,0x2D03,1,3301950
-0,Crucifixion Woods,0x2D03,7,3301957
-0,Crystal Sage (Fog Gate),,,3301957,-156.24|-249.25|-424.70,1.84
-0,Crystal Sage,0x2D03,2,3301952
-0,Farron Keep,0x2D03,0,3301953
-0,Keep Ruins,0x2D03,4,3301954
-0,Old Wolf of Farron,0x2D03,3,3301955
-0,Farron Keep Perimeter,0x2D03,5,3301958
-0,Abyss Watchers (Fog Gate),,,3301958,272.16|-248.78|-485.06,-1.50
-0,Abyss Watchers,0x2D02,7,3301954
-0,Cathedral of the Deep,0x2D03,6,3501953
-0,Cleansing Chapel,0x3C03,4,3501950
-0,Cathedral Running,,,3501950,-295.98|-199.63|-693.75,1.01
-0,Cathedral Giant,,,3501950,-256.41|-177.65|-500.61,0.98
-0,Deacons (Fog Gate),,,3501950,-449.63|-196.57|-617.35,1.09
-0,Deacons of the Deep,0x3C03,7,3501951
-0,Rosaria's Bed Chamber,0x3C03,6,3501952
-0,Catacombs of Carthus,0x3C03,5,3801956
-0,Abandoned Tomb,0x5003,1,3801951
-0,Demon Ruins,0x5003,6,3801953
-0,Old King's Antechamber,0x5003,4,3801952
-0,High Lord Wolnir,0x5003,5,3801950
-0,Old Demon King,0x5003,7,3801954
-0,Irithyll of the Boreal Valley,0x5003,3,3701957
-0,Central Irithyll,0x4B03,0,3701954
-0,Church of Yorshka,0x4B03,3,3701950
-0,Distant Manor,0x4B03,7,3701955
-0,Pontiff Stairs,,,3701955,275.19|-269.95|-1031.26,-1.36
-0,Pontiff (Fog Gate),,,3701955,397.70|-224.75|-1116.94,-0.14
-0,Pontiff Sulyvahn,0x4B03,2,3701951
-0,Water Reserve,0x4B03,1,3701956
-0,Anor Londo,0x4B03,6,3701953
-0,Prison Tower,0x4B03,4,3701958
-0,Aldrich (Fog Gate),,,3701953,687.84|-121.36|-1079.03,-1.62
-0,Aldrich Devourer of Gods,0x4B02,7,3701952
-0,Irithyll Dungeon,0x4B03,5,3901950
-0,Bridge Gargoyle,,,3901952,70.97|-367.36|-782.68,-2.16
-0,Profaned Capital,0x5503,7,3901952
-0,Yhorm (Fog Gate),,,3901952,121.35|-424.86|-615.54,-2.95
-0,Yhorm the Giant,0x5503,5,3901951
-0,Archdragon Peak (Start),,,3201950,18.90|-5.89|81.54,1.82
-0,Archdragon Peak,0x5503,6,3201950
-0,Kin Mausoleum,0x2303,7,3201953
-0,Great Belfry,0x2303,4,3201952
-0,Nameless King,0x2303,5,3201951
-0,Lothric Castle,0x2303,6,3011950
-0,Dragon Barracks,0x1403,7,3011952
-0,Dragonslayer Armor (Fog Gate),,,3011952,-32.29|59.76|222.63,1.64
-0,Dragonslayer Armor,0x1403,5,3011951
-0,Grand Archives,0x1403,6,3411951
-0,Princes Stairs,,,3411951,-149.62|121.63|258.68,-2.01
-0,Twin Princes (Fog Gate),,,3411951,-24.58|141.97|312.01,-1.98
-0,Twin Princes,0x3703,6,3411950
-0,Flameless Shrine,0x3703,7,4101950
-0,Kiln of the First Flame,0x5F03,7,4101951
-0,Soul of Cinder (Fog Gate),,,4101951,-141.83|1590.25|38.51,-2.84
-0,Soul of Cinder,0x5F03,6,4101952
-0,Snowfield,0x6403,6,4501951
-0,Rope Bridge Cave,0x6403,5,4501952
-0,Ariandel Chapel,0x6403,2,4501955
-0,Corvian Settlement,0x6403,4,4501953
-0,Snowy Mountain Pass,0x6403,3,4501954
-0,Sister Friede,0x6403,7,4501950
-0,Champion's Gravetender,0x6403,1,4501956
-0,Depths of the Painting,0x6403,0,4501957
-2,The Dreg Heap,0x7303,6,5001951
-2,Earthen Peak Ruins,0x7303,5,5001952
-2,Within the Earthen Peak Ruins,0x7303,4,5001953
-2,The Demon Prince,0x7303,7,5001950
-2,Mausoleum Lookout,0x7803,5,5101952
-2,Ringed Inner Wall,0x7803,4,5101953
-2,Ringed City Streets,0x7803,3,5101954
-2,Shared Grave,0x7803,2,5101955
-2,Church of Filianore,0x7803,7,5101950
-2,Darkeater Midir (Fog Gate),,,5101953,-484.42|-83.08|-398.50,-2.42
-2,Darkeater Midir,0x7803,6,5101951
-2,Filianore's Rest,0x7D03,6,5111951
-2,Slave Knight Gael,0x7D03,7,5111950</value>
+    <value>0,Boss,Iudex Gundyr,,,4001952,123.96|-63.95|554.54,-2.71
+0,Boss,Champion Gundyr,,,4001953,124.44|-63.98|554.00,-2.95
+0,Boss,Vordt,,,3001955,27.61|-25.49|51.48,-0.01
+0,Boss,Dancer,,,3001955,27.54|-8.58|126.75,3.14
+0,Boss,Oceiros,,,3001954,-73.99|-49.43|360.94,2.89
+0,Boss,Greatwood,,,3101953,134.07|-180.74|-874.74,-0.31
+0,Boss,Crystal Sage,,,3301957,-156.24|-249.25|-424.70,1.84
+0,Boss,Abyss Watchers,,,3301958,272.16|-248.78|-485.06,-1.50
+0,Boss,Deacons,,,3501950,-449.63|-196.57|-617.35,1.09
+0,Boss,High Lord Wolnir,0x5003,5,3801950
+0,Boss,Old Demon King,,,3801954,291.62|-326.35|-920.68,-0.36
+0,Boss,Pontiff,,,3701955,397.70|-224.75|-1116.94,-0.14
+0,Boss,Aldrich,,,3701953,687.84|-121.36|-1079.03,-1.62
+0,Boss,Yhorm,,,3901952,121.35|-424.86|-615.54,-2.95
+0,Boss,Dragonslayer Armor,,,3011952,-32.29|59.76|222.63,1.64
+0,Boss,Twin Princes,,,3411951,-24.58|141.97|312.01,-1.98
+0,Boss,Ancient Wyvern,,,3201950,-72.19|29.08|180.67,-2.59
+0,Boss,Nameless King,,,3201952,80.56|80.95|345.12,0.57
+0,Boss,Soul of Cinder,,,4101951,-141.83|1590.25|38.51,-2.84
+0,Boss,Sister Friede,,,4501950,-186.99|27.75|-230.16,1.57
+0,Boss,Gravetender,,,4501957,-40.38|-97.91|-311.90,1.38
+2,Boss,Demon Prince,,,5001953,135.26|-89.80|61.34,-1.25
+2,Boss,Darkeater Midir,,,5101953,-484.42|-83.08|-398.50,-2.42
+2,Boss,Halflight,,,5101953,-380.77|-55.31|-323.59,2.96
+2,Boss,Slave Knight Gael,,,5111951,219.36|527.21|192.72,0.93
+0,Other,Cathedral running section,,,3501950,-295.98|-199.63|-693.75,1.01
+0,Other,Cathedral Giant,,,3501950,-256.41|-177.65|-500.61,0.98
+0,Other,Pontiff Stairs,,,3701955,275.19|-269.95|-1031.26,-1.36
+0,Other,Profaned Capital Gargoyle,,,3901952,70.97|-367.36|-782.68,-2.16
+0,Other,Princes Stairs,,,3411951,-149.62|121.63|258.68,-2.01
+0,Other,Gravetender running section,,,4501950,-87.01|-24.20|-222.07,-0.93
+0,Cemetary of Ash,Firelink Shrine,0x5A03,7,4001950
+0,Cemetary of Ash,Cemetery of Ash,0x5A03,6,4001951
+0,Cemetary of Ash,Iudex Gundyr,0x5A03,5,4001952
+0,Cemetary of Ash,Untended Graves,0x5A03,4,4001953
+0,Cemetary of Ash,Champion Gundyr,0x5A03,3,4001954
+0,High Wall of Lothric,High Wall of Lothric,0xF02,6,3001950
+0,High Wall of Lothric,Tower on the Wall,0xF03,2,3001955
+0,High Wall of Lothric,Vordt of the Boreal Valley,0xF03,5,3001952
+0,High Wall of Lothric,Dancer of the Boreal Valley,0xF03,3,3001954
+0,High Wall of Lothric,Oceiros the Consumed King,0xF03,6,3001951
+0,Undead Settlement,Foot of the High Wall,0x1903,3,3101954
+0,Undead Settlement,Undead Settlement,0x1903,7,3101950
+0,Undead Settlement,Cliff Underside,0x1903,5,3101952
+0,Undead Settlement,Dilapidated Bridge,0x1903,4,3101953
+0,Undead Settlement,Pit of Hollows,0x1903,1,3101951
+0,Road of Sacrifices,Road of Sacrifices,0x2D03,1,3301956
+0,Road of Sacrifices,Halfway Fortress,0x2D03,1,3301950
+0,Road of Sacrifices,Crucifixion Woods,0x2D03,7,3301957
+0,Road of Sacrifices,Crystal Sage,0x2D03,2,3301952
+0,Road of Sacrifices,Farron Keep,0x2D03,0,3301953
+0,Road of Sacrifices,Keep Ruins,0x2D03,4,3301954
+0,Road of Sacrifices,Farron Keep Perimeter,0x2D03,5,3301958
+0,Road of Sacrifices,Old Wolf of Farron,0x2D03,3,3301955
+0,Road of Sacrifices,Abyss Watchers,0x2D02,7,3301954
+0,Cathedral of the Deep,Cathedral of the Deep,0x2D03,6,3501953
+0,Cathedral of the Deep,Cleansing Chapel,0x3C03,4,3501950
+0,Cathedral of the Deep,Deacons of the Deep,0x3C03,7,3501951
+0,Cathedral of the Deep,Rosaria's Bed Chamber,0x3C03,6,3501952
+0,Catacombs of Carthus,Catacombs of Carthus,0x3C03,5,3801956
+0,Catacombs of Carthus,High Lord Wolnir,0x5003,5,3801950
+0,Catacombs of Carthus,Abandoned Tomb,0x5003,1,3801951
+0,Catacombs of Carthus,Old King's Antechamber,0x5003,4,3801952
+0,Catacombs of Carthus,Demon Ruins,0x5003,6,3801953
+0,Catacombs of Carthus,Old Demon King,0x5003,7,3801954
+0,Irithyll of the Boreal Valley,Irithyll of the Boreal Valley,0x5003,3,3701957
+0,Irithyll of the Boreal Valley,Central Irithyll,0x4B03,0,3701954
+0,Irithyll of the Boreal Valley,Church of Yorshka,0x4B03,3,3701950
+0,Irithyll of the Boreal Valley,Distant Manor,0x4B03,7,3701955
+0,Irithyll of the Boreal Valley,Pontiff Sulyvahn,0x4B03,2,3701951
+0,Irithyll of the Boreal Valley,Water Reserve,0x4B03,1,3701956
+0,Irithyll of the Boreal Valley,Anor Londo,0x4B03,6,3701953
+0,Irithyll of the Boreal Valley,Prison Tower,0x4B03,4,3701958
+0,Irithyll of the Boreal Valley,Aldrich Devourer of Gods,0x4B02,7,3701952
+0,Irithyll Dungeon,Irithyll Dungeon,0x4B03,5,3901950
+0,Irithyll Dungeon,Profaned Capital,0x5503,7,3901952
+0,Irithyll Dungeon,Yhorm the Giant,0x5503,5,3901951
+0,Lothric Castle,Lothric Castle,0x2303,6,3011950
+0,Lothric Castle,Dragon Barracks,0x1403,7,3011952
+0,Lothric Castle,Dragonslayer Armor,0x1403,5,3011951
+0,Lothric Castle,Grand Archives,0x1403,6,3411951
+0,Lothric Castle,Twin Princes,0x3703,6,3411950
+0,Archdragon Peak,Start,,,3201950,18.90|-5.89|81.54,1.82
+0,Archdragon Peak,Archdragon Peak,0x5503,6,3201950
+0,Archdragon Peak,Dragon-Kin Mausoleum,0x2303,7,3201953
+0,Archdragon Peak,Great Belfry,0x2303,4,3201952
+0,Archdragon Peak,Nameless King,0x2303,5,3201951
+0,Kiln of the First Flame,Flameless Shrine,0x3703,7,4101950
+0,Kiln of the First Flame,Kiln of the First Flame,0x5F03,7,4101951
+0,The Painted World of Ariandel,Snowfield,0x6403,6,4501951
+0,The Painted World of Ariandel,Rope Bridge Cave,0x6403,5,4501952
+0,The Painted World of Ariandel,Corvian Settlement,0x6403,4,4501953
+0,The Painted World of Ariandel,Snowy Mountain Pass,0x6403,3,4501954
+0,The Painted World of Ariandel,Ariandel Chapel,0x6403,2,4501955
+0,The Painted World of Ariandel,Sister Friede,0x6403,7,4501950
+0,The Painted World of Ariandel,Depths of the Painting,0x6403,0,4501957
+0,The Painted World of Ariandel,Champion's Gravetender,0x6403,1,4501956
+2,The Dreg Heap,The Dreg Heap,0x7303,6,5001951
+2,The Dreg Heap,Earthen Peak Ruins,0x7303,5,5001952
+2,The Dreg Heap,Within the Earthen Peak Ruins,0x7303,4,5001953
+2,The Dreg Heap,The Demon Prince,0x7303,7,5001950
+2,The Ringed City,Mausoleum Lookout,0x7803,5,5101952
+2,The Ringed City,Ringed Inner Wall,0x7803,4,5101953
+2,The Ringed City,Ringed City Streets,0x7803,3,5101954
+2,The Ringed City,Shared Grave,0x7803,2,5101955
+2,The Ringed City,Church of Filianore,0x7803,7,5101950
+2,The Ringed City,Darkeater Midir,0x7803,6,5101951
+2,The Ringed City,Filianore's Rest,0x7D03,6,5111951
+2,The Ringed City,Slave Knight Gael,0x7D03,7,5111950</value>
   </data>
   <data name="WarpCall" xml:space="preserve">
     <value>48 a1 00 00 00 00 00    movabs rax,ds:0x0
