@@ -9,7 +9,7 @@ namespace SilkySouls3.ViewModels
         private readonly EventService _eventService;
         private bool _isDisableEventEnabled;
         private bool _isArgoSpeedEnabled;
-        private float _argoSpeed;
+        private float _argoDuration;
         private string _setFlagId;
         private int _flagStateIndex;
         private string _getFlagId;
@@ -22,7 +22,7 @@ namespace SilkySouls3.ViewModels
         public EventViewModel(EventService eventService)
         {
             _eventService = eventService;
-            ArgoSpeed = 2.0f;
+            ArgoDuration = 2.0f;
         }
         
                 
@@ -123,17 +123,17 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _isArgoSpeedEnabled, value)) return;
                 _eventService.ToggleArgoHook(_isArgoSpeedEnabled);
-                if (IsArgoSpeedEnabled) _eventService.SetArgoSpeed(ArgoSpeed);
+                if (IsArgoSpeedEnabled) _eventService.SetArgoSpeed(ArgoDuration);
                 
             }
         }
         
-        public float ArgoSpeed
+        public float ArgoDuration
         {
-            get => _argoSpeed;
+            get => _argoDuration;
             set
             {
-                if (SetProperty(ref _argoSpeed, value))
+                if (SetProperty(ref _argoDuration, value))
                 {
                     if (!IsArgoSpeedEnabled) return;
                     _eventService.SetArgoSpeed(value);
@@ -162,6 +162,31 @@ namespace SilkySouls3.ViewModels
         public void MovePatchesToFirelink()
         {
             _eventService.SetMultipleEventsOn(GameIds.EventFlags.Patches);
+        }
+
+        public void MoveGreiratToFirelink()
+        {
+           _eventService.SetEvent(GameIds.EventFlags.Greirat, 1);
+        }
+
+        public void MoveKarlaToFirelink()
+        {
+            _eventService.SetEvent(GameIds.EventFlags.Karla, 1);
+        }
+
+        public void MoveCornyxToFirelink()
+        {
+            _eventService.SetEvent(GameIds.EventFlags.Cornyx, 1);
+        }
+
+        public void MoveOrbeckToFirelink()
+        {
+            _eventService.SetEvent(GameIds.EventFlags.Orbeck, 1);
+        }
+
+        public void MoveIrinaToFirelink()
+        {
+            _eventService.SetEvent(GameIds.EventFlags.Irina, 1);
         }
     }
 }

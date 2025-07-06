@@ -40,5 +40,30 @@ namespace SilkySouls3.Views
         {
             _eventViewModel.MovePatchesToFirelink();
         }
+
+        private void MoveGreirat_Click(object sender, RoutedEventArgs e)
+        {
+            _eventViewModel.MoveGreiratToFirelink();
+        }
+
+        private void MoveKarla_Click(object sender, RoutedEventArgs e)
+        {
+            _eventViewModel.MoveKarlaToFirelink();
+        }
+
+        private void MoveCornyx_Click(object sender, RoutedEventArgs e)
+        {
+            _eventViewModel.MoveCornyxToFirelink();
+        }
+
+        private void MoveIrina_Click(object sender, RoutedEventArgs e)
+        {
+            _eventViewModel.MoveIrinaToFirelink();
+        }
+
+        private void MoveOrbeck_Click(object sender, RoutedEventArgs e)
+        {
+            _eventViewModel.MoveOrbeckToFirelink();
+        }
     }
 }

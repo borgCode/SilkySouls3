@@ -116,7 +116,7 @@
                 BorderBrush="#333"
                 CornerRadius="3"
                 Margin="0,0,0,5">
-            <TabControl Margin="5" Height="140">
+            <TabControl Margin="5" Height="150">
                 <TabItem Header="General">
                     <StackPanel Margin="10">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,3" VerticalAlignment="Center">

@@ -311,6 +311,7 @@
                                       VirtualizingPanel.IsVirtualizing="True"
                                       VirtualizingPanel.VirtualizationMode="Recycling"
                                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                      MaxHeight="400"
                                       BorderThickness="0">
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">

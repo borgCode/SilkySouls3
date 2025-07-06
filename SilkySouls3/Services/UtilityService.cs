@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using SilkySouls3.Memory;
-using SilkySouls3.Models;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
 

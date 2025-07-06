@@ -239,6 +239,9 @@ namespace SilkySouls3
             SettingsManager.Default.WindowLeft = Left;
             SettingsManager.Default.WindowTop = Top;
             SettingsManager.Default.Save();
+            DisableFeatures();
+            _hookManager.UninstallAllHooks();
+            
         }
         
         private void LaunchGame_Click(object sender, RoutedEventArgs e) => Task.Run(GameLauncher.LaunchDarkSouls3);

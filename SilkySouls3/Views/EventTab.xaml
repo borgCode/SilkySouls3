@@ -117,8 +117,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <Button x:Name="UnlockMidirButton"  Content="Unlock Midir"
+
+                    <Button x:Name="UnlockMidirButton" Content="Unlock Midir"
                             Click="UnlockMidir_Click"
                             IsEnabled="{Binding AreButtonsEnabled}"
                             Height="20"
@@ -133,7 +133,7 @@
                 CornerRadius="3"
                 Margin="0,0,0,0">
             <StackPanel Margin="10">
-                <TextBlock Text="NPC"
+                <TextBlock Text="Move to Firelink"
                            FontWeight="Bold"
                            Margin="0,0,0,10" />
 
@@ -145,13 +145,50 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <Button Content="Patches to Firelink"
+
+                    <Button Grid.Row="0" Grid.Column="0"
+                            Content="Patches to Firelink"
                             Click="MovePatches_Click"
                             IsEnabled="{Binding AreButtonsEnabled}"
                             Height="20"
-                            Margin="0,5" />
+                            Margin="0,5,5,5" />
+
+                    <Button Grid.Row="0" Grid.Column="1"
+                            Content="Greirat to Firelink"
+                            Click="MoveGreirat_Click"
+                            IsEnabled="{Binding AreButtonsEnabled}"
+                            Height="20"
+                            Margin="5,5,0,5" />
+
+                    <Button Grid.Row="1" Grid.Column="0"
+                            Content="Karla to Firelink"
+                            Click="MoveKarla_Click"
+                            IsEnabled="{Binding AreButtonsEnabled}"
+                            Height="20"
+                            Margin="0,5,5,5" />
+
+                    <Button Grid.Row="1" Grid.Column="1"
+                            Content="Cornyx to Firelink"
+                            Click="MoveCornyx_Click"
+                            IsEnabled="{Binding AreButtonsEnabled}"
+                            Height="20"
+                            Margin="5,5,0,5" />
+
+                    <Button Grid.Row="2" Grid.Column="0"
+                            Content="Irina to Firelink"
+                            Click="MoveIrina_Click"
+                            IsEnabled="{Binding AreButtonsEnabled}"
+                            Height="20"
+                            Margin="0,5,5,5" />
+
+                    <Button Grid.Row="2" Grid.Column="1"
+                            Content="Orbeck to Firelink"
+                            Click="MoveOrbeck_Click"
+                            IsEnabled="{Binding AreButtonsEnabled}"
+                            Height="20"
+                            Margin="5,5,0,5" />
                 </Grid>
             </StackPanel>
         </Border>
@@ -160,33 +197,33 @@
                 BorderBrush="#333"
                 CornerRadius="3"
                 Margin="0,10,0,0">
-            
+
             <StackPanel Margin="10">
                 <CheckBox Content="Disable Events"
                           IsChecked="{Binding IsDisableEventEnabled}"
                           VerticalAlignment="Center"
                           Margin="0,0,20,0" />
-    
+
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <CheckBox Content="Faster Argo talk speed"
+                    <CheckBox Content="Argo talk duration"
                               IsChecked="{Binding IsArgoSpeedEnabled}"
                               VerticalAlignment="Center"
                               Margin="0,0,10,0" />
-                    <xctk:DecimalUpDown Value="{Binding ArgoSpeed}"
+                    <xctk:DecimalUpDown Value="{Binding ArgoDuration}"
                                         Minimum="0"
                                         Maximum="10.0"
                                         Increment="0.5"
                                         FormatString="F1"
                                         Width="80"
                                         VerticalAlignment="Center"
-                                        IsEnabled="{Binding IsArgoSpeedEnabled}"/>
+                                        IsEnabled="{Binding IsArgoSpeedEnabled}" />
                     <Border Background="#3498db"
                             CornerRadius="10"
                             Width="12"
                             Height="12"
                             Margin="10,0,0,0"
                             VerticalAlignment="Center"
-                            ToolTip="Must be checked before entering the fight&#x0A;Lower value = Faster talk"
+                            ToolTip="Must be checked before entering the fight"
                             ToolTipService.InitialShowDelay='100'>
                         <TextBlock Text="i"
                                    Foreground="White"
