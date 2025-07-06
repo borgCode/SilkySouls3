@@ -25,17 +25,6 @@ namespace SilkySouls3.ViewModels
             ArgoDuration = 2.0f;
         }
         
-                
-        // public bool IsDisableEventsEnabled
-        // {
-        //     get => _isDisableEventsEnabled;
-        //     set
-        //     {
-        //         if (!SetProperty(ref _isDisableEventsEnabled, value)) return;
-        //         _eventService.ToggleDisableEvents(_isDisableEventsEnabled);
-        //     }
-        // }
-        
         public string SetFlagId
         {
             get => _setFlagId;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
+using SilkySouls3.Memory;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
@@ -568,6 +569,11 @@ namespace SilkySouls3.ViewModels
         public void GiveSouls()
         {
             _playerService.GiveSouls();
+        }
+
+        public void Ember()
+        {
+            _playerService.SetSpEffect(GameIds.SpEffectId.Ember);
         }
     }
 }

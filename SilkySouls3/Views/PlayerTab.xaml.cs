@@ -315,5 +315,10 @@ namespace SilkySouls3.Views
         {
             _playerViewModel.GiveSouls();
         }
+
+        private void Ember_Click(object sender, RoutedEventArgs e)
+        {
+            _playerViewModel.Ember();
+        }
     }
 }

@@ -309,7 +309,7 @@
             0,
             AddressingMode.Absolute
         );
-        
+
         public static readonly Pattern AddSubGoal = new Pattern(
             new byte[]
             {
@@ -428,6 +428,18 @@
             "xxxx",
             0,
             AddressingMode.Absolute
+        );
+
+        public static readonly Pattern SetSpEffect = new Pattern(
+            new byte[] {
+                0xC6, 0x44, 0x24, 0x20, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x48, 0x81, 0xC4, 0x88, 0x00, 0x00, 0x00,
+                0xC3 
+            },
+            "xxxxxx????xxxxxxxx",
+            5,
+            AddressingMode.Relative,
+            1,
+            5
         );
     }
 }

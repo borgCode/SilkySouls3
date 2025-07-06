@@ -344,6 +344,7 @@ namespace SilkySouls3.Memory
             public static long BreakAllObjects;
             public static long RestoreAllObjects;
             public static long GetEvent;
+            public static long SetSpEffect;
         }
     }
 }

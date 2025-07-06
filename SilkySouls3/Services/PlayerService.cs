@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SilkySouls3.Memory;
+using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
@@ -258,5 +259,19 @@ namespace SilkySouls3.Services
 
         public void SetMp(int val) => _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Mp), val);
         public void SetSp(int val) => _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Stam), val);
+
+        public void SetSpEffect(long spEffectId)
+        {
+            var bytes = AsmLoader.GetAsmBytes("SetSpEffect");
+            var playerIns = _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.PlayerIns);
+            AsmHelper.WriteAbsoluteAddresses(bytes, new []
+            {
+                (playerIns, 0x0 + 2),
+                (spEffectId, 0xA + 2),
+                (playerIns, 0x14 + 2),
+                (Funcs.SetSpEffect, 0x1E + 2)
+            });
+            _memoryIo.AllocateAndExecute(bytes);
+        }
     }
 }

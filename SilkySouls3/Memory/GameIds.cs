@@ -26,6 +26,11 @@
             public static readonly ulong[] Karla = { 0x24A54, 0x270FF };
             public static readonly ulong[] Transpose = { 0x7530, 0x7918 };
         }
+
+        public static class SpEffectId
+        {
+            public static long Ember = 3290;
+        }
         
         
     }
