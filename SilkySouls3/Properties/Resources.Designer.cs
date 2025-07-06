@@ -83,6 +83,23 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 81 7f 08 c8 c6 3e 05    cmp    DWORD PTR [rdi+0x8],0x53ec6c8
+        ///75 0c                   jne    15 &lt;normal&gt;
+        ///50                      push   rax
+        ///8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # 10 &lt;_main+0x10&gt;
+        ///66 0f 6e c0             movd   xmm0,eax
+        ///58                      pop    rax
+        ///000000000015 &lt;normal&gt;:
+        ///48 8d 44 24 20          lea    rax,[rsp+0x20]
+        ///e9 00 00 00 00          jmp    1f &lt;normal+0xa&gt;.
+        /// </summary>
+        internal static string ArgoSpeed {
+            get {
+                return ResourceManager.GetString("ArgoSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0,14C4B7E8,Alva Armor,1,0,0
         ///0,14C4BBD0,Alva Gauntlets,1,0,0
         ///0,14C4B400,Alva Helm,1,0,0

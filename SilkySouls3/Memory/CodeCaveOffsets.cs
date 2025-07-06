@@ -43,5 +43,11 @@ namespace SilkySouls3.Memory
         public const int CamVertUp = 0x3B0;
         public const int ItemLotBase = 0x3D0;
         public const int GetEventResult = 0x400;
+
+        public enum ArgoSpeed
+        {
+            Speed = 0x410,
+            Code = 0x420
+        }
     }
 }

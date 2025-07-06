@@ -59,7 +59,7 @@ namespace SilkySouls3
 
             var playerService = new PlayerService(_memoryIo);
             var utilityService = new UtilityService(_memoryIo, _hookManager);
-            var eventService = new EventService(_memoryIo);
+            var eventService = new EventService(_memoryIo, _hookManager);
             var enemyService = new EnemyService(_memoryIo, _hookManager);
             var travelService = new TravelService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);

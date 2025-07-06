@@ -1,9 +1,5 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows;
 using SilkySouls3.Memory;
-using SilkySouls3.Utilities;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views

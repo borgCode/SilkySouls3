@@ -8,10 +8,12 @@ namespace SilkySouls3.Services
     public class EventService
     {
         private readonly MemoryIo _memoryIo;
+        private readonly HookManager _hookManager;
         
-        public EventService(MemoryIo memoryIo)
+        public EventService(MemoryIo memoryIo, HookManager hookManager)
         {
             _memoryIo = memoryIo;
+            _hookManager = hookManager;
         }
 
         public void SetEvent(ulong flagId, int setVal)
@@ -56,6 +58,37 @@ namespace SilkySouls3.Services
         {
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.DisableEvent,
                 isDisableEventEnabled ? 1 : 0);
+        }
+
+        public void ToggleArgoHook(bool isArgoSpeedEnabled)
+        {
+            var code = CodeCaveOffsets.Base + (int)CodeCaveOffsets.ArgoSpeed.Code;
+            if (isArgoSpeedEnabled)
+            {
+                var speedLoc = CodeCaveOffsets.Base + (int)CodeCaveOffsets.ArgoSpeed.Speed;
+                _memoryIo.WriteFloat(speedLoc, 2.0f);
+                var hookLoc = Hooks.ArgoSpeed;
+                var bytes = AsmLoader.GetAsmBytes("ArgoSpeed");
+                AsmHelper.WriteRelativeOffsets(bytes, new []
+                {
+                    (code.ToInt64() + 0xA, speedLoc.ToInt64(), 6, 0xA + 2),
+                    (code.ToInt64() + 0x1A, hookLoc + 0x5, 5, 0x1A + 1)
+                });
+                
+                _memoryIo.WriteBytes(code, bytes);
+                _hookManager.InstallHook(code.ToInt64(), hookLoc, new byte[]
+                    { 0x48, 0x8D, 0x44, 0x24, 0x20 });
+            }
+            else
+            {
+                _hookManager.UninstallHook(code.ToInt64());
+            }
+        }
+
+        public void SetArgoSpeed(float value)
+        {
+            var speedLoc = CodeCaveOffsets.Base + (int)CodeCaveOffsets.ArgoSpeed.Speed;
+            _memoryIo.WriteFloat(speedLoc, value);
         }
     }
 }

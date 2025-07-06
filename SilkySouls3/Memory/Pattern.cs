@@ -1,5 +1,4 @@
-﻿
-namespace SilkySouls3.Memory
+﻿namespace SilkySouls3.Memory
 {
     public class Pattern
     {
@@ -21,7 +20,7 @@ namespace SilkySouls3.Memory
             InstructionLength = instructionLength;
         }
     }
-    
+
     public enum AddressingMode
     {
         Absolute,
@@ -74,7 +73,7 @@ namespace SilkySouls3.Memory
             AddressingMode.Relative,
             2,
             6
-            );
+        );
 
         public static readonly Pattern MenuMan = new Pattern(
             new byte[] { 0x48, 0x39, 0x81, 0x50 },
@@ -304,6 +303,13 @@ namespace SilkySouls3.Memory
         );
 
 
+        public static readonly Pattern ArgoSpeed = new Pattern(
+            new byte[] { 0x48, 0x8D, 0x44, 0x24, 0x20, 0xF3, 0x0F, 0x10, 0x0B, 0x0F, 0x2F, 0xC8, 0xF3 },
+            "xxxxxxxxxxxxx",
+            0,
+            AddressingMode.Absolute
+        );
+        
         public static readonly Pattern AddSubGoal = new Pattern(
             new byte[]
             {
@@ -371,7 +377,7 @@ namespace SilkySouls3.Memory
             1,
             5
         );
-        
+
 
         public static readonly Pattern BreakAllObjects = new Pattern(
             new byte[] { 0x48, 0x83, 0xEC, 0x28, 0x8B, 0x81, 0xE8, 0x00, 0x02, 0x00, 0x85, 0xC0, 0x74, 0x6D },
@@ -389,7 +395,7 @@ namespace SilkySouls3.Memory
 
 
         public static readonly Pattern ItemSpawnFunc = new Pattern(
-            new byte[] { 0x48, 0x8D, 0x55, 0xA4, 0x48, 0x8B, 0x4C, 0x24, 0x50, 0xE8, 0x00, 0x00, 0x00, 0x00,},
+            new byte[] { 0x48, 0x8D, 0x55, 0xA4, 0x48, 0x8B, 0x4C, 0x24, 0x50, 0xE8, 0x00, 0x00, 0x00, 0x00, },
             "xxxxxxxxxx????",
             0x9,
             AddressingMode.Relative,

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:SilkySouls3.Converters"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="500">
 
@@ -159,11 +160,42 @@
                 BorderBrush="#333"
                 CornerRadius="3"
                 Margin="0,10,0,0">
+            
             <StackPanel Margin="10">
                 <CheckBox Content="Disable Events"
-                          IsChecked="{Binding IsDisableEventsEnabled}"
-                          IsEnabled="{Binding AreButtonsEnabled}"
-                          Margin="0,2" />
+                          IsChecked="{Binding IsDisableEventEnabled}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,20,0" />
+    
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <CheckBox Content="Faster Argo talk speed"
+                              IsChecked="{Binding IsArgoSpeedEnabled}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,10,0" />
+                    <xctk:DecimalUpDown Value="{Binding ArgoSpeed}"
+                                        Minimum="0"
+                                        Maximum="10.0"
+                                        Increment="0.5"
+                                        FormatString="F1"
+                                        Width="80"
+                                        VerticalAlignment="Center"
+                                        IsEnabled="{Binding IsArgoSpeedEnabled}"/>
+                    <Border Background="#3498db"
+                            CornerRadius="10"
+                            Width="12"
+                            Height="12"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            ToolTip="Must be checked before entering the fight&#x0A;Lower value = Faster talk"
+                            ToolTipService.InitialShowDelay='100'>
+                        <TextBlock Text="i"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   FontSize="10" />
+                    </Border>
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

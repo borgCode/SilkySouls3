@@ -8,6 +8,8 @@ namespace SilkySouls3.ViewModels
     {
         private readonly EventService _eventService;
         private bool _isDisableEventEnabled;
+        private bool _isArgoSpeedEnabled;
+        private float _argoSpeed;
         private string _setFlagId;
         private int _flagStateIndex;
         private string _getFlagId;
@@ -20,6 +22,7 @@ namespace SilkySouls3.ViewModels
         public EventViewModel(EventService eventService)
         {
             _eventService = eventService;
+            ArgoSpeed = 2.0f;
         }
         
                 
@@ -113,6 +116,31 @@ namespace SilkySouls3.ViewModels
             }
         }
         
+        public bool IsArgoSpeedEnabled
+        {
+            get => _isArgoSpeedEnabled;
+            set
+            {
+                if (!SetProperty(ref _isArgoSpeedEnabled, value)) return;
+                _eventService.ToggleArgoHook(_isArgoSpeedEnabled);
+                if (IsArgoSpeedEnabled) _eventService.SetArgoSpeed(ArgoSpeed);
+                
+            }
+        }
+        
+        public float ArgoSpeed
+        {
+            get => _argoSpeed;
+            set
+            {
+                if (SetProperty(ref _argoSpeed, value))
+                {
+                    if (!IsArgoSpeedEnabled) return;
+                    _eventService.SetArgoSpeed(value);
+                }
+            }
+        }
+        
         public void DisableFeatures()
         {
             AreButtonsEnabled = false;
@@ -123,6 +151,7 @@ namespace SilkySouls3.ViewModels
         {
             AreButtonsEnabled = true;
             if (IsDisableEventEnabled) _eventService.ToggleDisableEvent(true);
+            if (IsArgoSpeedEnabled) _eventService.ToggleArgoHook(true);
         }
         
         public void UnlockMidir()

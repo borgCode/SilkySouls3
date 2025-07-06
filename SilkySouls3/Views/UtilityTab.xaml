@@ -120,10 +120,6 @@
                 <TabItem Header="General">
                     <StackPanel Margin="10">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,3" VerticalAlignment="Center">
-                            <CheckBox Content="Disable Events"
-                                      IsChecked="{Binding IsDisableEventEnabled}"
-                                      VerticalAlignment="Center"
-                                      Margin="0,0,20,0" />
                             <CheckBox Content="100% Drop"
                                       IsChecked="{Binding Is100DropEnabled}"
                                       VerticalAlignment="Center"
