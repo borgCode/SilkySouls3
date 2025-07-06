@@ -7,10 +7,10 @@
              xmlns:converters="clr-namespace:SilkySouls3.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="500">
-    
+
     <UserControl.Resources>
         <converters:BooleanAndConverter x:Key="BooleanAndConverter" />
-        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -304,8 +304,9 @@
                                     Width="100">
                                 <Button.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                        <Binding Path="AreButtonsEnabled"/>
-                                        <Binding Path="IsFreeCamEnabled" Converter="{StaticResource InverseBooleanConverter}"/>
+                                        <Binding Path="AreButtonsEnabled" />
+                                        <Binding Path="IsFreeCamEnabled"
+                                                 Converter="{StaticResource InverseBooleanConverter}" />
                                     </MultiBinding>
                                 </Button.IsEnabled>
                             </Button>
@@ -326,118 +327,62 @@
                     BorderBrush="#333"
                     CornerRadius="3"
                     Margin="0,0,5,0">
-                <TabControl Margin="5">
-                    <TabItem Header="Menu">
-                        <WrapPanel Margin="5" HorizontalAlignment="Center">
-                            <Button Content="Travel"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Travel_Click"
-                                    Width="80"
-                                    Height="24"
-                                    Margin="3" />
+                <StackPanel Margin="10">
+                    <TextBlock Text="Menu"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10" />
 
-                            <Button Content="Level Up"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="LevelUp_Click"
-                                    Width="80"
-                                    Height="24"
-                                    Margin="3" />
+                    <WrapPanel HorizontalAlignment="Center">
+                        <Button Content="Travel"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="Travel_Click"
+                                Width="80"
+                                Height="24"
+                                Margin="3" />
 
-                            <Button Content="Upgrade"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="ReinforceWeapon_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
+                        <Button Content="Level Up"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="LevelUp_Click"
+                                Width="80"
+                                Height="24"
+                                Margin="3" />
 
-                            <Button Content="Repair"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Repair_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
+                        <Button Content="Upgrade"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="ReinforceWeapon_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
 
-                            <Button Content="Infuse"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="InfuseWeapon_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
+                        <Button Content="Repair"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="Repair_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
 
-                            <Button Content="Allot Estus"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Height="24"
-                                    Click="AllotEstus_Click"
-                                    Width="80"
-                                    Margin="3" />
+                        <Button Content="Infuse"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="InfuseWeapon_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
 
-                            <Button Content="Attunement"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Height="24"
-                                    Click="Attunement_Click"
-                                    Width="80"
-                                    Margin="3" />
-                        </WrapPanel>
-                    </TabItem>
+                        <Button Content="Allot Estus"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Height="24"
+                                Click="AllotEstus_Click"
+                                Width="80"
+                                Margin="3" />
 
-                    <TabItem Header="Shops">
-                        <WrapPanel Margin="5" HorizontalAlignment="Center">
-                            <Button Content="Handmaid"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="ShrineHandmaid_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-
-                            <Button Content="Greirat"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Greirat_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-
-                            <Button Content="Patches"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Patches_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-
-                            <Button Content="Orbeck"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Orbeck_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-
-                            <Button Content="Cornyx"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Cornyx_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-
-                            <Button Content="Karla"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Karla_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-
-                            <Button Content="Transpose"
-                                    IsEnabled="{Binding AreButtonsEnabled}"
-                                    Click="Transpose_Click"
-                                    Height="24"
-                                    Width="80"
-                                    Margin="3" />
-                            <CheckBox Content="Access full shop lineup"
-                                    IsChecked="{Binding IsFullLineUpEnabled}"
-                                    Height="24"
-                                    Width="160"
-                                    Margin="3" />
-                        </WrapPanel>
-                    </TabItem>
-                </TabControl>
+                        <Button Content="Attunement"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Height="24"
+                                Click="Attunement_Click"
+                                Width="80"
+                                Margin="3" />
+                    </WrapPanel>
+                </StackPanel>
             </Border>
 
             <Border Grid.Column="1"
@@ -446,23 +391,66 @@
                     CornerRadius="3"
                     Margin="5,0,0,0">
                 <StackPanel Margin="10">
-                    <TextBlock Text="Event Manager"
+                    <TextBlock Text="Shops"
                                FontWeight="Bold"
                                Margin="0,0,0,10" />
 
-                    <StackPanel>
+                    <WrapPanel HorizontalAlignment="Center">
+                        <Button Content="Handmaid"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="ShrineHandmaid_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
 
-                        <Button x:Name="UnlockMidirButton"  Content="Unlock Midir"
-                                Click="UnlockMidir_Click"
+                        <Button Content="Greirat"
                                 IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="20"
-                                Margin="0,5" />
-                        <Button Content="Patches to Firelink"
-                                Click="MovePatches_Click"
+                                Click="Greirat_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
+
+                        <Button Content="Patches"
                                 IsEnabled="{Binding AreButtonsEnabled}"
-                                Height="20"
-                                Margin="0,5" />
-                    </StackPanel>
+                                Click="Patches_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
+
+                        <Button Content="Orbeck"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="Orbeck_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
+
+                        <Button Content="Cornyx"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="Cornyx_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
+
+                        <Button Content="Karla"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="Karla_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
+
+                        <Button Content="Transpose"
+                                IsEnabled="{Binding AreButtonsEnabled}"
+                                Click="Transpose_Click"
+                                Height="24"
+                                Width="80"
+                                Margin="3" />
+
+                        <CheckBox Content="Access full shop lineup"
+                                  IsChecked="{Binding IsFullLineUpEnabled}"
+                                  Height="24"
+                                  Width="160"
+                                  Margin="3" />
+                    </WrapPanel>
                 </StackPanel>
             </Border>
         </Grid>

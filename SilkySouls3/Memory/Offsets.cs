@@ -342,6 +342,7 @@ namespace SilkySouls3.Memory
             public static long CombineMenuFlagAndEventFlag;
             public static long BreakAllObjects;
             public static long RestoreAllObjects;
+            public static long GetEvent;
         }
     }
 }

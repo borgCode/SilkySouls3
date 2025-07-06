@@ -19,25 +19,7 @@ namespace SilkySouls3.Services
             _memoryIo = memoryIo;
             _hookManager = hookManager;
         }
-
-        public void Warp(WarpLocation warpLocation)
-        {
-            
-        }
-
-        public void UnlockBonfires(IEnumerable<WarpLocation> warps)
-        {
-            var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
-            _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
-
-            foreach (var warp in warps)
-            {
-                var addr = bonfireFlagBasePtr + warp.Offset.Value;
-                byte flagMask = (byte)(1 << warp.BitPosition.Value);
-                _memoryIo.SetBitValue(addr, flagMask, true);
-            }
-        }
-
+        
         public void ToggleNoClip(bool isNoClipEnabled)
         {
             var inAirTimerCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.InAirTimerCode;
@@ -188,28 +170,7 @@ namespace SilkySouls3.Services
             _memoryIo.WriteByte(Patches.PlayerSoundView + 0x3,
                 isSoundViewEnabled ? 1 : 0);
         }
-
-        public void SetEvent(ulong flagId)
-        {
-            var eventMan = _memoryIo.ReadInt64(EventFlagMan.Base);
-            var setEventBytes = AsmLoader.GetAsmBytes("SetEvent");
-            var bytes = BitConverter.GetBytes(eventMan);
-            Array.Copy(bytes, 0, setEventBytes, 0x2, 8);
-            bytes = BitConverter.GetBytes(flagId);
-            Array.Copy(bytes, 0, setEventBytes, 0xA + 2, 8);
-            bytes = BitConverter.GetBytes(Funcs.SetEvent);
-            Array.Copy(bytes, 0, setEventBytes, 0x24 + 2, 8);
-            _memoryIo.AllocateAndExecute(setEventBytes);
-        }
-
-        public void SetMultipleEvents(params ulong[] flagIds)
-        {
-            foreach (var flagId in flagIds)
-            {
-                SetEvent(flagId);
-            }
-        }
-
+        
         public void ToggleGroupMask(int offset, bool isEnabled) =>
             _memoryIo.WriteByte(GroupMask.Base + offset, isEnabled ? 0 : 1);
 
@@ -268,12 +229,7 @@ namespace SilkySouls3.Services
             Array.Copy(bytes, 0, openMenuBytes, 0x2C + 2, 8);
             _memoryIo.AllocateAndExecute(openMenuBytes);
         }
-
-        public void ToggleDisableEvent(bool isDisableEventEnabled)
-        {
-            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.DisableEvent,
-                isDisableEventEnabled ? 1 : 0);
-        }
+        
 
         public void SetFreeCamState(bool isEnabled, int mode)
         {

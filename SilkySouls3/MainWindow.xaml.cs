@@ -28,6 +28,7 @@ namespace SilkySouls3
         
         private readonly PlayerViewModel _playerViewModel;
         private readonly TravelViewModel _travelViewModel;
+        private readonly EventViewModel _eventViewModel;
         private readonly UtilityViewModel _utilityViewModel;
         private readonly EnemyViewModel _enemyViewModel;
         private readonly ItemViewModel _itemViewModel;
@@ -58,6 +59,7 @@ namespace SilkySouls3
 
             var playerService = new PlayerService(_memoryIo);
             var utilityService = new UtilityService(_memoryIo, _hookManager);
+            var eventService = new EventService(_memoryIo);
             var enemyService = new EnemyService(_memoryIo, _hookManager);
             var travelService = new TravelService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);
@@ -68,6 +70,8 @@ namespace SilkySouls3
             _playerViewModel = new PlayerViewModel(playerService, hotkeyManager);
             _utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager, _playerViewModel, _debugDrawService);
             _travelViewModel = new TravelViewModel(travelService, hotkeyManager);
+            _eventViewModel = new EventViewModel(eventService);
+            var eventTab = new EventTab(_eventViewModel);
             _enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager, _debugDrawService);
             _itemViewModel = new ItemViewModel(itemService);
             _settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager);
@@ -81,6 +85,7 @@ namespace SilkySouls3
 
             MainTabControl.Items.Add(new TabItem { Header = "Player", Content = playerTab });
             MainTabControl.Items.Add(new TabItem { Header = "Travel", Content = travelTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Event", Content = eventTab });
             MainTabControl.Items.Add(new TabItem { Header = "Utility", Content = utilityTab });
             MainTabControl.Items.Add(new TabItem { Header = "Enemies", Content = enemyTab });
             MainTabControl.Items.Add(new TabItem { Header = "Items", Content = itemTab });
@@ -176,6 +181,7 @@ namespace SilkySouls3
         private void TryEnableFeatures()
         {
             _playerViewModel.TryEnableFeatures();
+            _eventViewModel.TryEnableFeatures();
             _utilityViewModel.TryEnableFeatures();
             _enemyViewModel.TryEnableFeatures();
             _itemViewModel.TryEnableFeatures();
@@ -203,6 +209,7 @@ namespace SilkySouls3
         private void DisableFeatures()
         {
             _travelViewModel.DisableFeatures();
+            _eventViewModel.DisableFeatures();
             _playerViewModel.DisableFeatures();
             _utilityViewModel.DisableFeatures();
             _enemyViewModel.DisableFeatures();

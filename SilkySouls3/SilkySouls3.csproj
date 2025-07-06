@@ -120,6 +120,7 @@
     <Compile Include="Services\CinderService.cs" />
     <Compile Include="Services\DebugDrawService.cs" />
     <Compile Include="Services\EnemyService.cs" />
+    <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\ItemService.cs" />
     <Compile Include="Services\PlayerService.cs" />
     <Compile Include="Services\SettingsService.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Utilities\VersionChecker.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\EnemyViewModel.cs" />
+    <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -145,6 +147,9 @@
     </Compile>
     <Compile Include="Views\EnemyTab.xaml.cs">
       <DependentUpon>EnemyTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EventTab.xaml.cs">
+      <DependentUpon>EventTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemTab.xaml.cs">
       <DependentUpon>ItemTab.xaml</DependentUpon>
@@ -178,6 +183,7 @@
     </Compile>
     <Page Include="Views\CreateLoadoutWindow.xaml" />
     <Page Include="Views\EnemyTab.xaml" />
+    <Page Include="Views\EventTab.xaml" />
     <Page Include="Views\ItemTab.xaml" />
     <Page Include="Views\PlayerTab.xaml" />
     <Page Include="Views\ResistancesWindow.xaml" />
@@ -191,7 +197,6 @@
     <Compile Include="Memory\MemoryIO.cs" />
     <Compile Include="Memory\Offsets.cs" />
     <Compile Include="Memory\Pattern.cs" />
-    <Compile Include="Memory\RipType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

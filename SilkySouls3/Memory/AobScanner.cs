@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using static SilkySouls3.Memory.RipType;
 
 namespace SilkySouls3.Memory
 {
@@ -110,6 +108,7 @@ namespace SilkySouls3.Memory
             Offsets.Funcs.RestoreAllObjects = FindAddressByPattern(Patterns.RestoreAllObjects).ToInt64();
             Offsets.Funcs.SetEvent = FindAddressByPattern(Patterns.SetEvent).ToInt64();
             Offsets.Funcs.Travel = FindAddressByPattern(Patterns.TravelFunc).ToInt64();
+            Offsets.Funcs.GetEvent = FindAddressByPattern(Patterns.GetEvent).ToInt64();
             Offsets.Funcs.LevelUp = Offsets.Funcs.Travel - 0x720;
             Offsets.Funcs.ReinforceWeapon = Offsets.Funcs.Travel - 0x1620;
             Offsets.Funcs.InfuseWeapon = Offsets.Funcs.Travel - 0x1CB0;
@@ -176,6 +175,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Funcs.CombineMenuFlagAndEventFlag: 0x{Offsets.Funcs.CombineMenuFlagAndEventFlag:X}");
             Console.WriteLine($"Funcs.BreakAllObjects: 0x{Offsets.Funcs.BreakAllObjects:X}");
             Console.WriteLine($"Funcs.RestoreAllObjects: 0x{Offsets.Funcs.RestoreAllObjects:X}");
+            Console.WriteLine($"Funcs.GetEvent: 0x{Offsets.Funcs.GetEvent:X}");
 #endif
         }
 
@@ -207,35 +207,23 @@ namespace SilkySouls3.Memory
             {
                 IntPtr instructionAddress = IntPtr.Add(addresses[i], pattern.InstructionOffset);
 
-                switch (pattern.RipType)
+                switch (pattern.AddressingMode)
                 {
-                    case None:
+                    case AddressingMode.Absolute:
                         addresses[i] = instructionAddress;
                         break;
-                    case Mov64:
-                        int stdOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
-                        addresses[i] = IntPtr.Add(instructionAddress, stdOffset + 7);
+                    case AddressingMode.Direct32:
+                    {
+                        uint absoluteAddr = _memoryIo.ReadUInt32(IntPtr.Add(instructionAddress, pattern.OffsetLocation));
+                        addresses[i] = (IntPtr)absoluteAddr;
                         break;
-                    case Mov32:
-                        int mov32Offset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
-                        addresses[i] = IntPtr.Add(instructionAddress, mov32Offset + 6);
+                    }
+                    default:
+                    {
+                        int offset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, pattern.OffsetLocation));
+                        addresses[i] = IntPtr.Add(instructionAddress, offset + pattern.InstructionLength);
                         break;
-                    case Cmp:
-                        int cmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 2));
-                        addresses[i] = IntPtr.Add(instructionAddress, cmpOffset + 7);
-                        break;
-                    case QwordCmp:
-                        int qwordCmpOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 3));
-                        addresses[i] = IntPtr.Add(instructionAddress, qwordCmpOffset + 8);
-                        break;
-                    case Call:
-                        int callOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 1));
-                        addresses[i] = IntPtr.Add(instructionAddress, callOffset + 5);
-                        break;
-                    case MovzxByte:
-                        int movzxOffset = _memoryIo.ReadInt32(IntPtr.Add(instructionAddress, 4));
-                        addresses[i] = IntPtr.Add(instructionAddress, movzxOffset + 8);
-                        break;
+                    }
                 }
             }
 

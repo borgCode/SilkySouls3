@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Models;
@@ -88,6 +89,19 @@ namespace SilkySouls3.Services
 
                 _hookManager.UninstallHook(coordsCustomCode.ToInt64());
                 _hookManager.UninstallHook(angleCustomCode.ToInt64());
+            }
+        }
+        
+        public void UnlockBonfires(IEnumerable<WarpLocation> warps)
+        {
+            var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
+            _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
+
+            foreach (var warp in warps)
+            {
+                var addr = bonfireFlagBasePtr + warp.Offset.Value;
+                byte flagMask = (byte)(1 << warp.BitPosition.Value);
+                _memoryIo.SetBitValue(addr, flagMask, true);
             }
         }
     }

@@ -190,7 +190,7 @@ namespace SilkySouls3.ViewModels
 
         public void UnlockBonfires()
         {
-            // _utilityService.UnlockBonfires(_warpLocations.Values.Where(w => w.IsStandardWarp));
+            _travelService.UnlockBonfires(_allLocations.Where(w => w.IsStandardWarp));
         }
     }
 }

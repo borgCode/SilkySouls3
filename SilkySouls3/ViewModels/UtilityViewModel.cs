@@ -228,17 +228,7 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleHitIns(HitIns.ChrRagdoll, _isDrawChrRagdollEnabled);
             }
         }
-
-        public bool IsDisableEventEnabled
-        {
-            get => _isDisableEventEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDisableEventEnabled, value)) return;
-                _utilityService.ToggleDisableEvent(_isDisableEventEnabled);
-            }
-        }
-
+        
         public bool IsDeathCamEnabled
         {
             get => _isDeathCamEnabled;
@@ -449,17 +439,7 @@ namespace SilkySouls3.ViewModels
         {
             _utilityService.OpenRegularShop(shopParams);
         }
-
-        public void UnlockMidir()
-        {
-            _utilityService.SetEvent(GameIds.EventFlags.UnlockMidir);
-        }
-
-        public void MovePatchesToFirelink()
-        {
-            _utilityService.SetMultipleEvents(GameIds.EventFlags.Patches);
-        }
-
+        
         public void TryEnableFeatures()
         {
             if (IsHitboxEnabled) _utilityService.ToggleHitboxView(true);
@@ -475,7 +455,6 @@ namespace SilkySouls3.ViewModels
             if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj, true);
             if (IsHideCharactersEnabled) _utilityService.ToggleGroupMask(GroupMask.Chr, true);
             if (IsHideSfxEnabled) _utilityService.ToggleGroupMask(GroupMask.Sfx, true);
-            if (IsDisableEventEnabled) _utilityService.ToggleDisableEvent(true);
             if (IsDrawLowHitEnabled)
             {
                 IsHideMapEnabled = true;
