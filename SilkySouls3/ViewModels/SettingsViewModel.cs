@@ -47,6 +47,7 @@ namespace SilkySouls3.ViewModels
         private string _showAllResistancesHotkeyText;
         private string _targetRepeatActHotkeyText;
         private string _targetViewHotkeyText;
+        private string _targetCustomHpHotkeyText;
         
         private string _disableAiHotkeyText;
         private string _allNoDeathHotkeyText;
@@ -256,6 +257,12 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _targetViewHotkeyText, value);
         }
         
+        public string TargetCustomHpHotkeyText
+        {
+            get => _targetCustomHpHotkeyText;
+            set => SetProperty(ref _targetCustomHpHotkeyText, value);
+        }
+        
         public string TargetRepeatActHotkeyText
         {
             get => _targetRepeatActHotkeyText;
@@ -401,6 +408,7 @@ namespace SilkySouls3.ViewModels
                 { "DisableTargetAi", text => DisableTargetAiHotkeyText = text },
                 { "KillTarget", text => KillTargetHotkeyText = text },
                 { "TargetView", text => TargetViewHotkeyText = text },
+                { "TargetCustomHp", text => TargetCustomHpHotkeyText = text },
                 { "FreezeHp", text => FreezeHpHotkeyText = text },
                 { "TargetRepeatAct", text => TargetRepeatActHotkeyText = text },
                 { "IncreaseTargetSpeed", text => IncreaseTargetSpeedHotkeyText = text },

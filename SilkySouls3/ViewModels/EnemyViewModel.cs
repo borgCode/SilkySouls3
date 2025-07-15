@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using SilkySouls3.Memory;
 using SilkySouls3.Services;
@@ -14,6 +15,8 @@ namespace SilkySouls3.ViewModels
         private bool _isValidTarget;
         private readonly DispatcherTimer _targetOptionsTimer;
 
+        private int _customHp;
+        private bool _customHpHasBeenSet = false;
         private int _targetCurrentHealth;
         private int _targetMaxHealth;
         private ulong _currentTargetId;
@@ -23,7 +26,7 @@ namespace SilkySouls3.ViewModels
         private bool _isTargetingViewEnabled;
         private bool _isRepeatActEnabled;
         private bool _isCinderNoStaggerEnabled;
-        
+
         private int _lastAct;
         private int _forceAct;
 
@@ -93,53 +96,66 @@ namespace SilkySouls3.ViewModels
                 () => { IsTargetOptionsEnabled = !IsTargetOptionsEnabled; });
             _hotkeyManager.RegisterAction("ShowAllResistances", () =>
             {
+                if (!IsTargetOptionsEnabled) IsTargetOptionsEnabled = true;
                 _showAllResistances = !_showAllResistances;
                 UpdateResistancesDisplay();
             });
-            _hotkeyManager.RegisterAction("KillTarget", () => {
-                if (!IsValidTarget) return;
-                SetTargetHealth(0);
-            });
-            _hotkeyManager.RegisterAction("TargetView", () => {
-                if (!IsValidTarget) return;
-                IsTargetingViewEnabled = !IsTargetingViewEnabled;
-            });
-            _hotkeyManager.RegisterAction("FreezeHp", () => { IsFreezeHealthEnabled = !IsFreezeHealthEnabled; });
-            _hotkeyManager.RegisterAction("DisableTargetAi",
-                () =>
-                {
-                    if (!IsValidTarget) return;
-                    IsDisableTargetAiEnabled = !IsDisableTargetAiEnabled;
-                });
+            _hotkeyManager.RegisterAction("KillTarget", () =>
+                ExecuteTargetAction(() => SetTargetHealth(0)));
+            _hotkeyManager.RegisterAction("TargetCustomHp", () =>
+                ExecuteTargetAction(SetCustomHp));
+
+            _hotkeyManager.RegisterAction("TargetView", () =>
+                ExecuteTargetAction(() => IsTargetingViewEnabled = !IsTargetingViewEnabled));
+
+            _hotkeyManager.RegisterAction("FreezeHp", () => 
+                ExecuteTargetAction(() => IsFreezeHealthEnabled = !IsFreezeHealthEnabled));
+            _hotkeyManager.RegisterAction("DisableTargetAi", () =>
+                ExecuteTargetAction(() => IsDisableTargetAiEnabled = !IsDisableTargetAiEnabled));
+
             _hotkeyManager.RegisterAction("IncreaseTargetSpeed", () =>
-            {
-                if (!IsValidTarget) return;
-                SetSpeed(Math.Min(5, TargetSpeed + 0.25f));
-            });
+                ExecuteTargetAction(() => SetSpeed(Math.Min(5, TargetSpeed + 0.25f))));
+
             _hotkeyManager.RegisterAction("DecreaseTargetSpeed", () =>
-            {
-                if (!IsValidTarget) return;
-                SetSpeed(Math.Max(0, TargetSpeed - 0.25f));
-            });
+                ExecuteTargetAction(() => SetSpeed(Math.Max(0, TargetSpeed - 0.25f))));
+
             _hotkeyManager.RegisterAction("TargetRepeatAct", () =>
-            {
-                if (!IsValidTarget) return;
-                IsRepeatActEnabled = !IsRepeatActEnabled;
-            });
+                ExecuteTargetAction(() => IsRepeatActEnabled = !IsRepeatActEnabled));
             _hotkeyManager.RegisterAction("DisableAi", () => { IsAllDisableAiEnabled = !IsAllDisableAiEnabled; });
             _hotkeyManager.RegisterAction("AllNoDeath", () => { IsAllNoDeathEnabled = !IsAllNoDeathEnabled; });
             _hotkeyManager.RegisterAction("AllNoDamage", () => { IsAllNoDamageEnabled = !IsAllNoDamageEnabled; });
             _hotkeyManager.RegisterAction("AllRepeatAct", () => { IsAllRepeatActEnabled = !IsAllRepeatActEnabled; });
-            _hotkeyManager.RegisterAction("SetSwordPhase", () => SetCinderPhase(0));
-            _hotkeyManager.RegisterAction("SetLancePhase", () => SetCinderPhase(1));
-            _hotkeyManager.RegisterAction("SetCurvedPhase", () => SetCinderPhase(2));
-            _hotkeyManager.RegisterAction("SetStaffPhase", () => SetCinderPhase(3));
-            _hotkeyManager.RegisterAction("SetGwynPhase", () => SetCinderPhase(4));
-            _hotkeyManager.RegisterAction("PhaseLock", () => IsCinderPhasedLocked = !IsCinderPhasedLocked);
-            _hotkeyManager.RegisterAction("CastSoulmass", CastSoulmass);
+            _hotkeyManager.RegisterAction("SetSwordPhase", () => ExecuteTargetAction(() => SetCinderPhase(0)));
+            _hotkeyManager.RegisterAction("SetLancePhase", () => ExecuteTargetAction(() => SetCinderPhase(1)));
+            _hotkeyManager.RegisterAction("SetCurvedPhase", () => ExecuteTargetAction(() => SetCinderPhase(2)));
+            _hotkeyManager.RegisterAction("SetStaffPhase", () => ExecuteTargetAction(() => SetCinderPhase(3)));
+            _hotkeyManager.RegisterAction("SetGwynPhase", () => ExecuteTargetAction(() => SetCinderPhase(4)));
+            _hotkeyManager.RegisterAction("PhaseLock",
+                () => ExecuteTargetAction(() => IsCinderPhasedLocked = !IsCinderPhasedLocked));
+            _hotkeyManager.RegisterAction("CastSoulmass", () => ExecuteTargetAction(CastSoulmass));
             _hotkeyManager.RegisterAction("EndlessSoulmass",
-                () => IsEndlessSoulmassEnabled = !IsEndlessSoulmassEnabled);
+                () => ExecuteTargetAction(() => IsEndlessSoulmassEnabled = !IsEndlessSoulmassEnabled));
         }
+
+        private void ExecuteTargetAction(Action action)
+        {
+            if (!IsTargetOptionsEnabled)
+            {
+                IsTargetOptionsEnabled = true;
+                Task.Run(async () =>
+                {
+                    await Task.Delay(100);
+                    if (EnsureValidTarget()) action();
+                });
+                return;
+            }
+
+            if (!IsValidTarget) return;
+            action();
+        }
+
+        private bool EnsureValidTarget() => IsValidTarget || IsTargetValid();
+
 
         private void TargetOptionsTimerTick(object sender, EventArgs e)
         {
@@ -170,8 +186,8 @@ namespace SilkySouls3.ViewModels
                     ForceAct = 0;
                     IsRepeatActEnabled = false;
                 }
-                
-                
+
+
                 IsFreezeHealthEnabled = _enemyService.IsTargetNoDamageEnabled();
                 _currentTargetId = targetId;
                 TargetMaxPoise = _enemyService.GetTargetPoise(Offsets.WorldChrMan.ChrSuperArmorModule.MaxPoise);
@@ -369,7 +385,7 @@ namespace SilkySouls3.ViewModels
             get => _lastAct;
             set => SetProperty(ref _lastAct, value);
         }
-        
+
         public int ForceAct
         {
             get => _forceAct;
@@ -379,6 +395,27 @@ namespace SilkySouls3.ViewModels
                 _enemyService.ForceAct(_forceAct);
                 if (_forceAct == 0) IsRepeatActEnabled = false;
             }
+        }
+        
+        public int CustomHp
+        {
+            get => _customHp;
+            set 
+            {
+                if (SetProperty(ref _customHp, value))
+                {
+                    _customHpHasBeenSet = true;
+                }
+            }
+        }
+
+
+        public void SetCustomHp()
+        {
+            if (!_customHpHasBeenSet) return;
+    
+            if (CustomHp > TargetMaxHealth) CustomHp = TargetMaxHealth;
+            _enemyService.SetTargetHp(CustomHp);
         }
 
 
@@ -411,8 +448,11 @@ namespace SilkySouls3.ViewModels
         }
 
         public bool ShowBleedAndNotImmune => ShowBleed && !IsBleedImmune;
+
         public bool ShowPoisonAndNotImmune => ShowPoison && !IsPoisonImmune;
+
         public bool ShowToxicAndNotImmune => ShowToxic && !IsToxicImmune;
+
         public bool ShowFrostAndNotImmune => ShowFrost && !IsFrostImmune;
 
 
@@ -608,7 +648,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsTargetingViewEnabled
         {
             get => _isTargetingViewEnabled;
@@ -691,7 +731,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsCinderNoStaggerEnabled
         {
             get => _isCinderNoStaggerEnabled;
@@ -703,10 +743,11 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public void SetCinderPhase(int phaseIndex) => _cinderService.ForcePhaseTransition(phaseIndex);
+
         public void CastSoulmass() => _cinderService.CastSoulMass();
-        
+
         public void TryEnableFeatures()
         {
             if (IsTargetOptionsEnabled)

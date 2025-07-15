@@ -59,5 +59,10 @@ namespace SilkySouls3.Views
         {
             _enemyViewModel.CastSoulmass();
         }
+
+        private void OnSetCustomHpClick(object sender, RoutedEventArgs e)
+        {
+            _enemyViewModel.SetCustomHp();
+        }
     }
 }
