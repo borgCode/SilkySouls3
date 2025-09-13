@@ -83,6 +83,8 @@ namespace SilkySouls3.Memory
                 addr => Offsets.Hooks.ItemLotBase = addr.ToInt64(), saved);
             TryPatternWithFallback("ArgoSpeed", Patterns.ArgoSpeed,
                 addr => Offsets.Hooks.ArgoSpeed = addr.ToInt64(), saved);
+            TryPatternWithFallback("AddSubGoalDsa", Patterns.AddSubGoalDsa,
+                addr => Offsets.Hooks.AddSubGoalDsa = addr.ToInt64(), saved);
 
             var triggers = FindAddressesByPattern(Patterns.NoClipTriggers, 2);
             if (triggers[0] == IntPtr.Zero && saved.TryGetValue("NoClipTriggers", out var value))
@@ -166,6 +168,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Hooks.CameraUpLimit: 0x{Offsets.Hooks.CameraUpLimit:X}");
             Console.WriteLine($"Hooks.ItemLotBase: 0x{Offsets.Hooks.ItemLotBase:X}");
             Console.WriteLine($"Hooks.ArgoSpeed: 0x{Offsets.Hooks.ArgoSpeed:X}");
+            Console.WriteLine($"Hooks.AddSubGoalDsa: 0x{Offsets.Hooks.AddSubGoalDsa:X}");
             
             Console.WriteLine($"Funcs.Warp: 0x{Offsets.Funcs.Warp:X}");
             Console.WriteLine($"Funcs.ItemSpawn: 0x{Offsets.Funcs.ItemSpawn:X}");

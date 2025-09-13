@@ -554,129 +554,173 @@
                     BorderBrush="#333"
                     CornerRadius="3"
                     Margin="5,0,0,0"
-                    Visibility="{Binding IsTargetOptionsEnabled, Converter={StaticResource BoolToVis}}">
-                <StackPanel Margin="5">
-                    <TextBlock Text="Cinder"
-                               FontWeight="Bold"
-                               Margin="0,0,0,5"
-                               Padding="5, 0, 0, 0" />
-                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Button Content="Sword"
-                                Margin="0,0,5,5"
-                                Padding="8,3"
-                                Click="OnPhaseButtonClick" CommandParameter="0"
-                                MinWidth="40">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="AreOptionsEnabled" />
-                                    <Binding Path="AreCinderOptionsEnabled" />
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
-                        <Button Content="Lance"
-                                Margin="0,0,5,5"
-                                Padding="8,3"
-                                Click="OnPhaseButtonClick" CommandParameter="1"
-                                MinWidth="40">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="AreOptionsEnabled" />
-                                    <Binding Path="AreCinderOptionsEnabled" />
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
-                        <Button Content="Curved"
-                                Margin="0,0,5,5"
-                                Padding="8,3"
-                                Click="OnPhaseButtonClick" CommandParameter="2"
-                                MinWidth="40">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="AreOptionsEnabled" />
-                                    <Binding Path="AreCinderOptionsEnabled" />
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
-                        <Button Content="Staff"
-                                Margin="0,0,5,5"
-                                Padding="8,3"
-                                Click="OnPhaseButtonClick" CommandParameter="3"
-                                MinWidth="40">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="AreOptionsEnabled" />
-                                    <Binding Path="AreCinderOptionsEnabled" />
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
-                        <Button Content="Gwyn"
-                                Margin="0,0,5,5"
-                                Padding="8,3"
-                                Click="OnPhaseButtonClick" CommandParameter="4"
-                                MinWidth="40">
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="AreOptionsEnabled" />
-                                    <Binding Path="AreCinderOptionsEnabled" />
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
-                    </WrapPanel>
+                   >
+                <TabControl Margin="5">
+                    <TabItem Header="Cinder">
+                        <StackPanel Margin="5">
+                            <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Button Content="Sword"
+                                        Margin="0,0,5,5"
+                                        Padding="8,3"
+                                        Click="OnPhaseButtonClick" CommandParameter="0"
+                                        MinWidth="40">
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                            <Binding Path="AreOptionsEnabled" />
+                                            <Binding Path="AreCinderOptionsEnabled" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                                <Button Content="Lance"
+                                        Margin="0,0,5,5"
+                                        Padding="8,3"
+                                        Click="OnPhaseButtonClick" CommandParameter="1"
+                                        MinWidth="40">
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                            <Binding Path="AreOptionsEnabled" />
+                                            <Binding Path="AreCinderOptionsEnabled" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                                <Button Content="Curved"
+                                        Margin="0,0,5,5"
+                                        Padding="8,3"
+                                        Click="OnPhaseButtonClick" CommandParameter="2"
+                                        MinWidth="40">
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                            <Binding Path="AreOptionsEnabled" />
+                                            <Binding Path="AreCinderOptionsEnabled" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                                <Button Content="Staff"
+                                        Margin="0,0,5,5"
+                                        Padding="8,3"
+                                        Click="OnPhaseButtonClick" CommandParameter="3"
+                                        MinWidth="40">
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                            <Binding Path="AreOptionsEnabled" />
+                                            <Binding Path="AreCinderOptionsEnabled" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                                <Button Content="Gwyn"
+                                        Margin="0,0,5,5"
+                                        Padding="8,3"
+                                        Click="OnPhaseButtonClick" CommandParameter="4"
+                                        MinWidth="40">
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                            <Binding Path="AreOptionsEnabled" />
+                                            <Binding Path="AreCinderOptionsEnabled" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                            </WrapPanel>
 
-                    <StackPanel Margin="0,0,0,5">
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Cast Soulmass"
-                                    Margin="0,0,0,5"
-                                    Padding="8,3"
-                                    Click="CastSoulmass"
-                                    HorizontalAlignment="Left"
-                                    Width="120">
-                                <Button.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                        <Binding Path="AreOptionsEnabled" />
-                                        <Binding Path="AreCinderOptionsEnabled" />
-                                    </MultiBinding>
-                                </Button.IsEnabled>
-                            </Button>
-                            <CheckBox Content="Endless Soulmass"
-                                      Margin="15,0,0,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsEndlessSoulmassEnabled}">
-                                <CheckBox.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                        <Binding Path="AreOptionsEnabled" />
-                                        <Binding Path="AreCinderOptionsEnabled" />
-                                    </MultiBinding>
-                                </CheckBox.IsEnabled>
-                            </CheckBox>
-                        </StackPanel>
+                            <StackPanel Margin="0,0,0,5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Cast Soulmass"
+                                            Margin="0,0,0,5"
+                                            Padding="8,3"
+                                            Click="CastSoulmass"
+                                            HorizontalAlignment="Left"
+                                            Width="120">
+                                        <Button.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                                <Binding Path="AreOptionsEnabled" />
+                                                <Binding Path="AreCinderOptionsEnabled" />
+                                            </MultiBinding>
+                                        </Button.IsEnabled>
+                                    </Button>
+                                    <CheckBox Content="Endless Soulmass"
+                                              Margin="15,0,0,0"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding IsEndlessSoulmassEnabled}">
+                                        <CheckBox.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                                <Binding Path="AreOptionsEnabled" />
+                                                <Binding Path="AreCinderOptionsEnabled" />
+                                            </MultiBinding>
+                                        </CheckBox.IsEnabled>
+                                    </CheckBox>
+                                </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Content="Lock Phase"
-                                      Margin="0,0,10,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsCinderPhasedLocked}">
-                                <CheckBox.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                        <Binding Path="AreOptionsEnabled" />
-                                        <Binding Path="AreCinderOptionsEnabled" />
-                                    </MultiBinding>
-                                </CheckBox.IsEnabled>
-                            </CheckBox>
-                            <CheckBox Content="No Stagger"
-                                      Margin="0,0,0,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsCinderNoStaggerEnabled}">
-                                <CheckBox.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                        <Binding Path="AreOptionsEnabled" />
-                                        <Binding Path="AreCinderOptionsEnabled" />
-                                    </MultiBinding>
-                                </CheckBox.IsEnabled>
-                            </CheckBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Content="Lock Phase"
+                                              Margin="0,0,10,0"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding IsCinderPhasedLocked}">
+                                        <CheckBox.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                                <Binding Path="AreOptionsEnabled" />
+                                                <Binding Path="AreCinderOptionsEnabled" />
+                                            </MultiBinding>
+                                        </CheckBox.IsEnabled>
+                                    </CheckBox>
+                                    <CheckBox Content="No Stagger"
+                                              Margin="0,0,0,0"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding IsCinderNoStaggerEnabled}">
+                                        <CheckBox.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                                <Binding Path="AreOptionsEnabled" />
+                                                <Binding Path="AreCinderOptionsEnabled" />
+                                            </MultiBinding>
+                                        </CheckBox.IsEnabled>
+                                    </CheckBox>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </StackPanel>
+                    </TabItem>
+                    <TabItem Header="DSA">
+                        <StackPanel Margin="5">
+                            <CheckBox Content="Enable Butterfly RNG Selection" 
+                                      IsChecked="{Binding IsButterflyRngEnabled}"
+                                      Margin="0,0,0,10">
+                            </CheckBox>
+                            
+                            <StackPanel Visibility="{Binding IsButterflyRngEnabled, Converter={StaticResource BoolToVis}}">
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Left Side:" VerticalAlignment="Center" Margin="0,0,10,5" />
+                                    <ComboBox Grid.Row="0" Grid.Column="1" 
+                                              SelectedIndex="{Binding SelectedLeftButterflyAnimation}"
+                                              Margin="0,0,0,5"
+                                              Width="120"
+                                              HorizontalAlignment="Left">
+                                        <ComboBoxItem Content="None" />
+                                        <ComboBoxItem Content="Small Meatballs" />
+                                        <ComboBoxItem Content="Laser" />
+                                        <ComboBoxItem Content="Big Meatball" />
+                                    </ComboBox>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Right Side:" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <ComboBox Grid.Row="1" Grid.Column="1" 
+                                              SelectedIndex="{Binding SelectedRightButterflyAnimation}"
+                                              Width="120"
+                                              HorizontalAlignment="Left">
+                                        <ComboBoxItem Content="None" />
+                                        <ComboBoxItem Content="Small Meatballs" />
+                                        <ComboBoxItem Content="Laser" />
+                                        <ComboBoxItem Content="Big Meatball" />
+                                    </ComboBox>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
             </Border>
         </Grid>
     </Grid>

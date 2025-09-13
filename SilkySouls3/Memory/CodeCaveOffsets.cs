@@ -49,5 +49,12 @@ namespace SilkySouls3.Memory
             Speed = 0x410,
             Code = 0x420
         }
+
+        public enum Butterfly
+        {
+            LeftSideAnimationId = 0x500,
+            RightSideAnimationId = 0x510,
+            Code = 0x520
+        }
     }
 }

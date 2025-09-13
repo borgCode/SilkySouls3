@@ -319,6 +319,14 @@
             0,
             AddressingMode.Absolute
         );
+        
+        public static readonly Pattern AddSubGoalDsa = new Pattern(
+            new byte[] { 0x48, 0x8B, 0xC4, 0x48, 0x81, 0xEC, 0x98, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x8C, 0x24, 0x08 },
+            "xxxxxxxxxxxxxxxx",
+            0,
+            AddressingMode.Absolute
+        );
+
 
         public static readonly Pattern NoClipInAirTimer = new Pattern(
             new byte[] { 0xF3, 0x0F, 0x11, 0x81, 0xB0, 0x01 },

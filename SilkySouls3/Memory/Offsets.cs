@@ -323,6 +323,7 @@ namespace SilkySouls3.Memory
             public static long CameraUpLimit;
             public static long ItemLotBase;
             public static long ArgoSpeed;
+            public static long AddSubGoalDsa;
 
         }
 

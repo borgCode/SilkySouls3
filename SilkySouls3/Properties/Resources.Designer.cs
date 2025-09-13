@@ -123,6 +123,25 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 51                      push   rcx
+        ///48 8b 49 08             mov    rcx,QWORD PTR [rcx+0x8]
+        ///48 8b 09                mov    rcx,QWORD PTR [rcx]
+        ///81 79 28 20 b3 04 00    cmp    DWORD PTR [rcx+0x28],0x4b320
+        ///74 0b                   je     1c &lt;handle_left&gt;
+        ///81 79 28 21 b3 04 00    cmp    DWORD PTR [rcx+0x28],0x4b321
+        ///74 17                   je     31 &lt;handle_right&gt;
+        ///eb 28                   jmp    44 &lt;exit&gt;
+        ///00000000001c &lt;handle_left&gt;:
+        ///48 31 c9                xor    rcx,rcx
+        ///3b 0d 00 00 00 00       cmp    ecx,D [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ButterflyRng {
+            get {
+                return ResourceManager.GetString("ButterflyRng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///b8 00 00 c0 bf          mov    eax,0xbfc00000
         ///66 0f 6e c0             movd   xmm0,eax

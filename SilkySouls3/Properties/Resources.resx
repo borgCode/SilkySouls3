@@ -1690,4 +1690,35 @@ ff d0                   call   rax
 48 83 c4 28             add    rsp,0x28
 c3                      ret</value>
   </data>
+  <data name="ButterflyRng" xml:space="preserve">
+    <value>51                      push   rcx
+48 8b 49 08             mov    rcx,QWORD PTR [rcx+0x8]
+48 8b 09                mov    rcx,QWORD PTR [rcx]
+81 79 28 20 b3 04 00    cmp    DWORD PTR [rcx+0x28],0x4b320
+74 0b                   je     1c &lt;handle_left&gt;
+81 79 28 21 b3 04 00    cmp    DWORD PTR [rcx+0x28],0x4b321
+74 17                   je     31 &lt;handle_right&gt;
+eb 28                   jmp    44 &lt;exit&gt;
+00000000001c &lt;handle_left&gt;:
+48 31 c9                xor    rcx,rcx
+3b 0d 00 00 00 00       cmp    ecx,DWORD PTR [rip+0x0]        # 25 &lt;handle_left+0x9&gt;
+74 1d                   je     44 &lt;exit&gt;
+f3 0f 10 1d 00 00 00    movss  xmm3,DWORD PTR [rip+0x0]        # 2f &lt;handle_left+0x13&gt;
+00
+eb 13                   jmp    44 &lt;exit&gt;
+000000000031 &lt;handle_right&gt;:
+48 31 c9                xor    rcx,rcx
+3b 0d 00 00 00 00       cmp    ecx,DWORD PTR [rip+0x0]        # 3a &lt;handle_right+0x9&gt;
+74 08                   je     44 &lt;exit&gt;
+f3 0f 10 1d 00 00 00    movss  xmm3,DWORD PTR [rip+0x0]        # 44 &lt;exit&gt;
+00
+000000000044 &lt;exit&gt;:
+59                      pop    rcx
+48 89 e0                mov    rax,rsp
+48 81 ec 98 00 00 00    sub    rsp,0x98
+e9 00 00 00 00          jmp    54 &lt;early_ret&gt;
+000000000054 &lt;early_ret&gt;:
+59                      pop    rcx
+c3                      ret</value>
+  </data>
 </root>

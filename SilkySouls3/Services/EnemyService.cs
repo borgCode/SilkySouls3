@@ -228,5 +228,46 @@ namespace SilkySouls3.Services
                     (int)EnemyIns.AiInsOffsets.TargetingSystem,
                     EnemyIns.TargetingView
                 }, false);
+
+        public void ToggleButterflyRng(bool isEnabled)
+        {
+            var code = CodeCaveOffsets.Base + (int)CodeCaveOffsets.Butterfly.Code;
+
+            if (isEnabled)
+            {
+                var leftSideIdPtr = CodeCaveOffsets.Base + (int)CodeCaveOffsets.Butterfly.LeftSideAnimationId;
+                var rightSideIdPtr = CodeCaveOffsets.Base + (int)CodeCaveOffsets.Butterfly.RightSideAnimationId;
+                var hook = Hooks.AddSubGoalDsa;
+
+                var bytes = AsmLoader.GetAsmBytes("ButterflyRng");
+                
+                AsmHelper.WriteRelativeOffsets(bytes, new []
+                {
+                    (code.ToInt64() + 0x1F, leftSideIdPtr.ToInt64(), 6, 0x1F + 2),
+                    (code.ToInt64() + 0x27, leftSideIdPtr.ToInt64(), 8, 0x27 + 4),
+                    (code.ToInt64() + 0x34, rightSideIdPtr.ToInt64(), 6, 0x34 + 2),
+                    (code.ToInt64() + 0x3C, rightSideIdPtr.ToInt64(), 8, 0x3C + 4),
+                    (code.ToInt64() + 0x4F, hook + 0xA, 5, 0x4F + 1),
+                });
+                _memoryIo.WriteBytes(code, bytes);
+                _hookManager.InstallHook(code.ToInt64(), hook, new byte[]
+                    { 0x48, 0x89, 0xE0, 0x48, 0x81, 0xEC, 0x98, 0x00, 0x00, 0x00 });
+            }
+            else
+            {
+                _hookManager.UninstallHook(code.ToInt64());
+            }
+        }
+
+        public void SetLeftButterflyAttack(float animationId)
+        {
+            var leftSideIdPtr = CodeCaveOffsets.Base + (int)CodeCaveOffsets.Butterfly.LeftSideAnimationId;
+            _memoryIo.WriteFloat(leftSideIdPtr, animationId);
+        }
+        public void SetRightButterflyAttack(float animationId)
+        {
+            var rightSideIdPtr = CodeCaveOffsets.Base + (int)CodeCaveOffsets.Butterfly.RightSideAnimationId;
+            _memoryIo.WriteFloat(rightSideIdPtr, animationId);
+        }
     }
 }

@@ -68,6 +68,11 @@ namespace SilkySouls3.ViewModels
         private bool _isAllNoDamageEnabled;
         private bool _isAllNoDeathEnabled;
         private bool _isAllRepeatActEnabled;
+        
+        private bool _isButterflyRngEnabled;
+        private int _selectedLeftButterflyAnimation = 0; 
+        private int _selectedRightButterflyAnimation = 0;
+        private static readonly float[] ButterflyAnimationIds = { 0f, 3000f, 3001f, 3002f };
 
         private readonly EnemyService _enemyService;
         private readonly CinderService _cinderService;
@@ -747,6 +752,45 @@ namespace SilkySouls3.ViewModels
         public void SetCinderPhase(int phaseIndex) => _cinderService.ForcePhaseTransition(phaseIndex);
 
         public void CastSoulmass() => _cinderService.CastSoulMass();
+        
+        
+        public bool IsButterflyRngEnabled
+        {
+            get => _isButterflyRngEnabled;
+            set
+            {
+                if (SetProperty(ref _isButterflyRngEnabled, value))
+                {
+                    _enemyService.ToggleButterflyRng(_isButterflyRngEnabled);
+                }
+            }
+        }
+        
+        public int SelectedLeftButterflyAnimation
+        {
+            get => _selectedLeftButterflyAnimation;
+            set
+            {
+                if (SetProperty(ref _selectedLeftButterflyAnimation, value))
+                {
+                    _enemyService.SetLeftButterflyAttack(ButterflyAnimationIds[value]);
+                }
+            }
+        }
+
+        public int SelectedRightButterflyAnimation
+        {
+            get => _selectedRightButterflyAnimation;
+            set
+            {
+                if (SetProperty(ref _selectedRightButterflyAnimation, value))
+                {
+                    _enemyService.SetRightButterflyAttack(ButterflyAnimationIds[value]);
+                }
+            }
+        }
+        
+        
 
         public void TryEnableFeatures()
         {
@@ -760,6 +804,13 @@ namespace SilkySouls3.ViewModels
             if (IsAllNoDamageEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDamage, 1);
             if (IsAllNoDeathEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDeath, 1);
             if (IsAllRepeatActEnabled) _enemyService.ToggleAllRepeatAct(true);
+            if (IsButterflyRngEnabled)
+            {
+                _enemyService.ToggleButterflyRng(true);
+                _enemyService.SetLeftButterflyAttack(ButterflyAnimationIds[SelectedLeftButterflyAnimation]);
+                _enemyService.SetRightButterflyAttack(ButterflyAnimationIds[SelectedRightButterflyAnimation]);
+            }
+            
             AreOptionsEnabled = true;
         }
 

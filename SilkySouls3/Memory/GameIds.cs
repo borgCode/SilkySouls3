@@ -10,7 +10,7 @@
             public static readonly ulong Cornyx = 1241;
             public static readonly ulong Karla = 1261;
             public static readonly ulong Irina = 1281;
-            public static readonly ulong[] Patches = { 1364, 1375,  70000400, 1365 };
+            public static readonly ulong[] Patches = { 1364, 1375, 70000400, 1365 };
 
             public static readonly int[] ReinforceWeaponFlagRange = { 0xE8, 0xEB };
             public static readonly int[] InfuseWeaponFlagRange = { 0x14B, 0x15B };
@@ -31,7 +31,5 @@
         {
             public static long Ember = 3290;
         }
-        
-        
     }
 }
