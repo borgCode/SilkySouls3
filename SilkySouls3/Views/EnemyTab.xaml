@@ -518,7 +518,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
@@ -672,6 +672,23 @@
                                             </MultiBinding>
                                         </CheckBox.IsEnabled>
                                     </CheckBox>
+                                    <Border
+                                        Background="#3498db"
+                                        CornerRadius="10"
+                                        Width="20"
+                                        Height="20"
+                                        Margin="25,5,0,0"
+                                        VerticalAlignment="Center"
+                                        ToolTip="Enable target options and lock on to cinder to use the features"
+                                        ToolTipService.InitialShowDelay='100'>
+                                        <TextBlock Text="i"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   FontSize="16" />
+                                    </Border>
+                                    
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
