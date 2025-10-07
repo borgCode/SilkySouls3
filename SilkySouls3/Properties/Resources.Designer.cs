@@ -549,6 +549,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 28             sub    rsp,0x28
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///c3                      ret.
+        /// </summary>
+        internal static string StopMusic {
+            get {
+                return ResourceManager.GetString("StopMusic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0,400003E8,Titanite Shard,600,0,0
         ///0,400003E9,Large Titanite Shard,600,0,0
         ///0,400003EA,Titanite Chunk,600,0,0

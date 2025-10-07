@@ -13,6 +13,7 @@ namespace SilkySouls3.Utilities
         public bool EnableHotkeys { get; set; }
         public bool StutterFix { get; set; }
         public bool AlwaysOnTop { get; set; }
+        public bool DisableMenuMusic { get; set; }
         public bool HotkeyReminder { get; set; }
         public bool DefaultSoundChangeEnabled { get; set; }
         public int DefaultSoundVolume { get; set; } = 3;
@@ -43,6 +44,7 @@ namespace SilkySouls3.Utilities
                     $"EnableHotkeys={EnableHotkeys}",
                     $"StutterFix={StutterFix}",
                     $"AlwaysOnTop={AlwaysOnTop}",
+                    $"DisableMenuMusic={DisableMenuMusic}",
                     $"HotkeyReminder={HotkeyReminder}",
                     $"DefaultSoundChangeEnabled={DefaultSoundChangeEnabled}",
                     $"DefaultSoundVolume={DefaultSoundVolume}",
@@ -95,6 +97,10 @@ namespace SilkySouls3.Utilities
                                 case "AlwaysOnTop":
                                     bool.TryParse(value, out bool aot);
                                     settings.AlwaysOnTop = aot;
+                                    break;
+                                case "DisableMenuMusic":
+                                    bool.TryParse(value, out bool dmm);
+                                    settings.DisableMenuMusic = dmm;
                                     break;
                                 case "HotkeyReminder":
                                     bool.TryParse(value, out bool hr);

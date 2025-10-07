@@ -65,6 +65,8 @@ namespace SilkySouls3.Memory
                 saved);
             TryPatternWithFallback("FreeCam", Patterns.FreeCamPatch, addr => Offsets.Patches.FreeCam = addr, saved);
             TryPatternWithFallback("DefaultSoundVolWrite", Patterns.DefaultSoundVolWrite, addr => Offsets.Patches.DefaultSoundVolWrite = addr, saved);
+            TryPatternWithFallback("StartMenuMusic", Patterns.StartMenuMusic, addr => Offsets.Patches.StartMenuMusic = addr, saved);
+
             
             TryPatternWithFallback("LastLockedTarget", Patterns.LockedTarget,
                 addr => Offsets.Hooks.LastLockedTarget = addr.ToInt64(), saved);
@@ -108,6 +110,7 @@ namespace SilkySouls3.Memory
             }
 
             Offsets.Funcs.Warp = FindAddressByPattern(Patterns.WarpFunc).ToInt64();
+            Offsets.Funcs.StopMusic = FindAddressByPattern(Patterns.StopMusic).ToInt64();
             Offsets.Funcs.ItemSpawn = FindAddressByPattern(Patterns.ItemSpawnFunc).ToInt64();
             Offsets.Funcs.BreakAllObjects = FindAddressByPattern(Patterns.BreakAllObjects).ToInt64();
             Offsets.Funcs.RestoreAllObjects = FindAddressByPattern(Patterns.RestoreAllObjects).ToInt64();
@@ -158,6 +161,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Patches.TargetingView: 0x{Offsets.Patches.DbgDrawFlag.ToInt64():X}");
             Console.WriteLine($"Patches.FreeCam: 0x{Offsets.Patches.FreeCam.ToInt64():X}");
             Console.WriteLine($"Patches.DefaultSoundVolWrite: 0x{Offsets.Patches.DefaultSoundVolWrite.ToInt64():X}");
+            Console.WriteLine($"Patches.StartMenuMusic: 0x{Offsets.Patches.StartMenuMusic.ToInt64():X}");
             
             Console.WriteLine($"Hooks.LastLockedTarget: 0x{Offsets.Hooks.LastLockedTarget:X}");
             Console.WriteLine($"Hooks.WarpCoordWrite: 0x{Offsets.Hooks.WarpCoordWrite:X}");
@@ -186,6 +190,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Funcs.RestoreAllObjects: 0x{Offsets.Funcs.RestoreAllObjects:X}");
             Console.WriteLine($"Funcs.GetEvent: 0x{Offsets.Funcs.GetEvent:X}");
             Console.WriteLine($"Funcs.SetSpEffect: 0x{Offsets.Funcs.SetSpEffect:X}");
+            Console.WriteLine($"Funcs.StopMusic: 0x{Offsets.Funcs.StopMusic:X}");
 #endif
         }
 

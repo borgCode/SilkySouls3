@@ -256,6 +256,12 @@
             AddressingMode.Absolute
         );
 
+        public static readonly Pattern StartMenuMusic = new Pattern(
+            new byte[] { 0x48, 0x8D, 0x45, 0xB7, 0x48, 0x89, 0x45, 0xCF, 0x48, 0x8D, 0x45, 0x97, 0x48, 0x89, 0x44 },
+            "xxxxxxxxxxxxxxx",
+            -0x4A,
+            AddressingMode.Absolute
+        );
 
         public static readonly Pattern GroupMask = new Pattern(
             new byte[] { 0x80, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB, 0x00 },
@@ -460,6 +466,13 @@
             AddressingMode.Relative,
             1,
             5
+        );
+
+        public static readonly Pattern StopMusic = new Pattern(
+            new byte[] { 0x48, 0x85, 0xDB, 0x74, 0x19, 0x48, 0x8D, 0x8B, 0xDC },
+            "xxxxxxxxx",
+            -0xD,
+            AddressingMode.Absolute
         );
     }
 }

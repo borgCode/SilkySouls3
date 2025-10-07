@@ -311,6 +311,7 @@ namespace SilkySouls3.Memory
             public static IntPtr FreeCam;
             public static IntPtr AccessFullShop;
             public static IntPtr DefaultSoundVolWrite;
+            public static IntPtr StartMenuMusic;
         }
         
         
@@ -350,6 +351,7 @@ namespace SilkySouls3.Memory
             public static long RestoreAllObjects;
             public static long GetEvent;
             public static long SetSpEffect;
+            public static long StopMusic;
         }
     }
 }

@@ -13,10 +13,13 @@ namespace SilkySouls3.ViewModels
     {
         #region property setters
 
+        private bool _isLoaded;
+        private bool _isAttached;
+
         private bool _isEnableHotkeysEnabled;
         private bool _isStutterFixEnabled;
         private bool _isAlwaysOnTopEnabled;
-        private bool _isLoaded;
+        private bool _isDisableMenuMusicEnabled;
         private bool _isHotkeyReminderEnabled;
         private bool _isDefaultSoundChangeEnabled;
         private int _defaultSoundVolume;
@@ -110,6 +113,18 @@ namespace SilkySouls3.ViewModels
                 SettingsManager.Default.Save();
                 var mainWindow = Application.Current.MainWindow;
                 if (mainWindow != null) mainWindow.Topmost = _isAlwaysOnTopEnabled;
+            }
+        }
+        
+        public bool IsDisableMenuMusicEnabled
+        {
+            get => _isDisableMenuMusicEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDisableMenuMusicEnabled, value)) return;
+                SettingsManager.Default.DisableMenuMusic = value;
+                SettingsManager.Default.Save();
+                if (_isAttached) _settingsService.ToggleDisableMusic(_isDisableMenuMusicEnabled);
             }
         }
 
@@ -639,12 +654,15 @@ namespace SilkySouls3.ViewModels
             _isEnableHotkeysEnabled = SettingsManager.Default.EnableHotkeys;
             if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
             else _hotkeyManager.Stop();
-            
             OnPropertyChanged(nameof(IsEnableHotkeysEnabled));
-            _isStutterFixEnabled = SettingsManager.Default.StutterFix;
             
+            _isStutterFixEnabled = SettingsManager.Default.StutterFix;
             OnPropertyChanged(nameof(IsStutterFixEnabled));
+            
             IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
+            
+            _isDisableMenuMusicEnabled = SettingsManager.Default.DisableMenuMusic;
+            OnPropertyChanged(nameof(IsDisableMenuMusicEnabled));
             
             _isDefaultSoundChangeEnabled = SettingsManager.Default.DefaultSoundChangeEnabled;
             OnPropertyChanged(nameof(IsDefaultSoundChangeEnabled));
@@ -653,7 +671,10 @@ namespace SilkySouls3.ViewModels
             OnPropertyChanged(nameof(DefaultSoundVolume));
         }
 
-        public void ResetAttached() => _isLoaded = false;
+        public void ResetLoaded() => _isLoaded = false;
+        
+        public void ResetAttached() => _isAttached = false;
+        
 
         public void DoHotkeyReminder()
         {
@@ -663,7 +684,9 @@ namespace SilkySouls3.ViewModels
 
         public void ApplyAttachedSettings()
         {
+            _isAttached = true;
             if (IsDefaultSoundChangeEnabled) _settingsService.PatchDefaultSound(DefaultSoundVolume);
+            if (IsDisableMenuMusicEnabled) _settingsService.ToggleDisableMusic(true);
         }
     }
 }

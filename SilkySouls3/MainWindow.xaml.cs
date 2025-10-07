@@ -25,6 +25,7 @@ namespace SilkySouls3
         private readonly AoBScanner _aobScanner;
         private readonly DispatcherTimer _gameLoadedTimer;
         private readonly HookManager _hookManager;
+        private readonly NopManager _nopManager;
         
         private readonly PlayerViewModel _playerViewModel;
         private readonly TravelViewModel _travelViewModel;
@@ -54,6 +55,7 @@ namespace SilkySouls3
             GameLauncher.SetVersionOffsets();
             
             _hookManager = new HookManager(_memoryIo);
+            _nopManager = new NopManager(_memoryIo);
             _aobScanner = new AoBScanner(_memoryIo);
             var hotkeyManager = new HotkeyManager(_memoryIo);
 
@@ -64,7 +66,7 @@ namespace SilkySouls3
             var travelService = new TravelService(_memoryIo, _hookManager);
             var cinderService = new CinderService(_memoryIo, _hookManager);
             var itemService = new ItemService(_memoryIo);
-            var settingsService = new SettingsService(_memoryIo);
+            var settingsService = new SettingsService(_memoryIo, _nopManager);
             _debugDrawService = new DebugDrawService(_memoryIo);
 
             _playerViewModel = new PlayerViewModel(playerService, hotkeyManager);
@@ -96,7 +98,7 @@ namespace SilkySouls3
             
             _gameLoadedTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(1)
+                Interval = TimeSpan.FromMilliseconds(25)
             };
             _gameLoadedTimer.Tick += Timer_Tick;
             _gameLoadedTimer.Start();
@@ -134,6 +136,7 @@ namespace SilkySouls3
                 {
                     _aobScanner.Scan();
                     _hasScanned = true;
+                    
                 }
 
                 if (!_hasAppliedNoLogo)
@@ -176,6 +179,7 @@ namespace SilkySouls3
             {
                 _hookManager.ClearHooks();
                 DisableFeatures();
+                _settingsViewModel.ResetLoaded();
                 _settingsViewModel.ResetAttached();
                 _loaded = false;
                 _hasAllocatedMemory = false;
