@@ -19,5 +19,12 @@ namespace SilkySouls3.Services
         public void ToggleStutterFix(bool isEnabled) => 
             _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(UserInputManager.Base) + UserInputManager.SteamInputEnum,
                 isEnabled? 1 : 0);
+
+        public void PatchDefaultSound(int defaultSoundVolume)
+        {
+            var defaultSoundWrite = Patches.DefaultSoundVolWrite;
+            _memoryIo.WriteByte(defaultSoundWrite + 0x4, defaultSoundVolume);
+            _memoryIo.WriteByte(defaultSoundWrite + 0x5, defaultSoundVolume);
+        }
     }
 }

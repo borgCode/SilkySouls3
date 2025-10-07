@@ -18,6 +18,8 @@ namespace SilkySouls3.ViewModels
         private bool _isAlwaysOnTopEnabled;
         private bool _isLoaded;
         private bool _isHotkeyReminderEnabled;
+        private bool _isDefaultSoundChangeEnabled;
+        private int _defaultSoundVolume;
 
         private string _savePos1HotkeyText;
         private string _savePos2HotkeyText;
@@ -118,6 +120,29 @@ namespace SilkySouls3.ViewModels
             {
                 if (!SetProperty(ref _isHotkeyReminderEnabled, value)) return;
                 SettingsManager.Default.HotkeyReminder = value;
+                SettingsManager.Default.Save();
+            }
+        }
+        
+        public bool IsDefaultSoundChangeEnabled
+        {
+            get => _isDefaultSoundChangeEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDefaultSoundChangeEnabled, value)) return;
+                SettingsManager.Default.DefaultSoundChangeEnabled = value;
+                SettingsManager.Default.Save();
+            }
+        }
+        
+        public int DefaultSoundVolume
+        {
+            get => _defaultSoundVolume;
+            set
+            {
+                if (!SetProperty(ref _defaultSoundVolume, value)) return;
+                if (!IsDefaultSoundChangeEnabled) return;
+                SettingsManager.Default.DefaultSoundVolume = value;
                 SettingsManager.Default.Save();
             }
         }
@@ -614,10 +639,18 @@ namespace SilkySouls3.ViewModels
             _isEnableHotkeysEnabled = SettingsManager.Default.EnableHotkeys;
             if (_isEnableHotkeysEnabled) _hotkeyManager.Start();
             else _hotkeyManager.Stop();
+            
             OnPropertyChanged(nameof(IsEnableHotkeysEnabled));
             _isStutterFixEnabled = SettingsManager.Default.StutterFix;
+            
             OnPropertyChanged(nameof(IsStutterFixEnabled));
             IsAlwaysOnTopEnabled = SettingsManager.Default.AlwaysOnTop;
+            
+            _isDefaultSoundChangeEnabled = SettingsManager.Default.DefaultSoundChangeEnabled;
+            OnPropertyChanged(nameof(IsDefaultSoundChangeEnabled));
+
+            _defaultSoundVolume = SettingsManager.Default.DefaultSoundVolume;
+            OnPropertyChanged(nameof(DefaultSoundVolume));
         }
 
         public void ResetAttached() => _isLoaded = false;
@@ -626,6 +659,11 @@ namespace SilkySouls3.ViewModels
         {
             if (!IsHotkeyReminderEnabled) return;
             CustomMessageBox.Show("Hotkeys are enabled", "Hotkeys Enabled", topMost: true);
+        }
+
+        public void ApplyAttachedSettings()
+        {
+            if (IsDefaultSoundChangeEnabled) _settingsService.PatchDefaultSound(DefaultSoundVolume);
         }
     }
 }

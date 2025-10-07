@@ -120,6 +120,8 @@ namespace SilkySouls3
 
         private bool _appliedOneTimeFeatures;
 
+        private bool _hasAppliedAttachedFeatures;
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (_memoryIo.IsAttached)
@@ -127,7 +129,6 @@ namespace SilkySouls3
                 IsAttachedText.Text = "Attached to game";
                 IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["AttachedBrush"];
                 LaunchGameButton.IsEnabled = false;
-                
                 
                 if (!_hasScanned)
                 {
@@ -139,6 +140,12 @@ namespace SilkySouls3
                 {
                     _memoryIo.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes("NoLogo"));
                     _hasAppliedNoLogo = true;
+                }
+
+                if (!_hasAppliedAttachedFeatures)
+                {
+                    _settingsViewModel.ApplyAttachedSettings();
+                    _hasAppliedAttachedFeatures = true;
                 }
                 
                 if (!_hasAllocatedMemory)
@@ -174,6 +181,7 @@ namespace SilkySouls3
                 _hasAllocatedMemory = false;
                 _hasAppliedNoLogo = false;
                 _appliedOneTimeFeatures = false;
+                _hasAppliedAttachedFeatures = false;
                 IsAttachedText.Text = "Not attached";
                 IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["NotAttachedBrush"];
                 LaunchGameButton.IsEnabled = true;

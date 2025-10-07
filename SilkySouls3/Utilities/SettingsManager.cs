@@ -14,6 +14,8 @@ namespace SilkySouls3.Utilities
         public bool StutterFix { get; set; }
         public bool AlwaysOnTop { get; set; }
         public bool HotkeyReminder { get; set; }
+        public bool DefaultSoundChangeEnabled { get; set; }
+        public int DefaultSoundVolume { get; set; } = 3;
         public double WindowLeft { get; set; }
         public double WindowTop { get; set; }
         public double ResistancesWindowScaleX { get; set; } = 1.0;
@@ -42,6 +44,8 @@ namespace SilkySouls3.Utilities
                     $"StutterFix={StutterFix}",
                     $"AlwaysOnTop={AlwaysOnTop}",
                     $"HotkeyReminder={HotkeyReminder}",
+                    $"DefaultSoundChangeEnabled={DefaultSoundChangeEnabled}",
+                    $"DefaultSoundVolume={DefaultSoundVolume}",
                     $"WindowLeft={WindowLeft}",
                     $"WindowTop={WindowTop}",
                     $"ResistancesWindowScaleX={ResistancesWindowScaleX}",
@@ -95,6 +99,14 @@ namespace SilkySouls3.Utilities
                                 case "HotkeyReminder":
                                     bool.TryParse(value, out bool hr);
                                     settings.HotkeyReminder = hr;
+                                    break;
+                                case "DefaultSoundChangeEnabled":
+                                    bool.TryParse(value, out bool dsce);
+                                    settings.DefaultSoundChangeEnabled = dsce;
+                                    break;
+                                case "DefaultSoundVolume":
+                                    int.TryParse(value, out int dsv);
+                                    settings.DefaultSoundVolume = dsv;
                                     break;
                                 case "WindowLeft":
                                     double.TryParse(value, out double wl);

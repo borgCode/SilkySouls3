@@ -135,6 +135,9 @@ namespace SilkySouls3.Memory
                 Souls = 0x74,
                 TotalSouls = 0x78
             }
+
+            public static readonly int[] SoundEffectsPtrChain = { 0x58, 0xD };
+            
             public const int NewGame = 0x78;
             public const int InGameTime = 0xA4;
         }
@@ -307,6 +310,7 @@ namespace SilkySouls3.Memory
             public static IntPtr DbgDrawFlag;
             public static IntPtr FreeCam;
             public static IntPtr AccessFullShop;
+            public static IntPtr DefaultSoundVolWrite;
         }
         
         
