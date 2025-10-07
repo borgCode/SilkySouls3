@@ -23,7 +23,7 @@
         <SolidColorBrush x:Key="AttachedBrush" Color="#4CAF50" />
         <SolidColorBrush x:Key="NotAttachedBrush" Color="#D32F2F" />
 
-        <Style TargetType="Window">
+        <Style x:Key="DefaultWindowStyle" TargetType="Window">
             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         </Style>

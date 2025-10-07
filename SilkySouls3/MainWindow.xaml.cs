@@ -107,6 +107,7 @@ namespace SilkySouls3
             {
                 VersionChecker.CheckForUpdates(this);
             }
+            
         }
 
         private bool _loaded;
@@ -126,6 +127,7 @@ namespace SilkySouls3
                 IsAttachedText.Text = "Attached to game";
                 IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["AttachedBrush"];
                 LaunchGameButton.IsEnabled = false;
+                
                 
                 if (!_hasScanned)
                 {
@@ -198,6 +200,7 @@ namespace SilkySouls3
             {
                 _playerViewModel.TrySetNgPref();
                 _itemViewModel.TrySpawnWeaponPref();
+                _settingsViewModel.DoHotkeyReminder();
             }
         }
 

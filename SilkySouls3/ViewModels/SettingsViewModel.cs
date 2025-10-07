@@ -5,17 +5,20 @@ using System.Windows;
 using H.Hooks;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
+using SilkySouls3.Views;
 
 namespace SilkySouls3.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
         #region property setters
+
         private bool _isEnableHotkeysEnabled;
         private bool _isStutterFixEnabled;
         private bool _isAlwaysOnTopEnabled;
         private bool _isLoaded;
-        
+        private bool _isHotkeyReminderEnabled;
+
         private string _savePos1HotkeyText;
         private string _savePos2HotkeyText;
         private string _restorePos1HotkeyText;
@@ -25,11 +28,11 @@ namespace SilkySouls3.ViewModels
         private string _enableFreeCamHotkeyText;
         private string _moveCamToPlayerHotkeyText;
         private string _enableDeathCamHotkeyText;
-        
+
         private string _noDeathHotkeyText;
         private string _oneShotHotkeyText;
         private string _noDamageHotkeyText;
-        
+
         private string _togglePlayerSpeedHotkeyText;
         private string _increasePlayerSpeedHotkeyText;
         private string _decreasePlayerSpeedHotkeyText;
@@ -37,7 +40,7 @@ namespace SilkySouls3.ViewModels
         private string _decreaseGameSpeedHotkeyText;
         private string _increaseNoClipSpeedHotkeyText;
         private string _decreaseNoClipSpeedHotkeyText;
-        
+
         private string _disableTargetAiHotkeyText;
         private string _freezeHpHotkeyText;
         private string _killTargetHotkeyText;
@@ -48,12 +51,12 @@ namespace SilkySouls3.ViewModels
         private string _targetRepeatActHotkeyText;
         private string _targetViewHotkeyText;
         private string _targetCustomHpHotkeyText;
-        
+
         private string _disableAiHotkeyText;
         private string _allNoDeathHotkeyText;
         private string _allNoDamageHotkeyText;
         private string _allRepeatActHotkeyText;
-        
+
         private string _setSwordPhaseHotkeyText;
         private string _setLancePhaseHotkeyText;
         private string _setCurvedPhaseHotkeyText;
@@ -82,7 +85,7 @@ namespace SilkySouls3.ViewModels
                 }
             }
         }
-        
+
         public bool IsStutterFixEnabled
         {
             get => _isStutterFixEnabled;
@@ -94,7 +97,7 @@ namespace SilkySouls3.ViewModels
                 if (_isLoaded) _settingsService.ToggleStutterFix(_isStutterFixEnabled);
             }
         }
-        
+
         public bool IsAlwaysOnTopEnabled
         {
             get => _isAlwaysOnTopEnabled;
@@ -105,6 +108,17 @@ namespace SilkySouls3.ViewModels
                 SettingsManager.Default.Save();
                 var mainWindow = Application.Current.MainWindow;
                 if (mainWindow != null) mainWindow.Topmost = _isAlwaysOnTopEnabled;
+            }
+        }
+
+        public bool IsHotkeyReminderEnabled
+        {
+            get => _isHotkeyReminderEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHotkeyReminderEnabled, value)) return;
+                SettingsManager.Default.HotkeyReminder = value;
+                SettingsManager.Default.Save();
             }
         }
 
@@ -149,18 +163,19 @@ namespace SilkySouls3.ViewModels
             get => _oneShotHotkeyText;
             set => SetProperty(ref _oneShotHotkeyText, value);
         }
-        
+
         public string NoDamagePlayerHotkeyText
         {
             get => _noDamageHotkeyText;
             set => SetProperty(ref _noDamageHotkeyText, value);
         }
-        
+
         public string TogglePlayerSpeedHotkeyText
         {
             get => _togglePlayerSpeedHotkeyText;
             set => SetProperty(ref _togglePlayerSpeedHotkeyText, value);
         }
+
         public string IncreasePlayerSpeedHotkeyText
         {
             get => _increasePlayerSpeedHotkeyText;
@@ -172,7 +187,7 @@ namespace SilkySouls3.ViewModels
             get => _decreasePlayerSpeedHotkeyText;
             set => SetProperty(ref _decreasePlayerSpeedHotkeyText, value);
         }
-        
+
         public string IncreaseGameSpeedHotkeyText
         {
             get => _increaseGameSpeedHotkeyText;
@@ -184,43 +199,43 @@ namespace SilkySouls3.ViewModels
             get => _decreaseGameSpeedHotkeyText;
             set => SetProperty(ref _decreaseGameSpeedHotkeyText, value);
         }
-        
+
         public string IncreaseNoClipSpeedHotkeyText
         {
             get => _increaseNoClipSpeedHotkeyText;
             set => SetProperty(ref _increaseNoClipSpeedHotkeyText, value);
         }
-        
+
         public string DecreaseNoClipSpeedHotkeyText
         {
             get => _decreaseNoClipSpeedHotkeyText;
             set => SetProperty(ref _decreaseNoClipSpeedHotkeyText, value);
         }
-        
+
         public string NoClipHotkeyText
         {
             get => _noClipHotkeyText;
             set => SetProperty(ref _noClipHotkeyText, value);
         }
-        
+
         public string EnableFreeCamHotkeyText
         {
             get => _enableFreeCamHotkeyText;
             set => SetProperty(ref _enableFreeCamHotkeyText, value);
         }
-        
+
         public string MoveCamToPlayerHotkeyText
         {
             get => _moveCamToPlayerHotkeyText;
             set => SetProperty(ref _moveCamToPlayerHotkeyText, value);
         }
-        
+
         public string QuitoutHotkeyText
         {
             get => _quitoutHotkeyText;
             set => SetProperty(ref _quitoutHotkeyText, value);
         }
-        
+
         public string EnableDeathCamHotkeyText
         {
             get => _enableDeathCamHotkeyText;
@@ -232,85 +247,85 @@ namespace SilkySouls3.ViewModels
             get => _setSwordPhaseHotkeyText;
             set => SetProperty(ref _setSwordPhaseHotkeyText, value);
         }
-        
+
         public string DisableTargetAiHotkeyText
         {
             get => _disableTargetAiHotkeyText;
             set => SetProperty(ref _disableTargetAiHotkeyText, value);
         }
-        
+
         public string FreezeHpHotkeyText
         {
             get => _freezeHpHotkeyText;
             set => SetProperty(ref _freezeHpHotkeyText, value);
         }
-        
+
         public string KillTargetHotkeyText
         {
             get => _killTargetHotkeyText;
             set => SetProperty(ref _killTargetHotkeyText, value);
         }
-        
+
         public string TargetViewHotkeyText
         {
             get => _targetViewHotkeyText;
             set => SetProperty(ref _targetViewHotkeyText, value);
         }
-        
+
         public string TargetCustomHpHotkeyText
         {
             get => _targetCustomHpHotkeyText;
             set => SetProperty(ref _targetCustomHpHotkeyText, value);
         }
-        
+
         public string TargetRepeatActHotkeyText
         {
             get => _targetRepeatActHotkeyText;
             set => SetProperty(ref _targetRepeatActHotkeyText, value);
         }
-        
+
         public string IncreaseTargetSpeedHotkeyText
         {
             get => _increaseTargetSpeedHotkeyText;
             set => SetProperty(ref _increaseTargetSpeedHotkeyText, value);
         }
-        
+
         public string DecreaseTargetSpeedHotkeyText
         {
             get => _decreaseTargetSpeedHotkeyText;
             set => SetProperty(ref _decreaseTargetSpeedHotkeyText, value);
         }
-        
+
         public string EnableTargetOptionsHotkeyText
         {
             get => _enableTargetOptionsHotkeyText;
             set => SetProperty(ref _enableTargetOptionsHotkeyText, value);
         }
-        
+
         public string ShowAllResistancesHotkeyText
         {
             get => _showAllResistancesHotkeyText;
             set => SetProperty(ref _showAllResistancesHotkeyText, value);
         }
-        
+
         public string DisableAiHotkeyText
         {
             get => _disableAiHotkeyText;
             set => SetProperty(ref _disableAiHotkeyText, value);
         }
-        
+
         public string AllNoDeathHotkeyText
         {
             get => _allNoDeathHotkeyText;
             set => SetProperty(ref _allNoDeathHotkeyText, value);
         }
-        
+
         public string AllNoDamageHotkeyText
         {
             get => _allNoDamageHotkeyText;
             set => SetProperty(ref _allNoDamageHotkeyText, value);
         }
-        
+
         public string AllRepeatActHotkeyText
         {
             get => _allRepeatActHotkeyText;
@@ -358,16 +373,15 @@ namespace SilkySouls3.ViewModels
             get => _endlessSoulmassHotkeyText;
             set => SetProperty(ref _endlessSoulmassHotkeyText, value);
         }
-        
-        
+
         #endregion
-        
+
         private string _currentSettingHotkeyId;
         private LowLevelKeyboardHook _tempHook;
         private Keys _currentKeys;
-        
+
         private readonly Dictionary<string, Action<string>> _propertySetters;
-        
+
         private readonly SettingsService _settingsService;
         private readonly HotkeyManager _hotkeyManager;
 
@@ -377,7 +391,7 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager = hotkeyManager;
 
             RegisterHotkeys();
-            
+
             _propertySetters = new Dictionary<string, Action<string>>
             {
                 { "SavePos1", text => SavePos1HotkeyText = text },
@@ -423,7 +437,7 @@ namespace SilkySouls3.ViewModels
                 { "EnableFreeCam", text => EnableFreeCamHotkeyText = text },
                 { "MoveCamToPlayer", text => MoveCamToPlayerHotkeyText = text },
             };
-            
+
             LoadHotkeyDisplays();
         }
 
@@ -432,7 +446,8 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction("Quitout", () => _settingsService.Quitout());
         }
 
-#region hotkeyStuff
+        #region hotkeyStuff
+
         private void LoadHotkeyDisplays()
         {
             foreach (var entry in _propertySetters)
@@ -443,13 +458,13 @@ namespace SilkySouls3.ViewModels
                 setter(GetHotkeyDisplayText(actionId));
             }
         }
-        
+
         private string GetHotkeyDisplayText(string actionId)
         {
             Keys keys = _hotkeyManager.GetHotkey(actionId);
             return keys != null && keys.Values.ToArray().Length > 0 ? string.Join(" + ", keys) : "None";
         }
-        
+
         public void StartSettingHotkey(string actionId)
         {
             if (_currentSettingHotkeyId != null &&
@@ -535,10 +550,9 @@ namespace SilkySouls3.ViewModels
             _currentSettingHotkeyId = null;
             _currentKeys = null;
         }
-        
+
         public void ConfirmHotkey()
         {
-            
             var currentSettingHotkeyId = _currentSettingHotkeyId;
             var currentKeys = _currentKeys;
             if (currentSettingHotkeyId == null || currentKeys == null || currentKeys.IsEmpty)
@@ -557,24 +571,24 @@ namespace SilkySouls3.ViewModels
         {
             string existingHotkeyId = _hotkeyManager.GetActionIdByKeys(currentKeys);
             if (string.IsNullOrEmpty(existingHotkeyId)) return;
-            
+
             _hotkeyManager.ClearHotkey(existingHotkeyId);
             if (_propertySetters.TryGetValue(existingHotkeyId, out var oldSetter))
             {
                 oldSetter("None");
             }
         }
-        
+
         private void SetNewHotkey(string currentSettingHotkeyId, Keys currentKeys)
         {
             _hotkeyManager.SetHotkey(currentSettingHotkeyId, currentKeys);
-            
+
             if (_propertySetters.TryGetValue(currentSettingHotkeyId, out var setter))
             {
                 setter(new Keys(currentKeys.Values.ToArray()).ToString());
             }
         }
-        
+
         public void CancelSettingHotkey()
         {
             if (_currentSettingHotkeyId != null &&
@@ -586,8 +600,9 @@ namespace SilkySouls3.ViewModels
 
             StopSettingHotkey();
         }
+
         #endregion
-        
+
         public void ApplyLoadedOptions()
         {
             _isLoaded = true;
@@ -606,5 +621,11 @@ namespace SilkySouls3.ViewModels
         }
 
         public void ResetAttached() => _isLoaded = false;
+
+        public void DoHotkeyReminder()
+        {
+            if (!IsHotkeyReminderEnabled) return;
+            CustomMessageBox.Show("Hotkeys are enabled", "Hotkeys Enabled", topMost: true);
+        }
     }
 }

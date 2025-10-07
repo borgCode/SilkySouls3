@@ -145,6 +145,9 @@
     <Compile Include="Views\CreateLoadoutWindow.xaml.cs">
       <DependentUpon>CreateLoadoutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomMessageBox.xaml.cs">
+      <DependentUpon>CustomMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EnemyTab.xaml.cs">
       <DependentUpon>EnemyTab.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\CreateLoadoutWindow.xaml" />
+    <Page Include="Views\CustomMessageBox.xaml" />
     <Page Include="Views\EnemyTab.xaml" />
     <Page Include="Views\EventTab.xaml" />
     <Page Include="Views\ItemTab.xaml" />
