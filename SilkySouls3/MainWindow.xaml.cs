@@ -181,6 +181,7 @@ namespace SilkySouls3
                 DisableFeatures();
                 _settingsViewModel.ResetLoaded();
                 _settingsViewModel.ResetAttached();
+                _nopManager.ClearRegistry();
                 _loaded = false;
                 _hasAllocatedMemory = false;
                 _hasAppliedNoLogo = false;
