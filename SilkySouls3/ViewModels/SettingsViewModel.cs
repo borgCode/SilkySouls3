@@ -679,6 +679,7 @@ namespace SilkySouls3.ViewModels
         public void DoHotkeyReminder()
         {
             if (!IsHotkeyReminderEnabled) return;
+            if (!IsEnableHotkeysEnabled) return;
             CustomMessageBox.Show("Hotkeys are enabled", "Hotkeys Enabled", topMost: true);
         }
 

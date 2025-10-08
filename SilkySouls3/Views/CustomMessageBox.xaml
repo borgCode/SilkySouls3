@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SilkySouls3.Views"
         Style="{StaticResource DefaultWindowStyle}"
         mc:Ignorable="d"
-        Title="CustomMessageBox" Height="100" Width="300">
+        Title="CustomMessageBox" Height="300" Width="300">
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
