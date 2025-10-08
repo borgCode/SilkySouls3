@@ -474,5 +474,14 @@
             -0xD,
             AddressingMode.Absolute
         );
+
+        public static readonly Pattern Rest = new Pattern(
+            new byte[] { 0x48, 0x85, 0xC9, 0x74, 0x08, 0x8B, 0x53, 0x38 },
+            "xxxxxxxx",
+            0x8,
+            AddressingMode.Relative,
+            1,
+            5
+        );
     }
 }

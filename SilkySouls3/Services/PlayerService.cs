@@ -273,5 +273,17 @@ namespace SilkySouls3.Services
             });
             _memoryIo.AllocateAndExecute(bytes);
         }
+
+        public void Rest()
+        {
+            var bytes = AsmLoader.GetAsmBytes("Rest");
+            var playerIns = _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.PlayerIns);AsmHelper.WriteAbsoluteAddresses(bytes, new []
+            {
+                (playerIns, 0x0 + 2),
+                (Funcs.Rest, 0xF + 2)
+            });
+            
+            _memoryIo.AllocateAndExecute(bytes);
+        }
     }
 }

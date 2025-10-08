@@ -451,6 +451,23 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00
+        ///ba 0a 00 00 00          mov    edx,0xa
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///48 83 ec 28             sub    rsp,0x28
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///c3                      ret.
+        /// </summary>
+        internal static string Rest {
+            get {
+                return ResourceManager.GetString("Rest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0,2000508C,Aldrich&apos;s Ruby,1,0,0
         ///0,20005096,Aldrich&apos;s Sapphire,1,0,0
         ///0,200050E6,Ashen Estus Ring,1,0,0

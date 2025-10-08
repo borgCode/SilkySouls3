@@ -204,6 +204,12 @@
                             Click="Ember_Click"
                             IsEnabled="{Binding AreOptionsEnabled}"
                             Margin="0,0,0,15"/>
+                    <Button Content="Rest" 
+                            Height="25" Width="150"
+                            FontSize="14"
+                            Click="Rest_Click"
+                            IsEnabled="{Binding AreOptionsEnabled}"
+                            Margin="0,0,0,15"/>
                     
                 </StackPanel>
             </Grid>

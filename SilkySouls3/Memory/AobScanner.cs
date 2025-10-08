@@ -118,6 +118,7 @@ namespace SilkySouls3.Memory
             Offsets.Funcs.Travel = FindAddressByPattern(Patterns.TravelFunc).ToInt64();
             Offsets.Funcs.GetEvent = FindAddressByPattern(Patterns.GetEvent).ToInt64();
             Offsets.Funcs.SetSpEffect = FindAddressByPattern(Patterns.SetSpEffect).ToInt64();
+            Offsets.Funcs.Rest = FindAddressByPattern(Patterns.Rest).ToInt64();
             Offsets.Funcs.LevelUp = Offsets.Funcs.Travel - 0x720;
             Offsets.Funcs.ReinforceWeapon = Offsets.Funcs.Travel - 0x1620;
             Offsets.Funcs.InfuseWeapon = Offsets.Funcs.Travel - 0x1CB0;
@@ -191,6 +192,7 @@ namespace SilkySouls3.Memory
             Console.WriteLine($"Funcs.GetEvent: 0x{Offsets.Funcs.GetEvent:X}");
             Console.WriteLine($"Funcs.SetSpEffect: 0x{Offsets.Funcs.SetSpEffect:X}");
             Console.WriteLine($"Funcs.StopMusic: 0x{Offsets.Funcs.StopMusic:X}");
+            Console.WriteLine($"Funcs.Rest: 0x{Offsets.Funcs.Rest:X}");
 #endif
         }
 

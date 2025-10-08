@@ -669,6 +669,9 @@ namespace SilkySouls3.ViewModels
 
             _defaultSoundVolume = SettingsManager.Default.DefaultSoundVolume;
             OnPropertyChanged(nameof(DefaultSoundVolume));
+            
+            _isHotkeyReminderEnabled = SettingsManager.Default.HotkeyReminder;
+            OnPropertyChanged(nameof(IsHotkeyReminderEnabled));
         }
 
         public void ResetLoaded() => _isLoaded = false;

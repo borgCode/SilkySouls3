@@ -352,6 +352,7 @@ namespace SilkySouls3.Memory
             public static long GetEvent;
             public static long SetSpEffect;
             public static long StopMusic;
+            public static long Rest;
         }
     }
 }

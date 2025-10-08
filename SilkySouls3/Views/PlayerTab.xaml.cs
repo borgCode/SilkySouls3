@@ -320,5 +320,10 @@ namespace SilkySouls3.Views
         {
             _playerViewModel.Ember();
         }
+
+        private void Rest_Click(object sender, RoutedEventArgs e)
+        {
+            _playerViewModel.Rest();
+        }
     }
 }
