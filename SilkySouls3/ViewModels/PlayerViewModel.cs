@@ -569,5 +569,7 @@ namespace SilkySouls3.ViewModels
         public void GiveSouls() =>_playerService.GiveSouls();
         public void Ember() => _playerService.SetSpEffect(GameIds.SpEffectId.Ember);
         public void Rest() => _playerService.Rest();
+
+        public void SetRtsr() => _playerService.SetHp(CurrentMaxHp / 5 - 1);
     }
 }

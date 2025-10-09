@@ -22,7 +22,7 @@ namespace SilkySouls3.Views
 
         private void SetRtsrClick(object sender, RoutedEventArgs e)
         {
-            _playerViewModel.SetHp(1);
+            _playerViewModel.SetRtsr();
         }
 
         private void SetMaxHpClick(object sender, RoutedEventArgs e)
