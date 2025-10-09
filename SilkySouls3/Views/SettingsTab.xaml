@@ -128,15 +128,15 @@
                                          KeyDown="HotkeyTextBox_KeyDown" />
 
 
-                                <TextBlock Grid.Column="3" Text="No Death:" VerticalAlignment="Center"
+                                <TextBlock Grid.Column="3" Text="Max HP:" VerticalAlignment="Center"
                                            HorizontalAlignment="Left" />
                                 <TextBox Grid.Column="4"
                                          Margin="5,0,-10,0"
-                                         Text="{Binding NoDeathHotkeyText}"
+                                         Text="{Binding MaxHpHotkeyText}"
                                          Style="{StaticResource HotkeyTextBoxStyle}"
                                          GotFocus="HotkeyTextBox_GotFocus"
                                          LostFocus="HotkeyTextBox_LostFocus"
-                                         Tag="NoDeath"
+                                         Tag="MaxHp"
                                          KeyDown="HotkeyTextBox_KeyDown" />
 
                             </Grid>
@@ -148,14 +148,14 @@
                                     <ColumnDefinition Width="125" />
                                     <ColumnDefinition Width="85" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="One Shot:" VerticalAlignment="Center"
+                                <TextBlock Grid.Column="0" Text="No Death" VerticalAlignment="Center"
                                            HorizontalAlignment="Left" />
                                 <TextBox Grid.Column="1"
-                                         Text="{Binding OneShotHotkeyText}"
+                                         Text="{Binding NoDeathHotkeyText}"
                                          Style="{StaticResource HotkeyTextBoxStyle}"
                                          GotFocus="HotkeyTextBox_GotFocus"
                                          LostFocus="HotkeyTextBox_LostFocus"
-                                         Tag="OneShot"
+                                         Tag="NoDeath"
                                          KeyDown="HotkeyTextBox_KeyDown" />
 
                                 <TextBlock Grid.Column="3" Text="No Damage:" VerticalAlignment="Center"
@@ -281,6 +281,16 @@
                                          GotFocus="HotkeyTextBox_GotFocus"
                                          LostFocus="HotkeyTextBox_LostFocus"
                                          Tag="TogglePlayerSpeed"
+                                         KeyDown="HotkeyTextBox_KeyDown" />
+                                <TextBlock Grid.Column="3" Text="One Shot" VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBox Grid.Column="4"
+                                         Margin="5,0,-10,0"
+                                         Text="{Binding OneShotHotkeyText}"
+                                         Style="{StaticResource HotkeyTextBoxStyle}"
+                                         GotFocus="HotkeyTextBox_GotFocus"
+                                         LostFocus="HotkeyTextBox_LostFocus"
+                                         Tag="OneShot"
                                          KeyDown="HotkeyTextBox_KeyDown" />
                             </Grid>
                         </StackPanel>

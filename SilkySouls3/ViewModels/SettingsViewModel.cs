@@ -29,6 +29,7 @@ namespace SilkySouls3.ViewModels
         private string _restorePos1HotkeyText;
         private string _restorePos2HotkeyText;
         private string _rtsrHotkeyText;
+        private string _maxHpHotkeyText;
         private string _noClipHotkeyText;
         private string _enableFreeCamHotkeyText;
         private string _moveCamToPlayerHotkeyText;
@@ -190,6 +191,12 @@ namespace SilkySouls3.ViewModels
         {
             get => _rtsrHotkeyText;
             set => SetProperty(ref _rtsrHotkeyText, value);
+        }
+        
+        public string MaxHpHotkeyText
+        {
+            get => _maxHpHotkeyText;
+            set => SetProperty(ref _maxHpHotkeyText, value);
         }
 
         public string NoDeathHotkeyText
@@ -439,6 +446,7 @@ namespace SilkySouls3.ViewModels
                 { "RestorePos1", text => RestorePos1HotkeyText = text },
                 { "RestorePos2", text => RestorePos2HotkeyText = text },
                 { "RTSR", text => RtsrHotkeyText = text },
+                { "MaxHp", text => MaxHpHotkeyText = text},
                 { "NoDeath", text => NoDeathHotkeyText = text },
                 { "OneShot", text => OneShotHotkeyText = text },
                 { "PlayerNoDamage", text => NoDamagePlayerHotkeyText = text },

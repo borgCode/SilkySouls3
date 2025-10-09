@@ -103,7 +103,8 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction("SavePos2", () => SavePos(1));
             _hotkeyManager.RegisterAction("RestorePos1", () => RestorePos(0));
             _hotkeyManager.RegisterAction("RestorePos2", () => RestorePos(1));
-            _hotkeyManager.RegisterAction("RTSR", () => SetHp(1));
+            _hotkeyManager.RegisterAction("RTSR", SetRtsr);
+            _hotkeyManager.RegisterAction("MaxHp", () => SetHp(CurrentMaxHp));
             _hotkeyManager.RegisterAction("NoDeath", () => { IsNoDeathEnabled = !IsNoDeathEnabled; });
             _hotkeyManager.RegisterAction("OneShot", () => { IsOneShotEnabled = !IsOneShotEnabled; });
             _hotkeyManager.RegisterAction("PlayerNoDamage", () => { IsNoDamageEnabled = !IsNoDamageEnabled; });
