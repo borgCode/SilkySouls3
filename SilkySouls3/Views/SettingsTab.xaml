@@ -449,7 +449,7 @@
 
                 <TabItem Header="Enemies">
                     <ScrollViewer MaxHeight="370" VerticalScrollBarVisibility="Auto">
-                        <StackPanel Margin="5,0,0,0">
+                        <StackPanel Margin="5,0,0,20">
                             <Grid Margin="0,5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="125" />
