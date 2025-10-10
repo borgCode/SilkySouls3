@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -178,6 +179,10 @@ namespace SilkySouls3.Services
         public void ToggleEndlessSoulmass(bool isEnabled)
         {
             if (!IsTargetCinder()) return;
+            
+            var preventSoulmassStaggerRemovalCode = CodeCaveOffsets.Base + CodeCaveOffsets.CinderSoulmassRemoval;
+        
+            
             var soulmassPtr = _memoryIo.FollowPointers(SoloParamRepo.Base,
                 new[]
                 {
@@ -190,8 +195,31 @@ namespace SilkySouls3.Services
             {
                 _memoryIo.WriteFloat(soulmassPtr + 0x8, -1.0f);
                 CastSoulMass();
+                InstallSoulmassRemovalHook(preventSoulmassStaggerRemovalCode);
             }
-            else _memoryIo.WriteFloat(soulmassPtr + 0x8, 40.0f);
+            else
+            {
+                _memoryIo.WriteFloat(soulmassPtr + 0x8, 40.0f);
+                _hookManager.UninstallHook(preventSoulmassStaggerRemovalCode.ToInt64());
+            }
+        }
+
+        private void InstallSoulmassRemovalHook(IntPtr preventSoulmassStaggerRemovalCode)
+        {
+            var hookLoc = Hooks.SoulmassStaggerRemoval;
+            int endOfFuncOffset = 0x5A;
+            var codeBytes = AsmLoader.GetAsmBytes("CinderSoulmassRemoval");
+            AsmHelper.WriteRelativeOffsets(codeBytes, new []
+            {
+                (preventSoulmassStaggerRemovalCode.ToInt64() + 0xB, hookLoc + endOfFuncOffset, 6, 0xB + 2),
+                (preventSoulmassStaggerRemovalCode.ToInt64() + 0x11, hookLoc + 0x5, 5, 0x11 + 1),
+                
+            });
+            
+            _memoryIo.WriteBytes(preventSoulmassStaggerRemovalCode, codeBytes);
+
+            _hookManager.InstallHook(preventSoulmassStaggerRemovalCode.ToInt64(), hookLoc,
+                new byte[] { 0xC6, 0x44, 0x24, 0x40, 0x00 });
         }
 
         public bool IsTargetCinder()

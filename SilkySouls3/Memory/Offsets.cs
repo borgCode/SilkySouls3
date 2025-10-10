@@ -329,6 +329,7 @@ namespace SilkySouls3.Memory
             public static long ItemLotBase;
             public static long ArgoSpeed;
             public static long AddSubGoalDsa;
+            public static long SoulmassStaggerRemoval;
 
         }
 

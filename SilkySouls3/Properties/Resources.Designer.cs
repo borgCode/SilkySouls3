@@ -178,6 +178,18 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to c6 44 24 40 00          mov    BYTE PTR [rsp+0x40],0x0
+        ///81 38 59 2f 00 00       cmp    DWORD PTR [rax],0x2f59
+        ///0f 84 00 00 00 00       je     11 &lt;_main+0x11&gt;
+        ///e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;.
+        /// </summary>
+        internal static string CinderSoulmassRemoval {
+            get {
+                return ResourceManager.GetString("CinderSoulmassRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0,40000126,Alluring Skull,600,0,0
         ///0,400001CD,Black Bug Pellet,600,0,0
         ///0,40000129,Black Firebomb,600,0,0

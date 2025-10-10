@@ -381,6 +381,15 @@
             AddressingMode.Absolute
         );
 
+        public static readonly Pattern SoulmassStaggerRemoval = new Pattern(
+            new byte[] { 0x48, 0x8B, 0x49, 0x10, 0x74 },
+            "xxxxx",
+            0x12,
+            AddressingMode.Absolute
+        );
+            
+
+
 
         //Funcs
 

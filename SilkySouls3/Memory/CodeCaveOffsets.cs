@@ -56,5 +56,7 @@ namespace SilkySouls3.Memory
             RightSideAnimationId = 0x510,
             Code = 0x520
         }
+
+        public const int CinderSoulmassRemoval = 0x700;
     }
 }
