@@ -115,18 +115,21 @@ namespace SilkySouls3.Services
                 int phaseBeforeSoulmass = _memoryIo.ReadInt32(currentPhaseAddr);
                 if (phaseBeforeSoulmass == 0) phaseBeforeSoulmass = 1 << 1;
 
-                ForceAnimation(_phaseAnimations[3]);
-
-                if (!WaitForGameState(
-                        () => _memoryIo.ReadInt32(currentPhaseAddr) == 1 << 3,
-                        maxWaitTime,
-                        "Something went wrong with the forced transition, please try again or reload the game"))
+                if (phaseBeforeSoulmass != 1 << 3)
                 {
-                    return;
+                    ForceAnimation(_phaseAnimations[3]);
+
+                    if (!WaitForGameState(
+                            () => _memoryIo.ReadInt32(currentPhaseAddr) == 1 << 3,
+                            maxWaitTime,
+                            "Something went wrong with the forced transition, please try again or reload the game"))
+                    {
+                        return;
+                    }
                 }
 
                 var modulesPtr =
-                    (IntPtr)_memoryIo.ReadInt64(targetPtr + (int)WorldChrMan.PlayerInsOffsets.Modules);
+                    (IntPtr)_memoryIo.ReadInt64(targetPtr + WorldChrMan.PlayerInsOffsets.Modules);
                 var chrEventModulePtr =
                     (IntPtr)_memoryIo.ReadInt64(modulesPtr + (int)WorldChrMan.Modules.ChrEventModule);
                 _memoryIo.WriteInt32(chrEventModulePtr + WorldChrMan.ForceAnimationOffset, soulmassEzStateId);
@@ -145,15 +148,18 @@ namespace SilkySouls3.Services
 
                 if (!WaitForGameState(
                         () => _memoryIo.ReadString(
-                            chrBehaviorModulePtr + (int)WorldChrMan.ChrBehaviorModule.CurrentAnimation,
+                            chrBehaviorModulePtr + WorldChrMan.ChrBehaviorModule.CurrentAnimation,
                             stringLength) != soulmassAnimationName, maxWaitTime,
                         "Soulmass animation didn't start in time"))
                 {
                     return;
                 }
 
-                int previousPhase = _currentPhaseLookUp[phaseBeforeSoulmass];
-                ForceAnimation(_phaseAnimations[previousPhase]);
+                if (phaseBeforeSoulmass != 1 << 3)
+                {
+                    int previousPhase = _currentPhaseLookUp[phaseBeforeSoulmass];
+                    ForceAnimation(_phaseAnimations[previousPhase]);
+                }
             });
         }
 
@@ -181,7 +187,6 @@ namespace SilkySouls3.Services
             if (!IsTargetCinder()) return;
             
             var preventSoulmassStaggerRemovalCode = CodeCaveOffsets.Base + CodeCaveOffsets.CinderSoulmassRemoval;
-        
             
             var soulmassPtr = _memoryIo.FollowPointers(SoloParamRepo.Base,
                 new[]
