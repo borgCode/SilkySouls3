@@ -67,8 +67,8 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     EnemyIns.ComManipulator,
-                    (int)EnemyIns.ComManipOffsets.AiIns,
-                    (int)EnemyIns.AiInsOffsets.LuaNumbers
+                    (int)EnemyIns.ComManipOffsets.AiThink,
+                    (int)EnemyIns.AiThinkOffsets.LuaNumbers
                 }, false);
 
             _memoryIo.WriteFloat(luaNumbersPtr + (int)EnemyIns.LuaNumbers.Gwyn5HitComboNumberIndex * 4, 0);
@@ -244,8 +244,8 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     EnemyIns.ComManipulator,
-                    (int)EnemyIns.ComManipOffsets.AiIns,
-                    (int)EnemyIns.AiInsOffsets.SpEffectPtr
+                    (int)EnemyIns.ComManipOffsets.AiThink,
+                    (int)EnemyIns.AiThinkOffsets.SpEffectPtr
                 }, true);
 
             _memoryIo.WriteInt32(spEffectBasePtr + (int)EnemyIns.SpEffectOffsets.Stagger,

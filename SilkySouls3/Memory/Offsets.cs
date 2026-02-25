@@ -227,10 +227,10 @@ namespace SilkySouls3.Memory
             public enum ComManipOffsets
             {
                 EnemyId = 0x390,
-                AiIns = 0x320
+                AiThink = 0x320
             }
             
-            public enum AiInsOffsets
+            public enum AiThinkOffsets
             {
                 AiFunc = 0x8,
                 SpEffectPtr = 0x20,

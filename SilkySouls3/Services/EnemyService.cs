@@ -81,8 +81,8 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     EnemyIns.ComManipulator,
-                    (int)EnemyIns.ComManipOffsets.AiIns,
-                    (int)EnemyIns.AiInsOffsets.SpEffectPtr
+                    (int)EnemyIns.ComManipOffsets.AiThink,
+                    (int)EnemyIns.AiThinkOffsets.SpEffectPtr
                 }, true);
 
             return (
@@ -193,8 +193,8 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     EnemyIns.ComManipulator,
-                    (int)EnemyIns.ComManipOffsets.AiIns,
-                    (int)EnemyIns.AiInsOffsets.AiFunc,
+                    (int)EnemyIns.ComManipOffsets.AiThink,
+                    (int)EnemyIns.AiThinkOffsets.AiFunc,
                     EnemyIns.ForceActPtr,
                     EnemyIns.ForceActOffset
                 }, false);
@@ -224,8 +224,8 @@ namespace SilkySouls3.Services
                 new[]
                 {
                     EnemyIns.ComManipulator,
-                    (int)EnemyIns.ComManipOffsets.AiIns,
-                    (int)EnemyIns.AiInsOffsets.TargetingSystem,
+                    (int)EnemyIns.ComManipOffsets.AiThink,
+                    (int)EnemyIns.AiThinkOffsets.TargetingSystem,
                     EnemyIns.TargetingView
                 }, false);
 
