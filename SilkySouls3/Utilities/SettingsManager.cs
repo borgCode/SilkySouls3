@@ -1,5 +1,9 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace SilkySouls3.Utilities
 {
@@ -16,15 +20,29 @@ namespace SilkySouls3.Utilities
         public bool DisableMenuMusic { get; set; }
         public bool HotkeyReminder { get; set; }
         public bool DefaultSoundChangeEnabled { get; set; }
-        public int DefaultSoundVolume { get; set; } = 3;
+        [DefaultValue(3)] public int DefaultSoundVolume { get; set; }
         public double WindowLeft { get; set; }
         public double WindowTop { get; set; }
-        public double ResistancesWindowScaleX { get; set; } = 1.0;
-        public double ResistancesWindowScaleY { get; set; } = 1.0;
+        [DefaultValue(1.0)] public double ResistancesWindowScaleX { get; set; }
+        [DefaultValue(1.0)] public double ResistancesWindowScaleY { get; set; }
         public double ResistancesWindowWidth { get; set; }
         public double ResistancesWindowLeft { get; set; }
         public double ResistancesWindowTop { get; set; }
-        public bool EnableUpdateChecks { get; set; } = true;
+        [DefaultValue(1.0)] public double DefensesWindowScaleX { get; set; }
+        [DefaultValue(1.0)] public double DefensesWindowScaleY { get; set; }
+        [DefaultValue(0.5)] public double DefensesWindowOpacity { get; set; }
+        public double DefensesWindowWidth { get; set; }
+        public double DefensesWindowLeft { get; set; }
+        public double DefensesWindowTop { get; set; }
+        [DefaultValue(true)] public bool EnableUpdateChecks { get; set; }
+        public bool RememberPlayerSpeed { get; set; }
+        [DefaultValue(1f)] public float PlayerSpeed { get; set; }
+        public bool RememberGameSpeed { get; set; }
+        [DefaultValue(1f)] public float GameSpeed { get; set; }
+        public string SaveCustomHp { get; set; } = "";
+        public double SpEffectWindowLeft { get; set; }
+        public double SpEffectWindowTop { get; set; }
+        public bool SpEffectAlwaysOnTop { get; set; }
 
         private static string SettingsPath => Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -35,28 +53,20 @@ namespace SilkySouls3.Utilities
         {
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));
-                
-                var lines = new[]
+                Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath)!);
+                var lines = new List<string>();
+
+                foreach (var prop in GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
-                    $"HotkeyActionIds={HotkeyActionIds}",
-                    $"HotkeyValues={HotkeyValues}",
-                    $"EnableHotkeys={EnableHotkeys}",
-                    $"StutterFix={StutterFix}",
-                    $"AlwaysOnTop={AlwaysOnTop}",
-                    $"DisableMenuMusic={DisableMenuMusic}",
-                    $"HotkeyReminder={HotkeyReminder}",
-                    $"DefaultSoundChangeEnabled={DefaultSoundChangeEnabled}",
-                    $"DefaultSoundVolume={DefaultSoundVolume}",
-                    $"WindowLeft={WindowLeft}",
-                    $"WindowTop={WindowTop}",
-                    $"ResistancesWindowScaleX={ResistancesWindowScaleX}",
-                    $"ResistancesWindowScaleY={ResistancesWindowScaleY}",
-                    $"ResistancesWindowWidth={ResistancesWindowWidth}",
-                    $"ResistancesWindowLeft={ResistancesWindowLeft}",
-                    $"ResistancesWindowTop={ResistancesWindowTop}",
-                    $"EnableUpdateChecks={EnableUpdateChecks}",
-                };
+                    var value = prop.GetValue(this);
+                    var stringValue = value switch
+                    {
+                        double d => d.ToString(CultureInfo.InvariantCulture),
+                        float f => f.ToString(CultureInfo.InvariantCulture),
+                        _ => value?.ToString() ?? ""
+                    };
+                    lines.Add($"{prop.Name}={stringValue}");
+                }
 
                 File.WriteAllLines(SettingsPath, lines);
             }
@@ -70,90 +80,55 @@ namespace SilkySouls3.Utilities
         {
             var settings = new SettingsManager();
 
-            if (File.Exists(SettingsPath))
+            foreach (var prop in typeof(SettingsManager).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                try
-                {
-                    foreach (var line in File.ReadAllLines(SettingsPath))
-                    {
-                        var parts = line.Split(new[] { '=' }, 2);
-                        if (parts.Length == 2)
-                        {
-                            var key = parts[0];
-                            var value = parts[1];
+                var defaultAttr = prop.GetCustomAttribute<DefaultValueAttribute>();
+                if (defaultAttr != null)
+                    prop.SetValue(settings, defaultAttr.Value);
+            }
 
-                            switch (key)
-                            {
-                                case "HotkeyActionIds": settings.HotkeyActionIds = value; break;
-                                case "HotkeyValues": settings.HotkeyValues = value; break;
-                                case "EnableHotkeys":
-                                    bool.TryParse(value, out bool eh);
-                                    settings.EnableHotkeys = eh;
-                                    break;
-                                case "StutterFix":
-                                    bool.TryParse(value, out bool sf);
-                                    settings.StutterFix = sf;
-                                    break;
-                                case "AlwaysOnTop":
-                                    bool.TryParse(value, out bool aot);
-                                    settings.AlwaysOnTop = aot;
-                                    break;
-                                case "DisableMenuMusic":
-                                    bool.TryParse(value, out bool dmm);
-                                    settings.DisableMenuMusic = dmm;
-                                    break;
-                                case "HotkeyReminder":
-                                    bool.TryParse(value, out bool hr);
-                                    settings.HotkeyReminder = hr;
-                                    break;
-                                case "DefaultSoundChangeEnabled":
-                                    bool.TryParse(value, out bool dsce);
-                                    settings.DefaultSoundChangeEnabled = dsce;
-                                    break;
-                                case "DefaultSoundVolume":
-                                    int.TryParse(value, out int dsv);
-                                    settings.DefaultSoundVolume = dsv;
-                                    break;
-                                case "WindowLeft":
-                                    double.TryParse(value, out double wl);
-                                    settings.WindowLeft = wl;
-                                    break;
-                                case "WindowTop":
-                                    double.TryParse(value, out double wt);
-                                    settings.WindowTop = wt;
-                                    break;
-                                case "ResistancesWindowScaleX":
-                                    double.TryParse(value, out double rwx);
-                                    settings.ResistancesWindowScaleX = rwx;
-                                    break;
-                                case "ResistancesWindowScaleY":
-                                    double.TryParse(value, out double rwy);
-                                    settings.ResistancesWindowScaleY = rwy;
-                                    break;
-                                case "ResistancesWindowLeft":
-                                    double.TryParse(value, out double rwl);
-                                    settings.ResistancesWindowLeft = rwl;
-                                    break;
-                                case "ResistancesWindowTop":
-                                    double.TryParse(value, out double rwt);
-                                    settings.ResistancesWindowTop = rwt;
-                                    break;
-                                case "ResistancesWindowWidth":
-                                    double.TryParse(value, out double rww);
-                                    settings.ResistancesWindowWidth = rww;
-                                    break;
-                                case "EnableUpdateChecks":
-                                    bool.TryParse(value, out bool euc);
-                                    settings.EnableUpdateChecks = euc;
-                                    break;
-                            }
-                        }
-                    }
-                }
-                catch
+            if (!File.Exists(SettingsPath))
+                return settings;
+
+            try
+            {
+                var props = new Dictionary<string, PropertyInfo>();
+                foreach (var prop in typeof(SettingsManager).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                    props[prop.Name] = prop;
+
+                foreach (var line in File.ReadAllLines(SettingsPath))
                 {
-                    // Return default settings on error
+                    var parts = line.Split(new[] { '=' }, 2);
+                    if (parts.Length != 2) continue;
+
+                    var key = parts[0];
+                    var value = parts[1];
+
+                    if (!props.TryGetValue(key, out var prop)) continue;
+
+                    object parsed = prop.PropertyType switch
+                    {
+                        { } t when t == typeof(byte) =>
+                            byte.TryParse(value, out var by) ? by : (byte)0,
+                        { } t when t == typeof(double) =>
+                            double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var d) ? d : 0.0,
+                        { } t when t == typeof(float) =>
+                            float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var f) ? f : 0f,
+                        { } t when t == typeof(int) =>
+                            int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var i) ? i : 0,
+                        { } t when t == typeof(bool) =>
+                            bool.TryParse(value, out var b) && b,
+                        { } t when t == typeof(string) => value,
+                        _ => null
+                    };
+
+                    if (parsed != null)
+                        prop.SetValue(settings, parsed);
                 }
+            }
+            catch
+            {
+                // Return default settings on error
             }
 
             return settings;

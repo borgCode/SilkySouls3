@@ -3,14 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:SilkySouls3.Converters"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:converters="clr-namespace:SilkySouls3.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converters:BooleanAndConverter x:Key="BooleanAndConverter" />
     </UserControl.Resources>
-
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="10">
             <Grid.RowDefinitions>
@@ -32,23 +31,35 @@
                                         Value="{Binding CurrentHp}"
                                         TextAlignment="Center"
                                         Width="100"
-                                        PreviewKeyDown="HealthUpDown_PreviewKeyDown"
-                                        LostFocus="HealthUpDown_LostFocus"
-                                        Loaded="HealthUpDown_Loaded"
                                         IsEnabled="{Binding AreOptionsEnabled}"
                                         BorderBrush="#3F3F46" />
                     <TextBlock Text="{Binding CurrentMaxHp, StringFormat=Max: {0}}"
                                VerticalAlignment="Center"
                                Margin="10,0,0,0" />
-                    <Button Click="SetRtsrClick"
-                            Content="RTSR"
+                    <Button
+                        Content="RTSR"
+                        Command="{Binding SetRtsrCommand}"
+                        IsEnabled="{Binding AreOptionsEnabled}"
+                        Margin="10,0,0,0"
+                        Width="60" />
+                    <Button
+                        Content="Max Hp"
+                        Command="{Binding SetMaxHpCommand}"
+                        IsEnabled="{Binding AreOptionsEnabled}"
+                        Margin="10,0,0,0"
+                        Width="60" />
+                    <TextBox Width="60"
+                             Margin="10,0,0,0"
+                             VerticalContentAlignment="Center"
+                             TextAlignment="Center"
+                             Text="{Binding CustomHp, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding AreOptionsEnabled}"
+                             ToolTip="Absolute (e.g. 545) or percentage (e.g. 40%)"
+                             ToolTipService.InitialShowDelay="100" />
+                    <Button Content="Set Hp"
+                            Command="{Binding SetCustomHpCommand}"
                             IsEnabled="{Binding AreOptionsEnabled}"
-                            Margin="10,0,0,0"
-                            Width="60" />
-                    <Button Click="SetMaxHpClick"
-                            Content="Max Hp"
-                            IsEnabled="{Binding AreOptionsEnabled}"
-                            Margin="10,0,0,0"
+                            Margin="5,0,0,0"
                             Width="60" />
                 </StackPanel>
             </Grid>
@@ -66,30 +77,30 @@
 
                     <UniformGrid Grid.Row="0" Grid.Column="0" Rows="1" Columns="2">
                         <Button Content="Save Pos 1"
-                                Click="SavePos_Click" CommandParameter="0"
+                                Command="{Binding SavePositionCommand}" CommandParameter="0"
                                 Margin="0,0,5,5"
                                 IsEnabled="{Binding AreOptionsEnabled}" />
 
                         <Button Content="Restore Pos 1"
-                                Click="RestorePos_Click" CommandParameter="0"
+                                Command="{Binding RestorePositionCommand}" CommandParameter="0"
                                 Margin="5,0,0,5">
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="IsPos1Saved" />
                                     <Binding Path="AreOptionsEnabled" />
+                                    <Binding Path="IsPos1Saved" />
                                 </MultiBinding>
                             </Button.IsEnabled>
                         </Button>
                     </UniformGrid>
 
-                    <StackPanel Grid.Row="0" Grid.Column="1" 
-                                Orientation="Horizontal" 
-                                VerticalAlignment="Center" 
+                    <StackPanel Grid.Row="0" Grid.Column="1"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
                                 Margin="10,0,0,5">
-    
+
                         <CheckBox Content="Include State"
                                   IsChecked="{Binding IsStateIncluded}" />
-              
+
                         <Border Background="#3498db"
                                 CornerRadius="10"
                                 Width="12"
@@ -109,17 +120,17 @@
 
                     <UniformGrid Grid.Row="1" Grid.Column="0" Rows="1" Columns="2">
                         <Button Content="Save Pos 2"
-                                Click="SavePos_Click" CommandParameter="1"
+                                Command="{Binding SavePositionCommand}" CommandParameter="1"
                                 Margin="0,5,5,0"
                                 IsEnabled="{Binding AreOptionsEnabled}" />
 
                         <Button Content="Restore Pos 2"
-                                Click="RestorePos_Click" CommandParameter="1"
+                                Command="{Binding RestorePositionCommand}" CommandParameter="1"
                                 Margin="5,5,0,0">
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{StaticResource BooleanAndConverter}">
-                                    <Binding Path="IsPos2Saved" />
                                     <Binding Path="AreOptionsEnabled" />
+                                    <Binding Path="IsPos2Saved" />
                                 </MultiBinding>
                             </Button.IsEnabled>
                         </Button>
@@ -127,27 +138,18 @@
 
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="10,5,0,0"
                                 HorizontalAlignment="Left">
-                        <xctk:DoubleUpDown x:Name="PosXUpDown" Width="70" Margin="5,0,0,0"
+                        <xctk:DoubleUpDown Width="70" Margin="5,0,0,0"
                                            Padding="0,0,5,0"
                                            Value="{Binding PosX}" FormatString="F1"
-                                           Loaded="CoordinateUpDown_Loaded"
-                                           LostFocus="PosX_LostFocus" 
-                                           PreviewKeyDown="PosX_PreviewKeyDown"
-                                           IsEnabled="{Binding AreOptionsEnabled}" />
-                        <xctk:DoubleUpDown x:Name="PosYUpDown" Width="70" Margin="5,0,5,0"
+                                           IsEnabled="False" />
+                        <xctk:DoubleUpDown Width="70" Margin="5,0,5,0"
                                            Padding="0,0,5,0"
                                            Value="{Binding PosY}" FormatString="F1"
-                                           Loaded="CoordinateUpDown_Loaded"
-                                           LostFocus="PosY_LostFocus"
-                                           PreviewKeyDown="PosY_PreviewKeyDown"
-                                           IsEnabled="{Binding AreOptionsEnabled}" />
-                        <xctk:DoubleUpDown x:Name="PosZUpDown" Width="70" Value="{Binding PosZ}" 
+                                           IsEnabled="False" />
+                        <xctk:DoubleUpDown Width="70" Value="{Binding PosZ}"
                                            Padding="0,0,5,0"
                                            FormatString="F1"
-                                           Loaded="CoordinateUpDown_Loaded"
-                                           LostFocus="PosZ_LostFocus"
-                                           PreviewKeyDown="PosZ_PreviewKeyDown"
-                                           IsEnabled="{Binding AreOptionsEnabled}" />
+                                           IsEnabled="False" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -156,7 +158,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0">
@@ -178,12 +180,13 @@
                     <CheckBox Content="Infinite Durability"
                               IsChecked="{Binding IsInfiniteDurabilityEnabled}"
                               Margin="0,2" />
-                </StackPanel>
-
-                <StackPanel Grid.Column="1">
                     <CheckBox Content="One Shot"
                               IsChecked="{Binding IsOneShotEnabled}"
                               Margin="0,2" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+
                     <CheckBox Content="Invisible"
                               IsChecked="{Binding IsInvisibleEnabled}"
                               Margin="0,2" />
@@ -196,21 +199,30 @@
                     <CheckBox Content="Infinite Poise"
                               IsChecked="{Binding IsInfinitePoiseEnabled}"
                               Margin="0,2" />
+                    <CheckBox Content="No Hit"
+                              IsChecked="{Binding IsNoHitEnabled}"
+                              Margin="0,2" />
+                    <CheckBox Content="Heal Over Time"
+                              IsChecked="{Binding IsHotEnabled}"
+                              Margin="0,2" />
+                    <CheckBox Content="FP Regen"
+                              IsChecked="{Binding IsFpRegenEnabled}"
+                              Margin="0,2" />
                 </StackPanel>
                 <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                    <Button Content="Ember" 
+                    <Button Content="Ember"
                             Height="25" Width="150"
                             FontSize="14"
-                            Click="Ember_Click"
+                            Command="{Binding EmberCommand}"
                             IsEnabled="{Binding AreOptionsEnabled}"
-                            Margin="0,0,0,15"/>
-                    <Button Content="Rest" 
+                            Margin="0,0,0,15" />
+                    <Button Content="Rest"
                             Height="25" Width="150"
                             FontSize="14"
-                            Click="Rest_Click"
+                            Command="{Binding RestCommand}"
                             IsEnabled="{Binding AreOptionsEnabled}"
-                            Margin="0,0,0,15"/>
-                    
+                            Margin="0,0,0,15" />
+
                 </StackPanel>
             </Grid>
 
@@ -232,9 +244,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46"
                                             Tag="Vigor" />
@@ -253,9 +262,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Attunement"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -274,9 +280,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Endurance"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -295,9 +298,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Strength"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -316,9 +316,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Dexterity"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -338,9 +335,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Intelligence"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -359,9 +353,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Faith"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -380,9 +371,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Luck"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -401,9 +389,6 @@
                                             Minimum="1"
                                             Maximum="99"
                                             Grid.Column="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
                                             Tag="Vitality"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -428,10 +413,6 @@
                                             Maximum="999999999"
                                             Grid.Column="0"
                                             Grid.Row="0"
-                                            PreviewKeyDown="StatUpDown_PreviewKeyDown"
-                                            LostFocus="Stat_LostFocus"
-                                            Loaded="StatUpDowns_Loaded"
-                                            GotFocus="PauseUpdates_GotFocus"
                                             Tag="Souls"
                                             IsEnabled="{Binding AreOptionsEnabled}"
                                             BorderBrush="#3F3F46" />
@@ -439,7 +420,7 @@
                                    Margin="10,0,0,0" />
 
                         <Button Content="Give 10k Souls"
-                                Click="GiveSouls_Click"
+                                Command="{Binding GiveSoulsCommand}"
                                 IsEnabled="{Binding AreOptionsEnabled}"
                                 Grid.Column="0"
                                 Grid.Row="1"
@@ -478,6 +459,27 @@
                                                BorderBrush="#3F3F46" />
                             <TextBlock Text="Player Speed" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" />
                         </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0,3,0,5">
+                            <CheckBox Content="Remember Speed"
+                                      IsChecked="{Binding IsRememberSpeedEnabled}"
+                                      VerticalAlignment="Center" />
+                            <Border
+                                Background="#3498db"
+                                CornerRadius="10"
+                                Width="12"
+                                Height="12"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                ToolTip="Persist non-default player speed across sessions"
+                                ToolTipService.InitialShowDelay="100">
+                                <TextBlock Text="i"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           FontSize="10" />
+                            </Border>
+                        </StackPanel>
                         <Grid Margin="0,2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />

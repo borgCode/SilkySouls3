@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SilkySouls3.Memory;
-using SilkySouls3.Models;
+using System;
+using System.Windows.Input;
+using SilkySouls3.Core;
+using SilkySouls3.Enums;
+using SilkySouls3.GameIds;
+using SilkySouls3.Interfaces;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
@@ -12,232 +12,88 @@ namespace SilkySouls3.ViewModels
 {
     public class UtilityViewModel : BaseViewModel
     {
+        private float _desiredGameSpeed = -1f;
+        private const float DefaultGameSpeed = 1f;
+        private const float Epsilon = 0.0001f;
+
+        private readonly IUtilityService _utilityService;
         private readonly HotkeyManager _hotkeyManager;
-        private readonly UtilityService _utilityService;
+        private readonly PlayerViewModel _playerViewModel;
+        private readonly IDebugDrawService _debugDrawService;
+        private readonly IEzStateService _ezStateService;
+        private readonly IEventService _eventService;
 
-        private bool _isHitboxEnabled;
-        private bool _isSoundViewEnabled;
-        private bool _isDrawEventEnabled;
-        private bool _isTargetingViewEnabled;
-        private bool _isDrawLowHitEnabled;
-        private bool _isDrawHighHitEnabled;
-        private bool _isDrawChrRagdollEnabled;
-        private bool _isHideMapEnabled;
-        private bool _isHideObjectsEnabled;
-        private bool _isHideCharactersEnabled;
-        private bool _isHideSfxEnabled;
+        private const float DefaultNoclipSpeedScale = 1f;
 
-        private bool _isDisableEventEnabled;
-        private bool _isDeathCamEnabled;
-        private bool _is100DropEnabled;
-        private bool _isDbgFpsEnabled;
-        private float _fps;
-
-        private bool _isFreeCamEnabled;
-        private int _freeCamMode = 1;
-        private bool _isCamVertIncreaseEnabled;
-
-
-        private const float DefaultNoclipMultiplier = 0.25f;
-        private const uint BaseXSpeedHex = 0x3e4ccccd;
-        private const uint BaseYSpeedHex = 0x3e19999a;
-        private float _noClipSpeedMultiplier = DefaultNoclipMultiplier;
-        private float _gameSpeed;
-        private int _cameraFov;
-
-        private bool _isFullLineUpEnabled;
-
-        private bool _isNoClipEnabled;
-        private bool _areButtonsEnabled;
+        private const float DefaultFov = 43.0f;
 
         private bool _wasNoDeathEnabled;
 
-        private readonly PlayerViewModel _playerViewModel;
-
-        private readonly DebugDrawService _debugDrawService;
-
-        public UtilityViewModel(UtilityService utilityService, HotkeyManager hotkeyManager,
-            PlayerViewModel playerViewModel, DebugDrawService debugDrawService)
+        public UtilityViewModel(IUtilityService utilityService,
+            HotkeyManager hotkeyManager, PlayerViewModel playerViewModel, IDebugDrawService debugDrawService,
+            IStateService stateService, IEzStateService ezStateService, IEventService eventService)
         {
-            _playerViewModel = playerViewModel;
             _utilityService = utilityService;
-            _debugDrawService = debugDrawService;
             _hotkeyManager = hotkeyManager;
+            _playerViewModel = playerViewModel;
+            _debugDrawService = debugDrawService;
+            _ezStateService = ezStateService;
+            _eventService = eventService;
+
             Fps = 75f;
+
+            stateService.Subscribe(State.Loaded, OnGameLoaded);
+            stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
+            stateService.Subscribe(State.FirstLoaded, FirstLoaded);
+
+            BreakAllObjectsCommand = new DelegateCommand(_utilityService.BreakAllObjects);
+            RestoreAllObjectsCommand = new DelegateCommand(_utilityService.RestoreAllObjects);
+            OpenShopCommand = new DelegateCommand<int[]>(OpenShop);
+            TravelCommand = new DelegateCommand(OpenTravelMenu);
+            LevelUpCommand = new DelegateCommand(OpenLevelUpMenu);
+            ReinforceWeaponCommand = new DelegateCommand(OpenReinforceWeaponMenu);
+            InfuseWeaponCommand = new DelegateCommand(OpenInfuseWeaponMenu);
+            RepairCommand = new DelegateCommand(OpenRepairMenu);
+            AttunementCommand = new DelegateCommand(OpenAttunementMenu);
+            AllotEstusCommand = new DelegateCommand(OpenAllotEstusMenu);
+            MoveCamToPlayerCommand = new DelegateCommand(MoveCamToPlayer);
+            MovePlayerToCamCommand = new DelegateCommand(MovePlayerToCam);
+            SetDefaultFovCommand = new DelegateCommand(SetDefaultFov);
+
+
             RegisterHotkeys();
+            ApplyPrefs();
         }
 
-        private void RegisterHotkeys()
+        #region Commands
+
+        public ICommand BreakAllObjectsCommand { get; }
+        public ICommand RestoreAllObjectsCommand { get; }
+        public ICommand OpenShopCommand { get; }
+        public ICommand TravelCommand { get; }
+        public ICommand LevelUpCommand { get; }
+        public ICommand ReinforceWeaponCommand { get; }
+        public ICommand InfuseWeaponCommand { get; }
+        public ICommand RepairCommand { get; }
+        public ICommand AttunementCommand { get; }
+        public ICommand AllotEstusCommand { get; }
+        public ICommand MoveCamToPlayerCommand { get; }
+        public ICommand MovePlayerToCamCommand { get; }
+        public ICommand SetDefaultFovCommand { get; }
+
+        #endregion
+
+        #region Properties
+
+        private bool _areOptionsEnabled;
+
+        public bool AreOptionsEnabled
         {
-            _hotkeyManager.RegisterAction("NoClip", () =>
-            {
-                if (!AreButtonsEnabled) return;
-                IsNoClipEnabled = !IsNoClipEnabled;
-            });
-            _hotkeyManager.RegisterAction("EnableDeathCam", () =>
-            {
-                if (!AreButtonsEnabled) return;
-                IsDeathCamEnabled = !IsDeathCamEnabled;
-            });
-            _hotkeyManager.RegisterAction("IncreaseNoClipSpeed", () =>
-            {
-                if (IsNoClipEnabled)
-                    NoClipSpeed = Math.Min(5, NoClipSpeed + 0.50f);
-            });
-
-            _hotkeyManager.RegisterAction("DecreaseNoClipSpeed", () =>
-            {
-                if (IsNoClipEnabled)
-                    NoClipSpeed = Math.Max(0.05f, NoClipSpeed - 0.50f);
-            });
-            _hotkeyManager.RegisterAction("IncreaseGameSpeed", () => SetSpeed(Math.Min(10, GameSpeed + 0.50f)));
-            _hotkeyManager.RegisterAction("DecreaseGameSpeed", () => SetSpeed(Math.Max(0, GameSpeed - 0.50f)));
-            _hotkeyManager.RegisterAction("EnableFreeCam", () =>
-            {
-                if (!AreButtonsEnabled) return;
-                IsFreeCamEnabled = !IsFreeCamEnabled;
-            });
-            _hotkeyManager.RegisterAction("MoveCamToPlayer", MoveCamToPlayer);
-        }
-        
-
-        public bool AreButtonsEnabled
-        {
-            get => _areButtonsEnabled;
-            set => SetProperty(ref _areButtonsEnabled, value);
+            get => _areOptionsEnabled;
+            set => SetProperty(ref _areOptionsEnabled, value);
         }
 
-        public bool IsHitboxEnabled
-        {
-            get => _isHitboxEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHitboxEnabled, value)) return;
-                _utilityService.ToggleHitboxView(_isHitboxEnabled);
-            }
-        }
-
-        public bool IsSoundViewEnabled
-        {
-            get => _isSoundViewEnabled;
-            set
-            {
-                if (!SetProperty(ref _isSoundViewEnabled, value)) return;
-                _utilityService.ToggleSoundView(_isSoundViewEnabled);
-            }
-        }
-
-        public bool IsDrawEventEnabled
-        {
-            get => _isDrawEventEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDrawEventEnabled, value)) return;
-                _utilityService.ToggleEventDraw(_isDrawEventEnabled);
-            }
-        }
-
-        public bool IsTargetingViewEnabled
-        {
-            get => _isTargetingViewEnabled;
-            set
-            {
-                if (!SetProperty(ref _isTargetingViewEnabled, value)) return;
-                if (value)
-                    _debugDrawService.RequestDebugDraw();
-                else
-                    _debugDrawService.ReleaseDebugDraw();
-
-                _utilityService.ToggleTargetingView(_isTargetingViewEnabled);
-            }
-        }
-
-        public bool IsHideMapEnabled
-        {
-            get => _isHideMapEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideMapEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Map, _isHideMapEnabled);
-            }
-        }
-
-        public bool IsHideObjectsEnabled
-        {
-            get => _isHideObjectsEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideObjectsEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Obj, _isHideObjectsEnabled);
-            }
-        }
-
-        public bool IsHideCharactersEnabled
-        {
-            get => _isHideCharactersEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideCharactersEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Chr, _isHideCharactersEnabled);
-            }
-        }
-
-        public bool IsHideSfxEnabled
-        {
-            get => _isHideSfxEnabled;
-            set
-            {
-                if (!SetProperty(ref _isHideSfxEnabled, value)) return;
-                _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
-            }
-        }
-
-        public bool IsDrawLowHitEnabled
-        {
-            get => _isDrawLowHitEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDrawLowHitEnabled, value)) return;
-                IsHideMapEnabled = _isDrawLowHitEnabled;
-                _utilityService.ToggleHitIns(HitIns.LowHit, _isDrawLowHitEnabled);
-            }
-        }
-
-        public bool IsDrawHighHitEnabled
-        {
-            get => _isDrawHighHitEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDrawHighHitEnabled, value)) return;
-                IsHideMapEnabled = _isDrawHighHitEnabled;
-                _utilityService.ToggleHitIns(HitIns.HighHit, _isDrawHighHitEnabled);
-            }
-        }
-
-        public bool IsDrawChrRagdollEnabled
-        {
-            get => _isDrawChrRagdollEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDrawChrRagdollEnabled, value)) return;
-                if (value)
-                    _debugDrawService.RequestDebugDraw();
-                else
-                    _debugDrawService.ReleaseDebugDraw();
-
-                _utilityService.ToggleHitIns(HitIns.ChrRagdoll, _isDrawChrRagdollEnabled);
-            }
-        }
-        
-        public bool IsDeathCamEnabled
-        {
-            get => _isDeathCamEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDeathCamEnabled, value)) return;
-                _utilityService.ToggleDeathCam(_isDeathCamEnabled);
-            }
-        }
+        private bool _is100DropEnabled;
 
         public bool Is100DropEnabled
         {
@@ -248,7 +104,9 @@ namespace SilkySouls3.ViewModels
                 _utilityService.Toggle100Drop(_is100DropEnabled);
             }
         }
-        
+
+        private bool _isFullLineUpEnabled;
+
         public bool IsFullLineUpEnabled
         {
             get => _isFullLineUpEnabled;
@@ -259,122 +117,53 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        public bool IsFreeCamEnabled
+        private float _gameSpeed;
+
+        public float GameSpeed
         {
-            get => _isFreeCamEnabled;
+            get => _gameSpeed;
             set
             {
-                if (!SetProperty(ref _isFreeCamEnabled, value)) return;
-                if (_isFreeCamEnabled)
+                if (SetProperty(ref _gameSpeed, value))
                 {
-                    IsNoClipEnabled = false;
-                    int modeNumber = IsFreeCamMode1Selected ? 1 : 2;
-                    _utilityService.SetFreeCamState(true, modeNumber);
-                }
-                else _utilityService.SetFreeCamState(false, 0);
-            }
-        }
-
-
-        public int FreeCamMode
-        {
-            get => _freeCamMode;
-            set
-            {
-                if (SetProperty(ref _freeCamMode, value) && IsFreeCamEnabled)
-                {
-                    _utilityService.SetFreeCamState(true, value);
+                    _utilityService.SetGameSpeed(value);
+                    if (IsRememberSpeedEnabled && Math.Abs(value - DefaultGameSpeed) > Epsilon)
+                    {
+                        SettingsManager.Default.GameSpeed = value;
+                    }
                 }
             }
         }
 
-        public bool IsFreeCamMode1Selected
+        private bool _isRememberSpeedEnabled;
+
+        public bool IsRememberSpeedEnabled
         {
-            get => _freeCamMode == 1;
+            get => _isRememberSpeedEnabled;
             set
             {
-                if (value) FreeCamMode = 1;
-            }
-        }
-
-        public bool IsFreeCamMode2Selected
-        {
-            get => _freeCamMode == 2;
-            set
-            {
-                if (value) FreeCamMode = 2;
-            }
-        }
-
-        public bool IsCamVertIncreaseEnabled
-        {
-            get => _isCamVertIncreaseEnabled;
-            set
-            {
-                if (!SetProperty(ref _isCamVertIncreaseEnabled, value)) return;
-                _utilityService.ToggleCamVertIncrease(_isCamVertIncreaseEnabled);
-            }
-        }
-
-        public bool IsNoClipEnabled
-        {
-            get => _isNoClipEnabled;
-            set
-            {
-                if (!SetProperty(ref _isNoClipEnabled, value)) return;
-
-                if (_isNoClipEnabled)
+                if (SetProperty(ref _isRememberSpeedEnabled, value))
                 {
-                    IsFreeCamEnabled = false;
-                    _utilityService.ToggleNoClip(_isNoClipEnabled);
-                    _wasNoDeathEnabled = _playerViewModel.IsNoDeathEnabled;
-                    _playerViewModel.IsNoDeathEnabled = true;
-                    _playerViewModel.IsSilentEnabled = true;
-                    _playerViewModel.IsInvisibleEnabled = true;
-                }
-                else
-                {
-                    _utilityService.ToggleNoClip(_isNoClipEnabled);
-                    _playerViewModel.IsNoDeathEnabled = _wasNoDeathEnabled;
-                    _playerViewModel.IsSilentEnabled = false;
-                    _playerViewModel.IsInvisibleEnabled = false;
-                    NoClipSpeed = DefaultNoclipMultiplier;
+                    if (_isRememberSpeedEnabled)
+                    {
+                        SettingsManager.Default.RememberGameSpeed = _isRememberSpeedEnabled;
+                        if (Math.Abs(GameSpeed - DefaultGameSpeed) > Epsilon)
+                        {
+                            SettingsManager.Default.GameSpeed = GameSpeed;
+                        }
+                    }
+                    else
+                    {
+                        SettingsManager.Default.GameSpeed = DefaultGameSpeed;
+                        SettingsManager.Default.RememberGameSpeed = _isRememberSpeedEnabled;
+                    }
+
+                    SettingsManager.Default.Save();
                 }
             }
         }
 
-        public float NoClipSpeed
-        {
-            get => _noClipSpeedMultiplier;
-            set
-            {
-                if (SetProperty(ref _noClipSpeedMultiplier, value))
-                {
-                    SetNoClipSpeed(value);
-                }
-            }
-        }
-
-        public void SetNoClipSpeed(float multiplier)
-        {
-            if (!IsNoClipEnabled) return;
-            if (multiplier < 0.05f) multiplier = 0.05f;
-            else if (multiplier > 5.0f) multiplier = 5.0f;
-
-            SetProperty(ref _noClipSpeedMultiplier, multiplier);
-
-            float baseXFloat = BitConverter.ToSingle(BitConverter.GetBytes(BaseXSpeedHex), 0);
-            float baseYFloat = BitConverter.ToSingle(BitConverter.GetBytes(BaseYSpeedHex), 0);
-
-            float newXFloat = baseXFloat * multiplier;
-            float newYFloat = baseYFloat * multiplier;
-
-            byte[] xBytes = BitConverter.GetBytes(newXFloat);
-            byte[] yBytes = BitConverter.GetBytes(newYFloat);
-
-            _utilityService.SetNoClipSpeed(xBytes, yBytes);
-        }
-
+        private bool _isDbgFpsEnabled;
 
         public bool IsDbgFpsEnabled
         {
@@ -387,6 +176,8 @@ namespace SilkySouls3.ViewModels
             }
         }
 
+        private float _fps;
+
         public float Fps
         {
             get => _fps;
@@ -397,59 +188,371 @@ namespace SilkySouls3.ViewModels
             }
         }
 
+        private bool _isNoClipEnabled;
 
-        public float GameSpeed
+        public bool IsNoClipEnabled
         {
-            get => _gameSpeed;
+            get => _isNoClipEnabled;
             set
             {
-                if (SetProperty(ref _gameSpeed, value))
+                if (!SetProperty(ref _isNoClipEnabled, value)) return;
+
+                if (_isNoClipEnabled)
                 {
-                    _utilityService.SetGameSpeed(value);
+                    IsFreeCamEnabled = false;
+                    _utilityService.WriteNoClipSpeed(_noClipSpeedScale);
+                    _wasNoDeathEnabled = _playerViewModel.IsNoDeathEnabled;
+                    _playerViewModel.IsNoDeathEnabled = true;
+                }
+                else
+                {
+                    _playerViewModel.IsNoDeathEnabled = _wasNoDeathEnabled;
+                }
+
+                _utilityService.ToggleNoClip(_isNoClipEnabled);
+            }
+        }
+
+        private float _noClipSpeedScale = DefaultNoclipSpeedScale;
+
+        public float NoClipSpeedScale
+        {
+            get => _noClipSpeedScale;
+            set
+            {
+                if (SetProperty(ref _noClipSpeedScale, value))
+                {
+                    if (!IsNoClipEnabled) return;
+                    _utilityService.WriteNoClipSpeed(_noClipSpeedScale);
                 }
             }
         }
 
-        public int CameraFov
+        private bool _isFreeCamEnabled;
+
+        public bool IsFreeCamEnabled
+        {
+            get => _isFreeCamEnabled;
+            set
+            {
+                if (!SetProperty(ref _isFreeCamEnabled, value)) return;
+                if (_isFreeCamEnabled)
+                {
+                    IsNoClipEnabled = false;
+                }
+                else
+                {
+                    _isPlayerMovementEnabled = false;
+                    OnPropertyChanged(nameof(IsPlayerMovementEnabled));
+                }
+
+                _utilityService.ToggleFreeCam(_isFreeCamEnabled);
+            }
+        }
+
+        private bool _isPlayerMovementEnabled;
+
+        public bool IsPlayerMovementEnabled
+        {
+            get => _isPlayerMovementEnabled;
+            set
+            {
+                if (!SetProperty(ref _isPlayerMovementEnabled, value)) return;
+                if (!IsFreeCamEnabled) return;
+                _utilityService.TogglePlayerMovementForFreeCam(_isPlayerMovementEnabled);
+            }
+        }
+
+        private bool _isFreezeWorldEnabled;
+
+        public bool IsFreezeWorldEnabled
+        {
+            get => _isFreezeWorldEnabled;
+            set
+            {
+                if (!SetProperty(ref _isFreezeWorldEnabled, value)) return;
+                _utilityService.ToggleFreezeWorld(_isFreezeWorldEnabled);
+            }
+        }
+
+        private bool _isCamVertIncreaseEnabled;
+
+        public bool IsCamVertIncreaseEnabled
+        {
+            get => _isCamVertIncreaseEnabled;
+            set
+            {
+                if (!SetProperty(ref _isCamVertIncreaseEnabled, value)) return;
+                _utilityService.ToggleCamVertIncrease(_isCamVertIncreaseEnabled);
+            }
+        }
+
+        private bool _isDeathCamEnabled;
+
+        public bool IsDeathCamEnabled
+        {
+            get => _isDeathCamEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDeathCamEnabled, value)) return;
+                _utilityService.ToggleDeathCam(_isDeathCamEnabled);
+            }
+        }
+
+        private float _cameraFov;
+
+        public float CameraFov
         {
             get => _cameraFov;
             set
             {
                 if (SetProperty(ref _cameraFov, value))
                 {
-                    _utilityService.SetFov(Convert.ToSingle(_cameraFov));
+                    _utilityService.SetFov(_cameraFov);
                 }
             }
         }
 
+        private bool _isHitboxEnabled;
+
+        public bool IsHitboxEnabled
+        {
+            get => _isHitboxEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHitboxEnabled, value)) return;
+                _utilityService.ToggleHitboxView(_isHitboxEnabled);
+            }
+        }
+
+        private bool _isSoundViewEnabled;
+
+        public bool IsSoundViewEnabled
+        {
+            get => _isSoundViewEnabled;
+            set
+            {
+                if (!SetProperty(ref _isSoundViewEnabled, value)) return;
+                _utilityService.ToggleSoundView(_isSoundViewEnabled);
+            }
+        }
+
+        private bool _isDrawLowHitEnabled;
+
+        public bool IsDrawLowHitEnabled
+        {
+            get => _isDrawLowHitEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawLowHitEnabled, value)) return;
+                IsHideMapEnabled = _isDrawLowHitEnabled;
+                _utilityService.ToggleHitIns(HitFlags.LowHit, _isDrawLowHitEnabled);
+            }
+        }
+
+        private bool _isDrawHighHitEnabled;
+
+        public bool IsDrawHighHitEnabled
+        {
+            get => _isDrawHighHitEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawHighHitEnabled, value)) return;
+                IsHideMapEnabled = _isDrawHighHitEnabled;
+                _utilityService.ToggleHitIns(HitFlags.HighHit, _isDrawHighHitEnabled);
+            }
+        }
+
+        private bool _isDrawChrRagdollEnabled;
+
+        public bool IsDrawChrRagdollEnabled
+        {
+            get => _isDrawChrRagdollEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawChrRagdollEnabled, value)) return;
+                if (value)
+                    _debugDrawService.RequestDebugDraw();
+                else
+                    _debugDrawService.ReleaseDebugDraw();
+
+                _utilityService.ToggleHitIns(HitFlags.ChrRagdoll, _isDrawChrRagdollEnabled);
+            }
+        }
+
+        private bool _isHideMapEnabled;
+
+        public bool IsHideMapEnabled
+        {
+            get => _isHideMapEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideMapEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Map, _isHideMapEnabled);
+            }
+        }
+
+        private bool _isHideObjectsEnabled;
+
+        public bool IsHideObjectsEnabled
+        {
+            get => _isHideObjectsEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideObjectsEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Obj, _isHideObjectsEnabled);
+            }
+        }
+
+        private bool _isHideCharactersEnabled;
+
+        public bool IsHideCharactersEnabled
+        {
+            get => _isHideCharactersEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideCharactersEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Chr, _isHideCharactersEnabled);
+            }
+        }
+
+        private bool _isHideSfxEnabled;
+
+        public bool IsHideSfxEnabled
+        {
+            get => _isHideSfxEnabled;
+            set
+            {
+                if (!SetProperty(ref _isHideSfxEnabled, value)) return;
+                _utilityService.ToggleGroupMask(GroupMask.Sfx, _isHideSfxEnabled);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
         public void SetSpeed(float value) => GameSpeed = value;
-        
 
-        public void OpenMenu(long funcAddr)
+        public void MoveCamToPlayer()
         {
-            _utilityService.OpenMenu(funcAddr);
+            if (IsFreeCamEnabled) _utilityService.MoveCamToPlayer();
         }
 
-        public void OpenMenuWithEvent(long funcAddr, int[] eventIds)
+        public void MovePlayerToCam()
         {
-            _utilityService.OpenMenuWithEvent(funcAddr, eventIds);
+            if (IsFreeCamEnabled) _utilityService.MovePlayerToCam();
         }
 
-        public void OpenRegularShop(ulong[] shopParams)
+        public void SetDefaultFov()
         {
-            _utilityService.OpenRegularShop(shopParams);
+            _utilityService.SetFov(DefaultFov);
+            CameraFov = _utilityService.GetFov();
         }
-        
-        public void TryEnableFeatures()
+
+        #endregion
+
+        #region Private Methods
+
+        private void ToggleSpeed()
+        {
+            if (!AreOptionsEnabled) return;
+
+            if (!IsApproximately(GameSpeed, DefaultGameSpeed))
+            {
+                _desiredGameSpeed = GameSpeed;
+                SetSpeed(DefaultGameSpeed);
+            }
+            else if (_desiredGameSpeed >= 0)
+            {
+                SetSpeed(_desiredGameSpeed);
+            }
+        }
+
+        private bool IsApproximately(float a, float b) => Math.Abs(a - b) < Epsilon;
+
+        private void ApplyPrefs()
+        {
+            _isRememberSpeedEnabled = SettingsManager.Default.RememberGameSpeed;
+            OnPropertyChanged(nameof(IsRememberSpeedEnabled));
+            if (_isRememberSpeedEnabled) _desiredGameSpeed = SettingsManager.Default.GameSpeed;
+        }
+
+        private void OpenTravelMenu()
+        {
+            _eventService.SetEvent(EventFlag.FirelinkBonfire, true);
+            _eventService.SetEvent(EventFlag.CoiledSword, true);
+            _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.WarpMenu);
+        }
+
+        private void OpenLevelUpMenu() => _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.LevelUp);
+
+        private void OpenReinforceWeaponMenu()
+        {
+            foreach (var upgradeMenuFlag in EzState.TalkCommands.UpgradeMenuFlags)
+            {
+                _ezStateService.ExecuteTalkCommand(upgradeMenuFlag);
+            }
+
+            _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.OpenUpgrade);
+        }
+
+        private void OpenInfuseWeaponMenu()
+        {
+            foreach (var infuseFlag in EzState.TalkCommands.InfuseMenuFlags)
+            {
+                _ezStateService.ExecuteTalkCommand(infuseFlag);
+            }
+
+            _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.OpenInfuse);
+        }
+
+        private void OpenRepairMenu() => _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.Repair);
+        private void OpenAttunementMenu() => _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.OpenAttunement);
+        private void OpenAllotEstusMenu() => _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.OpenAllotEstus);
+
+        private void RegisterHotkeys()
+        {
+            _hotkeyManager.RegisterAction(HotkeyActions.NoClip, () =>
+            {
+                if (!AreOptionsEnabled) return;
+                IsNoClipEnabled = !IsNoClipEnabled;
+            });
+            _hotkeyManager.RegisterAction(HotkeyActions.EnableDeathCam, () =>
+            {
+                if (!AreOptionsEnabled) return;
+                IsDeathCamEnabled = !IsDeathCamEnabled;
+            });
+            _hotkeyManager.RegisterAction(HotkeyActions.IncreaseNoClipSpeed, () =>
+            {
+                if (IsNoClipEnabled) NoClipSpeedScale = Math.Min(5, NoClipSpeedScale + 0.50f);
+            });
+
+            _hotkeyManager.RegisterAction(HotkeyActions.DecreaseNoClipSpeed, () =>
+            {
+                if (IsNoClipEnabled) NoClipSpeedScale = Math.Max(0.5f, NoClipSpeedScale - 0.50f);
+            });
+
+            _hotkeyManager.RegisterAction(HotkeyActions.IncreaseGameSpeed,
+                () => SetSpeed(Math.Min(10, GameSpeed + 0.50f)));
+            _hotkeyManager.RegisterAction(HotkeyActions.DecreaseGameSpeed,
+                () => SetSpeed(Math.Max(0, GameSpeed - 0.50f)));
+            _hotkeyManager.RegisterAction(HotkeyActions.ToggleGameSpeed, ToggleSpeed);
+            _hotkeyManager.RegisterAction(HotkeyActions.EnableFreeCam, () =>
+            {
+                if (!AreOptionsEnabled) return;
+                IsFreeCamEnabled = !IsFreeCamEnabled;
+            });
+            _hotkeyManager.RegisterAction(HotkeyActions.MoveCamToPlayer, MoveCamToPlayer);
+        }
+
+        private void OpenShop(int[] shopParams) =>
+            _ezStateService.ExecuteTalkCommand(EzState.TalkCommands.OpenRegularShop(shopParams[0], shopParams[1]));
+
+        private void OnGameLoaded()
         {
             if (IsHitboxEnabled) _utilityService.ToggleHitboxView(true);
             if (IsSoundViewEnabled) _utilityService.ToggleSoundView(true);
-            if (IsDrawEventEnabled) _utilityService.ToggleEventDraw(true);
-            if (IsTargetingViewEnabled)
-            {
-                _debugDrawService.RequestDebugDraw();
-                _utilityService.ToggleTargetingView(true);
-            }
 
             if (IsHideMapEnabled) _utilityService.ToggleGroupMask(GroupMask.Map, true);
             if (IsHideObjectsEnabled) _utilityService.ToggleGroupMask(GroupMask.Obj, true);
@@ -458,35 +561,36 @@ namespace SilkySouls3.ViewModels
             if (IsDrawLowHitEnabled)
             {
                 IsHideMapEnabled = true;
-                _utilityService.ToggleHitIns(HitIns.LowHit, true);
+                _utilityService.ToggleHitIns(HitFlags.LowHit, true);
             }
 
             if (IsDrawHighHitEnabled)
             {
                 IsHideMapEnabled = true;
-                _utilityService.ToggleHitIns(HitIns.HighHit, true);
+                _utilityService.ToggleHitIns(HitFlags.HighHit, true);
             }
 
             if (IsDrawChrRagdollEnabled)
             {
                 _debugDrawService.RequestDebugDraw();
-                _utilityService.ToggleHitIns(HitIns.ChrRagdoll, true);
+                _utilityService.ToggleHitIns(HitFlags.ChrRagdoll, true);
             }
 
             GameSpeed = _utilityService.GetGameSpeed();
-            CameraFov = _utilityService.GetCameraFov();
-            AreButtonsEnabled = true;
+            CameraFov = _utilityService.GetFov();
+            AreOptionsEnabled = true;
         }
 
-        public void DisableFeatures()
+        private void OnGameNotLoaded()
         {
             IsNoClipEnabled = false;
             IsDeathCamEnabled = false;
             IsFreeCamEnabled = false;
-            AreButtonsEnabled = false;
+            IsFreezeWorldEnabled = false;
+            AreOptionsEnabled = false;
         }
 
-        public void TryApplyOneTimeFeatures()
+        private void FirstLoaded()
         {
             if (IsCamVertIncreaseEnabled) _utilityService.ToggleCamVertIncrease(true);
             if (Is100DropEnabled) _utilityService.Toggle100Drop(true);
@@ -495,23 +599,10 @@ namespace SilkySouls3.ViewModels
                 _utilityService.ToggleDbgFps(true);
                 _utilityService.SetFps(Fps);
             }
+
             if (IsFullLineUpEnabled) _utilityService.ToggleFullLineUp(true);
         }
 
-        public void MoveCamToPlayer()
-        {
-            if (IsFreeCamEnabled) _utilityService.MoveCamToPlayer();
-        }
-
-        public void SetDefaultFov()
-        {
-            _utilityService.SetFov(43.0f);
-            CameraFov = _utilityService.GetCameraFov();
-        }
-
-        public void ToggleObjects(bool isBreaking)
-        {
-            _utilityService.ToggleObjects(isBreaking);
-        }
+        #endregion
     }
 }

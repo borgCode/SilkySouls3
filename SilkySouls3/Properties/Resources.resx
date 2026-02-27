@@ -157,8 +157,8 @@ c3                      ret</value>
 0,Boss,Ancient Wyvern,,,3201950,-72.19|29.08|180.67,-2.59
 0,Boss,Nameless King,,,3201952,80.56|80.95|345.12,0.57
 0,Boss,Soul of Cinder,,,4101951,-141.83|1590.25|38.51,-2.84
-0,Boss,Sister Friede,,,4501950,-186.99|27.75|-230.16,1.57
-0,Boss,Gravetender,,,4501957,-40.38|-97.91|-311.90,1.38
+1,Boss,Sister Friede,,,4501950,-186.99|27.75|-230.16,1.57
+1,Boss,Gravetender,,,4501957,-40.38|-97.91|-311.90,1.38
 2,Boss,Demon Prince,,,5001953,135.26|-89.80|61.34,-1.25
 2,Boss,Darkeater Midir,,,5101953,-484.42|-83.08|-398.50,-2.42
 2,Boss,Halflight,,,5101953,-380.77|-55.31|-323.59,2.96
@@ -227,14 +227,14 @@ c3                      ret</value>
 0,Archdragon Peak,Nameless King,0x2303,5,3201951
 0,Kiln of the First Flame,Flameless Shrine,0x3703,7,4101950
 0,Kiln of the First Flame,Kiln of the First Flame,0x5F03,7,4101951
-0,The Painted World of Ariandel,Snowfield,0x6403,6,4501951
-0,The Painted World of Ariandel,Rope Bridge Cave,0x6403,5,4501952
-0,The Painted World of Ariandel,Corvian Settlement,0x6403,4,4501953
-0,The Painted World of Ariandel,Snowy Mountain Pass,0x6403,3,4501954
-0,The Painted World of Ariandel,Ariandel Chapel,0x6403,2,4501955
-0,The Painted World of Ariandel,Sister Friede,0x6403,7,4501950
-0,The Painted World of Ariandel,Depths of the Painting,0x6403,0,4501957
-0,The Painted World of Ariandel,Champion's Gravetender,0x6403,1,4501956
+1,The Painted World of Ariandel,Snowfield,0x6403,6,4501951
+1,The Painted World of Ariandel,Rope Bridge Cave,0x6403,5,4501952
+1,The Painted World of Ariandel,Corvian Settlement,0x6403,4,4501953
+1,The Painted World of Ariandel,Snowy Mountain Pass,0x6403,3,4501954
+1,The Painted World of Ariandel,Ariandel Chapel,0x6403,2,4501955
+1,The Painted World of Ariandel,Sister Friede,0x6403,7,4501950
+1,The Painted World of Ariandel,Depths of the Painting,0x6403,0,4501957
+1,The Painted World of Ariandel,Champion's Gravetender,0x6403,1,4501956
 2,The Dreg Heap,The Dreg Heap,0x7303,6,5001951
 2,The Dreg Heap,Earthen Peak Ruins,0x7303,5,5001952
 2,The Dreg Heap,Within the Earthen Peak Ruins,0x7303,4,5001953
@@ -248,19 +248,7 @@ c3                      ret</value>
 2,The Ringed City,Filianore's Rest,0x7D03,6,5111951
 2,The Ringed City,Slave Knight Gael,0x7D03,7,5111950</value>
   </data>
-  <data name="WarpCall" xml:space="preserve">
-    <value>48 a1 00 00 00 00 00    movabs rax,ds:0x0
-00 00 00
-48 89 c1                mov    rcx,rax
-ba 01 00 00 00          mov    edx,0x1
-48 be 00 00 00 00 00    movabs rsi,0x0
-00 00 00
-48 83 ec 28             sub    rsp,0x28
-ff d6                   call   rsi
-48 83 c4 28             add    rsp,0x28
-c3                      ret</value>
-  </data>
-  <data name="WarpHookCode" xml:space="preserve">
+  <data name="WarpCoordsWrite" xml:space="preserve">
     <value>44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
 00
 44 0f 11 b8 40 0a 00    movups XMMWORD PTR [rax+0xa40],xmm15
@@ -435,10 +423,10 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,11407710,Firelink Gauntlets,1,0,0
 0,11406F40,Firelink Helm,1,0,0
 0,11407AF8,Firelink Leggings,1,0,0
-0,137CA788,Follower Armor,1,0,0
-0,137CAF58,Follower Boots,1,0,0
-0,137CAB70,Follower Gloves,1,0,0
-0,137CA3A0,Follower Helm,1,0,0
+1,137CA788,Follower Armor,1,0,0
+1,137CAF58,Follower Boots,1,0,0
+1,137CAB70,Follower Gloves,1,0,0
+1,137CA3A0,Follower Helm,1,0,0
 0,14F28290,Gauntlets of Favor,1,0,0
 0,15B8DFD0,Gauntlets of Thorns,1,0,0
 0,1365C810,Golden Bracelets,1,0,0
@@ -516,10 +504,10 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,14BD1E98,Maiden Skirt,1,0,0
 0,148F5008,Master's Attire,1,0,0
 0,148F53F0,Master's Gloves,1,0,0
-0,139B2C08,Millwood Knight Armor,1,0,0
-0,139B2FF0,Millwood Knight Gauntlets,1,0,0
-0,139B2820,Millwood Knight Helm,1,0,0
-0,139B33D8,Millwood Knight Leggings,1,0,0
+1,139B2C08,Millwood Knight Armor,1,0,0
+1,139B2FF0,Millwood Knight Gauntlets,1,0,0
+1,139B2820,Millwood Knight Helm,1,0,0
+1,139B33D8,Millwood Knight Leggings,1,0,0
 0,14B57990,Mirrah Chain Gloves,1,0,0
 0,14B57D78,Mirrah Chain Leggings,1,0,0
 0,14B575A8,Mirrah Chain Mail,1,0,0
@@ -543,9 +531,9 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,1496F128,Old Sorcerer Coat,1,0,0
 0,1496F510,Old Sorcerer Gauntlets,1,0,0
 0,1496ED40,Old Sorcerer Hat,1,0,0
-0,135E2308,Ordained Dress,1,0,0
-0,135E1F20,Ordained Hood,1,0,0
-0,135E2AD8,Ordained Trousers,1,0,0
+1,135E2308,Ordained Dress,1,0,0
+1,135E1F20,Ordained Hood,1,0,0
+1,135E2AD8,Ordained Trousers,1,0,0
 0,1328BB28,Outrider Knight Armor,1,0,0
 0,1328BF10,Outrider Knight Gauntlets,1,0,0
 0,1328B740,Outrider Knight Helm,1,0,0
@@ -597,10 +585,10 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,15110AF8,Silver Knight Leggings,1,0,0
 0,117D7840,Silver Mask,1,0,0
 0,13AA7618,Skirt of Prayer,1,0,0
-0,134EE0C8,Slave Knight Armor,1,0,0
-0,134EE4B0,Slave Knight Gauntlets,1,0,0
-0,134EDCE0,Slave Knight Hood,1,0,0
-0,134EE898,Slave Knight Leggings,1,0,0
+1,134EE0C8,Slave Knight Armor,1,0,0
+1,134EE4B0,Slave Knight Gauntlets,1,0,0
+1,134EDCE0,Slave Knight Hood,1,0,0
+1,134EE898,Slave Knight Leggings,1,0,0
 0,159A5768,Smough's Armor,1,0,0
 0,159A5B50,Smough's Gauntlets,1,0,0
 0,159A5380,Smough's Helm,1,0,0
@@ -627,10 +615,10 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,13750A50,Undead Legion Gauntlet,1,0,0
 0,13750280,Undead Legion Helm,1,0,0
 0,13750E38,Undead Legion Leggings,1,0,0
-0,113130E8,Vilhelm's Armor,1,0,0
-0,113134D0,Vilhelm's Gauntlets,1,0,0
-0,11312D00,Vilhelm's Helm,1,0,0
-0,113138B8,Vilhelm's Leggings,1,0,0
+1,113130E8,Vilhelm's Armor,1,0,0
+1,113134D0,Vilhelm's Gauntlets,1,0,0
+1,11312D00,Vilhelm's Helm,1,0,0
+1,113138B8,Vilhelm's Leggings,1,0,0
 0,11B2E7F0,Violet Wrappings,1,0,0
 2,14153A20,White Preacher Head,1,0,0
 0,12EBB228,Winged Knight Armor,1,0,0
@@ -707,8 +695,8 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,003E8FA0,Crescent Moon Sword,1,2,0
 0,1430750,Crest Shield,1,2,0
 0,0134AF70,Crimson Parma,1,1,1
-0,00F66DF0,Crow Quills,1,1,1
-0,00A89C10,Crow Talons,1,1,1
+1,00F66DF0,Crow Quills,1,1,1
+1,00A89C10,Crow Talons,1,1,1
 2,008D4BE0,Crucifix of the Mad King,1,2,0
 0,00CA2DD0,Crystal Chime,1,2,0
 0,002E6300,Crystal Sage's Rapier,1,2,0
@@ -719,9 +707,9 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,005F3700,Dark Sword,1,1,1
 0,004D0E90,Darkdrift,1,2,0
 0,00D79B50,Darkmoon Longbow,1,2,0
-0,003F04D0,Demon's Fist,1,2,0
-0,00A84DF0,Demon's Greataxe,1,2,0
-2,006CA480,Demon's Scar,1,2,0
+0,00A84DF0,Demon's Fist,1,2,0 
+0,006CA480,Demon's Greataxe,1,2,0
+2,003F04D0,Demon's Scar,1,2,0 
 0,01432E60,Dragon Crest Shield,1,2,0
 0,007E09A0,Dragon Tooth,1,2,0
 0,01452A30,Dragonhead Greatshield,1,2,0
@@ -736,26 +724,26 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,609690,Drakeblood Greatsword,1,1,1
 0,00F61FD0,Drang Hammers,1,1,1
 0,00F5AAA0,Drang Twinspears,1,1,1
-0,006D8EE0,Earth Seeker,1,2,0
+1,006D8EE0,Earth Seeker,1,2,0
 0,0142B930,East-West Shield,1,1,1
 0,0134D680,Eastern Iron Shield,1,1,1
 0,006CCB90,Eleonora,1,2,0
 0,0133C510,Elkhorn Round Shield,1,1,1
 0,002DC6C0,Estoc,1,1,1
-0,1450320,Ethereal Oak Shield,1,2,0
+1,1450320,Ethereal Oak Shield,1,2,0
 0,0021DFE0,Executioner's Greatsword,1,1,1
 0,005DD770,Exile Greatsword,1,1,1
 0,003DA540,Falchion,1,1,1
 0,005E9AC0,Farron Greatsword,1,2,0
 0,0060BDA0,Firelink Greatsword,1,2,0
 0,005DB060,Flamberge,1,1,1
-0,008CD6B0,Follower Javelin,1,1,1
-0,003EDDC0,Follower Sabre,1,1,1
-0,0135C0E0,Follower Shield,1,1,1
-0,015F1AD0,Follower Torch,1,1,1
+1,008CD6B0,Follower Javelin,1,1,1
+1,003EDDC0,Follower Sabre,1,1,1
+1,0135C0E0,Follower Shield,1,1,1
+1,015F1AD0,Follower Torch,1,1,1
 0,008ADAE0,Four-Pronged Plow,1,1,1
 2,004D35A0,Frayed Blade,1,2,0
-0,009B55A0,Friede's Great Scythe,1,2,0
+1,009B55A0,Friede's Great Scythe,1,2,0
 0,0060E4B0,Fume Ultra Greatsword,1,2,0
 2,00227C20,Gael's Greatsword,1,2,0
 0,007CAA10,Gargoyle Flame Hammer,1,1,1
@@ -822,8 +810,8 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,00C7E3E0,Man-grub's Staff,1,2,0
 0,00A826E0,Manikin Claws,1,1,1
 0,00C795C0,Mendicant's Staff,1,2,0
-0,006D67D0,Millwood Battle Axe,1,1,1
-0,00D85EA0,Millwood Greatbow,1,2,0
+1,006D67D0,Millwood Battle Axe,1,1,1
+1,00D85EA0,Millwood Greatbow,1,2,0
 0,015074D0,Moaning Shield,1,2,0
 0,00606F80,Moonlight Greatsword,1,2,0
 0,002143A0,Morion Blade,1,2,0
@@ -837,7 +825,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,00610BC0,Old Wolf Curved Sword,1,2,0
 0,00F58390,Onikiri and Ubadachi,1,1,1
 0,00D7C260,Onislayer Greatbow,1,2,0
-0,00222E00,Onyx Blade,1,2,0
+1,00222E00,Onyx Blade,1,2,0
 0,003E6890,Painting Guardian's Curved Sword,1,1,1
 0,000F9060,Parrying Dagger,1,1,1
 0,0089C970,Partizan,1,1,1
@@ -852,9 +840,9 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 2,00CD1400,Preacher's Right Arm,1,2,0
 0,00C9B8A0,Priest's Chime,1,2,0
 0,005E4CA0,Profaned Greatsword,1,2,0
-0,00CC9ED0,Pyromancer's Parting Flame,1,1,0
+1,00CC9ED0,Pyromancer's Parting Flame,1,1,0
 0,00CC77C0,Pyromancy Flame,1,1,0
-0,007ECCF0,Quakestone Hammer,1,2,0
+1,007ECCF0,Quakestone Hammer,1,2,0
 0,002E14E0,Rapier,1,1,1
 0,009AB960,Red Hilted Halberd,1,1,1
 0,01343A40,Red and White Shield,1,1,1
@@ -864,7 +852,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 2,00F69500,Ringed Knight Paired Greatswords,1,2,0
 2,008CFDC0,Ringed Knight Spear,1,2,0
 2,225510,Ringed Knight Straight Sword,1,2,0
-0,00B82C70,Rose of Ariandel,1,2,0
+1,00B82C70,Rose of Ariandel,1,2,0
 0,205940,Rotten Ghru Curved Sword,1,1,1
 0,000FDE80,Rotten Ghru Dagger,1,1,1
 0,008B2900,Rotten Ghru Spear,1,1,1
@@ -915,7 +903,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,1513820,Twin Dragon Greatshield,1,1,1
 0,005FAC30,Twin Princes' Greatsword,1,2,0
 0,004C4B40,Uchigatana,1,1,1
-0,00F646E0,Valorheart,1,2,0
+1,00F646E0,Valorheart,1,2,0
 0,007CD120,Vordt's Great Hammer,1,2,0
 0,00F47220,Warden Twinblades,1,1,1
 0,0144DC10,Wargod Wooden Shield,1,1,1
@@ -1060,7 +1048,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,40124F80,Farron Dart,1,0,0
 0,4014FB18,Farron Flashsword,1,0,0
 0,4014EF60,Farron Hail,1,0,0
-0,401408E8,Frozen Weapon,1,0,0
+1,401408E8,Frozen Weapon,1,0,0
 0,4013F948,Great Deep Soul,1,0,0
 0,40127690,Great Farron Dart,1,0,0
 0,4013E1D8,Great Heavy Soul Arrow,1,0,0
@@ -1078,9 +1066,9 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,40144B50,Magic Shield,1,0,0
 0,4013FD30,Magic Weapon,1,0,0
 2,4014FF00,Old Moonlight,1,0,0
-0,401A8CE0,Pestilent Mercury,1,0,0
+0,401A8CE0,Pestilent Mist,1,0,0
 0,4014A528,Repair,1,0,0
-0,401A90C8,Snap Freeze,1,0,0
+1,401A90C8,Snap Freeze,1,0,0
 0,4013D620,Soul Arrow,1,0,0
 0,4014F730,Soul Greatsword,1,0,0
 0,4013ED90,Soul Spear,1,0,0
@@ -1105,7 +1093,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,4024AAB8,Firestorm,1,0,0
 2,40258190,Flame Fan,1,0,0
 0,40251818,Flash Sweat,1,0,0
-0,40257DA8,Floating Chaos,1,0,0
+1,40257DA8,Floating Chaos,1,0,0
 0,40256250,Great Chaos Fire Orb,1,0,0
 0,4024C9F8,Great Combustion,1,0,0
 0,40251430,Iron Flesh,1,0,0
@@ -1152,7 +1140,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,40363300,Sunlight Spear,1,0,0
 0,4035B600,Tears of Denial,1,0,0
 0,4036A448,Vow of Silence,1,0,0
-0,403642A0,Way of White Corona,1,0,0
+1,403642A0,Way of White Corona,1,0,0
 0,4035E0F8,Wrath of the Gods,1,0,0
 </value>
   </data>
@@ -1167,7 +1155,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,00061CD8,Wood Arrow,600,0,0
 0,00062250,Dragonslayer Greatarrow,600,0,0
 0,00062318,Dragonslayer Lightning Arrow,600,0,0
-0,000623E0,Millwood Greatarrow,600,0,0
+1,000623E0,Millwood Greatarrow,600,0,0
 0,0006237C,Onislayer Greatarrow,600,0,0
 0,00062C78,Exploding Bolt,600,0,0
 0,00062A84,Heavy Bolt,600,0,0
@@ -1189,7 +1177,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,20005078,Calamity Ring,1,0,0
 0,200050FA,Carthus Bloodring,1,0,0
 0,20004FE2,Carthus Milkring,1,0,0
-0,20005208,Chillbite Ring,1,0,0
+1,20005208,Chillbite Ring,1,0,0
 0,20004E2A,Chloranthy Ring,1,0,0
 0,20004E2B,Chloranthy Ring+1,1,0,0
 0,20004E2C,Chloranthy Ring+2,1,0,0
@@ -1311,10 +1299,10 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,40000848,Braille Divine Tome of Lothric,1,0,0
 0,4000233C,By my sword,1,0,0
 0,40002341,Call over,1,0,0
-0,4000086A,Captain's Ashes,1,0,0
+1,4000086A,Captain's Ashes,1,0,0
 0,40000850,Carthus Pyromancy Tome,1,0,0
 0,400007DA,Cell Key,1,0,0
-0,40000869,Champions Bones,1,0,0
+1,40000869,Champions Bones,1,0,0
 2,4000013B,Church Guardian Shiv,1,0,0
 0,4000084E,Cinders of a Lord,1,0,0
 0,4000084D,Cinders of a Lord,1,0,0
@@ -1323,7 +1311,7 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 0,40000859,Coiled Sword,1,0,0
 0,4000015F,Coiled Sword Fragment,1,0,0
 0,40002342,Collapse,1,0,0
-0,4000086B,Contraption Key,1,0,0
+1,4000086B,Contraption Key,1,0,0
 0,40000841,Cornyx's Ashes,1,0,0
 0,40000856,Crystal Scroll,1,0,0
 0,4000233F,Curl up,1,0,0
@@ -1443,26 +1431,61 @@ e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
 </value>
   </data>
   <data name="ItemSpawn" xml:space="preserve">
-    <value>48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
-4c 8d 05 00 00 00 00    lea    r8,[rip+0x0]        # e &lt;_main+0xe&gt;
-48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 15 &lt;_main+0x15&gt;
-48 83 ec 28             sub    rsp,0x28
-e8 00 00 00 00          call   1e &lt;_main+0x1e&gt;
+    <value>48 83 ec 28             sub    rsp,0x28
+48 8d 1d 00 00 00 00    lea    rbx,[rip+0x0]        # b &lt;_main+0xb&gt;
+80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 12 &lt;_main+0x12&gt;
+75 4a                   jne    5e &lt;skip_qty_adjust&gt;
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+48 8d 53 04             lea    rdx,[rbx+0x4]
+e8 00 00 00 00          call   27 &lt;_main+0x27&gt;
+89 c7                   mov    edi,eax
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+48 8d 53 04             lea    rdx,[rbx+0x4]
+e8 00 00 00 00          call   3c &lt;_main+0x3c&gt;
+01 c7                   add    edi,eax
+44 8b 05 00 00 00 00    mov    r8d,DWORD PTR [rip+0x0]        # 45 &lt;_main+0x45&gt;
+41 29 f8                sub    r8d,edi
+7e 0f                   jle    59 &lt;no_space_left&gt;
+44 8b 4b 08             mov    r9d,DWORD PTR [rbx+0x8]
+45 39 c1                cmp    r9d,r8d
+7e 0b                   jle    5e &lt;skip_qty_adjust&gt;
+44 89 43 08             mov    DWORD PTR [rbx+0x8],r8d
+eb 05                   jmp    5e &lt;skip_qty_adjust&gt;
+
+000000000059 &lt;no_space_left&gt;:
+48 83 c4 28             add    rsp,0x28
+c3                      ret
+
+00000000005e &lt;skip_qty_adjust&gt;:
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 65 &lt;skip_qty_adjust+0x7&gt;
+48 89 da                mov    rdx,rbx
+4c 8d 05 00 00 00 00    lea    r8,[rip+0x0]        # 6f &lt;skip_qty_adjust+0x11&gt;
+e8 00 00 00 00          call   74 &lt;skip_qty_adjust+0x16&gt;
 48 83 c4 28             add    rsp,0x28
 c3                      ret</value>
   </data>
   <data name="NoClip_InAirTimer" xml:space="preserve">
     <value>50                      push   rax
-48 b8 00 00 00 00 00    movabs rax,0x0
-00 00 00
-48 39 c8                cmp    rax,rcx
-75 03                   jne    13 &lt;exit&gt;
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+48 85 c0                test   rax,rax
+74 21                   je     2e &lt;exit&gt;
+48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
+48 85 c0                test   rax,rax
+74 15                   je     2e &lt;exit&gt;
+48 8b 80 ef be 00 00    mov    rax,QWORD PTR [rax+0xbeef]
+48 85 c0                test   rax,rax
+74 09                   je     2e &lt;exit&gt;
+48 3b 48 68             cmp    rcx,QWORD PTR [rax+0x68]
+75 03                   jne    2e &lt;exit&gt;
 0f 57 c0                xorps  xmm0,xmm0
-000000000013 &lt;exit&gt;:
+
+00000000002e &lt;exit&gt;:
 58                      pop    rax
 f3 0f 11 81 b0 01 00    movss  DWORD PTR [rcx+0x1b0],xmm0
-00
-e9 00 00 00 00          jmp    21 &lt;exit+0xe&gt;</value>
+00 
+e9 00 00 00 00          jmp    3c &lt;exit+0xe&gt;</value>
   </data>
   <data name="NoClip_Keyboard" xml:space="preserve">
     <value>41 ff 90 f8 00 00 00    call   QWORD PTR [r8+0xf8]
@@ -1481,143 +1504,145 @@ c6 05 00 00 00 00 02    mov    BYTE PTR [rip+0x0],0x2        # 31 &lt;set_up+0x7
 e9 00 00 00 00          jmp    38 &lt;exit+0x5&gt;</value>
   </data>
   <data name="NoClip_Triggers" xml:space="preserve">
-    <value>0f 2f 3d 00 00 00 00    comiss xmm7,DWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
-72 0c                   jb     15 &lt;original&gt;
-48 83 fe 0b             cmp    rsi,0xb
-74 11                   je     20 &lt;set_down&gt;
-48 83 fe 0c             cmp    rsi,0xc
-74 17                   je     2c &lt;set_up&gt;
-000000000015 &lt;original&gt;:
-48 8b 10                mov    rdx,QWORD PTR [rax]
-48 89 c1                mov    rcx,rax
-e9 00 00 00 00          jmp    20 &lt;set_down&gt;
-000000000020 &lt;set_down&gt;:
-c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 27 &lt;set_down+0x7&gt;
-0f 57 ff                xorps  xmm7,xmm7
-eb e9                   jmp    15 &lt;original&gt;
-00000000002c &lt;set_up&gt;:
-c6 05 00 00 00 00 02    mov    BYTE PTR [rip+0x0],0x2        # 33 &lt;set_up+0x7&gt;
-0f 57 ff                xorps  xmm7,xmm7
-eb dd                   jmp    15 &lt;original&gt;</value>
+    <value>41 83 f9 0b             cmp    r9d,0xb
+74 0f                   je     15 &lt;set_down&gt;
+41 83 f9 0c             cmp    r9d,0xc
+74 11                   je     1d &lt;set_up&gt;
+53                      push   rbx
+57                      push   rdi
+41 54                   push   r12
+e9 00 00 00 00          jmp    15 &lt;set_down&gt;
+
+000000000015 &lt;set_down&gt;:
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1c &lt;set_down+0x7&gt;
+c3                      ret
+
+00000000001d &lt;set_up&gt;:
+c6 05 00 00 00 00 02    mov    BYTE PTR [rip+0x0],0x2        # 24 &lt;set_up+0x7&gt;
+c3                      ret</value>
   </data>
   <data name="NoClip_UpdateCoords" xml:space="preserve">
-    <value>51                      push   rcx
-48 b9 00 00 00 00 00    movabs rcx,0x0
-00 00 00
-48 39 d9                cmp    rcx,rbx
-0f 85 d4 00 00 00       jne    e8 &lt;originalCode&gt;
-50                      push   rax
-52                      push   rdx
-41 50                   push   r8
+    <value>50                      push   rax
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+48 85 c0                test   rax,rax
+0f 84 71 01 00 00       je     182 &lt;exit&gt;
+48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
+48 39 43 08             cmp    QWORD PTR [rbx+0x8],rax
+0f 85 60 01 00 00       jne    182 &lt;exit&gt;
 66 0f 6f b3 80 00 00    movdqa xmm6,XMMWORD PTR [rbx+0x80]
-00
-48 b9 00 00 00 00 00    movabs rcx,0x0
-00 00 00
-8b 91 ec 03 00 00       mov    edx,DWORD PTR [rcx+0x3ec]
-c1 e2 02                shl    edx,0x2
-f3 44 0f 10 bc 11 4c    movss  xmm15,DWORD PTR [rcx+rdx*1+0x34c]
-03 00 00
-45 0f c6 ff 00          shufps xmm15,xmm15,0x0
-b8 cd cc 4c 3e          mov    eax,0x3e4ccccd
-66 44 0f 6e f0          movd   xmm14,eax
-45 0f c6 f6 00          shufps xmm14,xmm14,0x0
-45 0f 59 fe             mulps  xmm15,xmm14
-49 b8 00 00 00 00 00    movabs r8,0x0
-00 00 00
-45 0f 59 b8 a0 03 00    mulps  xmm15,XMMWORD PTR [r8+0x3a0]
-00
-41 0f 58 f7             addps  xmm6,xmm15
-8b 91 ec 03 00 00       mov    edx,DWORD PTR [rcx+0x3ec]
-c1 e2 02                shl    edx,0x2
-f3 44 0f 10 bc 11 9c    movss  xmm15,DWORD PTR [rcx+rdx*1+0x39c]
-03 00 00
-45 0f c6 ff 00          shufps xmm15,xmm15,0x0
-b8 9a 99 19 3e          mov    eax,0x3e19999a
-66 44 0f 6e f0          movd   xmm14,eax
-45 0f c6 f6 00          shufps xmm14,xmm14,0x0
-45 0f 59 fe             mulps  xmm15,xmm14
-45 0f 59 b8 80 03 00    mulps  xmm15,XMMWORD PTR [r8+0x380]
-00
-41 0f 58 f7             addps  xmm6,xmm15
-80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # a9 &lt;_main+0xa9&gt;
-75 07                   jne    b2 &lt;check_up&gt;
-b8 cd cc 4c be          mov    eax,0xbe4ccccd
-eb 0e                   jmp    c0 &lt;coord_update&gt;
-0000000000b2 &lt;check_up&gt;:
-80 3d 00 00 00 00 02    cmp    BYTE PTR [rip+0x0],0x2        # b9 &lt;check_up+0x7&gt;
-75 1a                   jne    d5 &lt;finish&gt;
-b8 cd cc 4c 3e          mov    eax,0x3e4ccccd
-0000000000c0 &lt;coord_update&gt;:
-66 44 0f 6e f8          movd   xmm15,eax
+00 
+56                      push   rsi
+52                      push   rdx
+51                      push   rcx
+41 50                   push   r8
+41 51                   push   r9
+53                      push   rbx
+41 52                   push   r10
+41 53                   push   r11
+48 81 ec d8 00 00 00    sub    rsp,0xd8
+0f 11 44 24 60          movups XMMWORD PTR [rsp+0x60],xmm0
+0f 11 4c 24 70          movups XMMWORD PTR [rsp+0x70],xmm1
+0f 11 94 24 80 00 00    movups XMMWORD PTR [rsp+0x80],xmm2
+00 
+0f 11 9c 24 90 00 00    movups XMMWORD PTR [rsp+0x90],xmm3
+00 
+0f 11 a4 24 a0 00 00    movups XMMWORD PTR [rsp+0xa0],xmm4
+00 
+0f 11 ac 24 b0 00 00    movups XMMWORD PTR [rsp+0xb0],xmm5
+00 
+48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 6e &lt;_main+0x6e&gt;
+31 d2                   xor    edx,edx
+e8 00 00 00 00          call   75 &lt;_main+0x75&gt;
+48 89 c6                mov    rsi,rax
+48 89 f1                mov    rcx,rsi
+e8 00 00 00 00          call   80 &lt;_main+0x80&gt;
+f3 44 0f 10 f8          movss  xmm15,xmm0
+48 89 f1                mov    rcx,rsi
+e8 00 00 00 00          call   8d &lt;_main+0x8d&gt;
+f3 44 0f 10 e8          movss  xmm13,xmm0
+45 0f 57 f6             xorps  xmm14,xmm14
+f3 44 0f 11 6c 24 20    movss  DWORD PTR [rsp+0x20],xmm13
+f3 44 0f 11 74 24 24    movss  DWORD PTR [rsp+0x24],xmm14
+f3 44 0f 11 7c 24 28    movss  DWORD PTR [rsp+0x28],xmm15
+f3 44 0f 11 74 24 2c    movss  DWORD PTR [rsp+0x2c],xmm14
+4c 8d 44 24 20          lea    r8,[rsp+0x20]
+48 8d 4c 24 30          lea    rcx,[rsp+0x30]
+48 8b 15 00 00 00 00    mov    rdx,QWORD PTR [rip+0x0]        # c3 &lt;_main+0xc3&gt;
+48 8b 52 28             mov    rdx,QWORD PTR [rdx+0x28]
+48 8b 52 60             mov    rdx,QWORD PTR [rdx+0x60]
+48 8d 52 10             lea    rdx,[rdx+0x10]
+e8 00 00 00 00          call   d4 &lt;_main+0xd4&gt;
+0f 10 44 24 60          movups xmm0,XMMWORD PTR [rsp+0x60]
+0f 10 4c 24 70          movups xmm1,XMMWORD PTR [rsp+0x70]
+0f 10 94 24 80 00 00    movups xmm2,XMMWORD PTR [rsp+0x80]
+00 
+0f 10 9c 24 90 00 00    movups xmm3,XMMWORD PTR [rsp+0x90]
+00 
+0f 10 a4 24 a0 00 00    movups xmm4,XMMWORD PTR [rsp+0xa0]
+00 
+0f 10 ac 24 b0 00 00    movups xmm5,XMMWORD PTR [rsp+0xb0]
+00 
+44 0f 10 74 24 30       movups xmm14,XMMWORD PTR [rsp+0x30]
+f3 44 0f 10 25 00 00    movss  xmm12,DWORD PTR [rip+0x0]        # 10d &lt;_main+0x10d&gt;
+00 00 
+45 0f c6 e4 00          shufps xmm12,xmm12,0x0
+45 0f 59 f4             mulps  xmm14,xmm12
+41 0f 58 f6             addps  xmm6,xmm14
+48 81 c4 d8 00 00 00    add    rsp,0xd8
+8a 15 00 00 00 00       mov    dl,BYTE PTR [rip+0x0]        # 127 &lt;_main+0x127&gt;
+84 d2                   test   dl,dl
+74 34                   je     15f &lt;coord_update&gt;
+45 0f 57 ff             xorps  xmm15,xmm15
+f3 44 0f 10 3d 00 00    movss  xmm15,DWORD PTR [rip+0x0]        # 138 &lt;_main+0x138&gt;
+00 00 
+80 fa 02                cmp    dl,0x2
+74 12                   je     14f &lt;add_vertical&gt;
+80 fa 01                cmp    dl,0x1
+75 16                   jne    158 &lt;clear_vertical&gt;
+45 0f 57 f6             xorps  xmm14,xmm14
+f3 45 0f 5c f7          subss  xmm14,xmm15
+45 0f 28 fe             movaps xmm15,xmm14
+
+0000014f &lt;add_vertical&gt;:
 45 0f c6 ff e1          shufps xmm15,xmm15,0xe1
 41 0f 58 f7             addps  xmm6,xmm15
-c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # d5 &lt;finish&gt;
-0000000000d5 &lt;finish&gt;:
-0f 29 b3 70 01 00 00    movaps XMMWORD PTR [rbx+0x170],xmm6
-41 58                   pop    r8
-5a                      pop    rdx
-58                      pop    rax
+
+00000158 &lt;clear_vertical&gt;:
+c6 05 00 00 00 00 00    mov    BYTE PTR [rip+0x0],0x0        # 15f &lt;coord_update&gt;
+
+0000015f &lt;coord_update&gt;:
+0f 11 b3 70 01 00 00    movups XMMWORD PTR [rbx+0x170],xmm6
+45 0f 57 e4             xorps  xmm12,xmm12
+45 0f 57 ed             xorps  xmm13,xmm13
 45 0f 57 f6             xorps  xmm14,xmm14
 45 0f 57 ff             xorps  xmm15,xmm15
-0000000000e8 &lt;originalCode&gt;:
+41 5b                   pop    r11
+41 5a                   pop    r10
+5b                      pop    rbx
+41 59                   pop    r9
+41 58                   pop    r8
 59                      pop    rcx
+5a                      pop    rdx
+5e                      pop    rsi
+
+00000182 &lt;exit&gt;:
 66 0f 7f b3 80 00 00    movdqa XMMWORD PTR [rbx+0x80],xmm6
-00
-e9 00 00 00 00          jmp    f6 &lt;originalCode+0xe&gt;</value>
+00 
+58                      pop    rax
+e9 00 00 00 00          jmp    190 &lt;exit+0xe&gt;</value>
   </data>
   <data name="SetEvent" xml:space="preserve">
     <value>48 b9 00 00 00 00 00    movabs rcx,0x0
-00 00 00
-48 ba 00 00 00 00 00    movabs rdx,0x0
-00 00 00
+00 00 00 
+ba ef be ad de          mov    edx,0xdeadbeef
 41 b8 01 00 00 00       mov    r8d,0x1
 41 b9 00 00 00 00       mov    r9d,0x0
 48 83 ec 48             sub    rsp,0x48
 48 b8 00 00 00 00 00    movabs rax,0x0
-00 00 00
+00 00 00 
 ff d0                   call   rax
 48 83 c4 48             add    rsp,0x48
 c3                      ret</value>
-  </data>
-  <data name="OpenMenu" xml:space="preserve">
-    <value>48 83 ec 48             sub    rsp,0x48
-48 8d 4c 24 28          lea    rcx,[rsp+0x28]
-48 b8 00 00 00 00 00    movabs rax,0x0
-00 00 00
-ff d0                   call   rax
-48 83 c4 48             add    rsp,0x48
-c3                      ret</value>
-  </data>
-  <data name="OpenRegularShop" xml:space="preserve">
-    <value>48 83 ec 48             sub    rsp,0x48
-48 ba 00 00 00 00 00    movabs rdx,0x0
-00 00 00
-49 b8 00 00 00 00 00    movabs r8,0x0
-00 00 00
-48 8d 4c 24 28          lea    rcx,[rsp+0x28]
-48 b8 00 00 00 00 00    movabs rax,0x0
-00 00 00
-ff d0                   call   rax
-48 83 c4 48             add    rsp,0x48
-c3                      ret</value>
-  </data>
-  <data name="OpenMenuWithEvent" xml:space="preserve">
-    <value>49 b9 00 00 00 00 00    movabs r9,0x0
-00 00 00
-bb 00 00 00 00          mov    ebx,0x0
-ba 01 00 00 00          mov    edx,0x1
-89 d9                   mov    ecx,ebx
-41 ff d1                call   r9
-ff c3                   inc    ebx
-81 fb 5e 01 00 00       cmp    ebx,0x15e
-7e ec                   jle    
-48 83 ec 48             sub    rsp,0x48
-48 8d 4c 24 28          lea    rcx,[rsp+0x28]
-48 b8 00 00 00 00 00    movabs rax,0x0
-00 00 00
-ff d0                   call   rax
-48 83 c4 48             add    rsp,0x48
-c3    </value>
   </data>
   <data name="CamVertUp" xml:space="preserve">
     <value>50                      push   rax
@@ -1632,7 +1657,7 @@ e9 00 00 00 00          jmp    18 &lt;_main+0x18&gt;</value>
     <value>b8 01 00 00 00          mov    eax,0x1
 c3                      ret</value>
   </data>
-  <data name="ObjMan" xml:space="preserve">
+  <data name="RestoreAllObjects" xml:space="preserve">
     <value>48 bf 00 00 00 00 00    movabs rdi,0x0
 00 00 00
 000000000000000a &lt;start&gt;:
@@ -1663,31 +1688,6 @@ ff d0                   call   rax
 48 b9 00 00 00 00 00    movabs rcx,0x0
 00 00 00
 88 01                   mov    BYTE PTR [rcx],al
-c3                      ret</value>
-  </data>
-  <data name="ArgoSpeed" xml:space="preserve">
-    <value>81 7f 08 c8 c6 3e 05    cmp    DWORD PTR [rdi+0x8],0x53ec6c8
-75 0c                   jne    15 &lt;normal&gt;
-50                      push   rax
-8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # 10 &lt;_main+0x10&gt;
-66 0f 6e c0             movd   xmm0,eax
-58                      pop    rax
-000000000015 &lt;normal&gt;:
-48 8d 44 24 20          lea    rax,[rsp+0x20]
-e9 00 00 00 00          jmp    1f &lt;normal+0xa&gt;</value>
-  </data>
-  <data name="SetSpEffect" xml:space="preserve">
-    <value>48 b9 00 00 00 00 00    movabs rcx,0x0
-00 00 00
-48 ba 00 00 00 00 00    movabs rdx,0x0
-00 00 00
-49 b8 00 00 00 00 00    movabs r8,0x0
-00 00 00
-48 b8 00 00 00 00 00    movabs rax,0x0
-00 00 00
-48 83 ec 28             sub    rsp,0x28
-ff d0                   call   rax
-48 83 c4 28             add    rsp,0x28
 c3                      ret</value>
   </data>
   <data name="ButterflyRng" xml:space="preserve">
@@ -1745,5 +1745,185 @@ c3                      ret</value>
 81 38 59 2f 00 00       cmp    DWORD PTR [rax],0x2f59
 0f 84 00 00 00 00       je     11 &lt;_main+0x11&gt;
 e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;</value>
+  </data>
+  <data name="ChrInsByEntityId" xml:space="preserve">
+    <value>48 83 ec 28             sub    rsp,0x28
+48 8d 4c 24 30          lea    rcx,[rsp+0x30]
+c7 01 ef be ad de       mov    DWORD PTR [rcx],0xdeadbeef
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+48 89 01                mov    QWORD PTR [rcx],rax
+48 83 c4 28             add    rsp,0x28
+c3                      ret</value>
+  </data>
+  <data name="TrySetReminder" xml:space="preserve">
+    <value>48 8d 8b 28 0b 00 00    lea    rcx,[rbx+0xb28]
+48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # e &lt;_main+0xe&gt;
+e9 00 00 00 00          jmp    13 &lt;_main+0x13&gt;</value>
+  </data>
+  <data name="BonfiresByBlockId" xml:space="preserve">
+    <value>671088640,4001951
+503316480,3001950
+503382016,3011950
+570490880,3411951
+520093696,3101954
+553648128,3301956
+587202560,3501953
+637534208,3801956
+620756992,3701957
+654311424,3901950
+536870912,3201950
+687865856,4101950
+754974720,4501951
+838860800,5001951
+855638016,5101952
+855703552,5111951</value>
+  </data>
+  <data name="BonfireWarp" xml:space="preserve">
+    <value>ba ef be ad de          mov    edx,0xdeadbeef
+41 b8 00 00 00 00       mov    r8d,0x0
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+48 83 ec 20             sub    rsp,0x20
+ff d0                   call   rax
+48 83 c4 20             add    rsp,0x20
+c3                      ret</value>
+  </data>
+  <data name="WarpAngleWrite" xml:space="preserve">
+    <value>44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+00 
+44 0f 11 b8 50 0a 00    movups XMMWORD PTR [rax+0xa50],xmm15
+00 
+45 0f 57 ff             xorps  xmm15,xmm15
+e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;</value>
+  </data>
+  <data name="ApplySpEffect" xml:space="preserve">
+    <value>48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+ba ef be ad de          mov    edx,0xdeadbeef
+45 31 c0                xor    r8d,r8d
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+48 83 ec 28             sub    rsp,0x28
+ff d0                   call   rax
+48 83 c4 28             add    rsp,0x28
+c3                      ret</value>
+  </data>
+  <data name="PlacePrismStones" xml:space="preserve">
+    <value>48 83 ec 28             sub    rsp,0x28
+4c 8d 25 00 00 00 00    lea    r12,[rip+0x0]        # b &lt;_main+0xb&gt;
+31 db                   xor    ebx,ebx
+
+00000000000d &lt;loop_top&gt;:
+48 8d 0d 00 00 00 00    lea    rcx,[rip+0x0]        # 14 &lt;loop_top+0x7&gt;
+ba c6 9b 04 00          mov    edx,0x49bc6
+41 b9 08 00 00 00       mov    r9d,0x8
+4d 89 e0                mov    r8,r12
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 3f &lt;loop_top+0x32&gt;
+41 b8 c6 9b 04 00       mov    r8d,0x49bc6
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+48 8d 0d 00 00 00 00    lea    rcx,[rip+0x0]        # 58 &lt;loop_top+0x4b&gt;
+48 83 c1 10             add    rcx,0x10
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+49 83 c4 20             add    r12,0x20
+ff c3                   inc    ebx
+83 fb 18                cmp    ebx,0x18
+7c 9a                   jl     d &lt;loop_top&gt;
+48 83 c4 28             add    rsp,0x28
+c3                      ret</value>
+  </data>
+  <data name="ExecuteTalkEvent" xml:space="preserve">
+    <value>48 89 e5                mov    rbp,rsp
+48 81 ec 98 05 00 00    sub    rsp,0x598
+48 8d 8d e0 fb ff ff    lea    rcx,[rbp-0x420]
+ba 00 00 00 00          mov    edx,0x0
+e8 00 00 00 00          call   1b &lt;_main+0x1b&gt;
+48 8d 8d a0 fb ff ff    lea    rcx,[rbp-0x460]
+48 8d 95 e0 fa ff ff    lea    rdx,[rbp-0x520]
+48 89 51 10             mov    QWORD PTR [rcx+0x10],rdx
+b8 00 00 00 00          mov    eax,0x0
+89 41 18                mov    DWORD PTR [rcx+0x18],eax
+89 42 04                mov    DWORD PTR [rdx+0x4],eax
+4c 8d 85 b0 fa ff ff    lea    r8,[rbp-0x550]
+4c 89 82 a0 00 00 00    mov    QWORD PTR [rdx+0xa0],r8
+49 89 50 20             mov    QWORD PTR [r8+0x20],rdx
+bb 00 00 00 00          mov    ebx,0x0
+31 ff                   xor    edi,edi
+48 8d 35 00 00 00 00    lea    rsi,[rip+0x0]        # 58 &lt;param_loop&gt;
+
+000000000058 &lt;param_loop&gt;:
+8b 04 be                mov    eax,DWORD PTR [rsi+rdi*4]
+4c 8d 85 90 fa ff ff    lea    r8,[rbp-0x570]
+41 89 00                mov    DWORD PTR [r8],eax
+41 c7 40 08 02 00 00    mov    DWORD PTR [r8+0x8],0x2
+00 
+8d 57 01                lea    edx,[rdi+0x1]
+48 8d 8d e0 fb ff ff    lea    rcx,[rbp-0x420]
+48 8b 01                mov    rax,QWORD PTR [rcx]
+ff 50 08                call   QWORD PTR [rax+0x8]
+ff c7                   inc    edi
+39 df                   cmp    edi,ebx
+7c d5                   jl     58 &lt;param_loop&gt;
+48 8d 8d a0 fb ff ff    lea    rcx,[rbp-0x460]
+48 8d 95 e0 fb ff ff    lea    rdx,[rbp-0x420]
+e8 00 00 00 00          call   96 &lt;param_loop+0x3e&gt;
+48 81 c4 98 05 00 00    add    rsp,0x598
+c3                      ret</value>
+  </data>
+  <data name="BreakAllObjects" xml:space="preserve">
+    <value>48 bf 00 00 00 00 00    movabs rdi,0x0
+00 00 00
+000000000000000a &lt;start&gt;:
+48 63 cb                movsxd rcx,ebx
+48 69 c9 88 02 04 00    imul   rcx,rcx,0x40288
+48 03 4f 28             add    rcx,QWORD PTR [rdi+0x28]
+48 83 ec 28             sub    rsp,0x28
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00
+ff d0                   call   rax
+48 83 c4 28             add    rsp,0x28
+ff c3                   inc    ebx
+3b 5f 20                cmp    ebx,DWORD PTR [rdi+0x20]
+7c d7                   jl     a &lt;start&gt;
+c3                      ret</value>
+  </data>
+  <data name="FindAndRemoveSpEffect" xml:space="preserve">
+    <value>48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+ba ef be ad de          mov    edx,0xdeadbeef
+48 83 ec 20             sub    rsp,0x20
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+48 83 c4 20             add    rsp,0x20
+c3                      ret</value>
+  </data>
+  <data name="DisableAllExceptTarget" xml:space="preserve">
+    <value>50                      push   rax
+48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+48 85 c0                test   rax,rax
+74 11                   je     1e &lt;no_update&gt;
+48 3b 48 50             cmp    rcx,QWORD PTR [rax+0x50]
+75 0b                   jne    1e &lt;no_update&gt;
+58                      pop    rax
+48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
+e9 00 00 00 00          jmp    1e &lt;no_update&gt;
+
+00000000001e &lt;no_update&gt;:
+58                      pop    rax
+31 c0                   xor    eax,eax
+c3                      ret</value>
   </data>
 </root>

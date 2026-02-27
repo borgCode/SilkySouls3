@@ -1,0 +1,297 @@
+// 
+
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Timers;
+using SilkySouls3.Interfaces;
+using SilkySouls3.Memory;
+
+namespace SilkySouls3.Services;
+
+public class MemoryService : IMemoryService
+{
+    public bool IsAttached { get; private set; }
+    public Process? TargetProcess { get; private set; }
+    public IntPtr ProcessHandle { get; private set; } = IntPtr.Zero;
+    public nint BaseAddress { get; private set; }
+    public int ModuleMemorySize { get; private set; }
+
+    private const int ProcessVmRead = 0x0010;
+    private const int ProcessVmWrite = 0x0020;
+    private const int ProcessVmOperation = 0x0008;
+    private const int ProcessQueryInformation = 0x0400;
+    private const int AttachCheckInterval = 2000; //MS
+
+    private const uint MemRelease = 0x00008000;
+        
+    private const uint CodeCaveSize = 0x5000;
+    private const int CodeCaveSearchStart = 0x40000000;
+    private const int CodeCaveSearchEnd = 0x30000;
+    private const int CodeCaveSearchStep = 0x10000;
+
+    private const string ProcessName = "darksoulsiii";
+    private bool _disposed;
+
+    private Timer _autoAttachTimer;
+    
+    
+    public string ReadString(nint addr, int maxLength = 32)
+    {
+        var bytes = ReadBytes(addr, maxLength * 2);
+
+        int stringLength = 0;
+        for (int i = 0; i < bytes.Length - 1; i += 2)
+        {
+            if (bytes[i] == 0 && bytes[i + 1] == 0)
+            {
+                stringLength = i;
+                break;
+            }
+        }
+
+        if (stringLength == 0)
+        {
+            stringLength = bytes.Length - bytes.Length % 2;
+        }
+
+        return Encoding.Unicode.GetString(bytes, 0, stringLength);
+    }
+
+    public byte[] ReadBytes(nint addr, int size)
+    {
+        var array = new byte[size];
+        var lpNumberOfBytesRead = 1;
+        Kernel32.ReadProcessMemory(ProcessHandle, addr, array, size, ref lpNumberOfBytesRead);
+        return array;
+    }
+
+    public nint FollowPointers(nint address, int[] offsets, bool readFinalPtr)
+    {
+        nint ptr = address;
+
+        for (int i = 0; i < offsets.Length - 1; i++)
+        {
+            ptr = Read<nint>(ptr + offsets[i]);
+        }
+
+        nint finalAddress = ptr + offsets[offsets.Length - 1];
+
+        return readFinalPtr ? Read<nint>(finalAddress) : finalAddress;
+    }
+
+    public T[] ReadArray<T>(IntPtr addr, int count) where T : unmanaged
+    {
+        int size = Unsafe.SizeOf<T>() * count;
+        var bytes = ReadBytes(addr, size);
+        return MemoryMarshal.Cast<byte, T>(bytes).ToArray();
+    }
+
+    public T Read<T>(nint addr) where T : unmanaged
+    {
+        int size = Unsafe.SizeOf<T>();
+        var bytes = ReadBytes(addr, size);
+        return MemoryMarshal.Read<T>(bytes);
+    }
+
+    public string HexDump(nint addr, int size)
+    {
+        var data = ReadBytes(addr, size);
+        return HexDump(data);
+    }
+        
+    private string HexDump(byte[] data, int? maxBytes = null)
+    {
+        int bytesToDump = maxBytes.HasValue ? Math.Min(maxBytes.Value, data.Length) : data.Length;
+        var sb = new StringBuilder();
+    
+        for (int i = 0; i < bytesToDump; i += 16)
+        {
+            int lineLength = Math.Min(16, bytesToDump - i);
+            string hex = BitConverter.ToString(data, i, lineLength).Replace("-", " ");
+            string ascii = new string(data.Skip(i).Take(lineLength)
+                .Select(b => b >= 32 && b < 127 ? (char)b : '.').ToArray());
+            sb.AppendLine($"{i:X4}: {hex,-48} {ascii}");
+        }
+    
+        return sb.ToString();
+    }
+
+    public void Write<T>(nint addr, T value) where T : unmanaged
+    {
+        int size = Unsafe.SizeOf<T>();
+        var bytes = new byte[size];
+        MemoryMarshal.Write(bytes, ref value);
+        WriteBytes(addr, bytes);
+    }
+
+    public void Write(IntPtr addr, bool value) => Write(addr, value ? (byte)1 : (byte)0);
+    
+    public void WriteWString(nint addr, string value, int maxChars = 32)
+    {
+        var charsToWrite = Math.Min(value.Length, maxChars - 1);
+        var bytes = new byte[maxChars * 2];
+
+        Encoding.Unicode.GetBytes(value, 0, charsToWrite, bytes, 0);
+
+        WriteBytes(addr, bytes);
+    }
+    
+    public void WriteBytes(nint addr, byte[] val)
+    {
+        Kernel32.WriteProcessMemory(ProcessHandle, addr, val, val.Length, 0);
+    }
+
+    public void SetBitValue(nint addr, int flagMask, bool setValue)
+    {
+        int current = Read<int>(addr);
+        Write(addr, setValue ? current | flagMask : current & ~flagMask);
+    }
+
+    public bool IsBitSet(nint addr, int flagMask)
+    {
+        return (Read<int>(addr) & flagMask) != 0;
+    }
+
+    public void RunThread(nint address, uint timeout = UInt32.MaxValue)
+    {
+        IntPtr thread = Kernel32.CreateRemoteThread(ProcessHandle, IntPtr.Zero, 0, address, IntPtr.Zero, 0, IntPtr.Zero);
+        var ret = Kernel32.WaitForSingleObject(thread, timeout);
+        Kernel32.CloseHandle(thread);
+    }
+    
+    private bool RunThreadAndWaitForCompletion(IntPtr address, uint timeout = 0xFFFFFFFF)
+    {
+        IntPtr thread = Kernel32.CreateRemoteThread(ProcessHandle, IntPtr.Zero, 0, address, IntPtr.Zero, 0, IntPtr.Zero);
+
+        if (thread == IntPtr.Zero)
+        {
+            return false;
+        }
+
+        uint waitResult = Kernel32.WaitForSingleObject(thread, timeout);
+        Kernel32.CloseHandle(thread);
+
+        return waitResult == 0;
+    }
+
+    public void AllocateAndExecute(byte[] shellcode)
+    {
+        IntPtr allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, IntPtr.Zero, (uint)shellcode.Length);
+
+        if (allocatedMemory == IntPtr.Zero) return;
+
+        WriteBytes(allocatedMemory, shellcode);
+        bool executionSuccess = RunThreadAndWaitForCompletion(allocatedMemory);
+
+        if (!executionSuccess) return;
+
+        Kernel32.VirtualFreeEx(ProcessHandle, allocatedMemory, 0, MemRelease);
+    }
+
+    public void AllocCodeCave()
+    {
+        nint searchRangeStart = BaseAddress - CodeCaveSearchStart;
+        nint searchRangeEnd = BaseAddress - CodeCaveSearchEnd;
+
+        for (nint addr = searchRangeEnd; addr > searchRangeStart; addr -= CodeCaveSearchStep)
+        {
+            var allocatedMemory = Kernel32.VirtualAllocEx(ProcessHandle, addr, CodeCaveSize);
+
+            if (allocatedMemory != IntPtr.Zero)
+            {
+                CustomCodeOffsets.Base = allocatedMemory;
+                break;
+            }
+        }
+    }
+
+    public nint AllocateMem(uint size) => Kernel32.VirtualAllocEx(ProcessHandle, IntPtr.Zero, size);
+
+    public void FreeMem(nint addr) => Kernel32.VirtualFreeEx(ProcessHandle, addr, 0, MemRelease);
+
+    public void StartAutoAttach()
+    {
+        _autoAttachTimer = new Timer(AttachCheckInterval);
+        _autoAttachTimer.Elapsed += (sender, e) => TryAttachToProcess();
+
+        TryAttachToProcess();
+
+        _autoAttachTimer.Start();
+    }
+    
+    private void TryAttachToProcess()
+        {
+            if (ProcessHandle != IntPtr.Zero)
+            {
+                if (TargetProcess == null || TargetProcess.HasExited)
+                {
+                    Kernel32.CloseHandle(ProcessHandle);
+                    ProcessHandle = IntPtr.Zero;
+                    TargetProcess = null;
+                    IsAttached = false;
+                }
+
+                return;
+            }
+
+            var processes = Process.GetProcessesByName(ProcessName);
+            if (processes.Length > 0 && !processes[0].HasExited)
+            {
+                TargetProcess = processes[0];
+                ProcessHandle = Kernel32.OpenProcess(
+                    ProcessVmRead | ProcessVmWrite | ProcessVmOperation | ProcessQueryInformation,
+                    false,
+                    TargetProcess.Id);
+
+                if (ProcessHandle == IntPtr.Zero)
+                {
+                    TargetProcess = null;
+                    IsAttached = false;
+                }
+                else
+                {
+                    if (TargetProcess.MainModule != null)
+                    {
+                        BaseAddress = TargetProcess.MainModule.BaseAddress;
+                        ModuleMemorySize = TargetProcess.MainModule.ModuleMemorySize;
+                    }
+
+                    IsAttached = true;
+                }
+            }
+        }
+
+        private void Dispose()
+        {
+            if (!_disposed)
+            {
+                if (_autoAttachTimer != null)
+                {
+                    _autoAttachTimer.Stop();
+                    _autoAttachTimer.Dispose();
+                    _autoAttachTimer = null;
+                }
+
+                if (ProcessHandle != IntPtr.Zero)
+                {
+                    Kernel32.CloseHandle(ProcessHandle);
+                    ProcessHandle = IntPtr.Zero;
+                    TargetProcess = null;
+                    IsAttached = false;
+                }
+
+                _disposed = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
+
+        ~MemoryService()
+        {
+            Dispose();
+        }
+}

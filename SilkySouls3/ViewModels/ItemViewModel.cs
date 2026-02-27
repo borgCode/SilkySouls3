@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using SilkySouls3.Enums;
+using SilkySouls3.Interfaces;
 using SilkySouls3.Models;
 using SilkySouls3.Services;
 using SilkySouls3.Utilities;
@@ -12,7 +14,8 @@ namespace SilkySouls3.ViewModels
 {
     public class ItemViewModel : BaseViewModel
     {
-        private readonly ItemService _itemService;
+        private readonly IItemService _itemService;
+
         private string _selectedCategory;
         private Item _selectedItem;
         private int _selectedQuantity = 1;
@@ -59,9 +62,14 @@ namespace SilkySouls3.ViewModels
         };
 
 
-        public ItemViewModel(ItemService itemService)
+        public ItemViewModel(IItemService itemService, IStateService stateService)
         {
             _itemService = itemService;
+
+            stateService.Subscribe(State.Loaded, OnGameLoaded);
+            stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
+            stateService.Subscribe(State.OnNewGameStart, OnNewGameStart);
+            
             LoadData();
         }
 
@@ -286,12 +294,12 @@ namespace SilkySouls3.ViewModels
 
         public void SpawnItem()
         {
-            if (_selectedItem == null) return;
+            if (SelectedItem == null) return;
 
-            int itemId = _selectedItem.Id;
+            int itemId = SelectedItem.Id;
             if (CanInfuse) itemId += InfusionTypes[SelectedInfusionType];
             if (CanUpgrade) itemId += SelectedUpgrade;
-            _itemService.SpawnItem(itemId, SelectedQuantity);
+            _itemService.SpawnItem(itemId, SelectedQuantity, SelectedItem.StackSize > 1, SelectedItem.StackSize);
         }
 
         public void SpawnLoadout()
@@ -310,7 +318,7 @@ namespace SilkySouls3.ViewModels
                     itemId += template.Upgrade;
                     
                     int quantity = template.Quantity > 0 ? template.Quantity : item.StackSize;
-                    _itemService.SpawnItem(itemId, quantity);
+                    // _itemService.SpawnItem(itemId, quantity);
                 }
             }
         }
@@ -345,7 +353,7 @@ namespace SilkySouls3.ViewModels
             if (isSensitiveCategory && !ConfirmSpawn()) return;
             foreach (var item in _itemsByCategory[SelectedMassSpawnCategory])
             {
-                _itemService.SpawnItem(item.Id, item.StackSize);
+                // _itemService.SpawnItem(item.Id, item.StackSize);
             }
         }
 
@@ -361,20 +369,20 @@ namespace SilkySouls3.ViewModels
             return result == MessageBoxResult.Yes;
         }
 
-        public void TryEnableFeatures()
+        private void OnGameLoaded()
         {
             AreOptionsEnabled = true;
         }
 
-        public void DisableFeatures()
+        private void OnGameNotLoaded()
         {
             AreOptionsEnabled = false;
         }
 
-        public void TrySpawnWeaponPref()
+        public void OnNewGameStart()
         {
             if (!AutoSpawnEnabled || SelectedAutoSpawnWeapon == null) return;
-            _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
+            // _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
         }
 
         public void ShowCreateLoadoutWindow()

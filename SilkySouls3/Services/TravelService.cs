@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading;
+using SilkySouls3.Enums;
+using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
 using SilkySouls3.Models;
 using SilkySouls3.Utilities;
@@ -8,101 +11,97 @@ using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
 {
-    public class TravelService
+    
+    public class TravelService(IMemoryService memoryService, HookManager hookManager) : ITravelService
     {
-        private readonly MemoryIo _memoryIo;
-        private readonly HookManager _hookManager;
-        public TravelService(MemoryIo memoryIo, HookManager hookManager)
-        {
-            _memoryIo = memoryIo;
-            _hookManager = hookManager;
-        }
-
-        public void Warp(WarpLocation warpLocation)
-        {
-            var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
-            _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
-
-            var lastBonfireAddr = (IntPtr)_memoryIo.ReadInt64(GameMan.Base) + GameMan.LastBonfire;
-            _memoryIo.WriteInt32(lastBonfireAddr, warpLocation.BonfireId + 1000);
-
-            byte[] warpBytes = AsmLoader.GetAsmBytes("WarpCall");
-            byte[] bytes = BitConverter.GetBytes(LuaEventMan.Base.ToInt64());
-            Array.Copy(bytes, 0, warpBytes, 2, 8);
-            bytes = BitConverter.GetBytes(Funcs.Warp);
-            Array.Copy(bytes, 0, warpBytes, 0x12 + 2, 8);
-
-            _memoryIo.AllocateAndExecute(warpBytes);
-
-            if (warpLocation.HasCoordinates)
-            {
-                var coordsAddr = CodeCaveOffsets.Base + (int)CodeCaveOffsets.WarpHooks.Coords;
-                var coordsOrigin = Hooks.WarpCoordWrite;
-                var coordsCustomCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.WarpHooks.CoordCode;
-
-                var coords = new byte[4 * sizeof(float)];
-                Buffer.BlockCopy(warpLocation.Coords, 0, coords, 0, 3 * sizeof(float));
-                BitConverter.GetBytes(1f).CopyTo(coords, 12);
-
-                _memoryIo.WriteBytes(coordsAddr, coords);
-
-                byte[] customCode = AsmLoader.GetAsmBytes("WarpHookCode");
-                bytes = AsmHelper.GetRelOffsetBytes(coordsCustomCode, coordsAddr, 0x8);
-                Array.Copy(bytes, 0, customCode, 0x0 + 4, 4);
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(coordsOrigin, 8, coordsCustomCode + 0x19);
-                Array.Copy(bytes, 0, customCode, 0x14 + 1, 4);
-                _memoryIo.WriteBytes(coordsCustomCode, customCode);
-
-                var angleAddr = CodeCaveOffsets.Base + (int)CodeCaveOffsets.WarpHooks.Angle;
-                var angleOrigin = Hooks.WarpCoordWrite - 0x20;
-                var angleCustomCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.WarpHooks.AngleCode;
-
-                byte[] angle = new byte[16];
-                bytes = BitConverter.GetBytes(warpLocation.Angle);
-                Array.Copy(bytes, 0, angle, 4, 4);
-                _memoryIo.WriteBytes(angleAddr, angle);
-
-                customCode[0xC] = 0x50;
-                bytes = AsmHelper.GetRelOffsetBytes(angleCustomCode, angleAddr, 0x8);
-                Array.Copy(bytes, 0, customCode, 0x0 + 4, 4);
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(angleOrigin, 8, angleCustomCode + 0x19);
-                Array.Copy(bytes, 0, customCode, 0x14 + 1, 4);
-                _memoryIo.WriteBytes(angleCustomCode, customCode);
-
-                {
-                    int start = Environment.TickCount;
-                    while (_memoryIo.IsGameLoaded() && Environment.TickCount - start < 10000)
-                        Thread.Sleep(50);
-                }
-
-                _hookManager.InstallHook(coordsCustomCode.ToInt64(), coordsOrigin,
-                    new byte[] { 0x66, 0x0F, 0x7F, 0x80, 0x40, 0x0A, 0x00, 0x00 });
-                _hookManager.InstallHook(angleCustomCode.ToInt64(), angleOrigin,
-                    new byte[] { 0x66, 0x0F, 0x7F, 0x80, 0x50, 0x0A, 0x00, 0x00 });
-
-
-                {
-                    int start = Environment.TickCount;
-                    while (!_memoryIo.IsGameLoaded() && Environment.TickCount - start < 10000)
-                        Thread.Sleep(50);
-                }
-
-                _hookManager.UninstallHook(coordsCustomCode.ToInt64());
-                _hookManager.UninstallHook(angleCustomCode.ToInt64());
-            }
-        }
+        private const int UntendedGravesBonfireId = 4001953;
+        private const int ChampGundyrBonfireId = 4001954;
         
+        public void Warp(int bonfireId)
+        {
+            var variant = bonfireId is UntendedGravesBonfireId or ChampGundyrBonfireId ? 10 : 0;
+            
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.BonfireWarp);
+            AsmHelper.WriteImmediateDwords(bytes, [
+                (bonfireId, 1),
+                (variant, 0x5 + 2)
+            ]);
+            AsmHelper.WriteAbsoluteAddress(bytes, Functions.BonfireWarp, 0xB + 2);
+            memoryService.AllocateAndExecute(bytes);
+        }
+
+        public void WarpWithCoords(Vector3 coords, float angle, int bonfireId)
+        {
+            Warp(bonfireId);
+
+            var coordsAddr = CustomCodeOffsets.Base + (int)CustomCodeOffsets.WarpHooks.Coords;
+            var coordsCode = CustomCodeOffsets.Base + (int)CustomCodeOffsets.WarpHooks.CoordCode;
+
+            memoryService.Write(coordsAddr, coords);
+            memoryService.Write(coordsAddr + 12, 1.0f);
+
+            byte[] bytes = AsmLoader.GetAsmBytes(AsmScript.WarpCoordsWrite);
+            AsmHelper.WriteRelativeOffsets(bytes, [
+                (coordsCode, coordsAddr, 8, 4),
+                (coordsCode + 0x14, Hooks.WarpCoords + 8, 5, 0x14 + 1)
+            ]);
+
+            memoryService.WriteBytes(coordsCode, bytes);
+
+            var angleAddr = CustomCodeOffsets.Base + (int)CustomCodeOffsets.WarpHooks.Angle;
+            var angleCode = CustomCodeOffsets.Base + (int)CustomCodeOffsets.WarpHooks.AngleCode;
+
+            memoryService.Write(angleAddr, 0L);
+            memoryService.Write(angleAddr + 4, angle);
+            memoryService.Write(angleAddr + 8, 0L);
+
+            bytes = AsmLoader.GetAsmBytes(AsmScript.WarpAngleWrite);
+
+            AsmHelper.WriteRelativeOffsets(bytes, [
+                (angleCode, angleAddr, 8, 4),
+                (angleCode + 0x14, Hooks.WarpAngle + 8, 5, 0x14 + 1)
+            ]);
+
+            memoryService.WriteBytes(angleCode, bytes);
+
+            {
+                int start = Environment.TickCount;
+                while (IsLoaded() && Environment.TickCount - start < 10000)
+                    Thread.Sleep(50);
+            }
+
+            hookManager.InstallHook(coordsCode, Hooks.WarpCoords,
+                [0x66, 0x0F, 0x7F, 0x80, 0x40, 0x0A, 0x00, 0x00]);
+            hookManager.InstallHook(angleCode, Hooks.WarpAngle,
+                [0x66, 0x0F, 0x7F, 0x80, 0x50, 0x0A, 0x00, 0x00]);
+
+
+            {
+                int start = Environment.TickCount;
+                while (!IsLoaded() && Environment.TickCount - start < 10000)
+                    Thread.Sleep(50);
+            }
+
+            hookManager.UninstallHook(coordsCode);
+            hookManager.UninstallHook(angleCode);
+        }
+
         public void UnlockBonfires(IEnumerable<WarpLocation> warps)
         {
-            var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
-            _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag, true);
+            var bonfireFlagBasePtr = memoryService.Read<nint>(memoryService.Read<nint>(EventFlagMan.Base));
+            memoryService.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag,
+                true);
 
             foreach (var warp in warps)
             {
                 var addr = bonfireFlagBasePtr + warp.Offset.Value;
                 byte flagMask = (byte)(1 << warp.BitPosition.Value);
-                _memoryIo.SetBitValue(addr, flagMask, true);
+                memoryService.SetBitValue(addr, flagMask, true);
             }
         }
+
+        private bool IsLoaded() =>
+            memoryService.Read<nint>(memoryService.Read<nint>(WorldChrManImp.Base) + WorldChrManImp.PlayerIns) !=
+            IntPtr.Zero;
     }
 }

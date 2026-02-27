@@ -1,86 +1,89 @@
+// 
+
 using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using SilkySouls3.Utilities;
 
-namespace SilkySouls3.Views
-{
-    public partial class CustomMessageBox : Window
-    {
-        
-        public MessageBoxResult Result { get; private set; }
-        private readonly bool _topMost;
-        
-        
-        public CustomMessageBox(string message, string title, MessageBoxButton button, bool topMost)
-        {
-            InitializeComponent();
-            
-            Title = title;
-            MessageText.Text = message;
-            
-            SetButtons(button);
-            
-            _topMost = topMost;
-            
-            SetButtons(button);
-            
-            if (_topMost)
-            {
-                SourceInitialized += OnSourceInitialized;
-            }
+namespace SilkySouls3.Views;
 
-            if (Application.Current.MainWindow != null)
-            {
-                Owner = Application.Current.MainWindow;
-                Application.Current.MainWindow.Closing += (sender, args) => { Close(); };
-            }
+public partial class CustomMessageBox : Window
+{
+    public bool Result { get; private set; }
+
+
+    public CustomMessageBox(string message, bool showCancel, string title = "Message")
+    {
+        InitializeComponent();
+        MessageText.Text = message;
+        TitleText.Text = title;
+            
+        if (showCancel)
+        {
+            CancelButton.Visibility = Visibility.Visible;
         }
         
-        private void OnSourceInitialized(object sender, EventArgs e)
+        SetupWindow();
+    }
+
+    // Yes/No buttons
+    public CustomMessageBox(string message, string title, bool showYesNo)
+    {
+        InitializeComponent();
+        MessageText.Text = message;
+        TitleText.Text = title;
+
+        if (showYesNo)
+        {
+            OkButton.Visibility = Visibility.Collapsed;
+            YesButton.Visibility = Visibility.Visible;
+            NoButton.Visibility = Visibility.Visible;
+        }
+
+        SetupWindow();
+    }
+
+    private void SetupWindow()
+    {
+        Loaded += (s, e) =>
         {
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
             User32.SetTopmost(hwnd);
-        }
-        
-        private void SetButtons(MessageBoxButton button)
-        {
-            switch (button)
-            {
-                case MessageBoxButton.OK:
-                    CancelButton.Visibility = Visibility.Collapsed;
-                    break;
-                case MessageBoxButton.OKCancel:
-                    CancelButton.Visibility = Visibility.Visible;
-                    break;
-                case MessageBoxButton.YesNo:
-                    OkButton.Content = "Yes";
-                    CancelButton.Content = "No";
-                    CancelButton.Visibility = Visibility.Visible;
-                    break;
-            }
-        }
-        
-        private void OkButton_Click(object sender, RoutedEventArgs e)
-        {
-            Result = OkButton.Content.ToString() == "Yes" ? MessageBoxResult.Yes : MessageBoxResult.OK;
-            DialogResult = true;
-        }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Result = CancelButton.Content.ToString() == "No" ? MessageBoxResult.No : MessageBoxResult.Cancel;
-            DialogResult = false;
-        }
-        
-        public static MessageBoxResult Show(string message, string title = "", 
-            MessageBoxButton button = MessageBoxButton.OK, bool topMost = false)
-        {
-            var msgBox = new CustomMessageBox(message, title, button, topMost);
-            msgBox.ShowDialog();
-            return msgBox.Result;
-        }
-        
-        
+            if (Application.Current.MainWindow != null)
+            {
+                Application.Current.MainWindow.Closing += (sender, args) => { Close(); };
+            }
+        };
+    }
+
+    private void OkButton_Click(object sender, RoutedEventArgs e)
+    {
+        Result = true;
+        Close();
+    }
+
+    private void CancelButton_Click(object sender, RoutedEventArgs e)
+    {
+        Result = false;
+        Close();
+    }
+
+    private void YesButton_Click(object sender, RoutedEventArgs e)
+    {
+        Result = true;
+        Close();
+    }
+
+    private void NoButton_Click(object sender, RoutedEventArgs e)
+    {
+        Result = false;
+        Close();
+    }
+
+    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        DragMove();
     }
 }

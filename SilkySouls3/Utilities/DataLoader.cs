@@ -1,17 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Numerics;
+using SilkySouls3.Enums;
 using SilkySouls3.Models;
+using SilkySouls3.Properties;
 
 namespace SilkySouls3.Utilities
 {
     public static class DataLoader
     {
+        private static DlcRequirement ParseDlcRequirement(string value)
+        {
+            int requirementValue = int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
+            if (!Enum.IsDefined(typeof(DlcRequirement), requirementValue))
+                throw new InvalidDataException($"Invalid DLC requirement value: {value}");
+
+            return (DlcRequirement)requirementValue;
+        }
+
         public static Dictionary<string, List<WarpLocation>> GetWarpLocations()
         {
             Dictionary<string, List<WarpLocation>> warpDict = new Dictionary<string, List<WarpLocation>>();
-            string csvData = Properties.Resources.WarpEntries;
+            string csvData = Resources.WarpEntries;
 
             if (string.IsNullOrWhiteSpace(csvData))
                 return warpDict;
@@ -23,11 +36,10 @@ namespace SilkySouls3.Utilities
                 {
                     if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
 
-                    if (!GameLauncher.IsDlc2Available && line.StartsWith("2,"))
-                        continue;
-
                     string[] parts = line.Split(',');
                     if (parts.Length < 6) continue;
+
+                    DlcRequirement dlcRequirement = ParseDlcRequirement(parts[0]);
 
                     string mainArea = parts[1];
                     string name = parts[2];
@@ -54,17 +66,18 @@ namespace SilkySouls3.Utilities
 
                     int bonfireId = int.Parse(parts[5], NumberStyles.Integer, CultureInfo.InvariantCulture);
 
-                    float[] coords = null;
+                    Vector3? coords = null;
                     float angle = 0f;
 
                     if (parts.Length > 6 && !string.IsNullOrWhiteSpace(parts[6]))
                     {
-                        var coordParts = parts[6].Split('|');
-                        coords = new float[coordParts.Length];
-                        for (int i = 0; i < coordParts.Length; i++)
-                        {
-                            coords[i] = float.Parse(coordParts[i], CultureInfo.InvariantCulture);
-                        }
+                        string[] coordsString = parts[6].Split('|');
+    
+                        coords = new Vector3(
+                            float.Parse(coordsString[0], CultureInfo.InvariantCulture),
+                            float.Parse(coordsString[1], CultureInfo.InvariantCulture),
+                            float.Parse(coordsString[2], CultureInfo.InvariantCulture)
+                        );
                     }
 
                     if (parts.Length > 7 && !string.IsNullOrWhiteSpace(parts[7]))
@@ -74,6 +87,7 @@ namespace SilkySouls3.Utilities
 
                     WarpLocation location = new WarpLocation
                     {
+                        DlcRequirement = dlcRequirement,
                         Name = name,
                         MainArea = mainArea,
                         Offset = offset,
@@ -113,14 +127,14 @@ namespace SilkySouls3.Utilities
                 {
                     if (string.IsNullOrWhiteSpace(line)) continue;
 
-                    if (!GameLauncher.IsDlc2Available && line.StartsWith("2,"))
-                        continue;
-
                     string[] parts = line.Split(',');
                     if (parts.Length >= 6)
                     {
+                        DlcRequirement dlcRequirement = ParseDlcRequirement(parts[0]);
+
                         items.Add(new Item
                         {
+                            DlcRequirement = dlcRequirement,
                             Id = int.Parse(parts[1], NumberStyles.HexNumber),
                             Name = parts[2],
                             StackSize = int.Parse(parts[3]),
@@ -233,6 +247,32 @@ namespace SilkySouls3.Utilities
             }
 
             return customLoadouts;
+        }
+        
+        public static Dictionary<TKey, TValue> LoadDict<TKey, TValue>(string resourceName, char separator = ',')
+        {
+            var dict = new Dictionary<TKey, TValue>();
+
+            string data = Resources.ResourceManager.GetString(resourceName);
+            if (string.IsNullOrWhiteSpace(data)) return dict;
+
+            var keyConverter = TypeDescriptor.GetConverter(typeof(TKey));
+            var valueConverter = TypeDescriptor.GetConverter(typeof(TValue));
+
+            using var reader = new StringReader(data);
+            while (reader.ReadLine() is { } line)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                string[] parts = line.Split(separator);
+                if (parts.Length < 2) continue;
+
+                var key = (TKey)keyConverter.ConvertFromInvariantString(parts[0].Trim());
+                var value = (TValue)valueConverter.ConvertFromInvariantString(parts[1].Trim());
+                dict[key] = value;
+            }
+
+            return dict;
         }
     }
 }

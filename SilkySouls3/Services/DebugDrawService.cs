@@ -1,16 +1,18 @@
-﻿using SilkySouls3.Memory;
+﻿using SilkySouls3.Enums;
+using SilkySouls3.Interfaces;
 using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
 {
-    public class DebugDrawService
+    public class DebugDrawService : IDebugDrawService
     {
+        private readonly IMemoryService _memoryService;
         private int _clientCount;
-        private readonly MemoryIo _memoryIo;
 
-        public DebugDrawService(MemoryIo memoryIo)
+        public DebugDrawService(IMemoryService memoryService, IStateService stateService)
         {
-            _memoryIo = memoryIo;
+            _memoryService = memoryService;
+            stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
         }
 
         public void RequestDebugDraw()
@@ -20,7 +22,7 @@ namespace SilkySouls3.Services
             _clientCount++;
         }
 
-        private void TogglePatch(bool isEnabled) => _memoryIo.WriteByte(Patches.DbgDrawFlag + 0x3, isEnabled ? 1 : 0);
+        private void TogglePatch(bool isEnabled) => _memoryService.Write(Patches.DbgDrawFlag + 0x3, isEnabled);
 
         public void ReleaseDebugDraw()
         {
@@ -32,7 +34,7 @@ namespace SilkySouls3.Services
                 _clientCount = 0;
         }
 
-        public void Reset()
+        private void OnGameNotLoaded()
         {
             _clientCount = 0;
             TogglePatch(false);

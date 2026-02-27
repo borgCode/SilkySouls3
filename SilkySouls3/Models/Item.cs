@@ -1,7 +1,10 @@
-﻿namespace SilkySouls3.Models
+﻿using SilkySouls3.Enums;
+
+namespace SilkySouls3.Models
 {
     public class Item
     {
+        public DlcRequirement DlcRequirement { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public int StackSize { get; set; }

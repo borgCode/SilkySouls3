@@ -1,394 +1,293 @@
-﻿using System;
+// 
+
+using System;
+using System.Numerics;
+using SilkySouls3.Enums;
+using SilkySouls3.GameIds;
+using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
 
-namespace SilkySouls3.Services
+namespace SilkySouls3.Services;
+
+public class UtilityService(
+    IMemoryService memoryService,
+    HookManager hookManager,
+    IReminderService reminderService,
+    IParamService paramService,
+    IPlayerService playerService)
+    : IUtilityService
 {
-    public class UtilityService
+    private const float DefaultNoClipSpeedScale = 0.2f;
+    private const int DefaultLockCamParamRowId = 0;
+    private const int FovOffset = 0x14;
+
+    public void Toggle100Drop(bool is100DropEnabled)
     {
-        private readonly MemoryIo _memoryIo;
-        private readonly HookManager _hookManager;
-        private bool _isFreeCamActive;
+        var customCode = CustomCodeOffsets.Base + CustomCodeOffsets.ItemLotBase;
 
-        public UtilityService(MemoryIo memoryIo, HookManager hookManager)
+        if (is100DropEnabled)
         {
-            _memoryIo = memoryIo;
-            _hookManager = hookManager;
+            reminderService.TrySetReminder();
+            var hookLoc = Hooks.ItemLotBase;
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.ItemLotBase);
+            memoryService.WriteBytes(customCode, bytes);
+            hookManager.InstallHook(customCode, hookLoc, [0x45, 0x0F, 0xB7, 0x41, 0x40]);
         }
-        
-        public void ToggleNoClip(bool isNoClipEnabled)
+        else
         {
-            var inAirTimerCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.InAirTimerCode;
-            var keyboardCheckCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.KeyboardCheck;
-            var triggerCheckCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.TriggerCheck;
-            var triggerCheckCode2 = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.TriggerCheck2;
-            var updateCoordsCode = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode;
-            if (isNoClipEnabled)
-            {
-                var zDirectionVariable = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.ZDirectionVariable;
-                var triggerThreshold = CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.TriggerThreshold;
-                _memoryIo.WriteFloat(triggerThreshold, 0.5f);
-
-                var inAirTimerOrigin = Hooks.InAirTimer;
-                var keyboardOrigin = Hooks.NoClipKeyboard;
-                var triggerOrigin = Hooks.NoClipTriggers;
-                var triggerOrigin2 = Hooks.NoClipTriggers2;
-                var updateCoordsOrigin = Hooks.NoClipUpdateCoords;
-
-
-                var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
-                {
-                    WorldChrMan.PlayerIns,
-                    (int)WorldChrMan.PlayerInsOffsets.Modules,
-                    (int)WorldChrMan.Modules.ChrPhysicsModule,
-                }, true);
-
-                var chrExFollowCam = _memoryIo.FollowPointers(FieldArea.Base, new[]
-                {
-                    FieldArea.ChrCam,
-                    FieldArea.ChrExFollowCam
-                }, true);
-
-                var padMan = _memoryIo.FollowPointers(WorldChrMan.Base,
-                    new[]
-                    {
-                        WorldChrMan.PlayerIns,
-                        (int)WorldChrMan.PlayerInsOffsets.PadMan
-                    }, true);
-
-
-                var inAirTimerBytes = AsmLoader.GetAsmBytes("NoClip_InAirTimer");
-                byte[] bytes = BitConverter.GetBytes(chrPhysicsModule.ToInt64());
-                Array.Copy(bytes, 0, inAirTimerBytes, 0x1 + 2, bytes.Length);
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(inAirTimerOrigin, 8, inAirTimerCode + 0x21);
-                Array.Copy(bytes, 0, inAirTimerBytes, 0x1C + 1, bytes.Length);
-                _memoryIo.WriteBytes(inAirTimerCode, inAirTimerBytes);
-
-                var keyboardCheckBytes = AsmLoader.GetAsmBytes("NoClip_Keyboard");
-                AsmHelper.WriteJumpOffsets(keyboardCheckBytes, new[]
-                {
-                    (keyboardOrigin, 7, keyboardCheckCode + 0x1C, 0x17 + 1),
-                    (keyboardOrigin, 7, keyboardCheckCode + 0x2A, 0x25 + 1),
-                    (keyboardOrigin, 7, keyboardCheckCode + 0x38, 0x33 + 1)
-                });
-
-                AsmHelper.WriteRelativeOffsets(keyboardCheckBytes, new[]
-                {
-                    (keyboardCheckCode.ToInt64() + 0x1C, zDirectionVariable.ToInt64(), 7, 0x1C + 2),
-                    (keyboardCheckCode.ToInt64() + 0x2A, zDirectionVariable.ToInt64(), 7, 0x2A + 2),
-                });
-
-                _memoryIo.WriteBytes(keyboardCheckCode, keyboardCheckBytes);
-
-                var triggerBytes = AsmLoader.GetAsmBytes("NoClip_Triggers");
-
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(triggerOrigin, 6, triggerCheckCode + 0x20);
-                Array.Copy(bytes, 0, triggerBytes, 0x1B + 1, 4);
-
-                AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
-                {
-                    (triggerCheckCode.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
-                    (triggerCheckCode.ToInt64() + 0x20, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
-                    (triggerCheckCode.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2),
-                });
-
-                _memoryIo.WriteBytes(triggerCheckCode, triggerBytes);
-
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(triggerOrigin2, 6, triggerCheckCode2 + 0x20);
-                Array.Copy(bytes, 0, triggerBytes, 0x1B + 1, 4);
-
-                AsmHelper.WriteRelativeOffsets(triggerBytes, new[]
-                {
-                    (triggerCheckCode2.ToInt64(), triggerThreshold.ToInt64(), 7, 0x0 + 3),
-                    (triggerCheckCode2.ToInt64() + 0x20, zDirectionVariable.ToInt64(), 7, 0x20 + 2),
-                    (triggerCheckCode2.ToInt64() + 0x2C, zDirectionVariable.ToInt64(), 7, 0x2C + 2)
-                });
-
-                _memoryIo.WriteBytes(triggerCheckCode2, triggerBytes);
-
-                var updateCoordsBytes = AsmLoader.GetAsmBytes("NoClip_UpdateCoords");
-                AsmHelper.WriteAbsoluteAddresses(updateCoordsBytes, new[]
-                {
-                    (chrPhysicsModule.ToInt64(), 0x1 + 2),
-                    (padMan.ToInt64(), 0x20 + 2),
-                    (chrExFollowCam.ToInt64(), 0x55 + 2),
-                });
-
-                AsmHelper.WriteRelativeOffsets(updateCoordsBytes, new[]
-                {
-                    (updateCoordsCode.ToInt64() + 0xA2, zDirectionVariable.ToInt64(), 7, 0xA2 + 2),
-                    (updateCoordsCode.ToInt64() + 0xB2, zDirectionVariable.ToInt64(), 7, 0xB2 + 2),
-                    (updateCoordsCode.ToInt64() + 0xCE, zDirectionVariable.ToInt64(), 7, 0xCE + 2),
-                });
-
-                bytes = AsmHelper.GetJmpOriginOffsetBytes(updateCoordsOrigin, 8, updateCoordsCode + 0xF6);
-                Array.Copy(bytes, 0, updateCoordsBytes, 0xF1 + 1, 4);
-
-                _memoryIo.WriteBytes(updateCoordsCode, updateCoordsBytes);
-
-
-                _hookManager.InstallHook(inAirTimerCode.ToInt64(), inAirTimerOrigin, new byte[]
-                    { 0xF3, 0x0F, 0x11, 0x81, 0xB0, 0x01, 0x00, 0x00 });
-                _hookManager.InstallHook(keyboardCheckCode.ToInt64(), keyboardOrigin, new byte[]
-                    { 0x41, 0xFF, 0x90, 0xF8, 0x00, 0x00, 0x00 });
-                _hookManager.InstallHook(triggerCheckCode.ToInt64(), triggerOrigin, new byte[]
-                    { 0x48, 0x8B, 0x10, 0x48, 0x89, 0xC1 });
-                _hookManager.InstallHook(triggerCheckCode2.ToInt64(), triggerOrigin2, new byte[]
-                    { 0x48, 0x8B, 0x10, 0x48, 0x89, 0xC1 });
-                _hookManager.InstallHook(updateCoordsCode.ToInt64(), updateCoordsOrigin, new byte[]
-                    { 0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00 });
-            }
-            else
-            {
-                _hookManager.UninstallHook(updateCoordsCode.ToInt64());
-                _hookManager.UninstallHook(triggerCheckCode2.ToInt64());
-                _hookManager.UninstallHook(triggerCheckCode.ToInt64());
-                _hookManager.UninstallHook(keyboardCheckCode.ToInt64());
-                _hookManager.UninstallHook(inAirTimerCode.ToInt64());
-            }
+            hookManager.UninstallHook(customCode);
         }
-
-        public void SetNoClipSpeed(byte[] xBytes, byte[] yBytes)
-        {
-            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x83 + 1,
-                xBytes);
-            _memoryIo.WriteBytes(CodeCaveOffsets.Base + (int)CodeCaveOffsets.NoClip.UpdateCoordsCode + 0x42 + 1,
-                yBytes);
-        }
-
-        public void ToggleHitboxView(bool isHitboxEnabled) =>
-            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DamageMan.Base) + DamageMan.HitboxView,
-                isHitboxEnabled ? 1 : 0);
-
-        public void ToggleSoundView(bool isSoundViewEnabled)
-        {
-            _memoryIo.WriteBytes(Patches.DebugFont, new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 });
-            _memoryIo.WriteByte(Patches.PlayerSoundView + 0x3,
-                isSoundViewEnabled ? 1 : 0);
-        }
-        
-        public void ToggleGroupMask(int offset, bool isEnabled) =>
-            _memoryIo.WriteByte(GroupMask.Base + offset, isEnabled ? 0 : 1);
-
-        public void ToggleTargetingView(bool isTargetingViewEnabled)
-        {
-            _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Height, isTargetingViewEnabled ? 1 : 0);
-            _memoryIo.WriteByte(AiTargetingFlags.Base + AiTargetingFlags.Width, isTargetingViewEnabled ? 1 : 0);
-        }
-
-        public void ToggleEventDraw(bool isDrawEventEnabled) =>
-            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(DebugEvent.Base) + DebugEvent.EventDraw,
-                isDrawEventEnabled ? 1 : 0);
-
-        public void SetGameSpeed(float value) => _memoryIo.WriteFloat(Patches.GameSpeed, value);
-
-        public float GetGameSpeed() => _memoryIo.ReadFloat(Patches.GameSpeed);
-
-        public void OpenMenu(long funcAddr)
-        {
-            if (funcAddr == Funcs.Travel)
-            {
-                var bonfireFlagBasePtr = (IntPtr)_memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(EventFlagMan.Base));
-                _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.CoiledSword, EventFlagMan.CoiledSwordBitFlag,
-                    true);
-                _memoryIo.SetBitValue(bonfireFlagBasePtr + EventFlagMan.Firelink, EventFlagMan.FirelinkBitFlag, true);
-            }
-
-            var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenu");
-            var bytes = BitConverter.GetBytes(funcAddr);
-            Array.Copy(bytes, 0, openMenuBytes, 0x9 + 2, 8);
-            _memoryIo.AllocateAndExecute(openMenuBytes);
-        }
-
-        public void OpenRegularShop(ulong[] shopParams)
-        {
-            var openRegularShopBytes = AsmLoader.GetAsmBytes("OpenRegularShop");
-            var bytes = BitConverter.GetBytes(shopParams[0]);
-            Array.Copy(bytes, 0, openRegularShopBytes, 0x4 + 2, 8);
-            bytes = BitConverter.GetBytes(shopParams[1]);
-            Array.Copy(bytes, 0, openRegularShopBytes, 0xE + 2, 8);
-            bytes = BitConverter.GetBytes(Funcs.RegularShop);
-            Array.Copy(bytes, 0, openRegularShopBytes, 0x1D + 2, 8);
-            _memoryIo.AllocateAndExecute(openRegularShopBytes);
-        }
-
-        public void OpenMenuWithEvent(long funcAddr, int[] eventRange)
-        {
-            var openMenuBytes = AsmLoader.GetAsmBytes("OpenMenuWithEvent");
-            var bytes = BitConverter.GetBytes(Funcs.CombineMenuFlagAndEventFlag);
-            Array.Copy(bytes, 0, openMenuBytes, 0x0 + 2, 8);
-            bytes = BitConverter.GetBytes(eventRange[0]);
-            Array.Copy(bytes, 0, openMenuBytes, 0xA + 1, 4);
-            bytes = BitConverter.GetBytes(eventRange[1]);
-            Array.Copy(bytes, 0, openMenuBytes, 0x1B + 2, 4);
-            bytes = BitConverter.GetBytes(funcAddr);
-            Array.Copy(bytes, 0, openMenuBytes, 0x2C + 2, 8);
-            _memoryIo.AllocateAndExecute(openMenuBytes);
-        }
-        
-
-        public void SetFreeCamState(bool isEnabled, int mode)
-        {
-            var debugFreeModePtr = _memoryIo.FollowPointers(FieldArea.Base, new[]
-            {
-                FieldArea.GameRend,
-                FieldArea.DbgFreeCamMode
-            }, false);
-            var moveMapStepPatch = Patches.FreeCam + 0x6;
-            switch (isEnabled)
-            {
-                case false:
-                    _memoryIo.WriteByte(debugFreeModePtr, 0);
-                    _memoryIo.WriteByte(moveMapStepPatch, 0);
-                    _isFreeCamActive = false;
-                    break;
-                case true when mode == 1:
-                    _memoryIo.WriteByte(debugFreeModePtr, 1);
-                    _memoryIo.WriteByte(moveMapStepPatch, 1);
-                    if (!_isFreeCamActive)
-                    {
-                        MoveCamToPlayer();
-                        _isFreeCamActive = true;
-                    }
-
-                    break;
-                case true when mode == 2:
-
-                    _memoryIo.WriteByte(moveMapStepPatch, 0);
-                    _memoryIo.WriteByte(debugFreeModePtr, 2);
-                    if (!_isFreeCamActive)
-                    {
-                        MoveCamToPlayer();
-                        _isFreeCamActive = true;
-                    }
-
-                    break;
-            }
-        }
-
-        public void MoveCamToPlayer()
-        {
-            var dbgCamCoords = _memoryIo.FollowPointers(FieldArea.Base, new[]
-            {
-                FieldArea.GameRend,
-                FieldArea.DbgFreeCam,
-                FieldArea.DbgFreeCamCoords
-            }, false);
-
-            var chrPhysicsModule = _memoryIo.FollowPointers(WorldChrMan.Base, new[]
-            {
-                WorldChrMan.PlayerIns,
-                (int)WorldChrMan.PlayerInsOffsets.Modules,
-                (int)WorldChrMan.Modules.ChrPhysicsModule,
-            }, true);
-
-            var bytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.X, 12);
-            float z = BitConverter.ToSingle(bytes, 4);
-            z += 5.0f;
-            Array.Copy(BitConverter.GetBytes(z), 0, bytes, 4, 4);
-            _memoryIo.WriteBytes(dbgCamCoords, bytes);
-        }
-
-
-        public void ToggleCamVertIncrease(bool isCamVertIncreaseEnabled)
-        {
-            var camVertUpHook = Hooks.CameraUpLimit;
-            var customCode = CodeCaveOffsets.Base + CodeCaveOffsets.CamVertUp;
-            var camVertDown = _memoryIo.FollowPointers(FieldArea.Base, new[]
-            {
-                FieldArea.ChrCam,
-                FieldArea.ChrExFollowCam,
-                FieldArea.CameraDownLimit
-            }, false);
-
-            if (isCamVertIncreaseEnabled)
-            {
-                var camVertUpBytes = AsmLoader.GetAsmBytes("CamVertUp");
-                var jumpBytes = AsmHelper.GetJmpOriginOffsetBytes(camVertUpHook, 8, customCode + 0x18);
-                Array.Copy(jumpBytes, 0, camVertUpBytes, 0x13 + 1, 4);
-                _memoryIo.WriteBytes(customCode, camVertUpBytes);
-                _hookManager.InstallHook(customCode.ToInt64(), camVertUpHook, new byte[]
-                    { 0xF3, 0x0F, 0x11, 0x86, 0xFC, 0x01, 0x00, 0x00 }
-                );
-                _memoryIo.WriteFloat(camVertDown, 1.5f);
-            }
-            else
-            {
-                _hookManager.UninstallHook(customCode.ToInt64());
-                _memoryIo.WriteFloat(camVertDown, 1.22f);
-            }
-        }
-
-        public void SetFov(float fov) => _memoryIo.WriteFloat(GetFovPtr(), fov);
-
-        public int GetCameraFov() => Convert.ToInt32(Math.Round(_memoryIo.ReadFloat(GetFovPtr())));
-
-        private IntPtr GetFovPtr()
-        {
-            return _memoryIo.FollowPointers(SoloParamRepo.Base, new[]
-            {
-                SoloParamRepo.CamParamResCap,
-                SoloParamRepo.CamPtr1,
-                SoloParamRepo.CamPtr2,
-                SoloParamRepo.CamFov
-            }, false);
-        }
-
-        public void ToggleHitIns(int offset, bool isEnabled) =>
-            _memoryIo.WriteByte(HitIns.Base + offset, isEnabled ? 1 : 0);
-
-        public void ToggleDbgFps(bool isDbgFpsEnabled)
-        {
-            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.DebugFpsToggle,
-                isDbgFpsEnabled ? 1 : 0);
-        }
-
-        public void SetFps(float value)
-        {
-            _memoryIo.WriteFloat((IntPtr)_memoryIo.ReadInt64(SprjFlipper.Base) + SprjFlipper.Fps, value);
-        }
-
-        public void Toggle100Drop(bool is100DropEnabled)
-        {
-            var customCode = CodeCaveOffsets.Base + CodeCaveOffsets.ItemLotBase;
-
-            if (is100DropEnabled)
-            {
-                var hookLoc = Hooks.ItemLotBase;
-                var bytes = AsmLoader.GetAsmBytes("ItemLotBase");
-                _memoryIo.WriteBytes(customCode, bytes);
-                _hookManager.InstallHook(customCode.ToInt64(), hookLoc, new byte[]
-                    { 0x45, 0x0F, 0xB7, 0x41, 0x40 });
-            }
-            else
-            {
-                _hookManager.UninstallHook(customCode.ToInt64());
-            }
-        }
-
-        public void ToggleObjects(bool isBreaking)
-        {
-            var worldObjManPtr = _memoryIo.ReadInt64(WorldObjMan.Base);
-            var funcAddr = isBreaking ? Funcs.BreakAllObjects : Funcs.RestoreAllObjects;
-
-            var codeBytes = AsmLoader.GetAsmBytes("ObjMan");
-            AsmHelper.WriteAbsoluteAddresses(codeBytes, new[]
-            {
-                (worldObjManPtr, 0x2),
-                (funcAddr, 0x1C + 0x2)
-            });
-
-            _memoryIo.AllocateAndExecute(codeBytes);
-        }
-
-        public void ToggleDeathCam(bool isDeathCamEnabled) =>
-            _memoryIo.WriteByte((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.DeathCam,
-                isDeathCamEnabled ? 1 : 0);
-
-        public void ToggleFullLineUp(bool isFullLineUpEnabled) =>
-            _memoryIo.WriteBytes(Patches.AccessFullShop, isFullLineUpEnabled
-                ? new byte[] { 0x90, 0x90, 0x90, 0x90 }
-                : new byte[] { 0x84, 0xC0, 0x74, 0x14 });
     }
+
+    public void BreakAllObjects()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.BreakAllObjects);
+        AsmHelper.WriteAbsoluteAddresses(bytes, [
+            (memoryService.Read<nint>(WorldObjManImpl.Base), 0x2),
+            (Functions.BreakAllObjects, 0x1C + 0x2)
+        ]);
+
+        memoryService.AllocateAndExecute(bytes);
+    }
+
+    public void RestoreAllObjects()
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.RestoreAllObjects);
+        AsmHelper.WriteAbsoluteAddresses(bytes, [
+            (memoryService.Read<nint>(WorldObjManImpl.Base), 0x2),
+            (Functions.RestoreAllObjects, 0x1C + 0x2)
+        ]);
+
+        memoryService.AllocateAndExecute(bytes);
+    }
+
+    public void SetGameSpeed(float speed) => memoryService.Write(GameSpeed, speed);
+
+    public float GetGameSpeed() => memoryService.Read<float>(GameSpeed);
+
+    public void ToggleNoClip(bool isEnabled)
+    {
+        var inAirTimerCode = CustomCodeOffsets.Base + CustomCodeOffsets.InAirTimerCode;
+        var kbCode = CustomCodeOffsets.Base + CustomCodeOffsets.KeyboardCode;
+        var triggersCode = CustomCodeOffsets.Base + CustomCodeOffsets.TriggersCode;
+        var updateCoordsCode = CustomCodeOffsets.Base + CustomCodeOffsets.UpdateCoordsCode;
+
+        if (isEnabled)
+        {
+            WriteInAirTimer(inAirTimerCode);
+            WriteKeyboardHook(kbCode);
+            WriteRightTriggerCode(triggersCode);
+            WriteUpdateCoordsCode(updateCoordsCode);
+
+            hookManager.InstallHook(inAirTimerCode, Hooks.InAirTimer, [0xF3, 0x0F, 0x11, 0x81, 0xB0, 0x01, 0x00, 0x00]);
+            hookManager.InstallHook(kbCode, Hooks.NoClipKeyboard, [0x41, 0xFF, 0x90, 0xF8, 0x00, 0x00, 0x00]);
+            hookManager.InstallHook(triggersCode, Hooks.NoClipTriggers, [0x40, 0x53, 0x57, 0x41, 0x54]);
+            hookManager.InstallHook(updateCoordsCode, Hooks.NoClipUpdateCoords,
+                [0x66, 0x0F, 0x7F, 0xB3, 0x80, 0x00, 0x00, 0x00]);
+        }
+        else
+        {
+            hookManager.UninstallHook(inAirTimerCode);
+            hookManager.UninstallHook(kbCode);
+            hookManager.UninstallHook(triggersCode);
+            hookManager.UninstallHook(updateCoordsCode);
+        }
+    }
+
+    public void WriteNoClipSpeed(float speedScale)
+    {
+        var ptr = CustomCodeOffsets.Base + CustomCodeOffsets.SpeedScale;
+        memoryService.Write(ptr, DefaultNoClipSpeedScale * speedScale);
+    }
+
+    public void ToggleHitboxView(bool isEnabled) =>
+        memoryService.Write(memoryService.Read<nint>(DamageMan.Base) + DamageMan.HitboxView, isEnabled);
+
+    public void ToggleSoundView(bool isEnabled)
+    {
+        memoryService.WriteBytes(Patches.DebugFont, [0x90, 0x90, 0x90, 0x90, 0x90]);
+        memoryService.Write(Patches.PlayerSoundView + 0x3, isEnabled ? (byte)1 : (byte)0);
+    }
+
+    public void ToggleGroupMask(int offset, bool isEnabled) =>
+        memoryService.Write(GroupMask.Base + offset, isEnabled ? (byte)0 : (byte)1);
+
+    public void ToggleDeathCam(bool isEnabled) =>
+        memoryService.Write(memoryService.Read<nint>(WorldChrManImp.Base) + WorldChrManImp.DeathCam, isEnabled);
+
+    public void SetFov(float fov)
+    {
+        var row = paramService.GetParamRow((int)Param.LockCamParam, DefaultLockCamParamRowId);
+        paramService.Write(row, FovOffset, fov);
+    }
+
+    public float GetFov()
+    {
+        var row = paramService.GetParamRow((int)Param.LockCamParam, DefaultLockCamParamRowId);
+        return memoryService.Read<float>(row + FovOffset);
+    }
+
+    public void ToggleCamVertIncrease(bool isEnabled)
+    {
+        var camVertUpHook = Hooks.CameraUpLimit;
+        var customCode = CustomCodeOffsets.Base + CustomCodeOffsets.CamVertUp;
+        var camVertDown = memoryService.FollowPointers(memoryService.Read<nint>(FieldArea.Base), [
+            FieldArea.ChrCam,
+            FieldArea.ChrExFollowCam,
+            FieldArea.CameraDownLimit
+        ], false);
+
+        if (isEnabled)
+        {
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.CamVertUp);
+
+            var jumpBytes = AsmHelper.GetJmpOriginOffsetBytes(camVertUpHook, 8, customCode + 0x18);
+            Array.Copy(jumpBytes, 0, bytes, 0x13 + 1, 4);
+            memoryService.WriteBytes(customCode, bytes);
+            hookManager.InstallHook(customCode, camVertUpHook, [0xF3, 0x0F, 0x11, 0x86, 0xFC, 0x01, 0x00, 0x00]
+            );
+            memoryService.Write(camVertDown, 1.5f);
+        }
+        else
+        {
+            hookManager.UninstallHook(customCode);
+            memoryService.Write(camVertDown, 1.22f);
+        }
+    }
+    
+    public void ToggleFreeCam(bool isEnabled)
+    {
+        var camMode = memoryService.FollowPointers(memoryService.Read<nint>(FieldArea.Base), [
+            FieldArea.GameRend,
+            FieldArea.CamMode
+        ], false);
+        
+        memoryService.Write(camMode, isEnabled ? (byte)1 : (byte)0);
+    }
+
+    public void MoveCamToPlayer()
+    {
+        var freeCamCoordsPtr = memoryService.FollowPointers(memoryService.Read<nint>(FieldArea.Base), [
+            FieldArea.GameRend,
+            FieldArea.DbgFreeCam,
+            FieldArea.DbgFreeCamCoords
+        ], false);
+
+        var playerPos = playerService.GetPosition();
+        playerPos.Y += 2.5f;
+
+        memoryService.Write(freeCamCoordsPtr, playerPos);
+    }
+
+    public void MovePlayerToCam()
+    {
+        var freeCamCoordsPtr = memoryService.FollowPointers(memoryService.Read<nint>(FieldArea.Base), [
+            FieldArea.GameRend,
+            FieldArea.DbgFreeCam,
+            FieldArea.DbgFreeCamCoords
+        ], false);
+        
+        playerService.ForceSetPosition(memoryService.Read<Vector4>(freeCamCoordsPtr));
+    }
+
+    public void TogglePlayerMovementForFreeCam(bool isEnabled)
+    {
+        var camMode = memoryService.FollowPointers(memoryService.Read<nint>(FieldArea.Base), [
+            FieldArea.GameRend,
+            FieldArea.CamMode
+        ], false);
+        
+        memoryService.Write(camMode, isEnabled ? (byte)3 : (byte)1);
+    }
+
+    
+    public void ToggleFullLineUp(bool isEnabled) =>
+        memoryService.WriteBytes(Patches.AccessFullShop, isEnabled
+            ? [0x90, 0x90, 0x90, 0x90]
+            : [0x84, 0xC0, 0x74, 0x14]);
+
+    public void ToggleHitIns(int offset, bool isEnabled) => memoryService.Write(HitFlags.Base + offset, isEnabled);
+
+    public void ToggleDbgFps(bool isEnabled) =>
+        memoryService.Write(memoryService.Read<nint>(SprjFlipper.Base) + SprjFlipper.DebugFpsToggle, isEnabled);
+
+    public void SetFps(float value) =>
+        memoryService.Write(memoryService.Read<nint>(SprjFlipper.Base) + SprjFlipper.Fps, value);
+
+    public void ToggleFreezeWorld(bool isEnabled) =>
+        memoryService.Write(Patches.IsWorldPaused + 6, isEnabled ? (byte) 1 : (byte) 0);
+
+    #region Private Methods
+
+    private void WriteInAirTimer(nint code)
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.NoClip_InAirTimer);
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x1, WorldChrManImp.Base, 7, 0x1 + 3),
+            (code + 0x37, Hooks.InAirTimer + 8, 5, 0x37 + 1)
+        ]);
+
+        AsmHelper.WriteImmediateDword(bytes, ChrIns.Modules, 0x19 + 3);
+
+        memoryService.WriteBytes(code, bytes);
+    }
+
+    private void WriteKeyboardHook(nint code)
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.NoClip_Keyboard);
+        var zDirection = CustomCodeOffsets.Base + CustomCodeOffsets.ZDirection;
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x17, Hooks.NoClipKeyboard + 7, 5, 0x17 + 1),
+            (code + 0x1C, zDirection, 7, 0x1C + 2),
+            (code + 0x25, Hooks.NoClipKeyboard + 7, 5, 0x25 + 1),
+            (code + 0x2A, zDirection, 7, 0x2A + 2),
+            (code + 0x33, Hooks.NoClipKeyboard + 7, 5, 0x33 + 1)
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+    }
+
+    private void WriteRightTriggerCode(nint code)
+    {
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.NoClip_Triggers);
+        var zDirection = CustomCodeOffsets.Base + CustomCodeOffsets.ZDirection;
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x10, Hooks.NoClipTriggers + 5, 5, 0x10 + 1),
+            (code + 0x15, zDirection, 7, 0x15 + 2),
+            (code + 0x1D, zDirection, 7, 0x1D + 2),
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+    }
+
+    private void WriteUpdateCoordsCode(nint code)
+    {
+        var zDirection = CustomCodeOffsets.Base + CustomCodeOffsets.ZDirection;
+        var speedScale = CustomCodeOffsets.Base + CustomCodeOffsets.SpeedScale;
+
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.NoClip_UpdateCoords);
+
+        AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x1, WorldChrManImp.Base, 7, 0x1 + 3),
+            (code + 0x67, FD4PadManager.Base, 7, 0x67 + 3),
+            (code + 0x70, Functions.GetPad, 5, 0x70 + 1),
+            (code + 0x7B, Functions.GetYMovement, 5, 0x7B + 1),
+            (code + 0x88, Functions.GetXMovement, 5, 0x88 + 1),
+            (code + 0xBC, FieldArea.Base, 7, 0xBC + 3),
+            (code + 0xCF, Functions.MatrixTransformVector, 5, 0xCF + 1),
+            (code + 0x104, speedScale, 9, 0x104 + 5),
+            (code + 0x121, zDirection, 6, 0x121 + 2),
+            (code + 0x12F, speedScale, 9, 0x12F + 5),
+            (code + 0x158, zDirection, 7, 0x158 + 2),
+            (code + 0x18B, Hooks.NoClipUpdateCoords + 8, 5, 0x18B + 1),
+        ]);
+
+        memoryService.WriteBytes(code, bytes);
+    }
+
+    #endregion
 }

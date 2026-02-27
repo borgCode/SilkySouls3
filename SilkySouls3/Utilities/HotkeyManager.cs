@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using H.Hooks;
-using SilkySouls3.Memory;
-using SilkySouls3.Properties;
+using SilkySouls3.Enums;
+using SilkySouls3.Interfaces;
 
 namespace SilkySouls3.Utilities
 {
     public class HotkeyManager
     {
+        private readonly IMemoryService _memoryService;
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-        private readonly MemoryIo _memoryIo;
+ 
         private readonly LowLevelKeyboardHook _keyboardHook;
         private readonly Dictionary<string, Keys> _hotkeyMappings;
 
         private readonly Dictionary<string, Action> _actions;
 
-        public HotkeyManager(MemoryIo memoryIo)
+        public HotkeyManager(IMemoryService memoryService)
         {
-            _memoryIo = memoryIo;
+            _memoryService = memoryService;
+
             _hotkeyMappings = new Dictionary<string, Keys>();
             _actions = new Dictionary<string, Action>();
 
@@ -48,9 +51,9 @@ namespace SilkySouls3.Utilities
             _keyboardHook.Stop();
         }
 
-        public void RegisterAction(string actionId, Action action)
+        public void RegisterAction(HotkeyActions actionId, Action action)
         {
-            _actions[actionId] = action;
+            _actions[actionId.ToString()] = action;
         }
 
         private void KeyboardHook_Down(object sender, KeyboardEventArgs e)
@@ -73,11 +76,11 @@ namespace SilkySouls3.Utilities
 
         private bool IsGameFocused()
         {
-            if (_memoryIo.TargetProcess == null || _memoryIo.TargetProcess.Id == 0) return false;
+            if (_memoryService.TargetProcess == null || _memoryService.TargetProcess.Id == 0) return false;
 
             IntPtr foregroundWindow = GetForegroundWindow();
             GetWindowThreadProcessId(foregroundWindow, out uint foregroundProcessId);
-            return foregroundProcessId == (uint)_memoryIo.TargetProcess.Id;
+            return foregroundProcessId == (uint)_memoryService.TargetProcess.Id;
         }
 
         public void SetHotkey(string actionId, Keys keys)

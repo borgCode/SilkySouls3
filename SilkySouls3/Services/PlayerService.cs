@@ -1,205 +1,242 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
+using System.Threading;
+using SilkySouls3.Enums;
+using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
+using SilkySouls3.Models;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
 {
-    public class PlayerService
+    public class PlayerService(
+        IMemoryService memoryService,
+        IChrInsService chrInsService,
+        IReminderService reminderService,
+        ITravelService travelService) : IPlayerService
     {
-        private readonly MemoryIo _memoryIo;
-        
-        private readonly Dictionary<int, int> _lowLevelSoulRequirements = new Dictionary<int, int>
+        private const int StatsBlockSize = 0x38;
+        private const int CemeteryOfAshBlockId = 671088640;
+        private const int UntendedGravesCeremonyId = 40000010;
+        private const int UntendedGravesBonfireId = 4001953;
+        private const int WorldBlockInfoSize = 0x70;
+
+        private readonly Dictionary<int, int> _lowLevelSoulRequirements = new()
         {
             { 2, 673 }, { 3, 690 }, { 4, 707 }, { 5, 724 }, { 6, 741 }, { 7, 758 }, { 8, 775 }, { 9, 793 }, { 10, 811 },
             { 11, 829 },
         };
 
-        public PlayerService(MemoryIo memoryIo)
-        {
-            _memoryIo = memoryIo;
-        }
+        private readonly Dictionary<uint, int> _bonfiresByBlockId = DataLoader.LoadDict<uint, int>("BonfiresByBlockId");
 
-        public int GetHp() =>
-            _memoryIo.ReadInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Hp));
+        private readonly Position[] _positions =
+        [
+            new(0, Vector3.Zero, 0f),
+            new(0, Vector3.Zero, 0f)
+        ];
 
-        public int GetMaxHp() =>
-            _memoryIo.ReadInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.MaxHp));
+        public nint GetPlayerIns() =>
+            memoryService.Read<nint>(memoryService.Read<nint>(WorldChrManImp.Base) + WorldChrManImp.PlayerIns);
 
-        public void SetHp(int hp) =>
-            _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Hp), hp);
+        public int GetHp() => chrInsService.GetCurrentHp(GetPlayerIns());
 
-        public void ToggleNoDamage(bool setValue)
-        {
-            var noDamagePtr = GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.ChrFlags2);
-            var flagMask = (byte)WorldChrMan.ChrFlags2.NoDamage;
-            _memoryIo.SetBitValue(noDamagePtr, flagMask, setValue);
-        }
-        
-        private IntPtr GetChrDataFieldPtr(int fieldOffset)
-        {
-            return _memoryIo.FollowPointers(WorldChrMan.Base,
-                new[]
-                {
-                    WorldChrMan.PlayerIns,
-                    WorldChrMan.PlayerInsOffsets.Modules,
-                    (int)WorldChrMan.Modules.ChrDataModule,
-                    fieldOffset
-                }, false);
-        }
+        public int GetMaxHp() => chrInsService.GetMaxHp(GetPlayerIns());
 
-        public void SavePos(int index)
-        {
-            var chrPhysicsModule = GetChrPhysicsModule();
+        public void SetHp(int hp) => chrInsService.SetHp(GetPlayerIns(), hp);
 
-            byte[] positionBytes = _memoryIo.ReadBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.X, 12);
-            float angle = _memoryIo.ReadFloat(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Angle);
+        public int GetMp() => chrInsService.GetMp(GetPlayerIns());
 
-            byte[] angleBytes = BitConverter.GetBytes(angle);
-            byte[] data = new byte[16];
-            Buffer.BlockCopy(positionBytes, 0, data, 0, 12);
-            Buffer.BlockCopy(angleBytes, 0, data, 12, 4);
+        public int GetMaxMp() => chrInsService.GetMaxMp(GetPlayerIns());
 
-            if (index == 0) _memoryIo.WriteBytes(CodeCaveOffsets.Base + CodeCaveOffsets.SavePos1, data);
-            else _memoryIo.WriteBytes(CodeCaveOffsets.Base + CodeCaveOffsets.SavePos2, data);
-        }
+        public void SetMp(int mp) => chrInsService.SetMp(GetPlayerIns(), mp);
 
-        private IntPtr GetChrPhysicsModule()
-        {
-            return _memoryIo.FollowPointers(WorldChrMan.Base, new[]
-            {
-                WorldChrMan.PlayerIns,
-                WorldChrMan.PlayerInsOffsets.Modules,
-                (int)WorldChrMan.Modules.ChrPhysicsModule,
-            }, true);
-        }
+        public int GetSp() => chrInsService.GetSp(GetPlayerIns());
 
-        public void RestorePos(int index)
-        {
-            byte[] positionBytes;
-            if (index == 0) positionBytes = _memoryIo.ReadBytes(CodeCaveOffsets.Base + CodeCaveOffsets.SavePos1, 16);
-            else positionBytes = _memoryIo.ReadBytes(CodeCaveOffsets.Base + CodeCaveOffsets.SavePos2, 16);
+        public void SetSp(int sp) => chrInsService.SetSp(GetPlayerIns(), sp);
 
-            float angle = BitConverter.ToSingle(positionBytes, 12);
+        public void ToggleNoDamage(bool isEnabled) => chrInsService.ToggleNoDamage(GetPlayerIns(), isEnabled);
 
-            var chrPhysicsModule = GetChrPhysicsModule();
+        public float GetPlayerSpeed() => chrInsService.GetSpeed(GetPlayerIns());
 
-            byte[] xyzBytes = new byte[12];
-            Buffer.BlockCopy(positionBytes, 0, xyzBytes, 0, 12);
-
-            _memoryIo.WriteBytes(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.X, xyzBytes);
-            _memoryIo.WriteFloat(chrPhysicsModule + (int)WorldChrMan.ChrPhysicsModule.Angle, angle);
-        }
-
-        public void SetAxis(WorldChrMan.ChrPhysicsModule axis, float value) =>
-            _memoryIo.WriteFloat(GetChrPhysicsModule() + (int) axis, value);
-
-        public (float x, float y, float z) GetCoords()
-        {
-            var coordBytes = _memoryIo.ReadBytes(GetChrPhysicsModule() + (int)WorldChrMan.ChrPhysicsModule.X, 12);
-            float x = BitConverter.ToSingle(coordBytes, 0);
-            float z = BitConverter.ToSingle(coordBytes, 4);
-            float y = BitConverter.ToSingle(coordBytes, 8);
-            return (x, y, z); 
-        }
-
-        public void ToggleDebugFlag(int offset, int value)
-        {
-            _memoryIo.WriteByte(DebugFlags.Base + offset, value);
-        }
-
-        public void ToggleInfiniteDurability(bool isInfiniteDurabilityEnabled)
-        {
-            _memoryIo.WriteByte(Patches.InfiniteDurability + 0x1, isInfiniteDurabilityEnabled ? 0x84 : 0x85);
-        }
-
-        public void ToggleInfinitePoise(bool setValue)
-        {
-            var infinitePoisePtr = _memoryIo.FollowPointers(WorldChrMan.Base,
-                new[]
-                {
-                    WorldChrMan.PlayerIns,
-                    WorldChrMan.PlayerInsOffsets.Modules,
-                    (int) WorldChrMan.Modules.ChrSuperArmorModule,
-                    (int) WorldChrMan.ChrSuperArmorModule.InfinitePoise,
-                }, false);
-            var flagMask = WorldChrMan.InfinitePoise;
-            _memoryIo.SetBitValue(infinitePoisePtr, flagMask, setValue);
-        }
-
-        public void ToggleNoGoodsConsume(bool setValue)
-        {
-            var noGoodsConsumePtr = _memoryIo.FollowPointers(WorldChrMan.Base,
-                new[]
-                {
-                    WorldChrMan.PlayerIns,
-                    WorldChrMan.PlayerInsOffsets.CharFlags1
-                }, false);
-            var flagMask = (int)WorldChrMan.ChrFlag1BitFlag.NoGoodsConsume;
-            _memoryIo.SetBit32(noGoodsConsumePtr, flagMask, setValue);
-        }
+        public void SetPlayerSpeed(float speed) => chrInsService.SetSpeed(GetPlayerIns(), speed);
 
         public int GetNewGame() =>
-            _memoryIo.ReadInt32((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.NewGame);
+            memoryService.Read<int>(memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.PlayerGameDataOffsets.NewGame);
 
         public void SetNewGame(int value) =>
-            _memoryIo.WriteInt32((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.NewGame, value);
+            memoryService.Write(memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.PlayerGameDataOffsets.NewGame, value);
 
-        public int GetPlayerStat(GameDataMan.Stats stat)
+        public void ToggleDebugFlag(int offset, int value) =>
+            memoryService.Write(DebugFlags.Base + offset, (byte)value);
+
+        public void ToggleInfinitePoise(bool isEnabled) => chrInsService.ToggleInfinitePoise(GetPlayerIns(), isEnabled);
+
+        public void ToggleNoHit(bool isEnabled)
         {
-            var statsBasePtr = (IntPtr) _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.PlayerGameData);
-            return _memoryIo.ReadInt32(statsBasePtr + (int)stat);
+            reminderService.TrySetReminder();
+            chrInsService.ToggleNoHit(GetPlayerIns(), isEnabled);
         }
 
-        public void SetPlayerStat(GameDataMan.Stats stat, int newValue)
+        public void SavePosition(int index)
         {
-            var statsBasePtr = (IntPtr) _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.PlayerGameData);
-            int currentVal = _memoryIo.ReadInt32(statsBasePtr + (int)stat);
+            var posToSave = _positions[index];
+            var playerIns = GetPlayerIns();
+            var currentBlockId = memoryService.Read<uint>(
+                memoryService.FollowPointers(playerIns, ChrIns.CurrentBlockId, false));
+            var physicsModule = memoryService.FollowPointers(playerIns, ChrIns.ChrPhysicsModule, true);
+
+            if (currentBlockId == CemeteryOfAshBlockId)
+            {
+                posToSave.CeremonyId = ReadCeremonyId();
+            }
+
+            posToSave.BlockId = currentBlockId;
+            posToSave.Coords = memoryService.Read<Vector3>(physicsModule + ChrIns.ChrPhysicsOffsets.Position);
+            posToSave.Angle = memoryService.Read<float>(physicsModule + ChrIns.ChrPhysicsOffsets.Angle);
+        }
+
+        public void RestorePosition(int index)
+        {
+            var savedPos = _positions[index];
+
+            if (IsInSavedLocation(savedPos))
+            {
+                var playerIns = GetPlayerIns();
+                var wasNoDamageEnabled = chrInsService.IsNoDamageEnabled(playerIns);
+                var wasNoDeathEnabled = memoryService.Read<byte>(DebugFlags.Base + DebugFlags.NoDeath) != 0;
+                if (!wasNoDamageEnabled) chrInsService.ToggleNoDamage(playerIns, true);
+                if (!wasNoDeathEnabled) ToggleDebugFlag(DebugFlags.NoDeath, 1);
+                var physicsModule = memoryService.FollowPointers(playerIns, ChrIns.ChrPhysicsModule, true);
+                memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.Position, savedPos.Coords);
+                memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.Angle, savedPos.Angle);
+                Thread.Sleep(500);
+                if (!wasNoDamageEnabled) chrInsService.ToggleNoDamage(playerIns, false);
+                if (!wasNoDeathEnabled) ToggleDebugFlag(DebugFlags.NoDeath, 0);
+            }
+            else
+            {
+                travelService.WarpWithCoords(savedPos.Coords, savedPos.Angle,
+                    ResolveBonfireId(savedPos.BlockId, savedPos.CeremonyId));
+            }
+        }
+
+        public void ForceSetPosition(Vector4 position) => chrInsService.ForceSetPosition(GetPlayerIns(), position);
+
+        public int GetCurrentBlockId() => memoryService.Read<int>(
+            memoryService.FollowPointers(GetPlayerIns(), ChrIns.CurrentBlockId, false));
+
+        public Vector3 GetPosition() => chrInsService.GetPosition(GetPlayerIns());
+
+        public void ToggleInfiniteDurability(bool isEnabled)
+        {
+            memoryService.Write(Patches.InfiniteDurability + 0x1,
+                isEnabled ? (byte)0x84 : (byte)0x85);
+        }
+
+        public void ToggleNoGoodsConsume(bool isEnabled) =>
+            chrInsService.ToggleNoGoodsConsume(GetPlayerIns(), isEnabled);
+
+        public Stats GetStats()
+        {
+            const int statsStart = (int)GameDataMan.PlayerGameDataOffsets.Stats.Vigor;
+            var block = new MemoryBlock(memoryService.ReadBytes(GetGameDataPtr() + statsStart, StatsBlockSize));
+
+            return new Stats
+            {
+                Vigor = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Vigor - statsStart),
+                Attunement = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Attunement - statsStart),
+                Endurance = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Endurance - statsStart),
+                Vitality = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Vitality - statsStart),
+                Strength = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Strength - statsStart),
+                Dexterity = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Dexterity - statsStart),
+                Intelligence = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Intelligence - statsStart),
+                Faith = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Faith - statsStart),
+                Luck = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Luck - statsStart),
+                SoulLevel = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.SoulLevel - statsStart),
+                Souls = block.Get<int>((int)GameDataMan.PlayerGameDataOffsets.Stats.Souls - statsStart),
+            };
+        }
+
+        public int GetPlayerStat(GameDataMan.PlayerGameDataOffsets.Stats stat) =>
+            memoryService.Read<int>(GetGameDataPtr() + (int)stat);
+
+        public void SetPlayerStat(GameDataMan.PlayerGameDataOffsets.Stats stat, int newValue)
+        {
+            var playerGameData = GetGameDataPtr();
+            int currentVal = memoryService.Read<int>(playerGameData + (int)stat);
             if (currentVal == newValue) return;
-            
-            if (stat == GameDataMan.Stats.Souls) HandleSoulEdit(statsBasePtr, newValue, currentVal);
-            else HandleStatEdit(statsBasePtr, stat, newValue, currentVal);
+
+            if (stat == GameDataMan.PlayerGameDataOffsets.Stats.Souls) HandleSoulEdit(playerGameData, newValue, currentVal);
+            else HandleStatEdit(playerGameData, stat, newValue, currentVal);
         }
+
+        public void GiveSouls()
+        {
+            var playerGameData = GetGameDataPtr();
+            int currentVal = memoryService.Read<int>(playerGameData + (int)GameDataMan.PlayerGameDataOffsets.Stats.Souls);
+            HandleSoulEdit(playerGameData, currentVal + 10000, currentVal);
+        }
+
+        public void ToggleNoRoll(bool isNoRollEnabled)
+        {
+            if (isNoRollEnabled)
+            {
+                memoryService.Write(Patches.NoRoll + 0x6, (byte)0);
+                memoryService.Write(Patches.NoRoll + 0x15, (byte)0);
+            }
+            else
+            {
+                memoryService.Write(Patches.NoRoll + 0x6, (byte)1);
+                memoryService.Write(Patches.NoRoll + 0x15, (byte)1);
+            }
+        }
+
+        public void Rest()
+        {
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.Rest);
+            AsmHelper.WriteAbsoluteAddresses(bytes, [
+                (GetPlayerIns(), 0x0 + 2),
+                (Functions.Rest, 0xF + 2)
+            ]);
+            memoryService.AllocateAndExecute(bytes);
+        }
+
+        #region Private Methods
 
         private void HandleSoulEdit(IntPtr statsBasePtr, int newValue, int currentVal)
         {
             if (newValue < currentVal)
             {
-                _memoryIo.WriteInt32(statsBasePtr + (int) GameDataMan.Stats.Souls, newValue);
+                memoryService.Write(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.Souls, newValue);
                 return;
             }
 
             int difference = newValue - currentVal;
-            int currentTotalSouls = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls);
-            _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls, difference + currentTotalSouls);
-            _memoryIo.WriteInt32(statsBasePtr + (int) GameDataMan.Stats.Souls, newValue);
+            int currentTotalSouls = memoryService.Read<int>(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.TotalSouls);
+            memoryService.Write(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.TotalSouls, difference + currentTotalSouls);
+            memoryService.Write(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.Souls, newValue);
         }
 
-        private void HandleStatEdit(IntPtr statsBasePtr, GameDataMan.Stats stat, int newValue, int currentVal)
+        private void HandleStatEdit(IntPtr statsBasePtr, GameDataMan.PlayerGameDataOffsets.Stats stat, int newValue, int currentVal)
         {
             var validatedStat = newValue;
             if (validatedStat < 1) validatedStat = 1;
             if (validatedStat > 99) validatedStat = 99;
             if (validatedStat == currentVal) return;
-            _memoryIo.WriteInt32(statsBasePtr + (int) stat, newValue);
-            
-            int currentSoulLevel = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.SoulLevel);
-            int newLevel = currentSoulLevel + (validatedStat - currentVal);
-            
-            _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.SoulLevel, newLevel);
-            if (newLevel < currentSoulLevel) return;
-            
-            int totalSoulsRequired = CalculateTotalSoulsRequired(currentSoulLevel, newLevel);
-            int currentTotalSouls = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls);
-            _memoryIo.WriteInt32(statsBasePtr + (int)GameDataMan.Stats.TotalSouls, totalSoulsRequired + currentTotalSouls);
-        }
+            memoryService.Write(statsBasePtr + (int)stat, newValue);
 
-        public void GiveSouls()
-        {
-            var statsBasePtr = (IntPtr) _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(GameDataMan.Base) + GameDataMan.PlayerGameData);
-            int currentVal = _memoryIo.ReadInt32(statsBasePtr + (int)GameDataMan.Stats.Souls);
-            HandleSoulEdit(statsBasePtr, currentVal + 10000, currentVal);
+            int currentSoulLevel = memoryService.Read<int>(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.SoulLevel);
+            int newLevel = currentSoulLevel + (validatedStat - currentVal);
+
+            memoryService.Write(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.SoulLevel, newLevel);
+            if (newLevel < currentSoulLevel) return;
+
+            int totalSoulsRequired = CalculateTotalSoulsRequired(currentSoulLevel, newLevel);
+            int currentTotalSouls = memoryService.Read<int>(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.TotalSouls);
+            memoryService.Write(statsBasePtr + (int)GameDataMan.PlayerGameDataOffsets.Stats.TotalSouls,
+                totalSoulsRequired + currentTotalSouls);
         }
 
         private int CalculateTotalSoulsRequired(int startLevel, int endLevel)
@@ -223,67 +260,35 @@ namespace SilkySouls3.Services
             return (int)totalSouls;
         }
 
-        public float GetPlayerSpeed() => _memoryIo.ReadFloat(GetPlayerSpeedPtr());
+        private nint GetGameDataPtr() =>
+            memoryService.Read<nint>(memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.PlayerGameData);
 
-        public void SetPlayerSpeed(float speed) => _memoryIo.WriteFloat(GetPlayerSpeedPtr(), speed);
-
-        private IntPtr GetPlayerSpeedPtr()
+        private int ReadCeremonyId()
         {
-            return _memoryIo.FollowPointers(WorldChrMan.Base,
-                new[]
-                {
-                    WorldChrMan.PlayerIns,
-                    WorldChrMan.PlayerInsOffsets.Modules,
-                    (int)WorldChrMan.Modules.ChrBehaviorModule,
-                    WorldChrMan.ChrBehaviorModule.AnimSpeed
-                }, false);
+            var fieldArea = memoryService.Read<nint>(FieldArea.Base);
+            var worldInfoOwner = memoryService.Read<nint>(fieldArea + FieldArea.WorldInfoOwnerPtr);
+            var currentIdx = memoryService.Read<int>(fieldArea + FieldArea.CurrentBlockIdx);
+
+            var blocks = memoryService.Read<nint>(worldInfoOwner + FieldArea.WorldInfoOwner.Blocks);
+            var worldBlockInfo = blocks + currentIdx * WorldBlockInfoSize;
+            return memoryService.Read<int>(worldBlockInfo + FieldArea.WorldBlockInfo.CeremonyId);
         }
 
-
-        public void ToggleNoRoll(bool isNoRollEnabled)
+        private bool IsInSavedLocation(Position saved)
         {
-            if (isNoRollEnabled)
-            {
-                _memoryIo.WriteByte(Patches.NoRoll + 0x6, 0);
-                _memoryIo.WriteByte(Patches.NoRoll + 0x15, 0);
-            }
-            else
-            {
-                _memoryIo.WriteByte(Patches.NoRoll + 0x6, 1);
-                _memoryIo.WriteByte(Patches.NoRoll + 0x15, 1);
-            }
+            var currentBlockId = GetCurrentBlockId();
+            if (currentBlockId != saved.BlockId) return false;
+            if (currentBlockId == CemeteryOfAshBlockId && ReadCeremonyId() != saved.CeremonyId) return false;
+            return true;
         }
 
-        public int GetMp() => _memoryIo.ReadInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Mp));
-        public int GetSp() => _memoryIo.ReadInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Stam));
-
-        public void SetMp(int val) => _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Mp), val);
-        public void SetSp(int val) => _memoryIo.WriteInt32(GetChrDataFieldPtr((int)WorldChrMan.ChrDataModule.Stam), val);
-
-        public void SetSpEffect(long spEffectId)
+        private int ResolveBonfireId(uint blockId, int ceremonyId)
         {
-            var bytes = AsmLoader.GetAsmBytes("SetSpEffect");
-            var playerIns = _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.PlayerIns);
-            AsmHelper.WriteAbsoluteAddresses(bytes, new []
-            {
-                (playerIns, 0x0 + 2),
-                (spEffectId, 0xA + 2),
-                (playerIns, 0x14 + 2),
-                (Funcs.SetSpEffect, 0x1E + 2)
-            });
-            _memoryIo.AllocateAndExecute(bytes);
+            if (blockId == CemeteryOfAshBlockId && ceremonyId == UntendedGravesCeremonyId)
+                return UntendedGravesBonfireId;
+            return _bonfiresByBlockId[blockId];
         }
 
-        public void Rest()
-        {
-            var bytes = AsmLoader.GetAsmBytes("Rest");
-            var playerIns = _memoryIo.ReadInt64((IntPtr)_memoryIo.ReadInt64(WorldChrMan.Base) + WorldChrMan.PlayerIns);AsmHelper.WriteAbsoluteAddresses(bytes, new []
-            {
-                (playerIns, 0x0 + 2),
-                (Funcs.Rest, 0xF + 2)
-            });
-            
-            _memoryIo.AllocateAndExecute(bytes);
-        }
+        #endregion
     }
 }

@@ -64,10 +64,10 @@
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="1" BlurRadius="3" Color="Black" Opacity="0.7"/>
                 </TextBlock.Effect>
-                <Run Text="{Binding TargetCurrentHealth, Mode=OneWay}" 
+                <Run Text="{Binding CurrentHealth, Mode=OneWay}" 
                      Foreground="#FF9900" FontSize="18" FontWeight="Bold"/>
                 <Run Text="/" Foreground="#FF9900" FontSize="18"/>
-                <Run Text="{Binding TargetMaxHealth, Mode=OneWay}" 
+                <Run Text="{Binding MaxHealth, Mode=OneWay}" 
                      Foreground="#FF9900" FontSize="18" FontWeight="Bold"/>
             </TextBlock>
             
@@ -76,17 +76,17 @@
                 <DockPanel Margin="0,0,0,2">
                     <TextBlock Text="Poise" Foreground="#CCFFFFFF" DockPanel.Dock="Left" />
                     <TextBlock Foreground="#CCFFFFFF" HorizontalAlignment="Right" FontSize="10" DockPanel.Dock="Right">
-                        <Run Text="{Binding TargetCurrentPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
+                        <Run Text="{Binding CurrentPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
                         <Run Text="/" />
-                        <Run Text="{Binding TargetMaxPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
+                        <Run Text="{Binding MaxPoise, StringFormat={}{0:F1}, Mode=OneWay}" />
                         <Run Text="(" />
-                        <Run Text="{Binding TargetPoiseTimer, StringFormat={}{0:F1}s, Mode=OneWay}" />
+                        <Run Text="{Binding PoiseTimer, StringFormat={}{0:F1}s, Mode=OneWay}" />
                         <Run Text=")" />
                     </TextBlock>
                 </DockPanel>
                 <Grid>
-                    <ProgressBar Height="12" Value="{Binding TargetCurrentPoise}"
-                                 Maximum="{Binding TargetMaxPoise}">
+                    <ProgressBar Height="12" Value="{Binding CurrentPoise}"
+                                 Maximum="{Binding MaxPoise}">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
                                 <Border BorderBrush="#80444444" BorderThickness="1" Background="#40222222"
@@ -112,14 +112,14 @@
                     <TextBlock Foreground="#CCFFFFFF" HorizontalAlignment="Right" FontSize="10"
                                Visibility="{Binding IsBleedImmune, Converter={StaticResource InverseBoolToVis}}"
                                DockPanel.Dock="Right">
-                        <Run Text="{Binding TargetCurrentBleed, Mode=OneWay}" />
+                        <Run Text="{Binding CurrentBleed, Mode=OneWay}" />
                         <Run Text="/" />
-                        <Run Text="{Binding TargetMaxBleed, Mode=OneWay}" />
+                        <Run Text="{Binding MaxBleed, Mode=OneWay}" />
                     </TextBlock>
                 </DockPanel>
                 <Grid>
-                    <ProgressBar Height="12" Value="{Binding TargetCurrentBleed}"
-                                 Maximum="{Binding TargetMaxBleed}">
+                    <ProgressBar Height="12" Value="{Binding CurrentBleed}"
+                                 Maximum="{Binding MaxBleed}">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
                                 <Border BorderBrush="#80444444" BorderThickness="1" Background="#40222222"
@@ -148,14 +148,14 @@
                     <TextBlock Foreground="#CCFFFFFF" HorizontalAlignment="Right" FontSize="10"
                                Visibility="{Binding IsPoisonImmune, Converter={StaticResource InverseBoolToVis}}"
                                DockPanel.Dock="Right">
-                        <Run Text="{Binding TargetCurrentPoison, Mode=OneWay}" />
+                        <Run Text="{Binding CurrentPoison, Mode=OneWay}" />
                         <Run Text="/" />
-                        <Run Text="{Binding TargetMaxPoison, Mode=OneWay}" />
+                        <Run Text="{Binding MaxPoison, Mode=OneWay}" />
                     </TextBlock>
                 </DockPanel>
                 <Grid>
-                    <ProgressBar Height="12" Value="{Binding TargetCurrentPoison}"
-                                 Maximum="{Binding TargetMaxPoison}">
+                    <ProgressBar Height="12" Value="{Binding CurrentPoison}"
+                                 Maximum="{Binding MaxPoison}">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
                                 <Border BorderBrush="#80444444" BorderThickness="1" Background="#40222222"
@@ -184,14 +184,14 @@
                     <TextBlock Foreground="#CCFFFFFF" HorizontalAlignment="Right" FontSize="10"
                                Visibility="{Binding IsToxicImmune, Converter={StaticResource InverseBoolToVis}}"
                                DockPanel.Dock="Right">
-                        <Run Text="{Binding TargetCurrentToxic, Mode=OneWay}" />
+                        <Run Text="{Binding CurrentToxic, Mode=OneWay}" />
                         <Run Text="/" />
-                        <Run Text="{Binding TargetMaxToxic, Mode=OneWay}" />
+                        <Run Text="{Binding MaxToxic, Mode=OneWay}" />
                     </TextBlock>
                 </DockPanel>
                 <Grid>
-                    <ProgressBar Height="12" Value="{Binding TargetCurrentToxic}"
-                                 Maximum="{Binding TargetMaxToxic}">
+                    <ProgressBar Height="12" Value="{Binding CurrentToxic}"
+                                 Maximum="{Binding MaxToxic}">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
                                 <Border BorderBrush="#80444444" BorderThickness="1" Background="#40222222"
@@ -220,15 +220,15 @@
                     <TextBlock Foreground="#CCFFFFFF" HorizontalAlignment="Right" FontSize="10"
                                Visibility="{Binding IsFrostImmune, Converter={StaticResource InverseBoolToVis}}"
                                DockPanel.Dock="Right">
-                        <Run Text="{Binding TargetCurrentFrost, Mode=OneWay}" />
+                        <Run Text="{Binding CurrentFrost, Mode=OneWay}" />
                         <Run Text="/" />
-                        <Run Text="{Binding TargetMaxFrost, Mode=OneWay}" />
+                        <Run Text="{Binding MaxFrost, Mode=OneWay}" />
                     </TextBlock>
                 </DockPanel>
 
                 <Grid>
-                    <ProgressBar Height="12" Value="{Binding TargetCurrentFrost}"
-                                 Maximum="{Binding TargetMaxFrost}">
+                    <ProgressBar Height="12" Value="{Binding CurrentFrost}"
+                                 Maximum="{Binding MaxFrost}">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
                                 <Border BorderBrush="#80444444" BorderThickness="1" Background="#40222222"

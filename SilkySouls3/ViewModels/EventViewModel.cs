@@ -1,35 +1,51 @@
+using System.Windows.Input;
 using System.Windows.Media;
-using SilkySouls3.Memory;
-using SilkySouls3.Services;
+using SilkySouls3.Core;
+using SilkySouls3.Enums;
+using SilkySouls3.GameIds;
+using SilkySouls3.Interfaces;
 
 namespace SilkySouls3.ViewModels
 {
     public class EventViewModel : BaseViewModel
     {
-        private readonly EventService _eventService;
-        private bool _isDisableEventEnabled;
-        private bool _isArgoSpeedEnabled;
-        private float _argoDuration;
-        private string _setFlagId;
-        private int _flagStateIndex;
-        private string _getFlagId;
-        
-        private string _eventStatusText;
-        private Brush _eventStatusColor;
+        private readonly IEventService _eventService;
 
-        private bool _areButtonsEnabled;
-
-        public EventViewModel(EventService eventService)
+        public EventViewModel(IEventService eventService, IStateService stateService)
         {
             _eventService = eventService;
-            ArgoDuration = 2.0f;
+
+            SetFlagCommand = new DelegateCommand(SetFlag);
+            GetEventCommand = new DelegateCommand(GetEvent);
+            UnlockMidirCommand = new DelegateCommand(UnlockMidir);
+            MoveToFirelinkCommand = new DelegateCommand<int>(MoveToFirelink);
+            MovePatchesToFirelinkCommand = new DelegateCommand(MovePatchesToFirelink);
+
+            stateService.Subscribe(State.Loaded, OnGameLoaded);
+            stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
         }
-        
+
+        #region Commands
+
+        public ICommand SetFlagCommand { get; }
+        public ICommand GetEventCommand { get; }
+        public ICommand UnlockMidirCommand { get; }
+        public ICommand MoveToFirelinkCommand { get; }
+        public ICommand MovePatchesToFirelinkCommand { get; }
+
+        #endregion
+
+        #region Properties
+
+        private string _setFlagId;
+
         public string SetFlagId
         {
             get => _setFlagId;
             set => SetProperty(ref _setFlagId, value);
         }
+
+        private int _flagStateIndex;
 
         public int FlagStateIndex
         {
@@ -37,29 +53,23 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _flagStateIndex, value);
         }
 
-        public void SetFlag()
-        {
-            if (string.IsNullOrWhiteSpace(SetFlagId))
-                return;
-            
-            string trimmedFlagId = SetFlagId.Trim();
-        
-            if (!ulong.TryParse(trimmedFlagId, out ulong flagIdValue) || flagIdValue <= 0)
-                return;
-            _eventService.SetEvent(flagIdValue, FlagStateIndex == 0 ? 1 : 0);
-        }
-        
+        private string _getFlagId;
+
         public string GetFlagId
         {
             get => _getFlagId;
             set => SetProperty(ref _getFlagId, value);
         }
-        
+
+        private string _eventStatusText;
+
         public string EventStatusText
         {
             get => _eventStatusText;
             set => SetProperty(ref _eventStatusText, value);
         }
+
+        private Brush _eventStatusColor;
 
         public Brush EventStatusColor
         {
@@ -67,14 +77,58 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _eventStatusColor, value);
         }
 
-        public void GetEvent()
+        private bool _areButtonsEnabled;
+
+        public bool AreButtonsEnabled
+        {
+            get => _areButtonsEnabled;
+            set => SetProperty(ref _areButtonsEnabled, value);
+        }
+
+        private bool _isDisableEventsEnabled;
+
+        public bool IsDisableEventsEnabled
+        {
+            get => _isDisableEventsEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDisableEventsEnabled, value)) return;
+                _eventService.ToggleDisableEvents(_isDisableEventsEnabled);
+            }
+        }
+
+        private bool _isDrawEventsEnabled;
+
+        public bool IsDrawEventsEnabled
+        {
+            get => _isDrawEventsEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawEventsEnabled, value)) return;
+                _eventService.ToggleDrawEvents(_isDrawEventsEnabled);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void SetFlag()
+        {
+            if (string.IsNullOrWhiteSpace(SetFlagId))
+                return;
+
+            if (!int.TryParse(SetFlagId.Trim(), out int flagIdValue) || flagIdValue <= 0)
+                return;
+            _eventService.SetEvent(flagIdValue, FlagStateIndex == 0);
+        }
+
+        private void GetEvent()
         {
             if (string.IsNullOrWhiteSpace(GetFlagId))
                 return;
-            
-            string trimmedFlagId = GetFlagId.Trim();
-            
-            if (!ulong.TryParse(trimmedFlagId, out ulong flagIdValue) || flagIdValue <= 0)
+
+            if (!int.TryParse(GetFlagId.Trim(), out int flagIdValue) || flagIdValue <= 0)
                 return;
 
             if (_eventService.GetEvent(flagIdValue))
@@ -88,94 +142,28 @@ namespace SilkySouls3.ViewModels
                 EventStatusColor = Brushes.Red;
             }
         }
-        
-        public bool AreButtonsEnabled
+
+        private void UnlockMidir() => _eventService.SetEvent(EventFlag.UnlockMidir, true);
+
+        private void MoveToFirelink(int eventId) => _eventService.SetEvent(eventId, true);
+
+        private void MovePatchesToFirelink()
         {
-            get => _areButtonsEnabled;
-            set => SetProperty(ref _areButtonsEnabled, value);
+            foreach (var id in EventFlag.Patches) _eventService.SetEvent(id, true);
         }
-        
-        public bool IsDisableEventEnabled
-        {
-            get => _isDisableEventEnabled;
-            set
-            {
-                if (!SetProperty(ref _isDisableEventEnabled, value)) return;
-                _eventService.ToggleDisableEvent(_isDisableEventEnabled);
-            }
-        }
-        
-        public bool IsArgoSpeedEnabled
-        {
-            get => _isArgoSpeedEnabled;
-            set
-            {
-                if (!SetProperty(ref _isArgoSpeedEnabled, value)) return;
-                _eventService.ToggleArgoHook(_isArgoSpeedEnabled);
-                if (IsArgoSpeedEnabled) _eventService.SetArgoSpeed(ArgoDuration);
-                
-            }
-        }
-        
-        public float ArgoDuration
-        {
-            get => _argoDuration;
-            set
-            {
-                if (SetProperty(ref _argoDuration, value))
-                {
-                    if (!IsArgoSpeedEnabled) return;
-                    _eventService.SetArgoSpeed(value);
-                }
-            }
-        }
-        
-        public void DisableFeatures()
+
+        private void OnGameNotLoaded()
         {
             AreButtonsEnabled = false;
         }
-        
 
-        public void TryEnableFeatures()
+        private void OnGameLoaded()
         {
             AreButtonsEnabled = true;
-            if (IsDisableEventEnabled) _eventService.ToggleDisableEvent(true);
-            if (IsArgoSpeedEnabled) _eventService.ToggleArgoHook(true);
-        }
-        
-        public void UnlockMidir()
-        {
-            _eventService.SetEvent(GameIds.EventFlags.UnlockMidir, 1);
-        }
-        
-        public void MovePatchesToFirelink()
-        {
-            _eventService.SetMultipleEventsOn(GameIds.EventFlags.Patches);
+            if (IsDisableEventsEnabled) _eventService.ToggleDisableEvents(true);
+            if (IsDrawEventsEnabled) _eventService.ToggleDrawEvents(true);
         }
 
-        public void MoveGreiratToFirelink()
-        {
-           _eventService.SetEvent(GameIds.EventFlags.Greirat, 1);
-        }
-
-        public void MoveKarlaToFirelink()
-        {
-            _eventService.SetEvent(GameIds.EventFlags.Karla, 1);
-        }
-
-        public void MoveCornyxToFirelink()
-        {
-            _eventService.SetEvent(GameIds.EventFlags.Cornyx, 1);
-        }
-
-        public void MoveOrbeckToFirelink()
-        {
-            _eventService.SetEvent(GameIds.EventFlags.Orbeck, 1);
-        }
-
-        public void MoveIrinaToFirelink()
-        {
-            _eventService.SetEvent(GameIds.EventFlags.Irina, 1);
-        }
+        #endregion
     }
 }

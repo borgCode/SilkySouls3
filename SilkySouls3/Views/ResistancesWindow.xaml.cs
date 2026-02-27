@@ -54,7 +54,7 @@ namespace SilkySouls3.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is EnemyViewModel viewModel)
+            if (DataContext is TargetViewModel viewModel)
             {
                 viewModel.IsResistancesWindowOpen = false;
             }

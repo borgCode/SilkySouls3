@@ -1,41 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SilkySouls3.Enums;
+using SilkySouls3.Interfaces;
 
 namespace SilkySouls3.Memory
 {
     public class HookManager
     {
-        private readonly MemoryIo _memoryIo;
-        private readonly Dictionary<long, HookData> _hookRegistry = new Dictionary<long, HookData>();
-        
+        private readonly Dictionary<nint, HookData> _hookRegistry = new();
+        private readonly IMemoryService _memoryService;
+
+        public HookManager(IMemoryService memoryService, IStateService stateService)
+        {
+            _memoryService = memoryService;
+            stateService.Subscribe(State.Detached, OnDetached);
+        }
+
         private class HookData
         {
-            public long OriginAddr { get; set; }
-            public long CaveAddr { get; set; }
+            public nint OriginAddr { get; set; }
+            public nint CaveAddr { get; set; }
             public byte[] OriginalBytes { get; set; }
         }
-        
-        public HookManager(MemoryIo memoryIo)
-        {
-            _memoryIo = memoryIo;
-        }
 
-
-        public long InstallHook(long codeLoc, long origin, byte[] originalBytes)
+        public void InstallHook(nint codeLoc, nint origin, byte[] originalBytes)
         {
             byte[] hookBytes = GetHookBytes(originalBytes.Length, codeLoc, origin);
-            _memoryIo.WriteBytes((IntPtr) origin, hookBytes);
+            _memoryService.WriteBytes(origin, hookBytes);
             _hookRegistry[codeLoc] = new HookData
             {
                 CaveAddr = codeLoc,
                 OriginAddr = origin,
                 OriginalBytes = originalBytes
             };
-            return codeLoc;
         }
 
-        private byte[] GetHookBytes(int originalBytesLength, long target, long origin)
+        private byte[] GetHookBytes(int originalBytesLength, nint target, nint origin)
         {
             byte[] hookBytes = new byte[originalBytesLength];
             hookBytes[0] = 0xE9;
@@ -48,23 +49,19 @@ namespace SilkySouls3.Memory
             {
                 hookBytes[i] = 0x90;
             }
+
             return hookBytes;
         }
 
-        public void UninstallHook(long key)
+        public void UninstallHook(nint key)
         {
-            if (!_hookRegistry.TryGetValue(key, out HookData hookToUninstall))
-            {
-                return;
-            }
-            
-            IntPtr originAddrPtr = (IntPtr)hookToUninstall.OriginAddr;
-            _memoryIo.WriteBytes(originAddrPtr, hookToUninstall.OriginalBytes);
-            _hookRegistry.Remove(key);
+            if (!_hookRegistry.TryGetValue(key, out HookData hookToUninstall)) return;
 
+            _memoryService.WriteBytes(hookToUninstall.OriginAddr, hookToUninstall.OriginalBytes);
+            _hookRegistry.Remove(key);
         }
 
-        public void ClearHooks()
+        private void OnDetached()
         {
             _hookRegistry.Clear();
         }

@@ -70,7 +70,7 @@ namespace SilkySouls3.Properties {
         ///0,00061CD8,Wood Arrow,600,0,0
         ///0,00062250,Dragonslayer Greatarrow,600,0,0
         ///0,00062318,Dragonslayer Lightning Arrow,600,0,0
-        ///0,000623E0,Millwood Greatarrow,600,0,0
+        ///1,000623E0,Millwood Greatarrow,600,0,0
         ///0,0006237C,Onislayer Greatarrow,600,0,0
         ///0,00062C78,Exploding Bolt,600,0,0
         ///0,00062A84,Heavy Bolt,600,0,0
@@ -83,19 +83,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 81 7f 08 c8 c6 3e 05    cmp    DWORD PTR [rdi+0x8],0x53ec6c8
-        ///75 0c                   jne    15 &lt;normal&gt;
-        ///50                      push   rax
-        ///8b 05 00 00 00 00       mov    eax,DWORD PTR [rip+0x0]        # 10 &lt;_main+0x10&gt;
-        ///66 0f 6e c0             movd   xmm0,eax
-        ///58                      pop    rax
-        ///000000000015 &lt;normal&gt;:
-        ///48 8d 44 24 20          lea    rax,[rsp+0x20]
-        ///e9 00 00 00 00          jmp    1f &lt;normal+0xa&gt;.
+        ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        ///ba ef be ad de          mov    edx,0xdeadbeef
+        ///45 31 c0                xor    r8d,r8d
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///48 83 ec 28             sub    rsp,0x28
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///c3                      ret.
         /// </summary>
-        internal static string ArgoSpeed {
+        internal static string ApplySpEffect {
             get {
-                return ResourceManager.GetString("ArgoSpeed", resourceCulture);
+                return ResourceManager.GetString("ApplySpEffect", resourceCulture);
             }
         }
         
@@ -119,6 +120,68 @@ namespace SilkySouls3.Properties {
         internal static string Armor {
             get {
                 return ResourceManager.GetString("Armor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 671088640,4001951
+        ///503316480,3001950
+        ///503382016,3011950
+        ///570490880,3411951
+        ///520093696,3101954
+        ///553648128,3301956
+        ///587202560,3501953
+        ///637534208,3801956
+        ///620756992,3701957
+        ///654311424,3901950
+        ///536870912,3201950
+        ///687865856,4101950
+        ///754974720,4501951
+        ///838860800,5001951
+        ///855638016,5101952
+        ///855703552,5111951.
+        /// </summary>
+        internal static string BonfiresByBlockId {
+            get {
+                return ResourceManager.GetString("BonfiresByBlockId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ba ef be ad de          mov    edx,0xdeadbeef
+        ///41 b8 00 00 00 00       mov    r8d,0x0
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///48 83 ec 20             sub    rsp,0x20
+        ///ff d0                   call   rax
+        ///48 83 c4 20             add    rsp,0x20
+        ///c3                      ret.
+        /// </summary>
+        internal static string BonfireWarp {
+            get {
+                return ResourceManager.GetString("BonfireWarp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 bf 00 00 00 00 00    movabs rdi,0x0
+        ///00 00 00
+        ///000000000000000a &lt;start&gt;:
+        ///48 63 cb                movsxd rcx,ebx
+        ///48 69 c9 88 02 04 00    imul   rcx,rcx,0x40288
+        ///48 03 4f 28             add    rcx,QWORD PTR [rdi+0x28]
+        ///48 83 ec 28             sub    rsp,0x28
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///ff c3                   inc    ebx
+        ///3b 5f 20                cmp    ebx,DWORD PTR [rdi+0x20]
+        ///7c d7                   jl    [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BreakAllObjects {
+            get {
+                return ResourceManager.GetString("BreakAllObjects", resourceCulture);
             }
         }
         
@@ -153,6 +216,25 @@ namespace SilkySouls3.Properties {
         internal static string CamVertUp {
             get {
                 return ResourceManager.GetString("CamVertUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 28             sub    rsp,0x28
+        ///48 8d 4c 24 30          lea    rcx,[rsp+0x30]
+        ///c7 01 ef be ad de       mov    DWORD PTR [rcx],0xdeadbeef
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///ff d0                   call   rax
+        ///48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        ///48 89 01                mov    QWORD PTR [rcx],rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///c3                      ret.
+        /// </summary>
+        internal static string ChrInsByEntityId {
+            get {
+                return ResourceManager.GetString("ChrInsByEntityId", resourceCulture);
             }
         }
         
@@ -212,6 +294,63 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 11                   je     1e &lt;no_update&gt;
+        ///48 3b 48 50             cmp    rcx,QWORD PTR [rax+0x50]
+        ///75 0b                   jne    1e &lt;no_update&gt;
+        ///58                      pop    rax
+        ///48 89 5c 24 08          mov    QWORD PTR [rsp+0x8],rbx
+        ///e9 00 00 00 00          jmp    1e &lt;no_update&gt;
+        ///
+        ///00000000001e &lt;no_update&gt;:
+        ///58                      pop    rax
+        ///31 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DisableAllExceptTarget {
+            get {
+                return ResourceManager.GetString("DisableAllExceptTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 89 e5                mov    rbp,rsp
+        ///48 81 ec 98 05 00 00    sub    rsp,0x598
+        ///48 8d 8d e0 fb ff ff    lea    rcx,[rbp-0x420]
+        ///ba 00 00 00 00          mov    edx,0x0
+        ///e8 00 00 00 00          call   1b &lt;_main+0x1b&gt;
+        ///48 8d 8d a0 fb ff ff    lea    rcx,[rbp-0x460]
+        ///48 8d 95 e0 fa ff ff    lea    rdx,[rbp-0x520]
+        ///48 89 51 10             mov    QWORD PTR [rcx+0x10],rdx
+        ///b8 00 00 00 00          mov    eax,0x0
+        ///89 41 18                mov    DWORD PTR [rcx+0x18],eax
+        ///89 42 04                mov    DWORD PTR [rd [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExecuteTalkEvent {
+            get {
+                return ResourceManager.GetString("ExecuteTalkEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        ///ba ef be ad de          mov    edx,0xdeadbeef
+        ///48 83 ec 20             sub    rsp,0x20
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///ff d0                   call   rax
+        ///48 83 c4 20             add    rsp,0x20
+        ///c3                      ret.
+        /// </summary>
+        internal static string FindAndRemoveSpEffect {
+            get {
+                return ResourceManager.GetString("FindAndRemoveSpEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
         ///00 00 00
         ///48 ba 00 00 00 00 00    movabs rdx,0x0
@@ -244,13 +383,18 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 48 8b 0d 00 00 00 00    mov    rcx,QWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
-        ///4c 8d 05 00 00 00 00    lea    r8,[rip+0x0]        # e &lt;_main+0xe&gt;
-        ///48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 15 &lt;_main+0x15&gt;
-        ///48 83 ec 28             sub    rsp,0x28
-        ///e8 00 00 00 00          call   1e &lt;_main+0x1e&gt;
-        ///48 83 c4 28             add    rsp,0x28
-        ///c3                      ret.
+        ///   Looks up a localized string similar to 48 83 ec 28             sub    rsp,0x28
+        ///48 8d 1d 00 00 00 00    lea    rbx,[rip+0x0]        # b &lt;_main+0xb&gt;
+        ///80 3d 00 00 00 00 01    cmp    BYTE PTR [rip+0x0],0x1        # 12 &lt;_main+0x12&gt;
+        ///75 4a                   jne    5e &lt;skip_qty_adjust&gt;
+        ///48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        ///48 8d 53 04             lea    rdx,[rbx+0x4]
+        ///e8 00 00 00 00          call   27 &lt;_main+0x27&gt;
+        ///89 c7                   mov    edi,eax
+        ///48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        ///48 8d 53 04             lea    rd [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ItemSpawn {
             get {
@@ -271,7 +415,7 @@ namespace SilkySouls3.Properties {
         ///0,40000848,Braille Divine Tome of Lothric,1,0,0
         ///0,4000233C,By my sword,1,0,0
         ///0,40002341,Call over,1,0,0
-        ///0,4000086A,Captain&apos;s Ashes,1,0,0
+        ///1,4000086A,Captain&apos;s Ashes,1,0,0
         ///0,40000850,Carthus Pyromancy Tome,1,0,0
         ///0,400007DA,Cell Key,1,0 [rest of string was truncated]&quot;;.
         /// </summary>
@@ -283,16 +427,16 @@ namespace SilkySouls3.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
-        ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
-        ///48 39 c8                cmp    rax,rcx
-        ///75 03                   jne    13 &lt;exit&gt;
-        ///0f 57 c0                xorps  xmm0,xmm0
-        ///000000000013 &lt;exit&gt;:
-        ///58                      pop    rax
-        ///f3 0f 11 81 b0 01 00    movss  DWORD PTR [rcx+0x1b0],xmm0
-        ///00
-        ///e9 00 00 00 00          jmp    21 &lt;exit+0xe&gt;.
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 85 c0                test   rax,rax
+        ///74 21                   je     2e &lt;exit&gt;
+        ///48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
+        ///48 85 c0                test   rax,rax
+        ///74 15                   je     2e &lt;exit&gt;
+        ///48 8b 80 ef be 00 00    mov    rax,QWORD PTR [rax+0xbeef]
+        ///48 85 c0                test   rax,rax
+        ///74 09                   je     2e &lt;exit&gt;
+        ///48 3b 48 68             cmp    rcx, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string NoClip_InAirTimer {
             get {
@@ -320,18 +464,21 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0f 2f 3d 00 00 00 00    comiss xmm7,DWORD PTR [rip+0x0]        # 7 &lt;_main+0x7&gt;
-        ///72 0c                   jb     15 &lt;original&gt;
-        ///48 83 fe 0b             cmp    rsi,0xb
-        ///74 11                   je     20 &lt;set_down&gt;
-        ///48 83 fe 0c             cmp    rsi,0xc
-        ///74 17                   je     2c &lt;set_up&gt;
-        ///000000000015 &lt;original&gt;:
-        ///48 8b 10                mov    rdx,QWORD PTR [rax]
-        ///48 89 c1                mov    rcx,rax
-        ///e9 00 00 00 00          jmp    20 &lt;set_down&gt;
-        ///000000000020 &lt;set_down&gt;:
-        ///c6 05 00 00 00 00 01    mo [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 41 83 f9 0b             cmp    r9d,0xb
+        ///74 0f                   je     15 &lt;set_down&gt;
+        ///41 83 f9 0c             cmp    r9d,0xc
+        ///74 11                   je     1d &lt;set_up&gt;
+        ///53                      push   rbx
+        ///57                      push   rdi
+        ///41 54                   push   r12
+        ///e9 00 00 00 00          jmp    15 &lt;set_down&gt;
+        ///
+        ///000000000015 &lt;set_down&gt;:
+        ///c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1c &lt;set_down+0x7&gt;
+        ///c3                      ret
+        ///
+        ///00000000001d &lt;set_up&gt;:
+        ///c6 05 00 00 00 00 02    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string NoClip_Triggers {
             get {
@@ -340,21 +487,18 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 51                      push   rcx
-        ///48 b9 00 00 00 00 00    movabs rcx,0x0
-        ///00 00 00
-        ///48 39 d9                cmp    rcx,rbx
-        ///0f 85 d4 00 00 00       jne    e8 &lt;originalCode&gt;
-        ///50                      push   rax
-        ///52                      push   rdx
-        ///41 50                   push   r8
+        ///   Looks up a localized string similar to 50                      push   rax
+        ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///48 85 c0                test   rax,rax
+        ///0f 84 71 01 00 00       je     182 &lt;exit&gt;
+        ///48 8b 80 80 00 00 00    mov    rax,QWORD PTR [rax+0x80]
+        ///48 39 43 08             cmp    QWORD PTR [rbx+0x8],rax
+        ///0f 85 60 01 00 00       jne    182 &lt;exit&gt;
         ///66 0f 6f b3 80 00 00    movdqa xmm6,XMMWORD PTR [rbx+0x80]
-        ///00
-        ///48 b9 00 00 00 00 00    movabs rcx,0x0
-        ///00 00 00
-        ///8b 91 ec 03 00 00       mov    edx,DWORD PTR [rcx+0x3ec]
-        ///c1 e2 02                shl    edx,0x2
-        ///f3 44 0f 10 bc 11 [rest of string was truncated]&quot;;.
+        ///00 
+        ///56                      push   rsi
+        ///52                      push   rdx
+        ///51                    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string NoClip_UpdateCoords {
             get {
@@ -384,81 +528,25 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 48 bf 00 00 00 00 00    movabs rdi,0x0
-        ///00 00 00
-        ///000000000000000a &lt;start&gt;:
-        ///48 63 cb                movsxd rcx,ebx
-        ///48 69 c9 88 02 04 00    imul   rcx,rcx,0x40288
-        ///48 03 4f 28             add    rcx,QWORD PTR [rdi+0x28]
-        ///48 83 ec 28             sub    rsp,0x28
+        ///   Looks up a localized string similar to 48 83 ec 28             sub    rsp,0x28
+        ///4c 8d 25 00 00 00 00    lea    r12,[rip+0x0]        # b &lt;_main+0xb&gt;
+        ///31 db                   xor    ebx,ebx
+        ///
+        ///00000000000d &lt;loop_top&gt;:
+        ///48 8d 0d 00 00 00 00    lea    rcx,[rip+0x0]        # 14 &lt;loop_top+0x7&gt;
+        ///ba c6 9b 04 00          mov    edx,0x49bc6
+        ///41 b9 08 00 00 00       mov    r9d,0x8
+        ///4d 89 e0                mov    r8,r12
         ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
+        ///00 00 00 
         ///ff d0                   call   rax
-        ///48 83 c4 28             add    rsp,0x28
-        ///ff c3                   inc    ebx
-        ///3b 5f 20                cmp    ebx,DWORD PTR [rdi+0x20]
-        ///7c d7                   jl    [rest of string was truncated]&quot;;.
+        ///48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string ObjMan {
+        internal static string PlacePrismStones {
             get {
-                return ResourceManager.GetString("ObjMan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 48 83 ec 48             sub    rsp,0x48
-        ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
-        ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
-        ///ff d0                   call   rax
-        ///48 83 c4 48             add    rsp,0x48
-        ///c3                      ret.
-        /// </summary>
-        internal static string OpenMenu {
-            get {
-                return ResourceManager.GetString("OpenMenu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 49 b9 00 00 00 00 00    movabs r9,0x0
-        ///00 00 00
-        ///bb 00 00 00 00          mov    ebx,0x0
-        ///ba 01 00 00 00          mov    edx,0x1
-        ///89 d9                   mov    ecx,ebx
-        ///41 ff d1                call   r9
-        ///ff c3                   inc    ebx
-        ///81 fb 5e 01 00 00       cmp    ebx,0x15e
-        ///7e ec                   jle    
-        ///48 83 ec 48             sub    rsp,0x48
-        ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
-        ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
-        ///ff d0                   call   rax
-        ///48 83 c4 48             [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string OpenMenuWithEvent {
-            get {
-                return ResourceManager.GetString("OpenMenuWithEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 48 83 ec 48             sub    rsp,0x48
-        ///48 ba 00 00 00 00 00    movabs rdx,0x0
-        ///00 00 00
-        ///49 b8 00 00 00 00 00    movabs r8,0x0
-        ///00 00 00
-        ///48 8d 4c 24 28          lea    rcx,[rsp+0x28]
-        ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
-        ///ff d0                   call   rax
-        ///48 83 c4 48             add    rsp,0x48
-        ///c3                      ret.
-        /// </summary>
-        internal static string OpenRegularShop {
-            get {
-                return ResourceManager.GetString("OpenRegularShop", resourceCulture);
+                return ResourceManager.GetString("PlacePrismStones", resourceCulture);
             }
         }
         
@@ -480,6 +568,28 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 bf 00 00 00 00 00    movabs rdi,0x0
+        ///00 00 00
+        ///000000000000000a &lt;start&gt;:
+        ///48 63 cb                movsxd rcx,ebx
+        ///48 69 c9 88 02 04 00    imul   rcx,rcx,0x40288
+        ///48 03 4f 28             add    rcx,QWORD PTR [rdi+0x28]
+        ///48 83 ec 28             sub    rsp,0x28
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///ff c3                   inc    ebx
+        ///3b 5f 20                cmp    ebx,DWORD PTR [rdi+0x20]
+        ///7c d7                   jl    [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RestoreAllObjects {
+            get {
+                return ResourceManager.GetString("RestoreAllObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0,2000508C,Aldrich&apos;s Ruby,1,0,0
         ///0,20005096,Aldrich&apos;s Sapphire,1,0,0
         ///0,200050E6,Ashen Estus Ring,1,0,0
@@ -491,7 +601,7 @@ namespace SilkySouls3.Properties {
         ///0,20005078,Calamity Ring,1,0,0
         ///0,200050FA,Carthus Bloodring,1,0,0
         ///0,20004FE2,Carthus Milkring,1,0,0
-        ///0,20005208,Chillbite Ring,1,0,0
+        ///1,20005208,Chillbite Ring,1,0,0
         ///0,20004E2A,Chloranthy Ring,1,0,0
         ///0,20004E2B,Chloranthy Ring+1,1,0,0
         ///0,20004E2C,Chl [rest of string was truncated]&quot;;.
@@ -515,14 +625,13 @@ namespace SilkySouls3.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
-        ///00 00 00
-        ///48 ba 00 00 00 00 00    movabs rdx,0x0
-        ///00 00 00
+        ///00 00 00 
+        ///ba ef be ad de          mov    edx,0xdeadbeef
         ///41 b8 01 00 00 00       mov    r8d,0x1
         ///41 b9 00 00 00 00       mov    r9d,0x0
         ///48 83 ec 48             sub    rsp,0x48
         ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
+        ///00 00 00 
         ///ff d0                   call   rax
         ///48 83 c4 48             add    rsp,0x48
         ///c3                      ret.
@@ -530,26 +639,6 @@ namespace SilkySouls3.Properties {
         internal static string SetEvent {
             get {
                 return ResourceManager.GetString("SetEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
-        ///00 00 00
-        ///48 ba 00 00 00 00 00    movabs rdx,0x0
-        ///00 00 00
-        ///49 b8 00 00 00 00 00    movabs r8,0x0
-        ///00 00 00
-        ///48 b8 00 00 00 00 00    movabs rax,0x0
-        ///00 00 00
-        ///48 83 ec 28             sub    rsp,0x28
-        ///ff d0                   call   rax
-        ///48 83 c4 28             add    rsp,0x28
-        ///c3                      ret.
-        /// </summary>
-        internal static string SetSpEffect {
-            get {
-                return ResourceManager.GetString("SetSpEffect", resourceCulture);
             }
         }
         
@@ -566,7 +655,7 @@ namespace SilkySouls3.Properties {
         ///0,40124F80,Farron Dart,1,0,0
         ///0,4014FB18,Farron Flashsword,1,0,0
         ///0,4014EF60,Farron Hail,1,0,0
-        ///0,401408E8,Frozen Weapon,1,0,0
+        ///1,401408E8,Frozen Weapon,1,0,0
         ///0,4013F948,Great Deep Soul,1,0,0
         ///0,40127690,Great Farron Dart,1,0,0
         ///0,4013E1D8,Great Heavy Soul Arrow,1,0 [rest of string was truncated]&quot;;.
@@ -588,6 +677,17 @@ namespace SilkySouls3.Properties {
         internal static string StopMusic {
             get {
                 return ResourceManager.GetString("StopMusic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 48 8d 8b 28 0b 00 00    lea    rcx,[rbx+0xb28]
+        ///48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # e &lt;_main+0xe&gt;
+        ///e9 00 00 00 00          jmp    13 &lt;_main+0x13&gt;.
+        /// </summary>
+        internal static string TrySetReminder {
+            get {
+                return ResourceManager.GetString("TrySetReminder", resourceCulture);
             }
         }
         
@@ -617,20 +717,30 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 48 a1 00 00 00 00 00    movabs rax,ds:0x0
-        ///00 00 00
-        ///48 89 c1                mov    rcx,rax
-        ///ba 01 00 00 00          mov    edx,0x1
-        ///48 be 00 00 00 00 00    movabs rsi,0x0
-        ///00 00 00
-        ///48 83 ec 28             sub    rsp,0x28
-        ///ff d6                   call   rsi
-        ///48 83 c4 28             add    rsp,0x28
-        ///c3                      ret.
+        ///   Looks up a localized string similar to 44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///00 
+        ///44 0f 11 b8 50 0a 00    movups XMMWORD PTR [rax+0xa50],xmm15
+        ///00 
+        ///45 0f 57 ff             xorps  xmm15,xmm15
+        ///e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;.
         /// </summary>
-        internal static string WarpCall {
+        internal static string WarpAngleWrite {
             get {
-                return ResourceManager.GetString("WarpCall", resourceCulture);
+                return ResourceManager.GetString("WarpAngleWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
+        ///00
+        ///44 0f 11 b8 40 0a 00    movups XMMWORD PTR [rax+0xa40],xmm15
+        ///00
+        ///45 0f 57 ff             xorps  xmm15,xmm15
+        ///e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;.
+        /// </summary>
+        internal static string WarpCoordsWrite {
+            get {
+                return ResourceManager.GetString("WarpCoordsWrite", resourceCulture);
             }
         }
         
@@ -649,20 +759,6 @@ namespace SilkySouls3.Properties {
         internal static string WarpEntries {
             get {
                 return ResourceManager.GetString("WarpEntries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 44 0f 28 3d 00 00 00    movaps xmm15,XMMWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
-        ///00
-        ///44 0f 11 b8 40 0a 00    movups XMMWORD PTR [rax+0xa40],xmm15
-        ///00
-        ///45 0f 57 ff             xorps  xmm15,xmm15
-        ///e9 00 00 00 00          jmp    19 &lt;_main+0x19&gt;.
-        /// </summary>
-        internal static string WarpHookCode {
-            get {
-                return ResourceManager.GetString("WarpHookCode", resourceCulture);
             }
         }
         

@@ -1,4 +1,4 @@
-using System.Windows;
+using System.Windows.Input;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -6,6 +6,7 @@ namespace SilkySouls3.Views
     public partial class TravelTab
     {
         private readonly TravelViewModel _travelViewModel;
+
         public TravelTab(TravelViewModel travelViewModel)
         {
             InitializeComponent();
@@ -13,11 +14,10 @@ namespace SilkySouls3.Views
             DataContext = _travelViewModel;
         }
 
-        private void WarpButton_Click(object sender, RoutedEventArgs e)
+        private void WarpLocation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _travelViewModel.Warp();
+            if (_travelViewModel.AreOptionsEnabled)
+                _travelViewModel.WarpCommand.Execute(null);
         }
-
-        private void UnlockAllWarps_Click(object sender, RoutedEventArgs e) => _travelViewModel.UnlockBonfires();
     }
 }

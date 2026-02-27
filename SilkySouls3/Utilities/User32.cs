@@ -14,9 +14,16 @@ namespace SilkySouls3.Utilities
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy,
             uint uFlags);
         
+        public static readonly IntPtr HwndNoTopmost = new IntPtr(-2);
+
         public static void SetTopmost(IntPtr hwnd)
         {
             SetWindowPos(hwnd, HwndTopmost, 0, 0, 0, 0, SwpNomove | SwpNosize | SwpNoactivate);
+        }
+
+        public static void RemoveTopmost(IntPtr hwnd)
+        {
+            SetWindowPos(hwnd, HwndNoTopmost, 0, 0, 0, 0, SwpNomove | SwpNosize | SwpNoactivate);
         }
     }
 }
