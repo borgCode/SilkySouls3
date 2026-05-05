@@ -33,7 +33,7 @@ namespace SilkySouls3.Services
                 (code + 0xE, Hooks.LastLockedTarget + 7, 5, 0xE + 1)
                 ]);
                 
-                AsmHelper.WriteImmediateDword(bytes, 0x7 + 3, ChrIns.Modules);
+                AsmHelper.WriteImmediateDword(bytes, ChrIns.Modules, 0x7 + 3);
                 memoryService.WriteBytes(code, bytes);
 
                 byte[] originalBytes = [0x48, 0x8B, 0x80, ..BitConverter.GetBytes(ChrIns.Modules)];

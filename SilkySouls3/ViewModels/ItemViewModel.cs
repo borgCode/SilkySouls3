@@ -225,7 +225,7 @@ namespace SilkySouls3.ViewModels
                 QuantityEnabled = _selectedItem.StackSize > 1;
                 MaxQuantity = _selectedItem.MaxStorage > 0
                     ? _selectedItem.MaxStorage + _selectedItem.StackSize
-                    : _selectedItem.MaxStorage;
+                    : _selectedItem.StackSize;
                 SelectedQuantity = _selectedItem.StackSize;
                 CanInfuse = _selectedItem.Infusable;
                 if (!CanInfuse) SelectedInfusionType = "Normal";
@@ -356,7 +356,8 @@ namespace SilkySouls3.ViewModels
             if (SelectedItems.Count > 1)
             {
                 foreach (var item in SelectedItems)
-                    _itemService.SpawnItem(item.Id, item.StackSize, item.StackSize > 1, item.StackSize);
+                    _itemService.SpawnItem(item.Id, item.StackSize, item.StackSize > 1,
+                        item.MaxStorage > 0 ? item.MaxStorage + item.StackSize : item.StackSize);
                 return;
             }
 
@@ -365,7 +366,7 @@ namespace SilkySouls3.ViewModels
             int itemId = SelectedItem.Id;
             if (CanInfuse) itemId += InfusionTypes[SelectedInfusionType];
             if (CanUpgrade) itemId += SelectedUpgrade;
-            _itemService.SpawnItem(itemId, SelectedQuantity, SelectedItem.StackSize > 1, SelectedItem.StackSize);
+            _itemService.SpawnItem(itemId, SelectedQuantity, SelectedItem.StackSize > 1, MaxQuantity);
         }
 
         private void SpawnLoadout()
@@ -384,7 +385,8 @@ namespace SilkySouls3.ViewModels
                     itemId += template.Upgrade;
 
                     int quantity = template.Quantity > 0 ? template.Quantity : item.StackSize;
-                    _itemService.SpawnItem(itemId, quantity, item.StackSize > 1, item.StackSize);
+                    _itemService.SpawnItem(itemId, quantity, item.StackSize > 1,
+                        item.MaxStorage > 0 ? item.MaxStorage + item.StackSize : item.StackSize);
                 }
             }
         }
@@ -393,7 +395,8 @@ namespace SilkySouls3.ViewModels
         {
             foreach (var item in _itemsByCategory[SelectedMassSpawnCategory])
             {
-                _itemService.SpawnItem(item.Id, item.StackSize, item.StackSize > 1, item.StackSize);
+                _itemService.SpawnItem(item.Id, item.StackSize, item.StackSize > 1,
+                    item.MaxStorage > 0 ? item.MaxStorage + item.StackSize : item.StackSize);
             }
         }
         

@@ -5,7 +5,6 @@ using System.Windows;
 using H.Hooks;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
-using SilkySouls3.Services;
 using SilkySouls3.Utilities;
 using Key = H.Hooks.Key;
 
@@ -207,6 +206,7 @@ namespace SilkySouls3.ViewModels
             stateService.Subscribe(State.OnNewGameStart, OnNewGameStart);
             stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
             stateService.Subscribe(State.Detached, OnGameDetached);
+            stateService.Subscribe(State.Attached, OnAttached);
 
             RegisterHotkeys();
             LoadHotkeyDisplays();
@@ -413,7 +413,7 @@ namespace SilkySouls3.ViewModels
             MsgBox.Show("Hotkeys are enabled");
         }
 
-        public void ApplyAttachedSettings()
+        public void OnAttached()
         {
             _isAttached = true;
             if (IsDefaultSoundChangeEnabled) _settingsService.PatchDefaultSound(DefaultSoundVolume);

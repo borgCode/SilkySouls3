@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,8 +29,6 @@ namespace SilkySouls3
 
         private readonly IStateService _stateService;
         private readonly IDlcService _dlcService;
-
-        private readonly SettingsViewModel _settingsViewModel;
 
         public MainWindow()
         {
@@ -90,7 +89,7 @@ namespace SilkySouls3
             var enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager, _stateService,
                 paramService, debugDrawService);
             var itemViewModel = new ItemViewModel(itemService, _stateService);
-            _settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager, _stateService);
+            var settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager, _stateService);
 
             var playerTab = new PlayerTab(playerViewModel);
             var utilityTab = new UtilityTab(utilityViewModel);
@@ -99,7 +98,7 @@ namespace SilkySouls3
             var targetTab = new TargetTab(targetViewModel);
             var enemyTab = new EnemyTab(enemyViewModel);
             var itemTab = new ItemTab(itemViewModel);
-            var settingsTab = new SettingsTab(_settingsViewModel);
+            var settingsTab = new SettingsTab(settingsViewModel);
 
             MainTabControl.Items.Add(new TabItem { Header = "Player", Content = playerTab });
             MainTabControl.Items.Add(new TabItem { Header = "Travel", Content = travelTab });
@@ -110,7 +109,7 @@ namespace SilkySouls3
             MainTabControl.Items.Add(new TabItem { Header = "Items", Content = itemTab });
             MainTabControl.Items.Add(new TabItem { Header = "Settings", Content = settingsTab });
 
-            _settingsViewModel.ApplyStartUpOptions();
+            settingsViewModel.ApplyStartUpOptions();
             Closing += MainWindow_Closing;
 
             _gameLoadedTimer = new DispatcherTimer
@@ -128,110 +127,105 @@ namespace SilkySouls3
             }
         }
 
+        private bool _wasAttached;
+        private bool _isReady;
         private bool _loaded;
-
-        private bool _hasAllocatedMemory;
-
-        private bool _hasAppliedNoLogo;
-
         private bool _appliedOneTimeFeatures;
-
-        private bool _hasAppliedAttachedFeatures;
-
-        private bool _hasPublishedLoaded;
-        private bool _hasInitializedOffsets;
-        private DateTime? _attachedTime;
+        private CancellationTokenSource _attachCts;
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (_memoryService.IsAttached)
+            var isAttached = _memoryService.IsAttached;
+
+            if (isAttached != _wasAttached)
             {
-                IsAttachedText.Text = "Attached to game";
-                IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["AttachedBrush"];
-                LaunchGameButton.IsEnabled = false;
-
-                if (!_attachedTime.HasValue)
-                {
-                    _attachedTime = DateTime.Now;
-                    return;
-                }
-
-                if ((DateTime.Now - _attachedTime.Value).TotalSeconds < 2)
-                    return;
-
-                if (!_hasInitializedOffsets)
-                {
-                    if (!PatchManager.Initialize(_memoryService))
-                    {
-                        // _aobScanner.DoFallbackScan();
-                    }
-
-                    _hasInitializedOffsets = true;
-
-#if DEBUG
-                    PrintAll();
-#endif
-                }
-
-
-                if (!_hasAppliedNoLogo)
-                {
-                    _memoryService.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes(AsmScript.NoLogo));
-                    _hasAppliedNoLogo = true;
-                }
-
-                if (!_hasAppliedAttachedFeatures)
-                {
-                    _settingsViewModel.ApplyAttachedSettings();
-                    _hasAppliedAttachedFeatures = true;
-                }
-
-                if (!_hasAllocatedMemory)
-                {
-                    _memoryService.AllocCodeCave();
-                    Console.WriteLine($"Code cave: 0x{CustomCodeOffsets.Base.ToInt64():X}");
-                    _hasAllocatedMemory = true;
-                }
-
-                if (_stateService.IsLoaded())
-                {
-                    if (_loaded) return;
-                    _loaded = true;
-                    _dlcService.CheckDlc();
-                    _stateService.Publish(State.Loaded);
-                    _hasPublishedLoaded = true;
-                    TrySetGameStartPrefs();
-                    if (_appliedOneTimeFeatures) return;
-                    _stateService.Publish(State.FirstLoaded);
-                    _appliedOneTimeFeatures = true;
-                }
-                else if (_loaded)
-                {
-                    _stateService.Publish(State.NotLoaded);
-                    _loaded = false;
-                    _hasPublishedLoaded = false;
-                }
+                _wasAttached = isAttached;
+                if (isAttached) OnAttached();
+                else OnDetached();
             }
-            else
+
+            if (!isAttached || !_isReady) return;
+
+            if (_stateService.IsLoaded())
+            {
+                if (_loaded) return;
+                _loaded = true;
+                _dlcService.CheckDlc();
+                _stateService.Publish(State.Loaded);
+                TrySetGameStartPrefs();
+                if (_appliedOneTimeFeatures) return;
+                _stateService.Publish(State.FirstLoaded);
+                _appliedOneTimeFeatures = true;
+            }
+            else if (_loaded)
             {
                 _stateService.Publish(State.NotLoaded);
-                _stateService.Publish(State.Detached);
                 _loaded = false;
-                _hasAllocatedMemory = false;
-                _hasAppliedNoLogo = false;
-                _hasPublishedLoaded = false;
-                _appliedOneTimeFeatures = false;
-                _hasAppliedAttachedFeatures = false;
-                IsAttachedText.Text = "Not attached";
-                IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["NotAttachedBrush"];
-                LaunchGameButton.IsEnabled = true;
+            }
+        }
+
+        private void OnAttached()
+        {
+            IsAttachedText.Text = "Attached to game";
+            IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["AttachedBrush"];
+            LaunchGameButton.IsEnabled = false;
+
+            _attachCts = new CancellationTokenSource();
+            _ = RunAttachSequenceAsync(_attachCts.Token);
+        }
+
+        private void OnDetached()
+        {
+            _attachCts?.Cancel();
+            _isReady = false;
+            _loaded = false;
+            _appliedOneTimeFeatures = false;
+            _stateService.Publish(State.NotLoaded);
+            _stateService.Publish(State.Detached);
+            IsAttachedText.Text = "Not attached";
+            IsAttachedText.Foreground = (SolidColorBrush)Application.Current.Resources["NotAttachedBrush"];
+            LaunchGameButton.IsEnabled = true;
+        }
+
+        private async Task RunAttachSequenceAsync(CancellationToken ct)
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(2), ct);
+
+                if (!PatchManager.Initialize(_memoryService))
+                {
+                    Console.WriteLine("PatchManager.Initialize failed; will retry on next attach.");
+                    return;
+                }
+
+
+                ct.ThrowIfCancellationRequested();
+                _memoryService.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes(AsmScript.NoLogo));
+                _memoryService.AllocCodeCave();
+                _stateService.Publish(State.Attached);
+                
+#if DEBUG
+                PrintAll();
+                Console.WriteLine($"Code cave: 0x{CustomCodeOffsets.Base.ToInt64():X}");
+#endif
+                ct.ThrowIfCancellationRequested();
+                _isReady = true;
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Attach sequence failed: {ex}");
             }
         }
 
         private void TrySetGameStartPrefs()
         {
             long gameTimeMs =
-                _memoryService.Read<long>(_memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.PlayerGameDataOffsets.InGameTime);
+                _memoryService.Read<long>(_memoryService.Read<nint>(GameDataMan.Base) +
+                                          GameDataMan.PlayerGameDataOffsets.InGameTime);
 
             if (gameTimeMs < 5000)
             {
