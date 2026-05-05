@@ -10,10 +10,12 @@ namespace SilkySouls3.ViewModels
     public class EventViewModel : BaseViewModel
     {
         private readonly IEventService _eventService;
+        private readonly IDlcService _dlcService;
 
-        public EventViewModel(IEventService eventService, IStateService stateService)
+        public EventViewModel(IEventService eventService, IStateService stateService, IDlcService dlcService)
         {
             _eventService = eventService;
+            _dlcService = dlcService;
 
             SetFlagCommand = new DelegateCommand(SetFlag);
             GetEventCommand = new DelegateCommand(GetEvent);
@@ -36,6 +38,22 @@ namespace SilkySouls3.ViewModels
         #endregion
 
         #region Properties
+        
+        private bool _areOptionsEnabled;
+
+        public bool AreOptionsEnabled
+        {
+            get => _areOptionsEnabled;
+            set => SetProperty(ref _areOptionsEnabled, value);
+        }
+        
+        private bool _isDlc2Available;
+
+        public bool IsDlc2Available
+        {
+            get => _isDlc2Available;
+            set => SetProperty(ref _isDlc2Available, value);
+        }
 
         private string _setFlagId;
 
@@ -77,14 +95,7 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _eventStatusColor, value);
         }
 
-        private bool _areButtonsEnabled;
-
-        public bool AreButtonsEnabled
-        {
-            get => _areButtonsEnabled;
-            set => SetProperty(ref _areButtonsEnabled, value);
-        }
-
+        
         private bool _isDisableEventsEnabled;
 
         public bool IsDisableEventsEnabled
@@ -154,14 +165,15 @@ namespace SilkySouls3.ViewModels
 
         private void OnGameNotLoaded()
         {
-            AreButtonsEnabled = false;
+            AreOptionsEnabled = false;
         }
 
         private void OnGameLoaded()
         {
-            AreButtonsEnabled = true;
+            AreOptionsEnabled = true;
             if (IsDisableEventsEnabled) _eventService.ToggleDisableEvents(true);
             if (IsDrawEventsEnabled) _eventService.ToggleDrawEvents(true);
+            IsDlc2Available = _dlcService.IsDlc2Available;
         }
 
         #endregion

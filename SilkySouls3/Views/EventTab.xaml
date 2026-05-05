@@ -121,9 +121,15 @@
 
                     <Button x:Name="UnlockMidirButton" Content="Unlock Midir"
                             Command="{Binding UnlockMidirCommand}"
-                            IsEnabled="{Binding AreOptionsEnabled}"
                             Height="20"
-                            Margin="0,5" />
+                            Margin="0,5">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                <Binding Path="AreOptionsEnabled" />
+                                <Binding Path="IsDlc2Available" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </Grid>
             </StackPanel>
         </Border>

@@ -84,8 +84,7 @@ namespace SilkySouls3
             var utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager,
                 playerViewModel, debugDrawService, _stateService, ezStateService, eventService);
             var travelViewModel = new TravelViewModel(travelService, hotkeyManager, _stateService, _dlcService);
-            var eventViewModel = new EventViewModel(eventService, _stateService);
-            var eventTab = new EventTab(eventViewModel);
+            var eventViewModel = new EventViewModel(eventService, _stateService, _dlcService);
             var targetViewModel = new TargetViewModel(targetService, hotkeyManager, debugDrawService, _stateService,
                 gameTickService, spEffectService);
             var enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager, _stateService,
@@ -95,6 +94,7 @@ namespace SilkySouls3
 
             var playerTab = new PlayerTab(playerViewModel);
             var utilityTab = new UtilityTab(utilityViewModel);
+            var eventTab = new EventTab(eventViewModel);
             var travelTab = new TravelTab(travelViewModel);
             var targetTab = new TargetTab(targetViewModel);
             var enemyTab = new EnemyTab(enemyViewModel);

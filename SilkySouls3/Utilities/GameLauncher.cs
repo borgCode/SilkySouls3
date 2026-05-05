@@ -10,7 +10,6 @@ namespace SilkySouls3.Utilities
 {
     public static class GameLauncher
     {
-        public static bool IsDlc2Available { get; private set; } = true;
         
         public static void LaunchDarkSouls3()
         {
@@ -22,8 +21,14 @@ namespace SilkySouls3.Utilities
                     return;
                 }
 
-                var process = new Process { StartInfo = new ProcessStartInfo(exePath) };
-                process.Start();
+                var psi = new ProcessStartInfo("cmd.exe")
+                {
+                    Arguments = $"/c set SteamAppId=374320 && start \"\" \"{exePath}\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = Path.GetDirectoryName(exePath)
+                };
+                Process.Start(psi);
             }
             catch (Exception ex)
             {
