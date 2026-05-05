@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
+using System.Windows.Input;
+using SilkySouls3.Core;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Models;
-using SilkySouls3.Services;
 using SilkySouls3.Utilities;
 using SilkySouls3.Views;
 
@@ -16,42 +16,44 @@ namespace SilkySouls3.ViewModels
     {
         private readonly IItemService _itemService;
 
-        private string _selectedCategory;
-        private Item _selectedItem;
-        private int _selectedQuantity = 1;
-        private int _selectedUpgrade;
-        private string _selectedInfusionType = "Normal";
-        private int _maxUpgradeLevel = 10;
-        private bool _quantityEnabled;
-        private int _maxQuantity;
-        private bool _canUpgrade;
-        private bool _canInfuse;
-
-        private bool _areOptionsEnabled;
-        private string _searchText = string.Empty;
-
-        private readonly Dictionary<string, ObservableCollection<Item>> _itemsByCategory =
-            new Dictionary<string, ObservableCollection<Item>>();
+        private readonly Dictionary<string, ObservableCollection<Item>> _itemsByCategory = new();
 
         private ILookup<string, Item> _allItems;
 
-        private ObservableCollection<string> _categories = new ObservableCollection<string>();
-        private ObservableCollection<Item> _items = new ObservableCollection<Item>();
-
+        private readonly ObservableCollection<Item> _searchResultsCollection = new();
         private string _preSearchCategory;
-        private bool _isSearchActive;
-        private readonly ObservableCollection<Item> _searchResultsCollection = new ObservableCollection<Item>();
 
-        private ObservableCollection<string> _loadouts;
-        private string _selectedLoadoutName;
-        private Dictionary<string, LoadoutTemplate> _loadoutTemplatesByName = new Dictionary<string, LoadoutTemplate>();
+        private Dictionary<string, LoadoutTemplate> _loadoutTemplatesByName = new();
+        private Dictionary<string, LoadoutTemplate> _customLoadoutTemplates = new();
+        
+        public ItemViewModel(IItemService itemService, IStateService stateService)
+        {
+            _itemService = itemService;
 
-        private string _selectedMassSpawnCategory;
+            stateService.Subscribe(State.Loaded, OnGameLoaded);
+            stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
+            stateService.Subscribe(State.OnNewGameStart, OnNewGameStart);
 
-        private bool _autoSpawnEnabled;
-        private Item _selectedAutoSpawnWeapon;
+            SpawnItemCommand = new DelegateCommand(SpawnItem);
+            MassSpawnCommand = new DelegateCommand(MassSpawn);
+            SpawnLoadoutCommand = new DelegateCommand(SpawnLoadout);
+            ShowCreateLoadoutCommand = new DelegateCommand(ShowCreateLoadoutWindow);
 
-        public Dictionary<string, int> InfusionTypes { get; } = new Dictionary<string, int>
+            LoadData();
+        }
+
+        #region Commands
+
+        public ICommand SpawnItemCommand { get; }
+        public ICommand MassSpawnCommand { get; }
+        public ICommand SpawnLoadoutCommand { get; }
+        public ICommand ShowCreateLoadoutCommand { get; }
+
+        #endregion
+
+        #region Properties
+
+        public Dictionary<string, int> InfusionTypes { get; } = new()
         {
             { "Normal", 0 }, { "Heavy", 100 }, { "Sharp", 200 },
             { "Refined", 300 }, { "Simple", 400 }, { "Crystal", 500 },
@@ -61,17 +63,237 @@ namespace SilkySouls3.ViewModels
             { "Hollow", 1500 }
         };
 
+        private bool _areOptionsEnabled;
 
-        public ItemViewModel(IItemService itemService, IStateService stateService)
+        public bool AreOptionsEnabled
         {
-            _itemService = itemService;
-
-            stateService.Subscribe(State.Loaded, OnGameLoaded);
-            stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
-            stateService.Subscribe(State.OnNewGameStart, OnNewGameStart);
-            
-            LoadData();
+            get => _areOptionsEnabled;
+            set => SetProperty(ref _areOptionsEnabled, value);
         }
+
+        private ObservableCollection<string> _categories = new();
+
+        public ObservableCollection<string> Categories
+        {
+            get => _categories;
+            private set => SetProperty(ref _categories, value);
+        }
+
+        private ObservableCollection<Item> _items = new();
+
+        public ObservableCollection<Item> Items
+        {
+            get => _items;
+            set => SetProperty(ref _items, value);
+        }
+
+        private ObservableCollection<string> _loadouts;
+
+        public ObservableCollection<string> Loadouts
+        {
+            get => _loadouts;
+            private set => SetProperty(ref _loadouts, value);
+        }
+
+        private string _selectedLoadoutName;
+
+        public string SelectedLoadoutName
+        {
+            get => _selectedLoadoutName;
+            set => SetProperty(ref _selectedLoadoutName, value);
+        }
+
+        private string _selectedCategory;
+
+        public string SelectedCategory
+        {
+            get => _selectedCategory;
+            set
+            {
+                if (!SetProperty(ref _selectedCategory, value) || value == null) return;
+                if (_selectedCategory == null) return;
+
+                if (_isSearchActive)
+                {
+                    IsSearchActive = false;
+                    _searchText = string.Empty;
+                    OnPropertyChanged(nameof(SearchText));
+                    _preSearchCategory = null;
+                }
+
+                Items = _itemsByCategory[_selectedCategory];
+                SelectedItem = Items.FirstOrDefault();
+            }
+        }
+
+        private bool _canUpgrade;
+
+        public bool CanUpgrade
+        {
+            get => _canUpgrade;
+            private set => SetProperty(ref _canUpgrade, value);
+        }
+
+        private bool _canInfuse;
+
+        public bool CanInfuse
+        {
+            get => _canInfuse;
+            private set => SetProperty(ref _canInfuse, value);
+        }
+
+        private int _maxUpgradeLevel = 10;
+
+        public int MaxUpgradeLevel
+        {
+            get => _maxUpgradeLevel;
+            private set => SetProperty(ref _maxUpgradeLevel, value);
+        }
+
+        private bool _quantityEnabled;
+
+        public bool QuantityEnabled
+        {
+            get => _quantityEnabled;
+            private set => SetProperty(ref _quantityEnabled, value);
+        }
+
+        private int _maxQuantity;
+
+        public int MaxQuantity
+        {
+            get => _maxQuantity;
+            private set => SetProperty(ref _maxQuantity, value);
+        }
+
+        private bool _isSearchActive;
+
+        public bool IsSearchActive
+        {
+            get => _isSearchActive;
+            private set => SetProperty(ref _isSearchActive, value);
+        }
+
+        private string _searchText = string.Empty;
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (!SetProperty(ref _searchText, value))
+                {
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(value))
+                {
+                    _isSearchActive = false;
+
+                    if (_preSearchCategory != null)
+                    {
+                        _selectedCategory = _preSearchCategory;
+                        Items = _itemsByCategory[_selectedCategory];
+                        SelectedItem = Items.FirstOrDefault();
+                        _preSearchCategory = null;
+                    }
+                }
+                else
+                {
+                    if (!_isSearchActive)
+                    {
+                        _preSearchCategory = SelectedCategory;
+                        _isSearchActive = true;
+                    }
+
+                    ApplyFilter();
+                }
+            }
+        }
+
+        public List<Item> SelectedItems { get; set; } = new List<Item>();
+
+        private Item _selectedItem;
+
+        public Item SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                SetProperty(ref _selectedItem, value);
+                if (_selectedItem == null) return;
+                QuantityEnabled = _selectedItem.StackSize > 1;
+                MaxQuantity = _selectedItem.MaxStorage > 0
+                    ? _selectedItem.MaxStorage + _selectedItem.StackSize
+                    : _selectedItem.MaxStorage;
+                SelectedQuantity = _selectedItem.StackSize;
+                CanInfuse = _selectedItem.Infusable;
+                if (!CanInfuse) SelectedInfusionType = "Normal";
+                CanUpgrade = _selectedItem.UpgradeType > 0;
+                if (!CanUpgrade) SelectedUpgrade = 0;
+                else MaxUpgradeLevel = _selectedItem.UpgradeType == 1 ? 10 : 5;
+                if (SelectedUpgrade > MaxUpgradeLevel) SelectedUpgrade = MaxUpgradeLevel;
+            }
+        }
+
+        private int _selectedQuantity = 1;
+
+        public int SelectedQuantity
+        {
+            get => _selectedQuantity;
+            set
+            {
+                int clampedValue = Math.Max(1, Math.Min(value, MaxQuantity));
+                SetProperty(ref _selectedQuantity, clampedValue);
+            }
+        }
+
+        private int _selectedUpgrade;
+
+        public int SelectedUpgrade
+        {
+            get => _selectedUpgrade;
+            set => SetProperty(ref _selectedUpgrade, Math.Max(0, Math.Min(value, MaxUpgradeLevel)));
+        }
+
+        private string _selectedInfusionType = "Normal";
+
+        public string SelectedInfusionType
+        {
+            get => _selectedInfusionType;
+            set => SetProperty(ref _selectedInfusionType, value);
+        }
+
+        private string _selectedMassSpawnCategory;
+
+        public string SelectedMassSpawnCategory
+        {
+            get => _selectedMassSpawnCategory;
+            set => SetProperty(ref _selectedMassSpawnCategory, value);
+        }
+
+        private bool _autoSpawnEnabled;
+
+        public bool AutoSpawnEnabled
+        {
+            get => _autoSpawnEnabled;
+            set => SetProperty(ref _autoSpawnEnabled, value);
+        }
+
+        private Item _selectedAutoSpawnWeapon;
+
+        public Item SelectedAutoSpawnWeapon
+        {
+            get => _selectedAutoSpawnWeapon;
+            set => SetProperty(ref _selectedAutoSpawnWeapon, value);
+        }
+
+        public ObservableCollection<Item> WeaponList => new ObservableCollection<Item>(_itemsByCategory["Weapons"]);
+
+        #endregion
+        
+
+        #region Private Methods
 
         private void LoadData()
         {
@@ -109,128 +331,6 @@ namespace SilkySouls3.ViewModels
             SelectedAutoSpawnWeapon = WeaponList.FirstOrDefault();
         }
 
-        public bool AreOptionsEnabled
-        {
-            get => _areOptionsEnabled;
-            set => SetProperty(ref _areOptionsEnabled, value);
-        }
-
-        public ObservableCollection<string> Categories
-        {
-            get => _categories;
-            private set => SetProperty(ref _categories, value);
-        }
-
-        public ObservableCollection<Item> Items
-        {
-            get => _items;
-            set => SetProperty(ref _items, value);
-        }
-
-        public ObservableCollection<string> Loadouts
-        {
-            get => _loadouts;
-            private set => SetProperty(ref _loadouts, value);
-        }
-
-        public string SelectedLoadoutName
-        {
-            get => _selectedLoadoutName;
-            set => SetProperty(ref _selectedLoadoutName, value);
-        }
-
-        public string SelectedCategory
-        {
-            get => _selectedCategory;
-            set
-            {
-                if (!SetProperty(ref _selectedCategory, value) || value == null) return;
-                if (_selectedCategory == null) return;
-
-                if (_isSearchActive)
-                {
-                    IsSearchActive = false;
-                    _searchText = string.Empty;
-                    OnPropertyChanged(nameof(SearchText));
-                    _preSearchCategory = null;
-                }
-
-                Items = _itemsByCategory[_selectedCategory];
-                SelectedItem = Items.FirstOrDefault();
-            }
-        }
-
-        public bool CanUpgrade
-        {
-            get => _canUpgrade;
-            private set => SetProperty(ref _canUpgrade, value);
-        }
-
-        public bool CanInfuse
-        {
-            get => _canInfuse;
-            private set => SetProperty(ref _canInfuse, value);
-        }
-
-        public int MaxUpgradeLevel
-        {
-            get => _maxUpgradeLevel;
-            private set => SetProperty(ref _maxUpgradeLevel, value);
-        }
-
-        public bool QuantityEnabled
-        {
-            get => _quantityEnabled;
-            private set => SetProperty(ref _quantityEnabled, value);
-        }
-
-        public int MaxQuantity
-        {
-            get => _maxQuantity;
-            private set => SetProperty(ref _maxQuantity, value);
-        }
-
-        public bool IsSearchActive
-        {
-            get => _isSearchActive;
-            private set => SetProperty(ref _isSearchActive, value);
-        }
-
-        public string SearchText
-        {
-            get => _searchText;
-            set
-            {
-                if (!SetProperty(ref _searchText, value))
-                {
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(value))
-                {
-                    _isSearchActive = false;
-
-                    if (_preSearchCategory != null)
-                    {
-                        _selectedCategory = _preSearchCategory;
-                        Items = _itemsByCategory[_selectedCategory];
-                        SelectedItem = Items.FirstOrDefault();
-                        _preSearchCategory = null;
-                    }
-                }
-                else
-                {
-                    if (!_isSearchActive)
-                    {
-                        _preSearchCategory = SelectedCategory;
-                        _isSearchActive = true;
-                    }
-
-                    ApplyFilter();
-                }
-            }
-        }
-
         private void ApplyFilter()
         {
             _searchResultsCollection.Clear();
@@ -251,51 +351,15 @@ namespace SilkySouls3.ViewModels
             Items = _searchResultsCollection;
         }
 
-        public Item SelectedItem
+        private void SpawnItem()
         {
-            get => _selectedItem;
-            set
+            if (SelectedItems.Count > 1)
             {
-                SetProperty(ref _selectedItem, value);
-                if (_selectedItem == null) return;
-                QuantityEnabled = _selectedItem.StackSize > 1;
-                MaxQuantity = _selectedItem.MaxStorage > 0
-                    ? _selectedItem.MaxStorage + _selectedItem.StackSize
-                    : _selectedItem.MaxStorage;
-                SelectedQuantity = _selectedItem.StackSize;
-                CanInfuse = _selectedItem.Infusable;
-                if (!CanInfuse) SelectedInfusionType = "Normal";
-                CanUpgrade = _selectedItem.UpgradeType > 0;
-                if (!CanUpgrade) SelectedUpgrade = 0;
-                else MaxUpgradeLevel = _selectedItem.UpgradeType == 1 ? 10 : 5;
-                if (SelectedUpgrade > MaxUpgradeLevel) SelectedUpgrade = MaxUpgradeLevel;
+                foreach (var item in SelectedItems)
+                    _itemService.SpawnItem(item.Id, item.StackSize, item.StackSize > 1, item.StackSize);
+                return;
             }
-        }
 
-        public int SelectedQuantity
-        {
-            get => _selectedQuantity;
-            set
-            {
-                int clampedValue = Math.Max(1, Math.Min(value, MaxQuantity));
-                SetProperty(ref _selectedQuantity, clampedValue);
-            }
-        }
-
-        public int SelectedUpgrade
-        {
-            get => _selectedUpgrade;
-            set => SetProperty(ref _selectedUpgrade, Math.Max(0, Math.Min(value, MaxUpgradeLevel)));
-        }
-
-        public string SelectedInfusionType
-        {
-            get => _selectedInfusionType;
-            set => SetProperty(ref _selectedInfusionType, value);
-        }
-
-        public void SpawnItem()
-        {
             if (SelectedItem == null) return;
 
             int itemId = SelectedItem.Id;
@@ -304,7 +368,7 @@ namespace SilkySouls3.ViewModels
             _itemService.SpawnItem(itemId, SelectedQuantity, SelectedItem.StackSize > 1, SelectedItem.StackSize);
         }
 
-        public void SpawnLoadout()
+        private void SpawnLoadout()
         {
             if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
                 return;
@@ -318,57 +382,71 @@ namespace SilkySouls3.ViewModels
                     int itemId = item.Id;
                     itemId += InfusionTypes[template.Infusion];
                     itemId += template.Upgrade;
-                    
+
                     int quantity = template.Quantity > 0 ? template.Quantity : item.StackSize;
-                    // _itemService.SpawnItem(itemId, quantity);
+                    _itemService.SpawnItem(itemId, quantity, item.StackSize > 1, item.StackSize);
                 }
             }
         }
 
-
-        public string SelectedMassSpawnCategory
+        private void MassSpawn()
         {
-            get => _selectedMassSpawnCategory;
-            set => SetProperty(ref _selectedMassSpawnCategory, value);
-        }
-
-        public bool AutoSpawnEnabled
-        {
-            get => _autoSpawnEnabled;
-            set => SetProperty(ref _autoSpawnEnabled, value);
-        }
-
-        public Item SelectedAutoSpawnWeapon
-        {
-            get => _selectedAutoSpawnWeapon;
-            set => SetProperty(ref _selectedAutoSpawnWeapon, value);
-        }
-
-        public ObservableCollection<Item> WeaponList => new ObservableCollection<Item>(_itemsByCategory["Weapons"]);
-
-        private readonly string[] _sensitiveCategories = { "Ammo", "Consumables", "Upgrade Materials" };
-
-        public void MassSpawn()
-        {
-            bool isSensitiveCategory = _sensitiveCategories.Contains(SelectedMassSpawnCategory);
-
-            if (isSensitiveCategory && !ConfirmSpawn()) return;
             foreach (var item in _itemsByCategory[SelectedMassSpawnCategory])
             {
-                // _itemService.SpawnItem(item.Id, item.StackSize);
+                _itemService.SpawnItem(item.Id, item.StackSize, item.StackSize > 1, item.StackSize);
+            }
+        }
+        
+        private void ShowCreateLoadoutWindow()
+        {
+            var createLoadoutWindow = new CreateLoadoutWindow(_categories, _itemsByCategory, _loadoutTemplatesByName,
+                _customLoadoutTemplates, InfusionTypes);
+
+
+            if (createLoadoutWindow.ShowDialog() == true)
+            {
+                RefreshLoadouts();
             }
         }
 
-        private bool ConfirmSpawn()
+        private void RefreshLoadouts()
         {
-            var result = MessageBox.Show(
-                $"Are you sure you want to spawn all items in the {SelectedMassSpawnCategory} category?\n\n" +
-                "WARNING: If you've already mass spawned this category, spawning it again may crash the game.",
-                "Confirm Mass Spawn",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
+            _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
 
-            return result == MessageBoxResult.Yes;
+            foreach (var loadout in _customLoadoutTemplates.Values)
+            {
+                if (!string.IsNullOrEmpty(loadout.Name))
+                {
+                    _loadoutTemplatesByName[loadout.Name] = loadout;
+                }
+            }
+
+            _loadouts.Clear();
+            foreach (var entry in _loadoutTemplatesByName)
+            {
+                if (!string.IsNullOrEmpty(entry.Key))
+                {
+                    _loadouts.Add(entry.Key);
+                }
+            }
+
+            if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
+            {
+                SelectedLoadoutName = _loadouts.FirstOrDefault();
+            }
+
+            SaveCustomLoadouts();
+        }
+
+        private void SaveCustomLoadouts() => DataLoader.SaveCustomLoadouts(_customLoadoutTemplates);
+
+        private void LoadCustomLoadouts()
+        {
+            _customLoadoutTemplates = DataLoader.LoadCustomLoadouts();
+            foreach (var loadout in _customLoadoutTemplates.Values)
+            {
+                _loadoutTemplatesByName[loadout.Name] = loadout;
+            }
         }
 
         private void OnGameLoaded()
@@ -381,64 +459,12 @@ namespace SilkySouls3.ViewModels
             AreOptionsEnabled = false;
         }
 
-        public void OnNewGameStart()
+        private void OnNewGameStart()
         {
             if (!AutoSpawnEnabled || SelectedAutoSpawnWeapon == null) return;
-            // _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, SelectedAutoSpawnWeapon.StackSize);
+            _itemService.SpawnItem(SelectedAutoSpawnWeapon.Id, 1, false, 1);
         }
 
-        public void ShowCreateLoadoutWindow()
-        {
-            var createLoadoutWindow = new CreateLoadoutWindow(_categories, _itemsByCategory, _loadoutTemplatesByName,
-                _customLoadoutTemplates, InfusionTypes);
-            
-            
-            if (createLoadoutWindow.ShowDialog() == true)
-            {
-                RefreshLoadouts();
-            }
-        }
-
-        private void RefreshLoadouts()
-        {
-            _loadoutTemplatesByName = LoadoutTemplates.All.ToDictionary(lt => lt.Name);
-            
-            foreach (var loadout in _customLoadoutTemplates.Values)
-            {
-                if (!string.IsNullOrEmpty(loadout.Name))
-                {
-                    _loadoutTemplatesByName[loadout.Name] = loadout;
-                }
-            }
-            
-            _loadouts.Clear();
-            foreach (var entry in _loadoutTemplatesByName)
-            {
-                if (!string.IsNullOrEmpty(entry.Key))
-                {
-                    _loadouts.Add(entry.Key);
-                }
-            }
-            
-            if (string.IsNullOrEmpty(SelectedLoadoutName) || !_loadoutTemplatesByName.ContainsKey(SelectedLoadoutName))
-            {
-                SelectedLoadoutName = _loadouts.FirstOrDefault();
-            }
-            SaveCustomLoadouts();
-        }
-        private Dictionary<string, LoadoutTemplate> _customLoadoutTemplates = new Dictionary<string, LoadoutTemplate>();
-
-      
-
-        private void SaveCustomLoadouts() => DataLoader.SaveCustomLoadouts(_customLoadoutTemplates);
-
-        private void LoadCustomLoadouts()
-        {
-            _customLoadoutTemplates = DataLoader.LoadCustomLoadouts();
-            foreach (var loadout in _customLoadoutTemplates.Values)
-            {
-                _loadoutTemplatesByName[loadout.Name] = loadout;
-            }
-        }
+        #endregion
     }
 }

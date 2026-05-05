@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SilkySouls3.Models;
 using SilkySouls3.ViewModels;
 
 namespace SilkySouls3.Views
@@ -17,19 +19,18 @@ namespace SilkySouls3.Views
             DataContext = _itemViewModel;
         }
 
-        private void SpawnButton_Click(object sender, RoutedEventArgs e)
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _itemViewModel.SpawnItem();
+            if (DataContext is ItemViewModel vm && sender is ListView lv)
+                vm.SelectedItems = lv.SelectedItems.Cast<Item>().ToList();
         }
 
-        private void MassSpawn_Click(object sender, RoutedEventArgs e)
+        private void Item_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _itemViewModel.MassSpawn();
-        }
-
-        private void LoadPreset_Click(object sender, RoutedEventArgs e)
-        {
-            _itemViewModel.SpawnLoadout();
+            if (DataContext is ItemViewModel vm && vm.SpawnItemCommand.CanExecute(null))
+            {
+                vm.SpawnItemCommand.Execute(null);
+            }
         }
 
         private void AutoSpawn_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -61,6 +62,5 @@ namespace SilkySouls3.Views
             combo.PreviewMouseDown += AutoSpawn_PreviewMouseDown;
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e) => _itemViewModel.ShowCreateLoadoutWindow();
     }
 }
