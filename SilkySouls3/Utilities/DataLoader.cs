@@ -138,8 +138,9 @@ namespace SilkySouls3.Utilities
                             Id = int.Parse(parts[1], NumberStyles.HexNumber),
                             Name = parts[2],
                             StackSize = int.Parse(parts[3]),
-                            UpgradeType = int.Parse(parts[4]),
-                            Infusable = parts[5] == "1"
+                            MaxStorage = int.Parse(parts[4]),
+                            UpgradeType = int.Parse(parts[5]),
+                            Infusable = parts[6] == "1"
                         });
                     }
                 }

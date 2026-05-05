@@ -223,7 +223,9 @@ namespace SilkySouls3.ViewModels
                 SetProperty(ref _selectedItem, value);
                 if (_selectedItem == null) return;
                 QuantityEnabled = _selectedItem.StackSize > 1;
-                MaxQuantity = _selectedItem.StackSize;
+                MaxQuantity = _selectedItem.MaxStorage > 0
+                    ? _selectedItem.MaxStorage + _selectedItem.StackSize
+                    : _selectedItem.MaxStorage;
                 SelectedQuantity = _selectedItem.StackSize;
                 CanInfuse = _selectedItem.Infusable;
                 if (!CanInfuse) SelectedInfusionType = "Normal";
