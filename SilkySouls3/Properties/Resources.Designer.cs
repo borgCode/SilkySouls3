@@ -60,21 +60,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,00061D3C,Dark Arrow,600,0,0
-        ///0,00061C10,Feather Arrow,600,0,0
-        ///0,00061AE4,Fire Arrow,600,0,0
-        ///0,00061BAC,Large Arrow,600,0,0
-        ///0,00061C74,Moonlight Arrow,600,0,0
-        ///0,00061B48,Poison Arrow,600,0,0
-        ///0,00061A80,Standard Arrow,600,0,0
-        ///0,00061CD8,Wood Arrow,600,0,0
-        ///0,00062250,Dragonslayer Greatarrow,600,0,0
-        ///0,00062318,Dragonslayer Lightning Arrow,600,0,0
-        ///1,000623E0,Millwood Greatarrow,600,0,0
-        ///0,0006237C,Onislayer Greatarrow,600,0,0
-        ///0,00062C78,Exploding Bolt,600,0,0
-        ///0,00062A84,Heavy Bolt,600,0,0
-        ///0,00062BB [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,00061D3C,Dark Arrow,99,600,0,0
+        ///0,00061C10,Feather Arrow,99,600,0,0
+        ///0,00061AE4,Fire Arrow,99,600,0,0
+        ///0,00061BAC,Large Arrow,99,600,0,0
+        ///0,00061C74,Moonlight Arrow,99,600,0,0
+        ///0,00061B48,Poison Arrow,99,600,0,0
+        ///0,00061A80,Standard Arrow,99,600,0,0
+        ///0,00061CD8,Wood Arrow,99,600,0,0
+        ///0,00062250,Dragonslayer Greatarrow,50,600,0,0
+        ///0,00062318,Dragonslayer Lightning Arrow,50,600,0,0
+        ///1,000623E0,Millwood Greatarrow,30,600,0,0
+        ///0,0006237C,Onislayer Greatarrow,30,600,0,0
+        ///0,00062C78,Exploding Bolt,30,600,0,0
+        ///0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Ammo {
             get {
@@ -101,21 +100,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,14C4B7E8,Alva Armor,1,0,0
-        ///0,14C4BBD0,Alva Gauntlets,1,0,0
-        ///0,14C4B400,Alva Helm,1,0,0
-        ///0,14C4BFB8,Alva Leggings,1,0,0
-        ///2,15D76068,Antiquated Dress,1,0,0
-        ///2,15D76450,Antiquated Gloves,1,0,0
-        ///2,11B2E408,Antiquated Plain Garb,1,0,0
-        ///2,15D76838,Antiquated Skirt,1,0,0
-        ///0,13EF1868,Archdeacon Holy Garb,1,0,0
-        ///0,13EF2038,Archdeacon Skirt,1,0,0
-        ///0,13EF1480,Archdeacon White Crown,1,0,0
-        ///0,129F6300,Aristocrat&apos;s Mask,1,0,0
-        ///0,15B8DBE8,Armor of Thorns,1,0,0
-        ///0,152F87A8,Armor of the Sun,1,0,0
-        ///0,11607E48,Assassin Armo [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,14C4B7E8,Alva Armor,1,1,0,0
+        ///0,14C4BBD0,Alva Gauntlets,1,1,0,0
+        ///0,14C4B400,Alva Helm,1,1,0,0
+        ///0,14C4BFB8,Alva Leggings,1,1,0,0
+        ///2,15D76068,Antiquated Dress,1,1,0,0
+        ///2,15D76450,Antiquated Gloves,1,1,0,0
+        ///2,11B2E408,Antiquated Plain Garb,1,1,0,0
+        ///2,15D76838,Antiquated Skirt,1,1,0,0
+        ///0,13EF1868,Archdeacon Holy Garb,1,1,0,0
+        ///0,13EF2038,Archdeacon Skirt,1,1,0,0
+        ///0,13EF1480,Archdeacon White Crown,1,1,0,0
+        ///0,129F6300,Aristocrat&apos;s Mask,1,1,0,0
+        ///0,15B8DBE8,Armor of Thorns,1,1,0,0
+        ///0,152F87A8,Armor of the Sun,1,1,0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Armor {
             get {
@@ -272,20 +270,19 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,40000126,Alluring Skull,600,0,0
-        ///0,400001CD,Black Bug Pellet,600,0,0
-        ///0,40000129,Black Firebomb,600,0,0
-        ///0,4000010E,Bloodred Moss Clump,600,0,0
-        ///0,40000110,Blooming Purple Moss Clump,600,0,0
-        ///0,400001CA,Blue Bug Pellet,600,0,0
-        ///0,40000106,Budding Green Blossom,600,0,0
-        ///0,4000014F,Carthus Rouge,600,0,0
-        ///0,40000154,Charcoal Pine Bundle,600,0,0
-        ///0,4000014A,Charcoal Pine Resin,600,0,0
-        ///0,4000006F,Cracked Red Eye Orb,600,0,0
-        ///0,400001EA,Dark Sigil,600,0,0
-        ///0,400000F0,Divine Blessing,600,0,0
-        ///0,40000130,Duel Ch [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,40000126,Alluring Skull,10,600,0,0
+        ///0,400001CD,Black Bug Pellet,5,600,0,0
+        ///0,40000129,Black Firebomb,10,600,0,0
+        ///0,4000010E,Bloodred Moss Clump,99,600,0,0
+        ///0,40000110,Blooming Purple Moss Clump,99,600,0,0
+        ///0,400001CA,Blue Bug Pellet,5,600,0,0
+        ///0,40000106,Budding Green Blossom,10,600,0,0
+        ///0,4000014F,Carthus Rouge,5,600,0,0
+        ///0,40000154,Charcoal Pine Bundle,20,600,0,0
+        ///0,4000014A,Charcoal Pine Resin,5,600,0,0
+        ///0,4000006F,Cracked Red Eye Orb,99,600,0,0
+        ///0,400001EA,Dark Sigil,8,0,0,0
+        ///0,400000F0,Divine Blessin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Consumables {
             get {
@@ -403,21 +400,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,40002345,Applause,1,0,0
-        ///0,400000BE,Ashen Estus Flask,1,0,0
-        ///0,40000845,Basin of Vows,1,0,0
-        ///0,40002328,Beckon,1,0,0
-        ///0,40000173,Binoculars,1,0,0
-        ///2,4000086E,Blood of the Dark souls,1,0,0
-        ///0,4000232B,Bow,1,0,0
-        ///0,40000849,Braille Divine Sunlight Tome,1,0,0
-        ///0,40000847,Braille Divine Tome of Carim,1,0,0
-        ///0,40000848,Braille Divine Tome of Lothric,1,0,0
-        ///0,4000233C,By my sword,1,0,0
-        ///0,40002341,Call over,1,0,0
-        ///1,4000086A,Captain&apos;s Ashes,1,0,0
-        ///0,40000850,Carthus Pyromancy Tome,1,0,0
-        ///0,400007DA,Cell Key,1,0 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,40002345,Applause,1,1,0,0
+        ///0,400000BE,Ashen Estus Flask,1,1,0,0
+        ///0,40000845,Basin of Vows,1,1,0,0
+        ///0,40002328,Beckon,1,1,0,0
+        ///0,40000173,Binoculars,1,600,0,0
+        ///2,4000086E,Blood of the Dark Soul,1,1,0,0
+        ///0,4000232B,Bow,1,1,0,0
+        ///0,40000849,Braille Divine Sunlight Tome,1,1,0,0
+        ///0,40000847,Braille Divine Tome of Carim,1,1,0,0
+        ///0,40000848,Braille Divine Tome of Lothric,1,1,0,0
+        ///0,4000233C,By my sword,1,1,0,0
+        ///0,40002341,Call over,1,1,0,0
+        ///1,4000086A,Captain&apos;s Ashes,1,1,0,0
+        ///0,40000850,Carthus Pyromancy Tome,1,1 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string KeyItems {
             get {
@@ -590,21 +586,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,2000508C,Aldrich&apos;s Ruby,1,0,0
-        ///0,20005096,Aldrich&apos;s Sapphire,1,0,0
-        ///0,200050E6,Ashen Estus Ring,1,0,0
-        ///0,20005032,Baneful Bird Ring,1,0,0
-        ///0,20004F07,Bellowing Dragoncrest Ring,1,0,0
-        ///0,20004E85,Bloodbite Ring+1,1,0,0
-        ///0,20004E84,Bloodbite Ring,1,0,0
-        ///0,20004ED4,Blue Tearstone Ring,1,0,0
-        ///0,20005078,Calamity Ring,1,0,0
-        ///0,200050FA,Carthus Bloodring,1,0,0
-        ///0,20004FE2,Carthus Milkring,1,0,0
-        ///1,20005208,Chillbite Ring,1,0,0
-        ///0,20004E2A,Chloranthy Ring,1,0,0
-        ///0,20004E2B,Chloranthy Ring+1,1,0,0
-        ///0,20004E2C,Chl [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,2000508C,Aldrich&apos;s Ruby,1,1,0,0
+        ///0,20005096,Aldrich&apos;s Sapphire,1,1,0,0
+        ///0,200050E6,Ashen Estus Ring,1,1,0,0
+        ///0,20005032,Baneful Bird Ring,1,1,0,0
+        ///0,20004F07,Bellowing Dragoncrest Ring,1,1,0,0
+        ///0,20004E85,Bloodbite Ring+1,1,1,0,0
+        ///0,20004E84,Bloodbite Ring,1,1,0,0
+        ///0,20004ED4,Blue Tearstone Ring,1,1,0,0
+        ///0,20005078,Calamity Ring,1,1,0,0
+        ///0,200050FA,Carthus Bloodring,1,1,0,0
+        ///0,20004FE2,Carthus Milkring,1,1,0,0
+        ///1,20005208,Chillbite Ring,1,1,0,0
+        ///0,20004E2A,Chloranthy Ring,1,1,0,0
+        ///0,20004E2B,Chloranthy Ri [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Rings {
             get {
@@ -643,22 +638,21 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,401875B8,Affinity,1,0,0
-        ///0,4014B0E0,Aural Decoy,1,0,0
-        ///0,40149970,Cast Light,1,0,0
-        ///0,4014ACF8,Chameleon,1,0,0
-        ///0,4014F348,Crystal Hail,1,0,0
-        ///0,40140500,Crystal Magic Weapon,1,0,0
-        ///0,4013F178,Crystal Soul Spear,1,0,0
-        ///0,40189CC8,Dark Edge,1,0,0
-        ///0,4013F560,Deep Soul,1,0,0
-        ///0,40124F80,Farron Dart,1,0,0
-        ///0,4014FB18,Farron Flashsword,1,0,0
-        ///0,4014EF60,Farron Hail,1,0,0
-        ///1,401408E8,Frozen Weapon,1,0,0
-        ///0,4013F948,Great Deep Soul,1,0,0
-        ///0,40127690,Great Farron Dart,1,0,0
-        ///0,4013E1D8,Great Heavy Soul Arrow,1,0 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,401875B8,Affinity,1,99,0,0
+        ///0,4014B0E0,Aural Decoy,1,99,0,0
+        ///0,40149970,Cast Light,1,99,0,0
+        ///0,4014ACF8,Chameleon,1,99,0,0
+        ///0,4014F348,Crystal Hail,1,99,0,0
+        ///0,40140500,Crystal Magic Weapon,1,99,0,0
+        ///0,4013F178,Crystal Soul Spear,1,99,0,0
+        ///0,40189CC8,Dark Edge,1,99,0,0
+        ///0,4013F560,Deep Soul,1,99,0,0
+        ///0,40124F80,Farron Dart,1,99,0,0
+        ///0,4014FB18,Farron Flashsword,1,99,0,0
+        ///0,4014EF60,Farron Hail,1,99,0,0
+        ///1,401408E8,Frozen Weapon,1,99,0,0
+        ///0,4013F948,Great Deep Soul,1,99,0,0
+        ///0,40127690,Great Farron Dart,1, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Spells {
             get {
@@ -692,23 +686,21 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,400003E8,Titanite Shard,600,0,0
-        ///0,400003E9,Large Titanite Shard,600,0,0
-        ///0,400003EA,Titanite Chunk,600,0,0
-        ///0,400003EB,Titanite Slab,600,0,0
-        ///0,400003FC,Titanite Scale,600,0,0
-        ///0,40000406,Twinkling Titanite,600,0,0
-        ///0,4000044C,Heavy Gem,1,0,0
-        ///0,40000456,Sharp Gem,1,0,0
-        ///0,40000460,Refined Gem,1,0,0
-        ///0,4000046A,Crystal Gem,1,0,0
-        ///0,40000474,Simple Gem,1,0,0
-        ///0,4000047E,Fire Gem,1,0,0
-        ///0,40000488,Chaos Gem,1,0,0
-        ///0,40000492,Lightning Gem,1,0,0
-        ///0,4000049C,Deep Gem,1,0,0
-        ///0,400004A6,Dark Gem,1,0,0
-        ///0,40000 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,400003E8,Titanite Shard,99,600,0,0
+        ///0,400003E9,Large Titanite Shard,99,600,0,0
+        ///0,400003EA,Titanite Chunk,99,600,0,0
+        ///0,400003EB,Titanite Slab,99,600,0,0
+        ///0,400003FC,Titanite Scale,99,600,0,0
+        ///0,40000406,Twinkling Titanite,99,600,0,0
+        ///0,4000044C,Heavy Gem,99,600,0,0
+        ///0,40000456,Sharp Gem,99,600,0,0
+        ///0,40000460,Refined Gem,99,600,0,0
+        ///0,4000046A,Crystal Gem,99,600,0,0
+        ///0,40000474,Simple Gem,99,600,0,0
+        ///0,4000047E,Fire Gem,99,600,0,0
+        ///0,40000488,Chaos Gem,99,600,0,0
+        ///0,40000492,Lightning Gem,99,600,0,0
+        ///0,4 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string UpgradeMaterials {
             get {
@@ -763,21 +755,20 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,013599D0,Ancient Dragon Greatshield,1,2,0
-        ///0,002206F0,Anri&apos;s Straight Sword,1,2,0
-        ///2,116520,Aquamarine Dagger,1,2,0
-        ///0,00D662D0,Arbalest,1,1,0
-        ///0,00C80AF0,Archdeacon&apos;s Great Staff,1,2,0
-        ///0,008BEC50,Arstor&apos;s Spear,1,2,0
-        ///0,005C9EF0,Astora Greatsword,1,1,1
-        ///0,002191C0,Astora Straight Sword,1,1,1
-        ///0,00D6FF10,Avelyn,1,1,0
-        ///0,000F6950,Bandit&apos;s Knife,1,1,1
-        ///0,0021B8D0,Barbed Straight Sword,1,1,1
-        ///0,005B8D80,Bastard Sword,1,1,1
-        ///0,006AF6D0,Battle Axe,1,1,1
-        ///0,004CC070,Black Blade,1,1,1
-        ///0,00D7E970,Black Bow of P [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 0,013599D0,Ancient Dragon Greatshield,1,1,2,0
+        ///0,002206F0,Anri&apos;s Straight Sword,1,1,2,0
+        ///2,116520,Aquamarine Dagger,1,1,2,0
+        ///0,00D662D0,Arbalest,1,1,1,0
+        ///0,00C80AF0,Archdeacon&apos;s Great Staff,1,1,2,0
+        ///0,008BEC50,Arstor&apos;s Spear,1,1,2,0
+        ///0,005C9EF0,Astora Greatsword,1,1,1,1
+        ///0,002191C0,Astora Straight Sword,1,1,1,1
+        ///0,00D6FF10,Avelyn,1,1,1,0
+        ///0,000F6950,Bandit&apos;s Knife,1,1,1,1
+        ///0,0021B8D0,Barbed Straight Sword,1,1,1,1
+        ///0,005B8D80,Bastard Sword,1,1,1,1
+        ///0,006AF6D0,Battle Axe,1,1,1,1
+        ///0,004CC070,Black Blade,1,1,1, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Weapons {
             get {
