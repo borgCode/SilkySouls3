@@ -116,7 +116,7 @@
                           Margin="0,0,0,15" />
 
                 <Button Content="Spawn"
-                        Click="SpawnButton_Click"
+                        Command="{Binding SpawnItemCommand}"
                         IsEnabled="{Binding AreOptionsEnabled}"
                         Height="25" />
             </StackPanel>
@@ -243,12 +243,15 @@
                     BorderBrush="#333">
                 <ListView ItemsSource="{Binding Items}"
                           SelectedItem="{Binding SelectedItem}"
+                          SelectionMode="Extended"
+                          SelectionChanged="ListView_SelectionChanged"
                           VirtualizingPanel.IsVirtualizing="True"
                           VirtualizingPanel.VirtualizationMode="Recycling"
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           BorderThickness="0">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
+                            <EventSetter Event="MouseDoubleClick" Handler="Item_MouseDoubleClick" />
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                             <Setter Property="Padding" Value="8,4" />
                             <Setter Property="Background" Value="Transparent" />
@@ -327,7 +330,7 @@
                                   SelectedItem="{Binding SelectedMassSpawnCategory}"
                                   Margin="0,0,0,5" />
                         <Button Content="Mass Spawn"
-                                Click="MassSpawn_Click"
+                                Command="{Binding MassSpawnCommand}"
                                 IsEnabled="{Binding AreOptionsEnabled}"
                                 Height="25" />
                     </StackPanel>
@@ -348,8 +351,8 @@
                 
                             <Button Grid.Column="2"
                                     Content="Create"
-                                    Click="Create_Click"
-                                    Height="20" 
+                                    Command="{Binding ShowCreateLoadoutCommand}"
+                                    Height="20"
                                     Padding="8,0" />
                         </Grid>
             
@@ -359,7 +362,7 @@
                         </ComboBox>
             
                         <Button Content="Spawn Selected Preset"
-                                Click="LoadPreset_Click"
+                                Command="{Binding SpawnLoadoutCommand}"
                                 IsEnabled="{Binding AreOptionsEnabled}"
                                 Height="25" />
                     </StackPanel>
