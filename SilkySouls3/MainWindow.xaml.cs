@@ -87,7 +87,7 @@ namespace SilkySouls3
             var targetViewModel = new TargetViewModel(targetService, hotkeyManager, debugDrawService, _stateService,
                 gameTickService, spEffectService);
             var enemyViewModel = new EnemyViewModel(enemyService, cinderService, hotkeyManager, _stateService,
-                paramService, debugDrawService);
+                paramService, debugDrawService, chrInsService, spEffectService, eventService);
             var itemViewModel = new ItemViewModel(itemService, _stateService);
             var settingsViewModel = new SettingsViewModel(settingsService, hotkeyManager, _stateService);
 

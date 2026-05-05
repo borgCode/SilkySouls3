@@ -29,11 +29,10 @@ public class SpEffectService(IMemoryService memoryService, IReminderService remi
     public void RemoveSpEffect(nint chrIns, uint spEffectId)
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.FindAndRemoveSpEffect);
-        AsmHelper.WriteAbsoluteAddresses(bytes, new[]
-        {
+        AsmHelper.WriteAbsoluteAddresses(bytes, [
             (chrIns, 2),
             (Functions.FindAndRemoveSpEffect, 0x13 + 2)
-        });
+        ]);
         
         AsmHelper.WriteImmediateDword(bytes, (int)spEffectId, 0xA + 1);
         

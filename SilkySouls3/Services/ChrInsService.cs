@@ -186,12 +186,16 @@ public class ChrInsService(IMemoryService memoryService) : IChrInsService
         return Vector3.Distance(chrPos1, chrPos2) - chrHitRadius1 - chrHitRadius2;
     }
 
-    public void ForceSetPosition(nint chrIns, Vector4 position)
+    public void ForceSetPosition(nint chrIns, Vector3 position)
     {
         var physicsModule = GetChrPhysics(chrIns);
-        memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.Position, position);
-        memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.PrevPosition, position);
-        memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.PhysicsDirty, true);
+        var pos = new Vector4(position, 1.0f);
+
+        memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.Position, pos);
+        memoryService.Write(physicsModule + ChrIns.ChrPhysicsOffsets.PrevPosition, pos);
+        memoryService.Write<byte>(physicsModule + 0xA0, 1);
+        memoryService.Write<byte>(physicsModule + 0xA1, 1);
+        memoryService.Write<byte>(physicsModule + 0x1E2, 1);
     }
 
     #region Private Methods

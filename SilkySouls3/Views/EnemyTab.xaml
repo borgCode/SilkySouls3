@@ -88,9 +88,15 @@
             </StackPanel>
         </Border>
 
-        <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3">
-            <StackPanel Margin="5">
-                <TextBlock Text="DSA" FontWeight="Bold" Margin="0,0,0,5" />
+        <Grid Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,5,0">
+                <StackPanel Margin="5">
+                    <TextBlock Text="DSA" FontWeight="Bold" Margin="0,0,0,5" />
                 <CheckBox Content="Enable Butterfly RNG Selection"
                           IsChecked="{Binding IsButterflyRngEnabled}"
                           Margin="0,0,0,5" />
@@ -126,6 +132,18 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="#333" CornerRadius="3"
+                    IsEnabled="{Binding AreDeaconsOptionsEnabled}">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Deacons" FontWeight="Bold" Margin="0,0,0,5" />
+                    <Button Content="Phase 2" Padding="8,3" Margin="0,0,0,5" HorizontalAlignment="Left"
+                            Command="{Binding DeaconsPhase2Command}" />
+                    <Button Content="Phase 2 (Move deacons to other side)" Padding="8,3" HorizontalAlignment="Left"
+                            Command="{Binding DeaconsPhase2WithMoveCommand}" />
+                </StackPanel>
+            </Border>
+        </Grid>
 
     </StackPanel>
 </UserControl>

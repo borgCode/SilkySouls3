@@ -2,7 +2,7 @@
 
 namespace SilkySouls3.GameIds;
 
-public class ShopParams
+public static class ShopParams
 {
     public static readonly int[] ShrineMaiden = { 0x1ADB0, 0x1D45B };
     public static readonly int[] Greirat = { 0x1D4C0, 0x1FBCF };

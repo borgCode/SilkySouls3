@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
@@ -22,6 +23,12 @@ namespace SilkySouls3.Services
             ]);
 
             memoryService.AllocateAndExecute(bytes);
+        }
+
+        public void BatchSetEvent(IEnumerable<int> eventIds, bool setVal)
+        {
+            foreach (var id in eventIds)
+                SetEvent(id, setVal);
         }
 
         public bool GetEvent(int eventId)

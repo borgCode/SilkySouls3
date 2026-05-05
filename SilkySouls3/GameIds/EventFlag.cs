@@ -2,7 +2,7 @@
 
 namespace SilkySouls3.GameIds;
 
-public class EventFlag
+public static class EventFlag
 {
     public const int UnlockMidir = 0xE66928;
     public static readonly int Greirat = 1201;

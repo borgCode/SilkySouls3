@@ -189,7 +189,7 @@ public class UtilityService(
             FieldArea.DbgFreeCamCoords
         ], false);
         
-        playerService.ForceSetPosition(memoryService.Read<Vector4>(freeCamCoordsPtr));
+        playerService.ForceSetPosition(memoryService.Read<Vector3>(freeCamCoordsPtr));
     }
 
     public void TogglePlayerMovementForFreeCam(bool isEnabled)

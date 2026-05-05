@@ -41,5 +41,5 @@ public interface IChrInsService
     void ToggleNoGoodsConsume(nint chrIns, bool isEnabled);
     float GetHitRadius(nint chrIns);
     float GetDistBetweenChrs(nint chrIns1, nint chrIns2);
-    void ForceSetPosition(nint chrIns, Vector4 position);
+    void ForceSetPosition(nint chrIns, Vector3 position);
 }

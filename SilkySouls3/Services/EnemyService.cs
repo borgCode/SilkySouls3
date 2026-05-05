@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
@@ -56,6 +57,7 @@ namespace SilkySouls3.Services
 
             return buf;
         }
+        
         
         public void ToggleDebugFlag(int offset, bool isEnabled) =>
             memoryService.Write(DebugFlags.Base + offset, isEnabled);

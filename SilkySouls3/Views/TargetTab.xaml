@@ -404,9 +404,8 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-
-                            <CheckBox Grid.Row="0" Grid.Column="0" Content="Show Attack Info" Margin="0,2,0,2" IsEnabled="False" />
-                            <CheckBox Grid.Row="1" Grid.Column="0" Content="Show Defenses" Margin="0,2,0,2"
+                            
+                            <CheckBox Grid.Row="0" Grid.Column="0" Content="Show Defenses" Margin="0,2,0,2"
                                       IsChecked="{Binding IsShowDefensesEnabled}">
                                 <CheckBox.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">
@@ -415,7 +414,7 @@
                                     </MultiBinding>
                                 </CheckBox.IsEnabled>
                             </CheckBox>
-                            <CheckBox Grid.Row="2" Grid.Column="0" Content="Show Active Special Effects" Margin="0,2,0,2"
+                            <CheckBox Grid.Row="1" Grid.Column="0" Content="Show Active Special Effects" Margin="0,2,0,2"
                                       IsChecked="{Binding IsShowSpEffectEnabled}">
                                 <CheckBox.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">
@@ -424,8 +423,7 @@
                                     </MultiBinding>
                                 </CheckBox.IsEnabled>
                             </CheckBox>
-                            <CheckBox Grid.Row="3" Grid.Column="0" Content="Show AI Info" Margin="0,2,0,2" IsEnabled="False" />
-                            <CheckBox Grid.Row="4" Grid.Column="0" Content="Repeat Last Act" Margin="0,2,0,2"
+                            <CheckBox Grid.Row="2" Grid.Column="0" Content="Repeat Last Act" Margin="0,2,0,2"
                                       IsChecked="{Binding IsRepeatActEnabled}">
                                 <CheckBox.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">

@@ -122,7 +122,7 @@ namespace SilkySouls3.Services
             }
         }
 
-        public void ForceSetPosition(Vector4 position) => chrInsService.ForceSetPosition(GetPlayerIns(), position);
+        public void ForceSetPosition(Vector3 position) => chrInsService.ForceSetPosition(GetPlayerIns(), position);
 
         public int GetCurrentBlockId() => memoryService.Read<int>(
             memoryService.FollowPointers(GetPlayerIns(), ChrIns.CurrentBlockId, false));

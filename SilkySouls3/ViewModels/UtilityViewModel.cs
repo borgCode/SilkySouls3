@@ -4,7 +4,6 @@ using SilkySouls3.Core;
 using SilkySouls3.Enums;
 using SilkySouls3.GameIds;
 using SilkySouls3.Interfaces;
-using SilkySouls3.Services;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
 

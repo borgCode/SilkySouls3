@@ -36,6 +36,6 @@ public interface IPlayerService
     Vector3 GetPosition();
     void SavePosition(int index);
     void RestorePosition(int index);
-    void ForceSetPosition(Vector4 position);
+    void ForceSetPosition(Vector3 position);
     int GetCurrentBlockId();
 }
