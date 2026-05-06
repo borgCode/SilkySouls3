@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
@@ -25,10 +26,42 @@ namespace SilkySouls3.Services
             memoryService.AllocateAndExecute(bytes);
         }
 
-        public void BatchSetEvent(IEnumerable<int> eventIds, bool setVal)
+        public void BatchSetEvent(IReadOnlyList<int> eventIds, bool setVal)
         {
-            foreach (var id in eventIds)
-                SetEvent(id, setVal);
+            const int eventCountSize = 4;
+            const int codeSize = 0x50;
+            const int eventIdSize = 4;
+            var count = eventIds.Count;
+            var allocatedMem = memoryService.AllocateMem(
+                (uint)(codeSize + eventCountSize + count * eventIdSize));
+
+            var eventsStart = allocatedMem + 0x4;
+            var code = eventsStart + eventIds.Count * eventIdSize;
+            
+            
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.BatchSetEvent);
+            
+            AsmHelper.WriteRelativeOffsets(bytes, [
+            (code + 0x18, eventsStart, 7, 0x18 + 3),
+            (code + 0x21, allocatedMem, 6, 0x21 + 2),
+            ]);
+            
+            AsmHelper.WriteAbsoluteAddresses(bytes, [
+            (memoryService.Read<nint>(EventFlagMan.Base), 0x4 + 2),
+            (Functions.SetEvent, 0xE + 2)
+            ]);
+            
+            AsmHelper.WriteImmediateDword(bytes, setVal ? 1 : 0, 0x31 + 2);
+            
+            memoryService.Write(allocatedMem, count);
+            
+            var idsArray = eventIds as int[] ?? eventIds.ToArray();
+            memoryService.WriteArray<int>(eventsStart, idsArray);
+            
+            memoryService.WriteBytes(code, bytes);
+            
+            memoryService.RunThread(code);
+            memoryService.FreeMem(allocatedMem);
         }
 
         public bool GetEvent(int eventId)

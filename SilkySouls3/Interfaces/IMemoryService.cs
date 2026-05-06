@@ -1,5 +1,6 @@
 // 
 
+using System;
 using System.Diagnostics;
 
 namespace SilkySouls3.Interfaces;
@@ -19,6 +20,7 @@ public interface IMemoryService
     string HexDump(nint addr, int size);
     
     void Write<T>(nint addr, T value) where T : unmanaged;
+    void WriteArray<T>(nint addr, ReadOnlySpan<T> values) where T : unmanaged;
     void Write(nint addr, bool value);
     void WriteWString(nint addr, string value, int maxChars = 32);
     void WriteBytes(nint addr, byte[] val);

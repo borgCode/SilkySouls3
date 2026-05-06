@@ -32,8 +32,7 @@ namespace SilkySouls3.ViewModels
         private bool _isSearchActive;
         private string _preSearchMainArea;
 
-        private readonly ObservableCollection<WarpLocation> _searchResultsCollection =
-            new ObservableCollection<WarpLocation>();
+        private readonly ObservableCollection<WarpLocation> _searchResultsCollection = new();
 
         public TravelViewModel(ITravelService travelService, HotkeyManager hotkeyManager, IStateService stateService,
             IDlcService dlcService)

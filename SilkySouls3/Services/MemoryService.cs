@@ -127,6 +127,12 @@ public class MemoryService : IMemoryService
         MemoryMarshal.Write(bytes, ref value);
         WriteBytes(addr, bytes);
     }
+    
+    public void WriteArray<T>(nint addr, ReadOnlySpan<T> values) where T : unmanaged
+    {
+        var bytes = MemoryMarshal.AsBytes(values).ToArray();
+        WriteBytes(addr, bytes);
+    }
 
     public void Write(IntPtr addr, bool value) => Write(addr, value ? (byte)1 : (byte)0);
     

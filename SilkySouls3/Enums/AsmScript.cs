@@ -29,5 +29,6 @@ public enum AsmScript
     PlacePrismStones,
     ExecuteTalkEvent,
     FindAndRemoveSpEffect,
-    DisableAllExceptTarget
+    DisableAllExceptTarget,
+    BatchSetEvent
 }

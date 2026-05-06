@@ -375,23 +375,17 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        private async void DeaconsPhase2WithMove()
+        private void DeaconsPhase2WithMove()
         {
             ForceDeaconsPhase2HpAndFlags();
             
-            await Task.Delay(250);
-
-            for (var pass = 0; pass < 3; pass++)
+            for (var i = 0; i < DeaconEntityIds.Length; i++)
             {
-                for (var i = 0; i < DeaconEntityIds.Length; i++)
-                {
-                    var deacon = _chrInsService.ChrInsByEntityId(DeaconEntityIds[i]);
-
-                    _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
-                    _chrInsService.ForceSetPosition(deacon, DeaconPositions[i]);
-                }
-
-                await Task.Delay(50);
+                var deacon = _chrInsService.ChrInsByEntityId(DeaconEntityIds[i]);
+                _chrInsService.ToggleFreezeAi(deacon, true);
+                _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
+                _chrInsService.ForceSetPosition(deacon, DeaconPositions[i]);
+                _chrInsService.ToggleFreezeAi(deacon, false);
             }
         }
 

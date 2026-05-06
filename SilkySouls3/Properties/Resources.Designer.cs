@@ -122,6 +122,27 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 20             sub    rsp,0x20
+        ///48 bb 00 00 00 00 00    movabs rbx,0x0
+        ///00 00 00 
+        ///48 bf 00 00 00 00 00    movabs rdi,0x0
+        ///00 00 00 
+        ///4c 8d 2d 00 00 00 00    lea    r13,[rip+0x0]        # 1f &lt;_main+0x1f&gt;
+        ///31 f6                   xor    esi,esi
+        ///
+        ///000000000021 &lt;loop_start&gt;:
+        ///3b 35 00 00 00 00       cmp    esi,DWORD PTR [rip+0x0]        # 27 &lt;loop_start+0x6&gt;
+        ///73 1b                   jae    44 &lt;loop_end&gt;
+        ///48 89 d9                mov    rcx,rbx
+        ///41 8b 54 b5 00          mov    edx,DWORD PTR [r13+rsi*4+0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BatchSetEvent {
+            get {
+                return ResourceManager.GetString("BatchSetEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 671088640,4001951
         ///503316480,3001950
         ///503382016,3011950

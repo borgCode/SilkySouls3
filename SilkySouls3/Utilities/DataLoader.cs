@@ -113,7 +113,7 @@ namespace SilkySouls3.Utilities
         {
             List<Item> items = new List<Item>();
 
-            string csvData = Properties.Resources.ResourceManager.GetString(listName);
+            string csvData = Resources.ResourceManager.GetString(listName);
 
             if (string.IsNullOrEmpty(csvData))
             {
