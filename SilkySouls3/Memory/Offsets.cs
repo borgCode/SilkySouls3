@@ -495,6 +495,7 @@ namespace SilkySouls3.Memory
             public static nint WorldGetClosestPoints;
             public static nint SetPosition;
             public static nint LuaDoString;
+            public static nint RefreshFromStorage;
         }
 
         private static void InitializeBaseAddresses(nint moduleBase)
@@ -2014,6 +2015,25 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x1815AE0,
                 _ => 0
             };
+            
+            Functions.RefreshFromStorage = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x582480,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x582630,
+                Version1_5_0_0 => 0x582930,
+                Version1_5_1_0 => 0x582760,
+                Version1_6_0_0 => 0x582D30,
+                Version1_7_0_0 => 0x583C40,
+                Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x589C80,
+                Version1_11_0_0 => 0x58BDA0,
+                Version1_12_0_0 => 0x58BF00,
+                Version1_13_0_0 => 0x58C050,
+                Version1_14_0_0 or Version1_15_0_0 => 0x58C090,
+                Version1_15_1_0 => 0x58DB30,
+                Version1_15_2_0 => 0x58DB20,
+                _ => 0
+            };
+
         }
 
 #if DEBUG
@@ -2102,6 +2122,7 @@ namespace SilkySouls3.Memory
             PrintOffset("WorldGetClosestPoints", Functions.WorldGetClosestPoints);
             PrintOffset("SetPosition", Functions.SetPosition);
             PrintOffset("LuaDoString", Functions.LuaDoString);
+            PrintOffset("RefreshFromStorage", Functions.RefreshFromStorage);
 
             Console.WriteLine("\n====================================\n");
         }

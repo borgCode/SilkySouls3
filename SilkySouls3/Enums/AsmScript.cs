@@ -33,4 +33,5 @@ public enum AsmScript
     BatchSetEvent,
     MoveTarget,
     LuaDoString,
+    RefreshFromStorage,
 }

@@ -204,7 +204,11 @@ namespace SilkySouls3.Services
                 (Functions.Rest, 0xF + 2)
             ]);
             memoryService.AllocateAndExecute(bytes);
+
+            RefreshFromStorage();
         }
+
+        
 
         #region Private Methods
 
@@ -290,6 +294,13 @@ namespace SilkySouls3.Services
             if (blockId == CemeteryOfAshBlockId && ceremonyId == UntendedGravesCeremonyId)
                 return UntendedGravesBonfireId;
             return _bonfiresByBlockId[blockId];
+        }
+        
+        private void RefreshFromStorage()
+        {
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.RefreshFromStorage);
+            AsmHelper.WriteAbsoluteAddress(bytes, Functions.RefreshFromStorage, 0x4 + 2);
+            memoryService.AllocateAndExecute(bytes);
         }
 
         #endregion

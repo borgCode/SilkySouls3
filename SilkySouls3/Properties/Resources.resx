@@ -2493,4 +2493,12 @@ ff d0                   call   rax
 48 83 c4 28             add    rsp,0x28
 c3                      ret</value>
   </data>
+  <data name="RefreshFromStorage" xml:space="preserve">
+    <value>48 83 ec 20             sub    rsp,0x20
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+48 83 c4 20             add    rsp,0x20
+c3                      ret</value>
+  </data>
 </root>
