@@ -60,8 +60,26 @@ namespace SilkySouls3.Memory
         public const int KeyboardCode = 0x1100;
         public const int TriggersCode = 0x1200;
         public const int UpdateCoordsCode = 0x1300;
+
+
+        public enum MoveTarget
+        {
+            SweepRadius = 0x1600,
+            ProbeYOffset = 0x1604,
+            Status = 0x1608,
+            HitId = 0x160C,
+            HitExtra = 0x1610,
+            DistRaw = 0x1614,
+            Start = 0x1620,
+            HitPos = 0x1630,
+            HitNormal = 0x1640,
+            Delta = 0x1650,
+            Candidates = 0x1660,
+            Code = 0x1800
+        }
         
         
+
 
     }
 }

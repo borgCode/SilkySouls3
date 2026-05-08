@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:SilkySouls3.Converters"
              xmlns:enums="clr-namespace:SilkySouls3.Enums"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d">
@@ -88,19 +87,25 @@
             </StackPanel>
         </Border>
 
+        <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
+                IsEnabled="{Binding ArePontiffOptionsEnabled}">
+            <StackPanel Margin="5">
+                <TextBlock Text="Pontiff" FontWeight="Bold" Margin="0,0,0,5" />
+                <CheckBox Content="Prevent Clone Summon"
+                          IsChecked="{Binding IsPontiffNoCloneEnabled}" Margin="0,2" />
+            </StackPanel>
+        </Border>
+
         <Grid Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,5,0">
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,5,0"
+                    IsEnabled="{Binding AreDsaOptionsEnabled}">
                 <StackPanel Margin="5">
                     <TextBlock Text="DSA" FontWeight="Bold" Margin="0,0,0,5" />
-                <CheckBox Content="Enable Butterfly RNG Selection"
-                          IsChecked="{Binding IsButterflyRngEnabled}"
-                          Margin="0,0,0,5" />
-                <StackPanel Visibility="{Binding IsButterflyRngEnabled, Converter={StaticResource BoolToVis}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -130,8 +135,7 @@
                         </ComboBox>
                     </Grid>
                 </StackPanel>
-            </StackPanel>
-        </Border>
+            </Border>
 
             <Border Grid.Column="1" BorderThickness="1" BorderBrush="#333" CornerRadius="3"
                     IsEnabled="{Binding AreDeaconsOptionsEnabled}">

@@ -26,6 +26,7 @@ namespace SilkySouls3.ViewModels
 
         private bool _pauseUpdates;
         private int _currentBlockId;
+        private int _currentBossGaugeId;
 
         private readonly IPlayerService _playerService;
         private readonly HotkeyManager _hotkeyManager;
@@ -574,6 +575,7 @@ namespace SilkySouls3.ViewModels
             AreOptionsEnabled = false;
             _gameTickService.Unsubscribe(PlayerTick);
             _currentBlockId = -1;
+            _currentBossGaugeId = -1;
         }
 
         private void OnNewGameStart()
@@ -625,6 +627,13 @@ namespace SilkySouls3.ViewModels
                 Console.WriteLine($"{newBlockId:X}");
                 _currentBlockId = newBlockId;
                 _stateService.Publish(State.BlockChanged, _currentBlockId);
+            }
+
+            var newBossGaugeId = _playerService.GetBossGaugeId();
+            if (newBossGaugeId != _currentBossGaugeId)
+            {
+                _currentBossGaugeId = newBossGaugeId;
+                _stateService.Publish(State.BossFight, _currentBossGaugeId);
             }
 
 

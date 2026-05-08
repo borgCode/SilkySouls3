@@ -130,6 +130,7 @@ namespace SilkySouls3
         private bool _wasAttached;
         private bool _isReady;
         private bool _loaded;
+        private bool _fadedIn;
         private bool _appliedOneTimeFeatures;
         private CancellationTokenSource _attachCts;
 
@@ -148,19 +149,36 @@ namespace SilkySouls3
 
             if (_stateService.IsLoaded())
             {
-                if (_loaded) return;
-                _loaded = true;
-                _dlcService.CheckDlc();
-                _stateService.Publish(State.Loaded);
-                TrySetGameStartPrefs();
-                if (_appliedOneTimeFeatures) return;
-                _stateService.Publish(State.FirstLoaded);
-                _appliedOneTimeFeatures = true;
+                if (!_loaded)
+                {
+# if DEBUG
+                    Console.WriteLine("Loaded in");
+#endif
+                    _loaded = true;
+                    _dlcService.CheckDlc();
+                    _stateService.Publish(State.Loaded);
+                    TrySetGameStartPrefs();
+                    if (!_appliedOneTimeFeatures)
+                    {
+                        _stateService.Publish(State.FirstLoaded);
+                        _appliedOneTimeFeatures = true;
+                    }
+                }
+
+                if (!_fadedIn && _stateService.IsFadedIn())
+                {
+# if DEBUG
+                    Console.WriteLine("Faded in");
+#endif
+                    _fadedIn = true;
+                    _stateService.Publish(State.FadedIn);
+                }
             }
             else if (_loaded)
             {
                 _stateService.Publish(State.NotLoaded);
                 _loaded = false;
+                _fadedIn = false;
             }
         }
 
@@ -179,6 +197,7 @@ namespace SilkySouls3
             _attachCts?.Cancel();
             _isReady = false;
             _loaded = false;
+            _fadedIn = false;
             _appliedOneTimeFeatures = false;
             _stateService.Publish(State.NotLoaded);
             _stateService.Publish(State.Detached);
@@ -204,7 +223,7 @@ namespace SilkySouls3
                 _memoryService.WriteBytes(Patches.NoLogo, AsmLoader.GetAsmBytes(AsmScript.NoLogo));
                 _memoryService.AllocCodeCave();
                 _stateService.Publish(State.Attached);
-                
+
 #if DEBUG
                 PrintAll();
                 Console.WriteLine($"Code cave: 0x{CustomCodeOffsets.Base.ToInt64():X}");

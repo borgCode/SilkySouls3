@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Text;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
@@ -57,6 +57,9 @@ namespace SilkySouls3.Services
 
             return buf;
         }
+
+        private const string PontiffNoCloneResourceName = "PontiffNoClone";
+        private const string PontiffVanillaResourceName = "PontiffVanilla";
         
         
         public void ToggleDebugFlag(int offset, bool isEnabled) =>
@@ -143,6 +146,32 @@ namespace SilkySouls3.Services
             memoryService.Write(rightSideIdPtr, animationId);
         }
 
-        
+        public void TogglePontiffNoClone(bool isEnabled)
+        {
+            if (isEnabled) InjectScript(PontiffNoCloneResourceName);
+            else InjectScript(PontiffVanillaResourceName);
+        }
+
+        private void InjectScript(string resourceName)
+        {
+            var content = Properties.Resources.ResourceManager.GetString(resourceName)
+                          ?? throw new ArgumentException($"Resource '{resourceName}' not found.");
+            var scriptBytes = Encoding.UTF8.GetBytes(content.Replace("\r\n", "\n") + '\0');
+            
+            var scriptPtr = memoryService.AllocateMem((uint) scriptBytes.Length);
+            memoryService.WriteBytes(scriptPtr, scriptBytes);
+
+            var luaState = memoryService.FollowPointers(memoryService.Read<nint>(WorldAiManager.Base),
+                WorldAiManager.LuaState, true);
+
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.LuaDoString);
+            AsmHelper.WriteAbsoluteAddresses(bytes, [
+            (luaState, 2),
+            (scriptPtr, 0xA + 2),
+            (Functions.LuaDoString, 0x14 + 2)
+            ]);
+            memoryService.AllocateAndExecute(bytes);
+            memoryService.FreeMem(scriptPtr);
+        }
     }
 }

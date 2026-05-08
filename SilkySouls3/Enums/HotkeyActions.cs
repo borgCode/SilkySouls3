@@ -49,6 +49,7 @@ public enum HotkeyActions
     ShowDefenses,
     DisableAi,
     DisableAllExceptTargetAi,
+    MoveTargetToPlayer,
     AllNoDeath,
     AllNoDamage,
     AllRepeatAct,

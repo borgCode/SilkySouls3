@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using SilkySouls3.Core;
 using SilkySouls3.Enums;
@@ -42,7 +41,10 @@ namespace SilkySouls3.ViewModels
         private bool _hasPlacedPrismStonesThisLoad;
         private const int HalfLightBlockId = 0x33000000;
         private const int KilnBlockId = 0x29000000;
-        private const int CathedralOfTheDeepBlockId = 0x23000000;
+        private const int BarracksBlockId = 0x1E010000;
+        private const int IrithyllBlockId = 0x25000000;
+
+        private const int DeaconsBossGaugeId = 905220;
 
         public const int ArchDeaconEntityId = 3500800;
         public const int GlowingDeaconSpEffectId = 11521;
@@ -50,10 +52,10 @@ namespace SilkySouls3.ViewModels
         private static readonly int[] DeaconEntityIds =
         [
             3500810, 3500811, 3500812, 3500813, 3500814, 3500815, 3500816, 3500817, 3500818, 3500819,
-            3500820, 3500821, 3500822, 3500823, 3500824, 3500825, 3500826, 3500827, 3500828, 3500834, 3500835, 
+            3500820, 3500821, 3500822, 3500823, 3500824, 3500825, 3500826, 3500827, 3500828, 3500834, 3500835,
             3500836, 3500837, 3500838, 3500839, 3500840, 3500841, 3500842,
         ];
-        
+
         public static readonly Vector3[] DeaconPositions =
         [
             new(-500.325f, -197.0186f, -644.5127f),
@@ -85,12 +87,11 @@ namespace SilkySouls3.ViewModels
             new(-501.434f, -197.0182f, -647.2271f),
             new(-498.639f, -196.9692f, -639.585f)
         ];
-        
+
         private static readonly List<int> DeaconPossessionEventFlags =
             Enumerable.Range(13504810, 33)
                 .Concat(Enumerable.Range(13504850, 33))
                 .ToList();
-
 
         public EnemyViewModel(IEnemyService enemyService, ICinderService cinderService, HotkeyManager hotkeyManager,
             IStateService stateService, IParamService paramService, IDebugDrawService debugDrawService,
@@ -115,14 +116,21 @@ namespace SilkySouls3.ViewModels
 
             stateService.Subscribe(State.Loaded, OnGameLoaded);
             stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
+            stateService.Subscribe(State.FadedIn, OnFadedIn);
             stateService.Subscribe<int>(State.BlockChanged,
                 blockId =>
                 {
                     _isInHalfLightArena = HalfLightBlockId == blockId;
                     AreCinderOptionsEnabled = KilnBlockId == blockId;
-                    AreDeaconsOptionsEnabled = CathedralOfTheDeepBlockId == blockId;
+                    AreDsaOptionsEnabled = BarracksBlockId == blockId;
+                    ArePontiffOptionsEnabled = IrithyllBlockId == blockId;
                     OnPropertyChanged(nameof(CanPlacePrismStones));
                 });
+
+            stateService.Subscribe<int>(State.BossFight,
+                gaugeId => { AreDeaconsOptionsEnabled = gaugeId == DeaconsBossGaugeId; }
+            );
+
 
             RegisterHotkeys();
         }
@@ -229,6 +237,26 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _areDeaconsOptionsEnabled, value);
         }
 
+        private bool _arePontiffOptionsEnabled;
+
+        public bool ArePontiffOptionsEnabled
+        {
+            get => _arePontiffOptionsEnabled;
+            set => SetProperty(ref _arePontiffOptionsEnabled, value);
+        }
+
+        private bool _isPontiffNoCloneEnabled;
+
+        public bool IsPontiffNoCloneEnabled
+        {
+            get => _isPontiffNoCloneEnabled;
+            set
+            {
+                if (SetProperty(ref _isPontiffNoCloneEnabled, value))
+                    _enemyService.TogglePontiffNoClone(value);
+            }
+        }
+
         private bool _isCinderPhaseLocked;
 
         public bool IsCinderPhasedLocked
@@ -277,16 +305,12 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        private bool _isButterflyRngEnabled;
+        private bool _areDsaOptionsEnabled;
 
-        public bool IsButterflyRngEnabled
+        public bool AreDsaOptionsEnabled
         {
-            get => _isButterflyRngEnabled;
-            set
-            {
-                // if (SetProperty(ref _isButterflyRngEnabled, value))
-                //     _enemyService.ToggleButterflyRng(_isButterflyRngEnabled);
-            }
+            get => _areDsaOptionsEnabled;
+            set => SetProperty(ref _areDsaOptionsEnabled, value);
         }
 
         private int _selectedLeftButterflyAnimation;
@@ -296,8 +320,8 @@ namespace SilkySouls3.ViewModels
             get => _selectedLeftButterflyAnimation;
             set
             {
-                // if (SetProperty(ref _selectedLeftButterflyAnimation, value))
-                //     _enemyService.SetLeftButterflyAttack(ButterflyAnimationIds[value]);
+                if (SetProperty(ref _selectedLeftButterflyAnimation, value))
+                    ApplyButterflyRng();
             }
         }
 
@@ -308,8 +332,8 @@ namespace SilkySouls3.ViewModels
             get => _selectedRightButterflyAnimation;
             set
             {
-                // if (SetProperty(ref _selectedRightButterflyAnimation, value))
-                //     _enemyService.SetRightButterflyAttack(ButterflyAnimationIds[value]);
+                if (SetProperty(ref _selectedRightButterflyAnimation, value))
+                    ApplyButterflyRng();
             }
         }
 
@@ -378,7 +402,7 @@ namespace SilkySouls3.ViewModels
         private void DeaconsPhase2WithMove()
         {
             ForceDeaconsPhase2HpAndFlags();
-            
+
             for (var i = 0; i < DeaconEntityIds.Length; i++)
             {
                 var deacon = _chrInsService.ChrInsByEntityId(DeaconEntityIds[i]);
@@ -414,15 +438,29 @@ namespace SilkySouls3.ViewModels
                 _enemyService.ToggleTargetingView(true);
             }
 
-            if (IsButterflyRngEnabled)
-            {
-                // _enemyService.ToggleButterflyRng(true);
-                // _enemyService.SetLeftButterflyAttack(ButterflyAnimationIds[SelectedLeftButterflyAnimation]);
-                // _enemyService.SetRightButterflyAttack(ButterflyAnimationIds[SelectedRightButterflyAnimation]);
-            }
+            ApplyButterflyRng();
 
             if (Math.Abs(_argoSpeedMultiplier - 1.0f) > float.Epsilon) ApplyArgoSpeed();
             AreOptionsEnabled = true;
+        }
+
+        private void OnFadedIn()
+        {
+            if (IsPontiffNoCloneEnabled && ArePontiffOptionsEnabled)
+                _enemyService.TogglePontiffNoClone(true);
+        }
+
+        private void ApplyButterflyRng()
+        {
+            var leftId = ButterflyAnimationIds[_selectedLeftButterflyAnimation];
+            var rightId = ButterflyAnimationIds[_selectedRightButterflyAnimation];
+            var enable = leftId != 0f || rightId != 0f;
+
+            _enemyService.ToggleButterflyRng(enable);
+            if (!enable) return;
+
+            _enemyService.SetLeftButterflyAttack(leftId);
+            _enemyService.SetRightButterflyAttack(rightId);
         }
 
         private void ApplyArgoSpeed()
@@ -443,6 +481,8 @@ namespace SilkySouls3.ViewModels
             IsNoSoulmassRemoveOnStaggerEnabled = false;
             AreCinderOptionsEnabled = false;
             AreDeaconsOptionsEnabled = false;
+            AreDsaOptionsEnabled = false;
+            ArePontiffOptionsEnabled = false;
             AreOptionsEnabled = false;
             _isInHalfLightArena = false;
             _hasPlacedPrismStonesThisLoad = false;

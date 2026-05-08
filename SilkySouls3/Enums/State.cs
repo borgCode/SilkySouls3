@@ -15,5 +15,6 @@ public enum State
     AppClosing,
     AppStart,
     EventTabActivated,
-    BlockChanged
+    BlockChanged,
+    BossFight,
 }

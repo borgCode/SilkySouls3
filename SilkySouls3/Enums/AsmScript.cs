@@ -30,5 +30,7 @@ public enum AsmScript
     ExecuteTalkEvent,
     FindAndRemoveSpEffect,
     DisableAllExceptTarget,
-    BatchSetEvent
+    BatchSetEvent,
+    MoveTarget,
+    LuaDoString,
 }

@@ -1950,4 +1950,547 @@ eb dd                   jmp    21 &lt;loop_start&gt;
 48 83 c4 20             add    rsp,0x20
 c3                      ret</value>
   </data>
+  <data name="MoveTarget" xml:space="preserve">
+    <value>83 3d 00 00 00 00 01    cmp    DWORD PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
+0f 84 14 02 00 00       je     221 &lt;normal&gt;
+48 3b 1d 00 00 00 00    cmp    rbx,QWORD PTR [rip+0x0]        # 14 &lt;_main+0x14&gt;
+0f 85 07 02 00 00       jne    221 &lt;normal&gt;
+53                      push   rbx
+55                      push   rbp
+56                      push   rsi
+57                      push   rdi
+41 54                   push   r12
+41 55                   push   r13
+41 56                   push   r14
+41 57                   push   r15
+41 53                   push   r11
+48 81 ec 08 01 00 00    sub    rsp,0x108
+0f 11 44 24 60          movups XMMWORD PTR [rsp+0x60],xmm0
+0f 11 4c 24 70          movups XMMWORD PTR [rsp+0x70],xmm1
+0f 11 94 24 80 00 00    movups XMMWORD PTR [rsp+0x80],xmm2
+00 
+0f 11 9c 24 90 00 00    movups XMMWORD PTR [rsp+0x90],xmm3
+00 
+0f 11 a4 24 a0 00 00    movups XMMWORD PTR [rsp+0xa0],xmm4
+00 
+0f 11 ac 24 b0 00 00    movups XMMWORD PTR [rsp+0xb0],xmm5
+00 
+4c 8d 25 00 00 00 00    lea    r12,[rip+0x0]        # 60 &lt;_main+0x60&gt;
+49 bd ef be ad de ef    movabs r13,0xdeadbeefdeadbeef
+be ad de 
+4d 8d 75 40             lea    r14,[r13+0x40]
+31 db                   xor    ebx,ebx
+
+000000000070 &lt;loop_start&gt;:
+81 fb 90 01 00 00       cmp    ebx,0x190
+0f 8d 5f 01 00 00       jge    1db &lt;no_spot&gt;
+41 0f 10 04 1c          movups xmm0,XMMWORD PTR [r12+rbx*1]
+0f 5c 05 00 00 00 00    subps  xmm0,XMMWORD PTR [rip+0x0]        # 88 &lt;loop_start+0x18&gt;
+66 0f 3a 21 c0 02       insertps xmm0,xmm0,0x2
+0f 11 05 00 00 00 00    movups XMMWORD PTR [rip+0x0],xmm0        # 95 &lt;loop_start+0x25&gt;
+c7 05 00 00 00 00 ff    mov    DWORD PTR [rip+0x0],0x7fffffff        # 9f &lt;loop_start+0x2f&gt;
+ff ff 7f 
+48 b9 ef be ad de ef    movabs rcx,0xdeadbeefdeadbeef
+be ad de 
+48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # b0 &lt;loop_start+0x40&gt;
+41 b8 08 00 00 00       mov    r8d,0x8
+4c 8d 0d 00 00 00 00    lea    r9,[rip+0x0]        # bd &lt;loop_start+0x4d&gt;
+48 8d 05 00 00 00 00    lea    rax,[rip+0x0]        # c4 &lt;loop_start+0x54&gt;
+48 89 44 24 20          mov    QWORD PTR [rsp+0x20],rax
+f3 0f 10 05 00 00 00    movss  xmm0,DWORD PTR [rip+0x0]        # d1 &lt;loop_start+0x61&gt;
+00 
+f3 0f 11 44 24 28       movss  DWORD PTR [rsp+0x28],xmm0
+48 b8 ef be ad de ef    movabs rax,0xdeadbeefdeadbeef
+be ad de 
+48 89 44 24 30          mov    QWORD PTR [rsp+0x30],rax
+48 8d 05 00 00 00 00    lea    rax,[rip+0x0]        # ed &lt;loop_start+0x7d&gt;
+48 89 44 24 38          mov    QWORD PTR [rsp+0x38],rax
+48 8d 05 00 00 00 00    lea    rax,[rip+0x0]        # f9 &lt;loop_start+0x89&gt;
+48 89 44 24 40          mov    QWORD PTR [rsp+0x40],rax
+48 8d 05 00 00 00 00    lea    rax,[rip+0x0]        # 105 &lt;loop_start+0x95&gt;
+48 89 44 24 48          mov    QWORD PTR [rsp+0x48],rax
+48 8d 05 00 00 00 00    lea    rax,[rip+0x0]        # 111 &lt;loop_start+0xa1&gt;
+48 89 44 24 50          mov    QWORD PTR [rsp+0x50],rax
+e8 00 00 00 00          call   11b &lt;loop_start+0xab&gt;
+81 3d 00 00 00 00 ff    cmp    DWORD PTR [rip+0x0],0x7fffffff        # 125 &lt;loop_start+0xb5&gt;
+ff ff 7f 
+0f 85 a8 00 00 00       jne    1d3 &lt;next&gt;
+41 0f 10 06             movups xmm0,XMMWORD PTR [r14]
+41 0f 10 4e 10          movups xmm1,XMMWORD PTR [r14+0x10]
+41 0f 10 56 20          movups xmm2,XMMWORD PTR [r14+0x20]
+41 0f 10 5e 30          movups xmm3,XMMWORD PTR [r14+0x30]
+0f 11 84 24 c0 00 00    movups XMMWORD PTR [rsp+0xc0],xmm0
+00 
+0f 11 8c 24 d0 00 00    movups XMMWORD PTR [rsp+0xd0],xmm1
+00 
+0f 11 94 24 e0 00 00    movups XMMWORD PTR [rsp+0xe0],xmm2
+00 
+0f 11 9c 24 f0 00 00    movups XMMWORD PTR [rsp+0xf0],xmm3
+00 
+41 8b 04 1c             mov    eax,DWORD PTR [r12+rbx*1]
+89 84 24 f0 00 00 00    mov    DWORD PTR [rsp+0xf0],eax
+f3 41 0f 10 44 1c 04    movss  xmm0,DWORD PTR [r12+rbx*1+0x4]
+f3 0f 58 05 00 00 00    addss  xmm0,DWORD PTR [rip+0x0]        # 178 &lt;loop_start+0x108&gt;
+00 
+f3 0f 11 84 24 f4 00    movss  DWORD PTR [rsp+0xf4],xmm0
+00 00 
+41 8b 44 1c 08          mov    eax,DWORD PTR [r12+rbx*1+0x8]
+89 84 24 f8 00 00 00    mov    DWORD PTR [rsp+0xf8],eax
+48 b9 ef be ad de ef    movabs rcx,0xdeadbeefdeadbeef
+be ad de 
+ba 08 00 00 00          mov    edx,0x8
+49 b8 ef be ad de ef    movabs r8,0xdeadbeefdeadbeef
+be ad de 
+4c 8d 8c 24 c0 00 00    lea    r9,[rsp+0xc0]
+00 
+e8 00 00 00 00          call   1b3 &lt;loop_start+0x143&gt;
+84 c0                   test   al,al
+75 1c                   jne    1d3 &lt;next&gt;
+48 b9 ef be ad de ef    movabs rcx,0xdeadbeefdeadbeef
+be ad de 
+49 8d 14 1c             lea    rdx,[r12+rbx*1]
+e8 00 00 00 00          call   1ca &lt;loop_start+0x15a&gt;
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1d1 &lt;loop_start+0x161&gt;
+eb 0f                   jmp    1e2 &lt;exit&gt;
+
+000001d3 &lt;next&gt;:
+83 c3 10                add    ebx,0x10
+e9 95 fe ff ff          jmp    70 &lt;loop_start&gt;
+
+000001db &lt;no_spot&gt;:
+c6 05 00 00 00 00 01    mov    BYTE PTR [rip+0x0],0x1        # 1e2 &lt;exit&gt;
+
+000001e2 &lt;exit&gt;:
+0f 10 ac 24 b0 00 00    movups xmm5,XMMWORD PTR [rsp+0xb0]
+00 
+0f 10 a4 24 a0 00 00    movups xmm4,XMMWORD PTR [rsp+0xa0]
+00 
+0f 10 9c 24 90 00 00    movups xmm3,XMMWORD PTR [rsp+0x90]
+00 
+0f 10 94 24 80 00 00    movups xmm2,XMMWORD PTR [rsp+0x80]
+00 
+0f 10 4c 24 70          movups xmm1,XMMWORD PTR [rsp+0x70]
+0f 10 44 24 60          movups xmm0,XMMWORD PTR [rsp+0x60]
+48 81 c4 08 01 00 00    add    rsp,0x108
+41 5b                   pop    r11
+41 5f                   pop    r15
+41 5e                   pop    r14
+41 5d                   pop    r13
+41 5c                   pop    r12
+5f                      pop    rdi
+5e                      pop    rsi
+5d                      pop    rbp
+5b                      pop    rbx
+
+00000221 &lt;normal&gt;:
+49 8b 5b 20             mov    rbx,QWORD PTR [r11+0x20]
+49 8b 7b 28             mov    rdi,QWORD PTR [r11+0x28]
+e9 00 00 00 00          jmp    22e &lt;normal+0xd&gt;</value>
+  </data>
+  <data name="PontiffNoClone" xml:space="preserve">
+    <value>g_GoalTable[GOAL_BlackOldKing_514000_Battle].Activate = function(self, ai, goal)
+    local probabilities = {}
+    local acts = {}
+    local paramTbls = {}
+    Common_Clear_Param(probabilities, acts, paramTbls)
+    Init_Pseudo_Global(ai, goal)
+    ai:SetStringIndexedNumber("Dist_SideStep", 3.8)
+    ai:SetStringIndexedNumber("Dist_BackStep", 7.5)
+    if ai:HasSpecialEffectId(TARGET_SELF, 10636) then
+        ai:AddObserveSpecialEffectAttribute(TARGET_EVENT, 5027)
+    end
+    if ai:HasSpecialEffectId(TARGET_SELF, 10636) == false then
+        ai:AddObserveSpecialEffectAttribute(TARGET_ENE_0, 90)
+    end
+    local distanceEnemy = ai:GetDist(TARGET_ENE_0)
+    local random = ai:GetRandam_Int(1, 100)
+    local hpRatioSelf = ai:GetHpRate(TARGET_SELF)
+    local distanceEvent = ai:GetDist(TARGET_EVENT)
+    if ai:HasSpecialEffectId(TARGET_SELF, 5020) == false and hpRatioSelf &lt;= 0.6 then
+        probabilities[25] = 10
+    elseif ai:GetNumber(0) == 0 then
+        probabilities[6] = 100
+    elseif ai:HasSpecialEffectId(TARGET_SELF, 10636) then
+        if ai:IsInsideTarget(TARGET_ENE_0, AI_DIR_TYPE_B, 240) then
+            if InsideRange(ai, goal, 145, 115, -1, 3.8 - ai:GetMapHitRadius(TARGET_SELF)) then
+                probabilities[14] = 70
+                probabilities[5] = 30
+            elseif InsideRange(ai, goal, -145, 115, -1, 3.3 - ai:GetMapHitRadius(TARGET_SELF)) then
+                probabilities[15] = 70
+                probabilities[5] = 30
+            else
+                probabilities[5] = 100
+            end
+        elseif ai:HasSpecialEffectId(TARGET_EVENT, 5025) or ai:HasSpecialEffectId(TARGET_EVENT, 5026) then
+            probabilities[48] = 100
+        elseif distanceEnemy &gt;= 5 then
+            probabilities[6] = 100
+        else
+            probabilities[7] = 100
+        end
+    elseif ai:IsInsideTarget(TARGET_ENE_0, AI_DIR_TYPE_B, 210) then
+        if InsideRange(ai, goal, 145, 115, -1, 3.8 - ai:GetMapHitRadius(TARGET_SELF)) then
+            probabilities[14] = 70
+            probabilities[9] = 20
+            probabilities[5] = 10
+        elseif InsideRange(ai, goal, -145, 115, -1, 3.3 - ai:GetMapHitRadius(TARGET_SELF)) then
+            probabilities[15] = 70
+            probabilities[8] = 20
+            probabilities[5] = 10
+        else
+            probabilities[5] = 10
+        end
+    elseif ai:IsInsideTarget(TARGET_ENE_0, AI_DIR_TYPE_B, 270) and distanceEnemy &gt;= 15 then
+        probabilities[5] = 10
+    elseif distanceEnemy &gt;= 25 then
+        probabilities[10] = 10
+        probabilities[17] = 10
+        probabilities[18] = 10
+        probabilities[22] = 20
+    elseif distanceEnemy &gt;= 15 then
+        probabilities[10] = 10
+        probabilities[11] = 10
+        probabilities[12] = 10
+        probabilities[17] = 10
+        probabilities[18] = 10
+        probabilities[22] = 20
+        probabilities[23] = 20
+    elseif distanceEnemy &gt;= 8 then
+        probabilities[1] = 20
+        probabilities[2] = 20
+        probabilities[10] = 20
+        probabilities[11] = 20
+        probabilities[12] = 20
+        probabilities[13] = 10
+        probabilities[19] = 10
+        probabilities[20] = 10
+        probabilities[22] = 20
+        probabilities[23] = 20
+    elseif distanceEnemy &gt;= 1.2 then
+        probabilities[1] = 20
+        probabilities[2] = 20
+        probabilities[11] = 20
+        probabilities[12] = 20
+        probabilities[13] = 10
+        probabilities[19] = 20
+        probabilities[20] = 10
+        probabilities[21] = 10
+        probabilities[23] = 20
+    else
+        probabilities[8] = 10
+        probabilities[9] = 10
+        probabilities[16] = 10
+        probabilities[21] = 10
+    end
+    if ai:IsFinishTimer(1) == false and ai:HasSpecialEffectId(TARGET_SELF, 10636) == false and distanceEnemy &gt;= 10 then
+        probabilities[17] = probabilities[17] + 10
+        probabilities[18] = probabilities[18] + 10
+        probabilities[22] = probabilities[22] + 10
+    end
+    if ai:IsFinishTimer(1) == false and ai:HasSpecialEffectId(TARGET_SELF, 10636) == false and distanceEnemy &gt;= 6 then
+        probabilities[10] = probabilities[10] + 50
+    end
+    if ai:IsFinishTimer(0) == false and distanceEnemy &gt;= 8 then
+        probabilities[22] = probabilities[22] + 100
+        probabilities[23] = probabilities[23] + 100
+    end
+    if ai:HasSpecialEffectId(TARGET_SELF, 5020) == false then
+        probabilities[16] = 0
+        probabilities[17] = 0
+        probabilities[18] = 0
+        probabilities[19] = 0
+        probabilities[21] = 0
+        probabilities[22] = 0
+        probabilities[23] = 0
+    end
+    if ai:GetNumber(1) == 1 then
+        ai:SetNumber(1, 0)
+        if ai:HasSpecialEffectId(TARGET_SELF, 5020) then
+            probabilities[16] = probabilities[16] + 10
+            probabilities[19] = probabilities[19] + 10
+            probabilities[21] = probabilities[21] + 10
+        end
+    end
+    probabilities[1] = SetCoolTime(ai, goal, 3003, 15, probabilities[1], 1)
+    probabilities[2] = SetCoolTime(ai, goal, 3011, 15, probabilities[2], 1)
+    probabilities[8] = SetCoolTime(ai, goal, 3000, 15, probabilities[8], 1)
+    probabilities[9] = SetCoolTime(ai, goal, 3001, 15, probabilities[9], 1)
+    probabilities[10] = SetCoolTime(ai, goal, 3002, 15, probabilities[10], 1)
+    probabilities[11] = SetCoolTime(ai, goal, 3012, 15, probabilities[11], 1)
+    probabilities[12] = SetCoolTime(ai, goal, 3013, 15, probabilities[12], 1)
+    probabilities[13] = SetCoolTime(ai, goal, 3006, 15, probabilities[13], 1)
+    probabilities[14] = SetCoolTime(ai, goal, 3014, 10, probabilities[14], 1)
+    probabilities[15] = SetCoolTime(ai, goal, 3015, 10, probabilities[15], 1)
+    probabilities[16] = SetCoolTime(ai, goal, 3016, 15, probabilities[16], 1)
+    probabilities[17] = SetCoolTime(ai, goal, 3017, 15, probabilities[17], 1)
+    probabilities[18] = SetCoolTime(ai, goal, 3018, 15, probabilities[18], 1)
+    probabilities[19] = SetCoolTime(ai, goal, 3020, 15, probabilities[19], 1)
+    probabilities[20] = SetCoolTime(ai, goal, 3021, 25, probabilities[20], 1)
+    probabilities[21] = SetCoolTime(ai, goal, 3019, 25, probabilities[21], 1)
+    probabilities[22] = SetCoolTime(ai, goal, 3024, 20, probabilities[22], 1)
+    probabilities[23] = SetCoolTime(ai, goal, 3025, 20, probabilities[23], 1)
+    acts[1] = REGIST_FUNC(ai, goal, BlackOldKing_Act01)
+    acts[2] = REGIST_FUNC(ai, goal, BlackOldKing_Act02)
+    acts[3] = REGIST_FUNC(ai, goal, BlackOldKing_Act03)
+    acts[4] = REGIST_FUNC(ai, goal, BlackOldKing_Act04)
+    acts[5] = REGIST_FUNC(ai, goal, BlackOldKing_Act05)
+    acts[6] = REGIST_FUNC(ai, goal, BlackOldKing_Act06)
+    acts[7] = REGIST_FUNC(ai, goal, BlackOldKing_Act07)
+    acts[8] = REGIST_FUNC(ai, goal, BlackOldKing_Act08)
+    acts[9] = REGIST_FUNC(ai, goal, BlackOldKing_Act09)
+    acts[10] = REGIST_FUNC(ai, goal, BlackOldKing_Act10)
+    acts[11] = REGIST_FUNC(ai, goal, BlackOldKing_Act11)
+    acts[12] = REGIST_FUNC(ai, goal, BlackOldKing_Act12)
+    acts[13] = REGIST_FUNC(ai, goal, BlackOldKing_Act13)
+    acts[14] = REGIST_FUNC(ai, goal, BlackOldKing_Act14)
+    acts[15] = REGIST_FUNC(ai, goal, BlackOldKing_Act15)
+    acts[16] = REGIST_FUNC(ai, goal, BlackOldKing_Act16)
+    acts[17] = REGIST_FUNC(ai, goal, BlackOldKing_Act17)
+    acts[18] = REGIST_FUNC(ai, goal, BlackOldKing_Act18)
+    acts[19] = REGIST_FUNC(ai, goal, BlackOldKing_Act19)
+    acts[20] = REGIST_FUNC(ai, goal, BlackOldKing_Act20)
+    acts[21] = REGIST_FUNC(ai, goal, BlackOldKing_Act21)
+    acts[22] = REGIST_FUNC(ai, goal, BlackOldKing_Act22)
+    acts[23] = REGIST_FUNC(ai, goal, BlackOldKing_Act23)
+    acts[24] = REGIST_FUNC(ai, goal, BlackOldKing_Act24)
+    acts[25] = REGIST_FUNC(ai, goal, BlackOldKing_Act25)
+    acts[26] = REGIST_FUNC(ai, goal, BlackOldKing_Act26)
+    acts[27] = REGIST_FUNC(ai, goal, BlackOldKing_Act27)
+    acts[28] = REGIST_FUNC(ai, goal, BlackOldKing_Act28)
+    acts[29] = REGIST_FUNC(ai, goal, BlackOldKing_Act29)
+    acts[30] = REGIST_FUNC(ai, goal, BlackOldKing_Act30)
+    acts[31] = REGIST_FUNC(ai, goal, BlackOldKing_Act31)
+    acts[32] = REGIST_FUNC(ai, goal, BlackOldKing_Act32)
+    acts[33] = REGIST_FUNC(ai, goal, BlackOldKing_Act33)
+    acts[34] = REGIST_FUNC(ai, goal, BlackOldKing_Act34)
+    acts[35] = REGIST_FUNC(ai, goal, BlackOldKing_Act35)
+    acts[36] = REGIST_FUNC(ai, goal, BlackOldKing_Act36)
+    acts[37] = REGIST_FUNC(ai, goal, BlackOldKing_Act37)
+    acts[38] = REGIST_FUNC(ai, goal, BlackOldKing_Act38)
+    acts[39] = REGIST_FUNC(ai, goal, BlackOldKing_Act39)
+    acts[40] = REGIST_FUNC(ai, goal, BlackOldKing_Act40)
+    acts[41] = REGIST_FUNC(ai, goal, BlackOldKing_Act41)
+    acts[42] = REGIST_FUNC(ai, goal, BlackOldKing_Act42)
+    acts[43] = REGIST_FUNC(ai, goal, BlackOldKing_Act43)
+    acts[44] = REGIST_FUNC(ai, goal, BlackOldKing_Act44)
+    acts[45] = REGIST_FUNC(ai, goal, BlackOldKing_Act45)
+    acts[46] = REGIST_FUNC(ai, goal, BlackOldKing_Act46)
+    acts[47] = REGIST_FUNC(ai, goal, BlackOldKing_Act47)
+    acts[48] = REGIST_FUNC(ai, goal, BlackOldKing_Act48)
+    acts[50] = REGIST_FUNC(ai, goal, BlackOldKing_Act50)
+    local actAfter = REGIST_FUNC(ai, goal, BlackOldKing_ActAfter_AdjustSpace)
+    Common_Battle_Activate(ai, goal, probabilities, acts, actAfter, paramTbls)
+    
+end</value>
+  </data>
+  <data name="PontiffVanilla" xml:space="preserve">
+    <value>g_GoalTable[GOAL_BlackOldKing_514000_Battle].Activate = function(self, ai, goal)
+    local probabilities = {}
+    local acts = {}
+    local paramTbls = {}
+    Common_Clear_Param(probabilities, acts, paramTbls)
+    Init_Pseudo_Global(ai, goal)
+    ai:SetStringIndexedNumber("Dist_SideStep", 3.8)
+    ai:SetStringIndexedNumber("Dist_BackStep", 7.5)
+    if ai:HasSpecialEffectId(TARGET_SELF, 10636) then
+        ai:AddObserveSpecialEffectAttribute(TARGET_EVENT, 5027)
+    end
+    if ai:HasSpecialEffectId(TARGET_SELF, 10636) == false then
+        ai:AddObserveSpecialEffectAttribute(TARGET_ENE_0, 90)
+    end
+    local distanceEnemy = ai:GetDist(TARGET_ENE_0)
+    local random = ai:GetRandam_Int(1, 100)
+    local hpRatioSelf = ai:GetHpRate(TARGET_SELF)
+    local distanceEvent = ai:GetDist(TARGET_EVENT)
+    if ai:HasSpecialEffectId(TARGET_SELF, 5020) == false and hpRatioSelf &lt;= 0.6 then
+        probabilities[25] = 10
+    elseif ai:GetNumber(0) == 0 then
+        probabilities[6] = 100
+    elseif ai:HasSpecialEffectId(TARGET_SELF, 10636) then
+        if ai:IsInsideTarget(TARGET_ENE_0, AI_DIR_TYPE_B, 240) then
+            if InsideRange(ai, goal, 145, 115, -1, 3.8 - ai:GetMapHitRadius(TARGET_SELF)) then
+                probabilities[14] = 70
+                probabilities[5] = 30
+            elseif InsideRange(ai, goal, -145, 115, -1, 3.3 - ai:GetMapHitRadius(TARGET_SELF)) then
+                probabilities[15] = 70
+                probabilities[5] = 30
+            else
+                probabilities[5] = 100
+            end
+        elseif ai:HasSpecialEffectId(TARGET_EVENT, 5025) or ai:HasSpecialEffectId(TARGET_EVENT, 5026) then
+            probabilities[48] = 100
+        elseif distanceEnemy &gt;= 5 then
+            probabilities[6] = 100
+        else
+            probabilities[7] = 100
+        end
+    elseif ai:HasSpecialEffectId(TARGET_SELF, 5020) == true and ai:HasSpecialEffectId(TARGET_SELF, 10637) == false and ai:IsFinishTimer(0) == true and (distanceEnemy &gt;= 10 or hpRatioSelf &gt;= 0.35 or ai:IsFinishTimer(1) == false or hpRatioSelf &lt;= 0.3 and ai:HasSpecialEffectId(TARGET_SELF, 5022) == false or hpRatioSelf &lt;= 0.12) then
+        probabilities[24] = 10
+    elseif ai:IsInsideTarget(TARGET_ENE_0, AI_DIR_TYPE_B, 210) then
+        if InsideRange(ai, goal, 145, 115, -1, 3.8 - ai:GetMapHitRadius(TARGET_SELF)) then
+            probabilities[14] = 70
+            probabilities[9] = 20
+            probabilities[5] = 10
+        elseif InsideRange(ai, goal, -145, 115, -1, 3.3 - ai:GetMapHitRadius(TARGET_SELF)) then
+            probabilities[15] = 70
+            probabilities[8] = 20
+            probabilities[5] = 10
+        else
+            probabilities[5] = 10
+        end
+    elseif ai:IsInsideTarget(TARGET_ENE_0, AI_DIR_TYPE_B, 270) and distanceEnemy &gt;= 15 then
+        probabilities[5] = 10
+    elseif distanceEnemy &gt;= 25 then
+        probabilities[10] = 10
+        probabilities[17] = 10
+        probabilities[18] = 10
+        probabilities[22] = 20
+    elseif distanceEnemy &gt;= 15 then
+        probabilities[10] = 10
+        probabilities[11] = 10
+        probabilities[12] = 10
+        probabilities[17] = 10
+        probabilities[18] = 10
+        probabilities[22] = 20
+        probabilities[23] = 20
+    elseif distanceEnemy &gt;= 8 then
+        probabilities[1] = 20
+        probabilities[2] = 20
+        probabilities[10] = 20
+        probabilities[11] = 20
+        probabilities[12] = 20
+        probabilities[13] = 10
+        probabilities[19] = 10
+        probabilities[20] = 10
+        probabilities[22] = 20
+        probabilities[23] = 20
+    elseif distanceEnemy &gt;= 1.2 then
+        probabilities[1] = 20
+        probabilities[2] = 20
+        probabilities[11] = 20
+        probabilities[12] = 20
+        probabilities[13] = 10
+        probabilities[19] = 20
+        probabilities[20] = 10
+        probabilities[21] = 10
+        probabilities[23] = 20
+    else
+        probabilities[8] = 10
+        probabilities[9] = 10
+        probabilities[16] = 10
+        probabilities[21] = 10
+    end
+    if ai:IsFinishTimer(1) == false and ai:HasSpecialEffectId(TARGET_SELF, 10636) == false and distanceEnemy &gt;= 10 then
+        probabilities[17] = probabilities[17] + 10
+        probabilities[18] = probabilities[18] + 10
+        probabilities[22] = probabilities[22] + 10
+    end
+    if ai:IsFinishTimer(1) == false and ai:HasSpecialEffectId(TARGET_SELF, 10636) == false and distanceEnemy &gt;= 6 then
+        probabilities[10] = probabilities[10] + 50
+    end
+    if ai:IsFinishTimer(0) == false and distanceEnemy &gt;= 8 then
+        probabilities[22] = probabilities[22] + 100
+        probabilities[23] = probabilities[23] + 100
+    end
+    if ai:HasSpecialEffectId(TARGET_SELF, 5020) == false then
+        probabilities[16] = 0
+        probabilities[17] = 0
+        probabilities[18] = 0
+        probabilities[19] = 0
+        probabilities[21] = 0
+        probabilities[22] = 0
+        probabilities[23] = 0
+    end
+    if ai:GetNumber(1) == 1 then
+        ai:SetNumber(1, 0)
+        if ai:HasSpecialEffectId(TARGET_SELF, 5020) then
+            probabilities[16] = probabilities[16] + 10
+            probabilities[19] = probabilities[19] + 10
+            probabilities[21] = probabilities[21] + 10
+        end
+    end
+    probabilities[1] = SetCoolTime(ai, goal, 3003, 15, probabilities[1], 1)
+    probabilities[2] = SetCoolTime(ai, goal, 3011, 15, probabilities[2], 1)
+    probabilities[8] = SetCoolTime(ai, goal, 3000, 15, probabilities[8], 1)
+    probabilities[9] = SetCoolTime(ai, goal, 3001, 15, probabilities[9], 1)
+    probabilities[10] = SetCoolTime(ai, goal, 3002, 15, probabilities[10], 1)
+    probabilities[11] = SetCoolTime(ai, goal, 3012, 15, probabilities[11], 1)
+    probabilities[12] = SetCoolTime(ai, goal, 3013, 15, probabilities[12], 1)
+    probabilities[13] = SetCoolTime(ai, goal, 3006, 15, probabilities[13], 1)
+    probabilities[14] = SetCoolTime(ai, goal, 3014, 10, probabilities[14], 1)
+    probabilities[15] = SetCoolTime(ai, goal, 3015, 10, probabilities[15], 1)
+    probabilities[16] = SetCoolTime(ai, goal, 3016, 15, probabilities[16], 1)
+    probabilities[17] = SetCoolTime(ai, goal, 3017, 15, probabilities[17], 1)
+    probabilities[18] = SetCoolTime(ai, goal, 3018, 15, probabilities[18], 1)
+    probabilities[19] = SetCoolTime(ai, goal, 3020, 15, probabilities[19], 1)
+    probabilities[20] = SetCoolTime(ai, goal, 3021, 25, probabilities[20], 1)
+    probabilities[21] = SetCoolTime(ai, goal, 3019, 25, probabilities[21], 1)
+    probabilities[22] = SetCoolTime(ai, goal, 3024, 20, probabilities[22], 1)
+    probabilities[23] = SetCoolTime(ai, goal, 3025, 20, probabilities[23], 1)
+    acts[1] = REGIST_FUNC(ai, goal, BlackOldKing_Act01)
+    acts[2] = REGIST_FUNC(ai, goal, BlackOldKing_Act02)
+    acts[3] = REGIST_FUNC(ai, goal, BlackOldKing_Act03)
+    acts[4] = REGIST_FUNC(ai, goal, BlackOldKing_Act04)
+    acts[5] = REGIST_FUNC(ai, goal, BlackOldKing_Act05)
+    acts[6] = REGIST_FUNC(ai, goal, BlackOldKing_Act06)
+    acts[7] = REGIST_FUNC(ai, goal, BlackOldKing_Act07)
+    acts[8] = REGIST_FUNC(ai, goal, BlackOldKing_Act08)
+    acts[9] = REGIST_FUNC(ai, goal, BlackOldKing_Act09)
+    acts[10] = REGIST_FUNC(ai, goal, BlackOldKing_Act10)
+    acts[11] = REGIST_FUNC(ai, goal, BlackOldKing_Act11)
+    acts[12] = REGIST_FUNC(ai, goal, BlackOldKing_Act12)
+    acts[13] = REGIST_FUNC(ai, goal, BlackOldKing_Act13)
+    acts[14] = REGIST_FUNC(ai, goal, BlackOldKing_Act14)
+    acts[15] = REGIST_FUNC(ai, goal, BlackOldKing_Act15)
+    acts[16] = REGIST_FUNC(ai, goal, BlackOldKing_Act16)
+    acts[17] = REGIST_FUNC(ai, goal, BlackOldKing_Act17)
+    acts[18] = REGIST_FUNC(ai, goal, BlackOldKing_Act18)
+    acts[19] = REGIST_FUNC(ai, goal, BlackOldKing_Act19)
+    acts[20] = REGIST_FUNC(ai, goal, BlackOldKing_Act20)
+    acts[21] = REGIST_FUNC(ai, goal, BlackOldKing_Act21)
+    acts[22] = REGIST_FUNC(ai, goal, BlackOldKing_Act22)
+    acts[23] = REGIST_FUNC(ai, goal, BlackOldKing_Act23)
+    acts[24] = REGIST_FUNC(ai, goal, BlackOldKing_Act24)
+    acts[25] = REGIST_FUNC(ai, goal, BlackOldKing_Act25)
+    acts[26] = REGIST_FUNC(ai, goal, BlackOldKing_Act26)
+    acts[27] = REGIST_FUNC(ai, goal, BlackOldKing_Act27)
+    acts[28] = REGIST_FUNC(ai, goal, BlackOldKing_Act28)
+    acts[29] = REGIST_FUNC(ai, goal, BlackOldKing_Act29)
+    acts[30] = REGIST_FUNC(ai, goal, BlackOldKing_Act30)
+    acts[31] = REGIST_FUNC(ai, goal, BlackOldKing_Act31)
+    acts[32] = REGIST_FUNC(ai, goal, BlackOldKing_Act32)
+    acts[33] = REGIST_FUNC(ai, goal, BlackOldKing_Act33)
+    acts[34] = REGIST_FUNC(ai, goal, BlackOldKing_Act34)
+    acts[35] = REGIST_FUNC(ai, goal, BlackOldKing_Act35)
+    acts[36] = REGIST_FUNC(ai, goal, BlackOldKing_Act36)
+    acts[37] = REGIST_FUNC(ai, goal, BlackOldKing_Act37)
+    acts[38] = REGIST_FUNC(ai, goal, BlackOldKing_Act38)
+    acts[39] = REGIST_FUNC(ai, goal, BlackOldKing_Act39)
+    acts[40] = REGIST_FUNC(ai, goal, BlackOldKing_Act40)
+    acts[41] = REGIST_FUNC(ai, goal, BlackOldKing_Act41)
+    acts[42] = REGIST_FUNC(ai, goal, BlackOldKing_Act42)
+    acts[43] = REGIST_FUNC(ai, goal, BlackOldKing_Act43)
+    acts[44] = REGIST_FUNC(ai, goal, BlackOldKing_Act44)
+    acts[45] = REGIST_FUNC(ai, goal, BlackOldKing_Act45)
+    acts[46] = REGIST_FUNC(ai, goal, BlackOldKing_Act46)
+    acts[47] = REGIST_FUNC(ai, goal, BlackOldKing_Act47)
+    acts[48] = REGIST_FUNC(ai, goal, BlackOldKing_Act48)
+    acts[50] = REGIST_FUNC(ai, goal, BlackOldKing_Act50)
+    local actAfter = REGIST_FUNC(ai, goal, BlackOldKing_ActAfter_AdjustSpace)
+    Common_Battle_Activate(ai, goal, probabilities, acts, actAfter, paramTbls)
+    
+end</value>
+  </data>
+  <data name="LuaDoString" xml:space="preserve">
+    <value>48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00
+48 ba 00 00 00 00 00    movabs rdx,0x0
+00 00 00
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00
+48 83 ec 28             sub    rsp,0x28
+ff d0                   call   rax
+48 83 c4 28             add    rsp,0x28
+c3                      ret</value>
+  </data>
 </root>

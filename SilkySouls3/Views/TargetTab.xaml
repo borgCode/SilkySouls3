@@ -8,6 +8,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <converters:BooleanAndConverter x:Key="BooleanAndConverter" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <converters:ImmuneFillConverter x:Key="ImmuneFillConverter" />
     </UserControl.Resources>
@@ -499,6 +500,19 @@
                             </MultiBinding>
                         </CheckBox.IsEnabled>
                     </CheckBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                    <Button Content="Move target to player" Padding="8,3"
+                            Command="{Binding MoveTargetToPlayerCommand}">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BooleanAndConverter}">
+                                <Binding Path="AreOptionsEnabled" />
+                                <Binding Path="IsValidTarget" />
+                                <Binding Path="IsMoveTargetInFlight" Converter="{StaticResource InverseBooleanConverter}" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

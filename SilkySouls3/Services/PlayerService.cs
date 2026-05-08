@@ -127,6 +127,9 @@ namespace SilkySouls3.Services
         public int GetCurrentBlockId() => memoryService.Read<int>(
             memoryService.FollowPointers(GetPlayerIns(), ChrIns.CurrentBlockId, false));
 
+        public int GetBossGaugeId() => memoryService.Read<int>(
+            memoryService.Read<nint>(MenuMan.Base) + MenuMan.BossGaugeId);
+
         public Vector3 GetPosition() => chrInsService.GetPosition(GetPlayerIns());
 
         public void ToggleInfiniteDurability(bool isEnabled)

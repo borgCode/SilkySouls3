@@ -38,4 +38,5 @@ public interface IPlayerService
     void RestorePosition(int index);
     void ForceSetPosition(Vector3 position);
     int GetCurrentBlockId();
+    int GetBossGaugeId();
 }

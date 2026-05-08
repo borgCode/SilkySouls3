@@ -90,6 +90,13 @@ namespace SilkySouls3.Memory
             public const int ChrPrimMaskOffset = 0x1FF0;
             public static readonly BitFlag IsTaePrimMaskActive = new BitFlag(0x1A09, 0);
 
+            public const int ChrCtrl = 0x50;
+
+            public static class ChrCtrlOffsets
+            {
+                public const int RagdollIns = 0x20;
+            }
+
             public const int SpecialEffect = 0x11C8;
 
             public static class SpecialEffectOffsets
@@ -183,7 +190,14 @@ namespace SilkySouls3.Memory
                 public const int Position = 0x80;
                 public const int PrevPosition = 0x90;
                 public const int PhysicsDirty = 0xA1;
+                public const int CSChrProxy = 0xA8;
                 public const int HitRadius = 0x370;
+            }
+
+            public static class CSChrProxyOffsets
+            {
+                public const int Shape = 0x38;
+                public const int CsHkCharacterProxy = 0x40;
             }
 
             public static readonly int[] AiThink = [0x58, 0x320];
@@ -252,14 +266,13 @@ namespace SilkySouls3.Memory
                     Souls = 0x74,
                     TotalSouls = 0x78
                 }
-            
+
                 public const int NewGame = 0x78;
                 public const int InGameTime = 0xA4;
 
                 public const int EquipInventory = 0x3D0;
                 public const int StorageInventory = 0x7B0;
             }
-            
         }
 
         public static class DebugFlags
@@ -296,6 +309,7 @@ namespace SilkySouls3.Memory
             public static nint Base;
 
             public const int Quitout = 0x250;
+            public const int BossGaugeId = 0x1AF8;
         }
 
         public static class LuaEventMan
@@ -393,6 +407,28 @@ namespace SilkySouls3.Memory
             public static nint Base;
         }
 
+        public static class FrpgHavokManImp
+        {
+            public static nint Base;
+            public const int FrpgPhysWorld = 0x38;
+        }
+
+        public static class SprjFade
+        {
+            public static nint Base;
+            public const int Plates = 0x10;
+            public const int CurrentA = 0x1C;
+            public const int TargetA = 0x2C;
+            public const int RemainTime = 0x38;
+        }
+
+        public static class WorldAiManager
+        {
+            public static nint Base;
+
+            public static readonly int[] LuaState = [0x43f8, 0xb8, 0x28];
+        }
+
         public static nint GameSpeed;
         public static nint DrawNavigationPath;
 
@@ -412,6 +448,7 @@ namespace SilkySouls3.Memory
             public static nint SoulmassStaggerRemoval;
             public static nint LoadScreenItemName;
             public static nint DisableAllExceptTarget;
+            public static nint ChrIns_PrePhysics;
         }
 
         public static class Patches
@@ -454,6 +491,10 @@ namespace SilkySouls3.Memory
             public static nint StartMenuMusic;
             public static nint FindAndRemoveSpEffect;
             public static nint GetItemQuantity;
+            public static nint CastShape;
+            public static nint WorldGetClosestPoints;
+            public static nint SetPosition;
+            public static nint LuaDoString;
         }
 
         private static void InitializeBaseAddresses(nint moduleBase)
@@ -841,6 +882,62 @@ namespace SilkySouls3.Memory
                 _ => 0
             };
 
+            FrpgHavokManImp.Base = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x46AEFB0,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x46B02D0,
+                Version1_5_0_0 => 0x46B43D0,
+                Version1_5_1_0 => 0x46B33D0,
+                Version1_6_0_0 => 0x46B4430,
+                Version1_7_0_0 => 0x46B8C70,
+                Version1_8_0_0 => 0x4717438,
+                Version1_9_0_0 or Version1_10_0_0 => 0x4717578,
+                Version1_11_0_0 => 0x474A868,
+                Version1_12_0_0 => 0x474D9E8,
+                Version1_13_0_0 => 0x47511E8,
+                Version1_14_0_0 or Version1_15_0_0 => 0x4753348,
+                Version1_15_1_0 or Version1_15_2_0 => 0x476A288,
+                _ => 0
+            };
+
+            SprjFade.Base = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x46D79A8,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x46D8CC8,
+                Version1_5_0_0 => 0x46DCDD8,
+                Version1_5_1_0 => 0x46DBDD8,
+                Version1_6_0_0 => 0x46DCE38,
+                Version1_7_0_0 => 0x46E1678,
+                Version1_8_0_0 => 0x473FF98,
+                Version1_9_0_0 or Version1_10_0_0 => 0x47400D8,
+                Version1_11_0_0 => 0x4773678,
+                Version1_12_0_0 => 0x47767F8,
+                Version1_13_0_0 => 0x477A008,
+                Version1_14_0_0 or Version1_15_0_0 => 0x477C168,
+                Version1_15_1_0 => 0x4791A48,
+                Version1_15_2_0 => 0x4791A38,
+                _ => 0
+            };
+            
+            WorldAiManager.Base = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x4696110,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x4697430,
+                Version1_5_0_0 => 0x469B530,
+                Version1_5_1_0 => 0x469A530,
+                Version1_6_0_0 => 0x469B590,
+                Version1_7_0_0 => 0x469FDD0,
+                Version1_8_0_0 => 0x46FE530,
+                Version1_9_0_0 or Version1_10_0_0 => 0x46FE670,
+                Version1_11_0_0 => 0x4731930,
+                Version1_12_0_0 => 0x4734AB0,
+                Version1_13_0_0 => 0x47382B0,
+                Version1_14_0_0 or Version1_15_0_0 => 0x473A410,
+                Version1_15_1_0 or Version1_15_2_0 => 0x4751550,
+                _ => 0
+            };
+
+
 
             GameSpeed = moduleBase + Version switch
             {
@@ -1153,6 +1250,27 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x5C5E70,
                 _ => 0
             };
+
+            Hooks.ChrIns_PrePhysics = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x880E1F,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x880B6F,
+                Version1_5_0_0 => 0x88151F,
+                Version1_5_1_0 => 0x88134F,
+                Version1_6_0_0 => 0x88191F,
+                Version1_7_0_0 => 0x88282F,
+                Version1_8_0_0 or Version1_9_0_0 => 0x88CA1F,
+                Version1_10_0_0 => 0x88CA7F,
+                Version1_11_0_0 => 0x892FAF,
+                Version1_12_0_0 => 0x8937FF,
+                Version1_13_0_0 => 0x89516F,
+                Version1_14_0_0 => 0x89525F,
+                Version1_15_0_0 => 0x89529F,
+                Version1_15_1_0 => 0x89D9BF,
+                Version1_15_2_0 => 0x89DD6F,
+                _ => 0
+            };
+
 
             Patches.NoLogo = moduleBase + Version switch
             {
@@ -1797,7 +1915,7 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x8888D0,
                 _ => 0
             };
-            
+
             Functions.GetItemQuantity = moduleBase + Version switch
             {
                 Version1_3_2_0 => 0x580980,
@@ -1816,6 +1934,86 @@ namespace SilkySouls3.Memory
                 _ => 0
             };
 
+            Functions.CastShape = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x7D11F0,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x7D1890,
+                Version1_5_0_0 => 0x7D1E70,
+                Version1_5_1_0 => 0x7D1CA0,
+                Version1_6_0_0 => 0x7D2270,
+                Version1_7_0_0 => 0x7D3180,
+                Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x7DBF10,
+                Version1_11_0_0 => 0x7E1020,
+                Version1_12_0_0 => 0x7E1810,
+                Version1_13_0_0 => 0x7E1A00,
+                Version1_14_0_0 => 0x7E1AF0,
+                Version1_15_0_0 => 0x7E1B30,
+                Version1_15_1_0 => 0x7E9AD0,
+                Version1_15_2_0 => 0x7E9E80,
+                _ => 0
+            };
+
+            Functions.WorldGetClosestPoints = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x7CD8A0,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x7CDF40,
+                Version1_5_0_0 => 0x7CE520,
+                Version1_5_1_0 => 0x7CE350,
+                Version1_6_0_0 => 0x7CE920,
+                Version1_7_0_0 => 0x7CF830,
+                Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x7D85C0,
+                Version1_11_0_0 => 0x7DD6D0,
+                Version1_12_0_0 => 0x7DDEC0,
+                Version1_13_0_0 => 0x7DE0B0,
+                Version1_14_0_0 => 0x7DE1A0,
+                Version1_15_0_0 => 0x7DE1E0,
+                Version1_15_1_0 => 0x7E6170,
+                Version1_15_2_0 => 0x7E6520,
+                _ => 0
+            };
+
+            Functions.SetPosition = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x9B63B0,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x9B62B0,
+                Version1_5_0_0 => 0x9B6DA0,
+                Version1_5_1_0 => 0x9B6BD0,
+                Version1_6_0_0 => 0x9B71A0,
+                Version1_7_0_0 => 0x9B80B0,
+                Version1_8_0_0 => 0x9C47C0,
+                Version1_9_0_0 => 0x9C4D80,
+                Version1_10_0_0 => 0x9C4DF0,
+                Version1_11_0_0 => 0x9CE9E0,
+                Version1_12_0_0 => 0x9CF430,
+                Version1_13_0_0 => 0x9D0DD0,
+                Version1_14_0_0 => 0x9D10A0,
+                Version1_15_0_0 => 0x9D11A0,
+                Version1_15_1_0 => 0x9DB290,
+                Version1_15_2_0 => 0x9DB3C0,
+                _ => 0
+            };
+
+            Functions.LuaDoString = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x17010F0,
+                Version1_4_1_0 => 0x17017D0,
+                Version1_4_2_0 or Version1_4_3_0 => 0x1701820,
+                Version1_5_0_0 => 0x1703F60,
+                Version1_5_1_0 => 0x1703D50,
+                Version1_6_0_0 => 0x1704320,
+                Version1_7_0_0 => 0x1706BC0,
+                Version1_8_0_0 => 0x17E9590,
+                Version1_9_0_0 => 0x17E9A50,
+                Version1_10_0_0 => 0x17E9AC0,
+                Version1_11_0_0 => 0x1803920,
+                Version1_12_0_0 => 0x1804B60,
+                Version1_13_0_0 => 0x1806E40,
+                Version1_14_0_0 => 0x1807A00,
+                Version1_15_0_0 => 0x1807B10,
+                Version1_15_1_0 => 0x18159B0,
+                Version1_15_2_0 => 0x1815AE0,
+                _ => 0
+            };
         }
 
 #if DEBUG
@@ -1843,6 +2041,7 @@ namespace SilkySouls3.Memory
             PrintOffset("SprjBulletManager", SprjBulletManager.Base);
             PrintOffset("FD4PadManager", FD4PadManager.Base);
             PrintOffset("CSDlc", CSDlc.Base);
+            PrintOffset("FrpgHavokManImp", FrpgHavokManImp.Base);
             PrintOffset("GameSpeed", GameSpeed);
             PrintOffset("DrawNavigationPath", DrawNavigationPath);
 
@@ -1860,6 +2059,7 @@ namespace SilkySouls3.Memory
             PrintOffset("CameraUpLimit", Hooks.CameraUpLimit);
             PrintOffset("AddSubGoalDsa", Hooks.AddSubGoalDsa);
             PrintOffset("SoulmassStaggerRemoval", Hooks.SoulmassStaggerRemoval);
+            PrintOffset("ChrIns_PrePhysics", Hooks.ChrIns_PrePhysics);
 
             Console.WriteLine("\n--- Patches ---");
             PrintOffset("NoLogo", Patches.NoLogo);
@@ -1898,6 +2098,10 @@ namespace SilkySouls3.Memory
             PrintOffset("StartMenuMusic", Functions.StartMenuMusic);
             PrintOffset("FindAndRemoveSpEffect", Functions.FindAndRemoveSpEffect);
             PrintOffset("GetItemQuantity", Functions.GetItemQuantity);
+            PrintOffset("CastShape", Functions.CastShape);
+            PrintOffset("WorldGetClosestPoints", Functions.WorldGetClosestPoints);
+            PrintOffset("SetPosition", Functions.SetPosition);
+            PrintOffset("LuaDoString", Functions.LuaDoString);
 
             Console.WriteLine("\n====================================\n");
         }

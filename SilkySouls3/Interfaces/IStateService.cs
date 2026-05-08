@@ -8,6 +8,7 @@ namespace SilkySouls3.Interfaces;
 public interface IStateService
 {
     public bool IsLoaded();
+    public bool IsFadedIn();
     void Publish(State eventType);
     void Publish<T>(State eventType, T value);
     void Subscribe(State eventType, Action handler);

@@ -37,4 +37,7 @@ public interface ITargetService
     bool IsNoMoveEnabled();
     float GetDist();
     void ToggleDisableAllExceptTarget(bool isEnabled);
+    void MoveTargetToPlayer();
+    int GetMoveTargetStatus();
+    void UninstallMoveTargetHook();
 }

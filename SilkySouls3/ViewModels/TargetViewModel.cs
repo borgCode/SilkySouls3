@@ -21,6 +21,7 @@ namespace SilkySouls3.ViewModels
         private readonly ISpEffectService _spEffectService;
 
         private nint _currentTargetChrIns;
+        private DateTime _moveTargetInstallTime;
         private ResistancesWindow _resistancesWindowWindow;
 
         private readonly SpEffectViewModel _spEffectViewModel = new();
@@ -46,6 +47,7 @@ namespace SilkySouls3.ViewModels
             SetHpCommand = new DelegateCommand(SetHp);
             SetHpPercentageCommand = new DelegateCommand(SetHpPercentage);
             SetCustomHpCommand = new DelegateCommand(() => ExecuteTargetAction(SetCustomHp));
+            MoveTargetToPlayerCommand = new DelegateCommand(TryMoveTargetToPlayer);
         }
 
         #region Commands
@@ -53,6 +55,7 @@ namespace SilkySouls3.ViewModels
         public ICommand SetHpCommand { get; }
         public ICommand SetHpPercentageCommand { get; }
         public ICommand SetCustomHpCommand { get; }
+        public ICommand MoveTargetToPlayerCommand { get; }
 
         #endregion
 
@@ -103,6 +106,11 @@ namespace SilkySouls3.ViewModels
                     ShowPoison = false;
                     ShowFrost = false;
                     ShowToxic = false;
+                    if (IsMoveTargetInFlight)
+                    {
+                        _targetService.UninstallMoveTargetHook();
+                        IsMoveTargetInFlight = false;
+                    }
                     _targetService.ToggleTargetHook(false);
                 }
                 
@@ -572,6 +580,14 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _isFrostImmune, value);
         }
 
+        private bool _isMoveTargetInFlight;
+
+        public bool IsMoveTargetInFlight
+        {
+            get => _isMoveTargetInFlight;
+            set => SetProperty(ref _isMoveTargetInFlight, value);
+        }
+
         public bool ShowBleedAndNotImmune => ShowBleed && !IsBleedImmune;
         public bool ShowPoisonAndNotImmune => ShowPoison && !IsPoisonImmune;
         public bool ShowToxicAndNotImmune => ShowToxic && !IsToxicImmune;
@@ -657,6 +673,29 @@ namespace SilkySouls3.ViewModels
                 ExecuteTargetAction(() => IsShowDefensesEnabled = !IsShowDefensesEnabled));
             _hotkeyManager.RegisterAction(HotkeyActions.DisableAllExceptTargetAi, () =>
                 ExecuteTargetAction(() => IsDisableAllExceptTargetEnabled = !IsDisableAllExceptTargetEnabled));
+            _hotkeyManager.RegisterAction(HotkeyActions.MoveTargetToPlayer, TryMoveTargetToPlayer);
+        }
+
+        private void TryMoveTargetToPlayer()
+        {
+            if (IsMoveTargetInFlight) return;
+            ExecuteTargetAction(() =>
+            {
+                _moveTargetInstallTime = DateTime.UtcNow;
+                IsMoveTargetInFlight = true;
+                _targetService.MoveTargetToPlayer();
+            });
+        }
+
+        private void PollMoveTarget()
+        {
+            if (!IsMoveTargetInFlight) return;
+            if (_targetService.GetMoveTargetStatus() == 1 ||
+                (DateTime.UtcNow - _moveTargetInstallTime).TotalMilliseconds >= 500)
+            {
+                _targetService.UninstallMoveTargetHook();
+                IsMoveTargetInFlight = false;
+            }
         }
 
         private void OnGameLoaded()
@@ -677,6 +716,7 @@ namespace SilkySouls3.ViewModels
             LastAct = 0;
             ForceAct = 0;
             AreOptionsEnabled = false;
+            IsMoveTargetInFlight = false;
         }
 
         private void ExecuteTargetAction(Action action)
@@ -718,6 +758,8 @@ namespace SilkySouls3.ViewModels
 
         private void TargetTick()
         {
+            PollMoveTarget();
+
             if (!IsTargetValid())
             {
                 IsValidTarget = false;

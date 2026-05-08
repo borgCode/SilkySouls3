@@ -443,6 +443,44 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00
+        ///48 ba 00 00 00 00 00    movabs rdx,0x0
+        ///00 00 00
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00
+        ///48 83 ec 28             sub    rsp,0x28
+        ///ff d0                   call   rax
+        ///48 83 c4 28             add    rsp,0x28
+        ///c3                      ret.
+        /// </summary>
+        internal static string LuaDoString {
+            get {
+                return ResourceManager.GetString("LuaDoString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 83 3d 00 00 00 00 01    cmp    DWORD PTR [rip+0x0],0x1        # 7 &lt;_main+0x7&gt;
+        ///0f 84 14 02 00 00       je     221 &lt;normal&gt;
+        ///48 3b 1d 00 00 00 00    cmp    rbx,QWORD PTR [rip+0x0]        # 14 &lt;_main+0x14&gt;
+        ///0f 85 07 02 00 00       jne    221 &lt;normal&gt;
+        ///53                      push   rbx
+        ///55                      push   rbp
+        ///56                      push   rsi
+        ///57                      push   rdi
+        ///41 54                   push   r12
+        ///41 55                   push   r13
+        ///41 56                   push   r14
+        ///41 57      [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MoveTarget {
+            get {
+                return ResourceManager.GetString("MoveTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 50                      push   rax
         ///48 8b 05 00 00 00 00    mov    rax,QWORD PTR [rip+0x0]        # 8 &lt;_main+0x8&gt;
         ///48 85 c0                test   rax,rax
@@ -564,6 +602,46 @@ namespace SilkySouls3.Properties {
         internal static string PlacePrismStones {
             get {
                 return ResourceManager.GetString("PlacePrismStones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to g_GoalTable[GOAL_BlackOldKing_514000_Battle].Activate = function(self, ai, goal)
+        ///    local probabilities = {}
+        ///    local acts = {}
+        ///    local paramTbls = {}
+        ///    Common_Clear_Param(probabilities, acts, paramTbls)
+        ///    Init_Pseudo_Global(ai, goal)
+        ///    ai:SetStringIndexedNumber(&quot;Dist_SideStep&quot;, 3.8)
+        ///    ai:SetStringIndexedNumber(&quot;Dist_BackStep&quot;, 7.5)
+        ///    if ai:HasSpecialEffectId(TARGET_SELF, 10636) then
+        ///        ai:AddObserveSpecialEffectAttribute(TARGET_EVENT, 5027)
+        ///    end
+        ///    if ai:HasSpecialEffectId [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PontiffNoClone {
+            get {
+                return ResourceManager.GetString("PontiffNoClone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to g_GoalTable[GOAL_BlackOldKing_514000_Battle].Activate = function(self, ai, goal)
+        ///    local probabilities = {}
+        ///    local acts = {}
+        ///    local paramTbls = {}
+        ///    Common_Clear_Param(probabilities, acts, paramTbls)
+        ///    Init_Pseudo_Global(ai, goal)
+        ///    ai:SetStringIndexedNumber(&quot;Dist_SideStep&quot;, 3.8)
+        ///    ai:SetStringIndexedNumber(&quot;Dist_BackStep&quot;, 7.5)
+        ///    if ai:HasSpecialEffectId(TARGET_SELF, 10636) then
+        ///        ai:AddObserveSpecialEffectAttribute(TARGET_EVENT, 5027)
+        ///    end
+        ///    if ai:HasSpecialEffectId [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PontiffVanilla {
+            get {
+                return ResourceManager.GetString("PontiffVanilla", resourceCulture);
             }
         }
         
