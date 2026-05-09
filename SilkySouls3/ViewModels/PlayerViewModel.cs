@@ -8,6 +8,7 @@ using SilkySouls3.GameIds;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Models;
 using SilkySouls3.Utilities;
+using SilkySouls3.Views.Windows;
 using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.ViewModels
@@ -34,6 +35,9 @@ namespace SilkySouls3.ViewModels
         private readonly IGameTickService _gameTickService;
         private readonly ISpEffectService _spEffectService;
 
+        private readonly SpEffectViewModel _spEffectViewModel = new();
+        private SpEffectsWindow _spEffectsWindow;
+
         public PlayerViewModel(IPlayerService playerService, HotkeyManager hotkeyManager, IStateService stateService,
             IGameTickService gameTickService, ISpEffectService spEffectService)
         {
@@ -58,6 +62,8 @@ namespace SilkySouls3.ViewModels
             GiveSoulsCommand = new DelegateCommand(GiveSouls);
             EmberCommand = new DelegateCommand(Ember);
             RestCommand = new DelegateCommand(Rest);
+            ApplySpEffectCommand = new DelegateCommand(ApplySpEffect);
+            RemoveSpEffectCommand = new DelegateCommand(RemoveSpEffect);
 
             ApplyPrefs();
         }
@@ -81,6 +87,8 @@ namespace SilkySouls3.ViewModels
         public ICommand GiveSoulsCommand { get; set; }
         public ICommand EmberCommand { get; set; }
         public ICommand RestCommand { get; set; }
+        public ICommand ApplySpEffectCommand { get; set; }
+        public ICommand RemoveSpEffectCommand { get; set; }
 
         #endregion
 
@@ -508,6 +516,37 @@ namespace SilkySouls3.ViewModels
             set => SetProperty(ref _currentAnimation, value);
         }
 
+        private string _applySpEffectInput;
+
+        public string ApplySpEffectInput
+        {
+            get => _applySpEffectInput;
+            set => SetProperty(ref _applySpEffectInput, value);
+        }
+
+        private string _removeSpEffectInput;
+
+        public string RemoveSpEffectInput
+        {
+            get => _removeSpEffectInput;
+            set => SetProperty(ref _removeSpEffectInput, value);
+        }
+
+        private bool _isShowActiveSpEffectsEnabled;
+
+        public bool IsShowActiveSpEffectsEnabled
+        {
+            get => _isShowActiveSpEffectsEnabled;
+            set
+            {
+                if (SetProperty(ref _isShowActiveSpEffectsEnabled, value))
+                {
+                    if (_isShowActiveSpEffectsEnabled) OpenSpEffectsWindow();
+                    else CloseSpEffectsWindow();
+                }
+            }
+        }
+
         private float _playerSpeed;
 
         public float PlayerSpeed
@@ -584,6 +623,7 @@ namespace SilkySouls3.ViewModels
             _gameTickService.Unsubscribe(PlayerTick);
             _currentBlockId = -1;
             _currentBossGaugeId = -1;
+            IsShowActiveSpEffectsEnabled = false;
         }
 
         private void OnNewGameStart()
@@ -605,8 +645,23 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction(HotkeyActions.SetCustomHp, SetCustomHp);
             _hotkeyManager.RegisterAction(HotkeyActions.NoDeath, () => { IsNoDeathEnabled = !IsNoDeathEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.OneShot, () => { IsOneShotEnabled = !IsOneShotEnabled; });
-            _hotkeyManager.RegisterAction(HotkeyActions.PlayerNoDamage,
-                () => { IsNoDamageEnabled = !IsNoDamageEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.PlayerNoDamage, () => { IsNoDamageEnabled = !IsNoDamageEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.InfiniteStamina, () => { IsInfiniteStaminaEnabled = !IsInfiniteStaminaEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.NoGoodsConsume, () => { IsNoGoodsConsumeEnabled = !IsNoGoodsConsumeEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.InfiniteFp, () => { IsInfiniteFpEnabled = !IsInfiniteFpEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.InfiniteDurability, () => { IsInfiniteDurabilityEnabled = !IsInfiniteDurabilityEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.Invisible, () => { IsInvisibleEnabled = !IsInvisibleEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.Silent, () => { IsSilentEnabled = !IsSilentEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.NoAmmoConsume, () => { IsNoAmmoConsumeEnabled = !IsNoAmmoConsumeEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.InfinitePoise, () => { IsInfinitePoiseEnabled = !IsInfinitePoiseEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.NoHit, () => { IsNoHitEnabled = !IsNoHitEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.HealOverTime, () => { IsHotEnabled = !IsHotEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.FpRegen, () => { IsFpRegenEnabled = !IsFpRegenEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.Ember, () => { if (AreOptionsEnabled) Ember(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.Rest, () => { if (AreOptionsEnabled) Rest(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.ApplySpEffect, () => { if (AreOptionsEnabled) ApplySpEffect(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.RemoveSpEffect, () => { if (AreOptionsEnabled) RemoveSpEffect(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.ShowActiveSpEffects, () => { if (AreOptionsEnabled) IsShowActiveSpEffectsEnabled = !IsShowActiveSpEffectsEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.TogglePlayerSpeed, ToggleSpeed);
             _hotkeyManager.RegisterAction(HotkeyActions.IncreasePlayerSpeed,
                 () => SetSpeed(Math.Min(10, PlayerSpeed + 0.25f)));
@@ -659,6 +714,9 @@ namespace SilkySouls3.ViewModels
                 _currentSoulLevel = newSoulLevel;
                 LoadStats();
             }
+
+            if (IsShowActiveSpEffectsEnabled)
+                _spEffectViewModel.RefreshEffects(_spEffectService.GetActiveSpEffectList(_playerService.GetPlayerIns()));
         }
 
         private void LoadStats()
@@ -743,6 +801,48 @@ namespace SilkySouls3.ViewModels
         private void GiveSouls() => _playerService.GiveSouls();
         private void Ember() => _spEffectService.ApplySpEffect(_playerService.GetPlayerIns(), SpEffect.Ember);
         private void Rest() => _playerService.Rest();
+
+        private void ApplySpEffect()
+        {
+            if (!uint.TryParse(ApplySpEffectInput, out var id))
+            {
+                MsgBox.Show("SpEffect ID must be a number");
+                return;
+            }
+            _spEffectService.ApplySpEffect(_playerService.GetPlayerIns(), id);
+        }
+
+        private void RemoveSpEffect()
+        {
+            if (!uint.TryParse(RemoveSpEffectInput, out var id))
+            {
+                MsgBox.Show("SpEffect ID must be a number");
+                return;
+            }
+            _spEffectService.RemoveSpEffect(_playerService.GetPlayerIns(), id);
+        }
+
+        private void OpenSpEffectsWindow()
+        {
+            _spEffectsWindow = new SpEffectsWindow
+            {
+                DataContext = _spEffectViewModel,
+                Title = "Player Active Special Effects"
+            };
+            _spEffectsWindow.Closed += (s, e) =>
+            {
+                _spEffectsWindow = null;
+                IsShowActiveSpEffectsEnabled = false;
+            };
+            _spEffectsWindow.Show();
+        }
+
+        private void CloseSpEffectsWindow()
+        {
+            if (_spEffectsWindow == null || !_spEffectsWindow.IsVisible) return;
+            _spEffectsWindow.Close();
+            _spEffectsWindow = null;
+        }
 
         private void SavePosition(object parameter)
         {
