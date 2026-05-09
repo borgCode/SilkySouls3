@@ -205,6 +205,28 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 20             sub    rsp,0x20
+        ///48 bb 00 00 00 00 00    movabs rbx,0x0
+        ///00 00 00 
+        ///48 89 d9                mov    rcx,rbx
+        ///48 81 c1 b0 02 00 00    add    rcx,0x2b0
+        ///ba ef be ad de          mov    edx,0xdeadbeef
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///ff d0                   call   rax
+        ///83 f8 10                cmp    eax,0x10
+        ///74 28                   je     56 &lt;exit&gt;
+        ///48 63 f0                movsxd rsi,eax
+        ///8b 94 b3 4c 02 00 00    mov    edx,DWORD PTR [rbx+rsi*4+0x24c]
+        ///83 fa ff          [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BreakWeapon {
+            get {
+                return ResourceManager.GetString("BreakWeapon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 51                      push   rcx
         ///48 8b 49 08             mov    rcx,QWORD PTR [rcx+0x8]
         ///48 8b 09                mov    rcx,QWORD PTR [rcx]

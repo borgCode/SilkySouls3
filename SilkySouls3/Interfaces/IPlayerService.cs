@@ -42,4 +42,5 @@ public interface IPlayerService
     int GetCurrentBlockId();
     int GetBossGaugeId();
     int GetCurrentAnimationId();
+    void BreakWeapon(int slotSelector);
 }

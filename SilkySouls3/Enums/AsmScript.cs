@@ -34,4 +34,5 @@ public enum AsmScript
     MoveTarget,
     LuaDoString,
     RefreshFromStorage,
+    BreakWeapon,
 }

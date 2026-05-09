@@ -62,6 +62,7 @@ namespace SilkySouls3.ViewModels
             GiveSoulsCommand = new DelegateCommand(GiveSouls);
             EmberCommand = new DelegateCommand(Ember);
             RestCommand = new DelegateCommand(Rest);
+            BreakWeaponCommand = new DelegateCommand(BreakWeapon);
             ApplySpEffectCommand = new DelegateCommand(ApplySpEffect);
             RemoveSpEffectCommand = new DelegateCommand(RemoveSpEffect);
 
@@ -87,6 +88,7 @@ namespace SilkySouls3.ViewModels
         public ICommand GiveSoulsCommand { get; set; }
         public ICommand EmberCommand { get; set; }
         public ICommand RestCommand { get; set; }
+        public ICommand BreakWeaponCommand { get; set; }
         public ICommand ApplySpEffectCommand { get; set; }
         public ICommand RemoveSpEffectCommand { get; set; }
 
@@ -801,6 +803,7 @@ namespace SilkySouls3.ViewModels
         private void GiveSouls() => _playerService.GiveSouls();
         private void Ember() => _spEffectService.ApplySpEffect(_playerService.GetPlayerIns(), SpEffect.Ember);
         private void Rest() => _playerService.Rest();
+        private void BreakWeapon(object parameter) => _playerService.BreakWeapon(Convert.ToInt32(parameter));
 
         private void ApplySpEffect()
         {

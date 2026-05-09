@@ -270,6 +270,8 @@ namespace SilkySouls3.Memory
                 public const int NewGame = 0x78;
                 public const int InGameTime = 0xA4;
 
+                public const int EquipSlotArray = 0x24C;
+                public const int ChrAsm = 0x2B0;
                 public const int EquipInventory = 0x3D0;
                 public const int StorageInventory = 0x7B0;
             }
@@ -496,6 +498,8 @@ namespace SilkySouls3.Memory
             public static nint SetPosition;
             public static nint LuaDoString;
             public static nint RefreshFromStorage;
+            public static nint ResolveSlotIdx;
+            public static nint SetCurrentDurability;
         }
 
         private static void InitializeBaseAddresses(nint moduleBase)
@@ -2033,6 +2037,44 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x58DB20,
                 _ => 0
             };
+            
+            Functions.ResolveSlotIdx = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x84CF60,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x84CCB0,
+                Version1_5_0_0 => 0x84D300,
+                Version1_5_1_0 => 0x84D130,
+                Version1_6_0_0 => 0x84D700,
+                Version1_7_0_0 => 0x84E610,
+                Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x857EC0,
+                Version1_11_0_0 => 0x85D980,
+                Version1_12_0_0 => 0x85E170,
+                Version1_13_0_0 => 0x85FA20,
+                Version1_14_0_0 => 0x85FB10,
+                Version1_15_0_0 => 0x85FB50,
+                Version1_15_1_0 => 0x8680E0,
+                Version1_15_2_0 => 0x868490,
+                _ => 0
+            };
+
+            Functions.SetCurrentDurability = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x581B80,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x581D30,
+                Version1_5_0_0 => 0x582030,
+                Version1_5_1_0 => 0x581E60,
+                Version1_6_0_0 => 0x582430,
+                Version1_7_0_0 => 0x583340,
+                Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x589380,
+                Version1_11_0_0 => 0x58B4A0,
+                Version1_12_0_0 => 0x58B600,
+                Version1_13_0_0 => 0x58B750,
+                Version1_14_0_0 or Version1_15_0_0 => 0x58B790,
+                Version1_15_1_0 => 0x58D230,
+                Version1_15_2_0 => 0x58D220,
+                _ => 0
+            };
+
 
         }
 
@@ -2123,6 +2165,8 @@ namespace SilkySouls3.Memory
             PrintOffset("SetPosition", Functions.SetPosition);
             PrintOffset("LuaDoString", Functions.LuaDoString);
             PrintOffset("RefreshFromStorage", Functions.RefreshFromStorage);
+            PrintOffset("ResolveSlotIdx", Functions.ResolveSlotIdx);
+            PrintOffset("SetCurrentDurability", Functions.SetCurrentDurability);
 
             Console.WriteLine("\n====================================\n");
         }

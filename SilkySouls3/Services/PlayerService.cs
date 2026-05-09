@@ -147,6 +147,20 @@ namespace SilkySouls3.Services
             memoryService.Read<nint>(MenuMan.Base) + MenuMan.BossGaugeId);
 
         public int GetCurrentAnimationId() => chrInsService.GetCurrentAnimationId(GetPlayerIns());
+        
+        public void BreakWeapon(int slotSelector)
+        {
+            var bytes = AsmLoader.GetAsmBytes(AsmScript.BreakWeapon);
+            var gameData = memoryService.Read<nint>(memoryService.Read<nint>(GameDataMan.Base) + GameDataMan.PlayerGameData);
+            AsmHelper.WriteAbsoluteAddresses(bytes, [
+                (gameData, 0x4 + 2),
+                (Functions.ResolveSlotIdx, 0x1D + 2),
+                (Functions.SetCurrentDurability, 0x4A + 2)
+            ]);
+            
+            AsmHelper.WriteImmediateDword(bytes, slotSelector, 0x18 + 1);
+            memoryService.AllocateAndExecute(bytes);
+        }
 
         public Vector3 GetPosition() => chrInsService.GetPosition(GetPlayerIns());
 

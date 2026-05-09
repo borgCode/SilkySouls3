@@ -19,7 +19,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -169,7 +168,7 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid Grid.Row="2" Margin="0,0,0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -235,12 +234,16 @@
                        Margin="0,0,0,5" />
 
             <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
+                <StackPanel Grid.Row="0" Grid.Column="0">
                     <Grid Margin="0,2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -333,7 +336,7 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Column="1">
+                <StackPanel Grid.Row="0" Grid.Column="1">
                     <Grid Margin="0,2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -425,7 +428,8 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Grid.Column="2" VerticalAlignment="Top" Margin="15,0,0,0">
+                <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                            VerticalAlignment="Top" Margin="15,0,0,0">
                     <Button Content="Ember"
                             Height="25" Width="130"
                             FontSize="14"
@@ -442,11 +446,24 @@
                             Command="{Binding GiveSoulsCommand}"
                             IsEnabled="{Binding AreOptionsEnabled}"
                             Width="130"
+                            Height="25"
+                            Margin="0,0,0,10" />
+                    <Button Content="Break Left Weapon"
+                            Command="{Binding BreakWeaponCommand}"
+                            CommandParameter="-2"
+                            IsEnabled="{Binding AreOptionsEnabled}"
+                            Width="130"
+                            Height="25"
+                            Margin="0,0,0,5" />
+                    <Button Content="Break Right Weapon"
+                            Command="{Binding BreakWeaponCommand}"
+                            CommandParameter="-1"
+                            IsEnabled="{Binding AreOptionsEnabled}"
+                            Width="130"
                             Height="25" />
                 </StackPanel>
-            </Grid>
 
-            <Grid Grid.Row="5" Margin="0,10,0,0">
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -517,13 +534,15 @@
                     </Border>
                 </StackPanel>
                 
-                <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                            Margin="20,0,0,0" VerticalAlignment="Center">
-                    <TextBlock Text="Current Animation:" Margin="0,0,0,4"   />
-                    <TextBlock Text="{Binding CurrentAnimation}" Foreground="Gold" />
-                </StackPanel>
+                    <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                Margin="20,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Current Animation:" Margin="0,0,0,4" />
+                        <TextBlock Text="{Binding CurrentAnimation}" Foreground="Gold" />
+                    </StackPanel>
+                </Grid>
             </Grid>
-            <Border Grid.Row="6" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,10,0,0">
+
+            <Border Grid.Row="5" BorderThickness="1" BorderBrush="#333" CornerRadius="3">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

@@ -2501,4 +2501,31 @@ ff d0                   call   rax
 48 83 c4 20             add    rsp,0x20
 c3                      ret</value>
   </data>
+  <data name="BreakWeapon" xml:space="preserve">
+    <value>48 83 ec 20             sub    rsp,0x20
+48 bb 00 00 00 00 00    movabs rbx,0x0
+00 00 00 
+48 89 d9                mov    rcx,rbx
+48 81 c1 b0 02 00 00    add    rcx,0x2b0
+ba ef be ad de          mov    edx,0xdeadbeef
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+83 f8 10                cmp    eax,0x10
+74 28                   je     56 &lt;exit&gt;
+48 63 f0                movsxd rsi,eax
+8b 94 b3 4c 02 00 00    mov    edx,DWORD PTR [rbx+rsi*4+0x24c]
+83 fa ff                cmp    edx,0xffffffff
+74 19                   je     56 &lt;exit&gt;
+48 89 d9                mov    rcx,rbx
+48 81 c1 d0 03 00 00    add    rcx,0x3d0
+45 31 c0                xor    r8d,r8d
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+
+000000000056 &lt;exit&gt;:
+48 83 c4 20             add    rsp,0x20
+c3                      ret</value>
+  </data>
 </root>
