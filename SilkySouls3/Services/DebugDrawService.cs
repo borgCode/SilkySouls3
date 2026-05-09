@@ -12,6 +12,7 @@ namespace SilkySouls3.Services
         public DebugDrawService(IMemoryService memoryService, IStateService stateService)
         {
             _memoryService = memoryService;
+            stateService.Subscribe(State.Attached, () => _clientCount = 0);
             stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
         }
 
