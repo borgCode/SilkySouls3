@@ -12,21 +12,42 @@
     <StackPanel Margin="10">
 
         <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,0,5">
-            <StackPanel Margin="5">
-                <TextBlock Text="Global Enemy Options" FontWeight="Bold" Margin="0,0,0,5" />
-                <CheckBox Content="Disable AI" IsChecked="{Binding IsAllDisableAiEnabled}" Margin="0,2" />
-                <CheckBox Content="All No Damage" IsChecked="{Binding IsAllNoDamageEnabled}" Margin="0,2" />
-                <CheckBox Content="All No Death" IsChecked="{Binding IsAllNoDeathEnabled}" Margin="0,2" />
-                <CheckBox Content="All Repeat Action" IsChecked="{Binding IsAllRepeatActEnabled}" Margin="0,2" />
-                <CheckBox Content="Enemy Targeting View" IsChecked="{Binding IsTargetingViewEnabled}" Margin="0,2" />
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Global Enemy Options" FontWeight="Bold" Margin="5,5,0,5" />
+                
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                    <CheckBox Content="No Death" IsChecked="{Binding IsAllNoDeathEnabled}" Margin="5,0,0,5" />
+                    <CheckBox Content="No Damage" IsChecked="{Binding IsAllNoDamageEnabled}" Margin="5,0,0,5" />
+                    <CheckBox Content="No Move" IsChecked="{Binding IsAllNoMoveEnabled}" Margin="5,0,0,5" />
+                    <CheckBox Content="No Attack" IsChecked="{Binding IsAllNoAttackEnabled}" Margin="5,0,0,5" />
+                    <CheckBox Content="Disable AI" IsChecked="{Binding IsAllDisableAiEnabled}" Margin="5,0,0,5" />
+
+                </StackPanel>
+                
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                    <CheckBox Content="All Repeat Action" IsChecked="{Binding IsAllRepeatActEnabled}" Margin="0,2" />
+                    <CheckBox Content="Enemy Targeting View" IsChecked="{Binding IsTargetingViewEnabled}" Margin="0,2" />
+                    <CheckBox Content="Draw Navigation Route" IsChecked="{Binding IsDrawNavigationEnabled}" Margin="0,2" />
+                </StackPanel>
+                
+            </Grid>
         </Border>
 
         <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,0,5"
                 IsEnabled="{Binding AreCinderOptionsEnabled}">
             <StackPanel Margin="5">
                 <TextBlock Text="Cinder" FontWeight="Bold" Margin="0,0,0,5" />
-                <Grid Margin="0,0,0,5">
+                <Grid Margin="5,0,0,5">
                     <WrapPanel Orientation="Horizontal">
                         <Button Content="Sword" Margin="0,0,5,5" Padding="8,3" MinWidth="40"
                                 Command="{Binding SetCinderPhaseCommand}"
@@ -51,7 +72,7 @@
                                 Command="{Binding RemoveSoulmassCommand}" />
                     </StackPanel>
                 </Grid>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                     <CheckBox Content="Lock Phase" Margin="0,0,10,0" VerticalAlignment="Center"
                               IsChecked="{Binding IsCinderPhasedLocked}" />
                     <CheckBox Content="No Stagger" Margin="0,0,10,0" VerticalAlignment="Center"
@@ -67,7 +88,7 @@
         <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3">
             <StackPanel Margin="5">
                 <TextBlock Text="Halflight" FontWeight="Bold" Margin="0,0,0,5" />
-                <Grid>
+                <Grid Margin="5,0,0,0">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <TextBlock Text="Argo talk speed multiplier" VerticalAlignment="Center" Margin="0,0,10,0" />
                         <xctk:DecimalUpDown Value="{Binding ArgoSpeedMultiplier}"
@@ -92,23 +113,33 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <Border Grid.Column="0" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
                     IsEnabled="{Binding ArePontiffOptionsEnabled}">
                 <StackPanel Margin="5">
                     <TextBlock Text="Pontiff" FontWeight="Bold" Margin="0,0,0,5" />
                     <CheckBox Content="Prevent Clone Summon"
-                              IsChecked="{Binding IsPontiffNoCloneEnabled}" Margin="0,2" />
+                              IsChecked="{Binding IsPontiffNoCloneEnabled}" Margin="5,0,0,0" />
                 </StackPanel>
             </Border>
-            
+
             <Border Grid.Column="1" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
                     IsEnabled="{Binding AreOceirosOptionsEnabled}">
                 <StackPanel Margin="5">
                     <TextBlock Text="Oceiros" FontWeight="Bold" Margin="0,0,0,5" />
-                    <Button Content="Phase 2" Padding="8,3" Margin="0,0,0,5" HorizontalAlignment="Left"
+                    <Button Content="Phase 2" Padding="8,3" Margin="5,0,0,0" HorizontalAlignment="Left"
                             Command="{Binding ForceOceirosPhaseTwoCommand}" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
+                    IsEnabled="{Binding AreKingOfTheStormOptionsEnabled}">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Nameless" FontWeight="Bold" Margin="0,0,0,5" />
+                    <Button Content="Skip Phase 1" Padding="8,3" Margin="5,0,0,0" HorizontalAlignment="Left"
+                            Command="{Binding SkipKingOfTheStormCommand}" />
                 </StackPanel>
             </Border>
 
@@ -135,7 +166,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Left Side:" VerticalAlignment="Center"
-                                   Margin="0,0,10,5" />
+                                   Margin="5,0,5,5" />
                         <ComboBox Grid.Row="0" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedLeftButterflyAnimation}"
                                   Margin="0,0,0,5" Width="120" HorizontalAlignment="Left">
@@ -145,7 +176,7 @@
                             <ComboBoxItem Content="Big Meatball" />
                         </ComboBox>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Right Side:" VerticalAlignment="Center"
-                                   Margin="0,0,10,0" />
+                                   Margin="5,0,5,0" />
                         <ComboBox Grid.Row="1" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedRightButterflyAnimation}"
                                   Width="120" HorizontalAlignment="Left">

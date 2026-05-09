@@ -102,10 +102,10 @@ namespace SilkySouls3
 
             MainTabControl.Items.Add(new TabItem { Header = "Player", Content = playerTab });
             MainTabControl.Items.Add(new TabItem { Header = "Travel", Content = travelTab });
-            MainTabControl.Items.Add(new TabItem { Header = "Event", Content = eventTab });
-            MainTabControl.Items.Add(new TabItem { Header = "Utility", Content = utilityTab });
-            MainTabControl.Items.Add(new TabItem { Header = "Target", Content = targetTab });
             MainTabControl.Items.Add(new TabItem { Header = "Enemies", Content = enemyTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Target", Content = targetTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Utility", Content = utilityTab });
+            MainTabControl.Items.Add(new TabItem { Header = "Event", Content = eventTab });
             MainTabControl.Items.Add(new TabItem { Header = "Items", Content = itemTab });
             MainTabControl.Items.Add(new TabItem { Header = "Settings", Content = settingsTab });
 

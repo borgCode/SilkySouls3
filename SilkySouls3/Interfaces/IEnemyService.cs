@@ -12,4 +12,5 @@ public interface IEnemyService
     void SetLeftButterflyAttack(float animationId);
     void SetRightButterflyAttack(float animationId);
     void TogglePontiffNoClone(bool isEnabled);
+    void ToggleDrawNavigation(bool isEnabled);
 }

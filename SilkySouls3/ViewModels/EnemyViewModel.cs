@@ -7,8 +7,8 @@ using SilkySouls3.Core;
 using SilkySouls3.Enums;
 using SilkySouls3.GameIds;
 using SilkySouls3.Interfaces;
-using SilkySouls3.Memory;
 using SilkySouls3.Utilities;
+using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.ViewModels
 {
@@ -97,6 +97,9 @@ namespace SilkySouls3.ViewModels
         private const int OceirosPhaseTransitionAnimId = 1500;
         private const int OceirosEntityId = 3000830;
 
+        private const int KingOfTheStormGaugeId = 905030;
+        private const int KingOfTheStormEntityId = 3200850;
+
         public EnemyViewModel(IEnemyService enemyService, ICinderService cinderService, HotkeyManager hotkeyManager,
             IStateService stateService, IParamService paramService, IDebugDrawService debugDrawService,
             IChrInsService chrInsService, ISpEffectService spEffectService, IEventService eventService)
@@ -115,6 +118,7 @@ namespace SilkySouls3.ViewModels
             DeaconsPhase2Command = new DelegateCommand(DeaconsPhase2);
             DeaconsPhase2WithMoveCommand = new DelegateCommand(DeaconsPhase2WithMove);
             ForceOceirosPhaseTwoCommand = new DelegateCommand(ForceOceirosPhaseTwo);
+            SkipKingOfTheStormCommand = new DelegateCommand(SkipKingOfTheStorm);
 
             _hotkeyManager = hotkeyManager;
             _paramService = paramService;
@@ -137,6 +141,7 @@ namespace SilkySouls3.ViewModels
                 {
                     AreDeaconsOptionsEnabled = gaugeId == DeaconsBossGaugeId;
                     AreOceirosOptionsEnabled = gaugeId == OceirosBossGaugeId;
+                    AreKingOfTheStormOptionsEnabled = gaugeId == KingOfTheStormGaugeId;
                 }
             );
 
@@ -153,6 +158,7 @@ namespace SilkySouls3.ViewModels
         public ICommand DeaconsPhase2Command { get; }
         public ICommand DeaconsPhase2WithMoveCommand { get; }
         public ICommand ForceOceirosPhaseTwoCommand { get; }
+        public ICommand SkipKingOfTheStormCommand { get; }
 
         #endregion
 
@@ -174,7 +180,7 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (SetProperty(ref _isAllDisableAiEnabled, value))
-                    _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoUpdate, _isAllDisableAiEnabled);
+                    _enemyService.ToggleDebugFlag(DebugFlags.AllNoUpdate, _isAllDisableAiEnabled);
             }
         }
 
@@ -186,7 +192,31 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (SetProperty(ref _isAllNoDamageEnabled, value))
-                    _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDamage, _isAllNoDamageEnabled);
+                    _enemyService.ToggleDebugFlag(DebugFlags.AllNoDamage, _isAllNoDamageEnabled);
+            }
+        }
+        
+        private bool _isAllNoMoveEnabled;
+
+        public bool IsAllNoMoveEnabled
+        {
+            get => _isAllNoMoveEnabled;
+            set
+            {
+                if (SetProperty(ref _isAllNoMoveEnabled, value))
+                    _enemyService.ToggleDebugFlag(DebugFlags.AllNoMove, _isAllNoMoveEnabled);
+            }
+        }
+        
+        private bool _isAllNoAttackEnabled;
+
+        public bool IsAllNoAttackEnabled
+        {
+            get => _isAllNoAttackEnabled;
+            set
+            {
+                if (SetProperty(ref _isAllNoAttackEnabled, value))
+                    _enemyService.ToggleDebugFlag(DebugFlags.AllNoAttack, _isAllNoAttackEnabled);
             }
         }
 
@@ -198,7 +228,7 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (SetProperty(ref _isAllNoDeathEnabled, value))
-                    _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDeath, _isAllNoDeathEnabled);
+                    _enemyService.ToggleDebugFlag(DebugFlags.AllNoDeath, _isAllNoDeathEnabled);
             }
         }
 
@@ -228,6 +258,23 @@ namespace SilkySouls3.ViewModels
                     _debugDrawService.ReleaseDebugDraw();
 
                 _enemyService.ToggleTargetingView(_isTargetingViewEnabled);
+            }
+        }
+        
+        private bool _isDrawNavigationEnabled;
+
+        public bool IsDrawNavigationEnabled
+        {
+            get => _isDrawNavigationEnabled;
+            set
+            {
+                if (!SetProperty(ref _isDrawNavigationEnabled, value)) return;
+                if (value)
+                    _debugDrawService.RequestDebugDraw();
+                else
+                    _debugDrawService.ReleaseDebugDraw();
+
+                _enemyService.ToggleDrawNavigation(_isDrawNavigationEnabled);
             }
         }
 
@@ -273,6 +320,14 @@ namespace SilkySouls3.ViewModels
         {
             get => _areOceirosOptionsEnabled;
             set => SetProperty(ref _areOceirosOptionsEnabled, value);
+        }
+
+        private bool _areKingOfTheStormOptionsEnabled;
+
+        public bool AreKingOfTheStormOptionsEnabled
+        {
+            get => _areKingOfTheStormOptionsEnabled;
+            set => SetProperty(ref _areKingOfTheStormOptionsEnabled, value);
         }
 
         private bool _isCinderPhaseLocked;
@@ -381,8 +436,16 @@ namespace SilkySouls3.ViewModels
                 () => { IsAllNoDeathEnabled = !IsAllNoDeathEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.AllNoDamage,
                 () => { IsAllNoDamageEnabled = !IsAllNoDamageEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.AllNoMove,
+                () => { IsAllNoMoveEnabled = !IsAllNoMoveEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.AllNoAttack,
+                () => { IsAllNoAttackEnabled = !IsAllNoAttackEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.AllRepeatAct,
                 () => { IsAllRepeatActEnabled = !IsAllRepeatActEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.EnemyTargetingView,
+                () => { IsTargetingViewEnabled = !IsTargetingViewEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.DrawNavigation,
+                () => { IsDrawNavigationEnabled = !IsDrawNavigationEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.SetSwordPhase, () => SetCinderPhase(CinderPhase.Sword));
             _hotkeyManager.RegisterAction(HotkeyActions.SetLancePhase, () => SetCinderPhase(CinderPhase.Lance));
             _hotkeyManager.RegisterAction(HotkeyActions.SetCurvedPhase, () => SetCinderPhase(CinderPhase.Curved));
@@ -395,6 +458,22 @@ namespace SilkySouls3.ViewModels
                 () => IsEndlessSoulmassEnabled = !IsEndlessSoulmassEnabled);
             _hotkeyManager.RegisterAction(HotkeyActions.CinderNoStagger,
                 () => IsCinderNoStaggerEnabled = !IsCinderNoStaggerEnabled);
+            _hotkeyManager.RegisterAction(HotkeyActions.PlacePrismStones,
+                () => { if (CanPlacePrismStones) PlacePrismStones(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.PontiffNoClone,
+                () => { if (ArePontiffOptionsEnabled) IsPontiffNoCloneEnabled = !IsPontiffNoCloneEnabled; });
+            _hotkeyManager.RegisterAction(HotkeyActions.OceirosPhaseTwo,
+                () => { if (AreOceirosOptionsEnabled) ForceOceirosPhaseTwo(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.SkipKingOfTheStorm,
+                () => { if (AreKingOfTheStormOptionsEnabled) SkipKingOfTheStorm(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.DeaconsPhaseTwo,
+                () => { if (AreDeaconsOptionsEnabled) DeaconsPhase2(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.DeaconsPhaseTwoWithMove,
+                () => { if (AreDeaconsOptionsEnabled) DeaconsPhase2WithMove(); });
+            _hotkeyManager.RegisterAction(HotkeyActions.CycleLeftButterflyAnimation,
+                () => { if (AreDsaOptionsEnabled) SelectedLeftButterflyAnimation = (SelectedLeftButterflyAnimation + 1) % ButterflyAnimationIds.Length; });
+            _hotkeyManager.RegisterAction(HotkeyActions.CycleRightButterflyAnimation,
+                () => { if (AreDsaOptionsEnabled) SelectedRightButterflyAnimation = (SelectedRightButterflyAnimation + 1) % ButterflyAnimationIds.Length; });
         }
 
         private void ForceDeaconsPhase2HpAndFlags()
@@ -446,14 +525,22 @@ namespace SilkySouls3.ViewModels
 
         private void OnGameLoaded()
         {
-            if (IsAllDisableAiEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoUpdate, true);
-            if (IsAllNoDamageEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDamage, true);
-            if (IsAllNoDeathEnabled) _enemyService.ToggleDebugFlag(Offsets.DebugFlags.AllNoDeath, true);
+            if (IsAllDisableAiEnabled) _enemyService.ToggleDebugFlag(DebugFlags.AllNoUpdate, true);
+            if (IsAllNoDamageEnabled) _enemyService.ToggleDebugFlag(DebugFlags.AllNoDamage, true);
+            if (IsAllNoDeathEnabled) _enemyService.ToggleDebugFlag(DebugFlags.AllNoDeath, true);
+            if (IsAllNoMoveEnabled) _enemyService.ToggleDebugFlag(DebugFlags.AllNoMove, true);
+            if (IsAllNoAttackEnabled) _enemyService.ToggleDebugFlag(DebugFlags.AllNoAttack, true);
             if (IsAllRepeatActEnabled) _enemyService.ToggleAllRepeatAct(true);
             if (IsTargetingViewEnabled)
             {
                 _debugDrawService.RequestDebugDraw();
                 _enemyService.ToggleTargetingView(true);
+            }
+
+            if (IsDrawNavigationEnabled)
+            {
+                _debugDrawService.RequestDebugDraw();
+                _enemyService.ToggleDrawNavigation(true);
             }
 
             ApplyButterflyRng();
@@ -501,6 +588,7 @@ namespace SilkySouls3.ViewModels
             AreDeaconsOptionsEnabled = false;
             AreDsaOptionsEnabled = false;
             ArePontiffOptionsEnabled = false;
+            AreKingOfTheStormOptionsEnabled = false;
             AreOptionsEnabled = false;
             _isInHalfLightArena = false;
             _hasPlacedPrismStonesThisLoad = false;
@@ -511,6 +599,12 @@ namespace SilkySouls3.ViewModels
         {
             var oceiros = _chrInsService.GetChrInsByEntityId(OceirosEntityId);
             _chrInsService.RequestEventAnimation(oceiros, OceirosPhaseTransitionAnimId);
+        }
+
+        private void SkipKingOfTheStorm()
+        {
+            var kots = _chrInsService.GetChrInsByEntityId(KingOfTheStormEntityId);
+            _chrInsService.SetHp(kots, 0);
         }
 
         #endregion

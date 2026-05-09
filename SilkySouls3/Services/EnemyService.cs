@@ -152,6 +152,8 @@ namespace SilkySouls3.Services
             else InjectScript(PontiffVanillaResourceName);
         }
 
+        public void ToggleDrawNavigation(bool isEnabled) => memoryService.Write(DrawNavigationPath, isEnabled);
+
         private void InjectScript(string resourceName)
         {
             var content = Properties.Resources.ResourceManager.GetString(resourceName)
