@@ -25,6 +25,8 @@ public interface IPlayerService
     public void ToggleDebugFlag(int offset, int value);
     public void ToggleInfinitePoise(bool isEnabled);
     void ToggleNoHit(bool isEnabled);
+    void ToggleInvisible(bool isEnabled);
+    void ToggleSilent(bool isEnabled);
     void ToggleInfiniteDurability(bool isEnabled);
     void ToggleNoGoodsConsume(bool isEnabled);
     Stats GetStats();
@@ -39,4 +41,5 @@ public interface IPlayerService
     void ForceSetPosition(Vector3 position);
     int GetCurrentBlockId();
     int GetBossGaugeId();
+    int GetCurrentAnimationId();
 }

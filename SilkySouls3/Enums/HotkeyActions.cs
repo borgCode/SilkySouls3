@@ -10,6 +10,8 @@ public enum HotkeyActions
     RestorePos2,
     Rtsr,
     MaxHp,
+    Die,
+    SetCustomHp,
     NoDeath,
     OneShot,
     PlayerNoDamage,

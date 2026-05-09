@@ -58,7 +58,7 @@ public class ChrInsService(IMemoryService memoryService) : IChrInsService
         memoryService.IsBitSet(GetChrSuperArmor(chrIns) + ChrIns.ChrSuperArmorOffsets.InfinitePoise.Offset,
             ChrIns.ChrSuperArmorOffsets.InfinitePoise.Bit);
 
-    public nint ChrInsByEntityId(int entityId)
+    public nint GetChrInsByEntityId(int entityId)
     {
         var bytes = AsmLoader.GetAsmBytes(AsmScript.ChrInsByEntityId);
         var storeLocation = CustomCodeOffsets.Base + CustomCodeOffsets.StoredChrInsByEntityId;

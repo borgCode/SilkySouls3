@@ -21,7 +21,7 @@ public interface IChrInsService
     void SetSpeed(nint chrIns, float speed);
     void ToggleInfinitePoise(nint chrIns, bool isEnabled);
     bool IsInfinitePoiseEnabled(nint chrIns);
-    nint ChrInsByEntityId(int entityId);
+    nint GetChrInsByEntityId(int entityId);
     void RequestEventAnimation(nint chrIns, int animationId);
     int GetCurrentAnimationId(nint chrIns);
     Resistances GetResistances(nint chrIns);

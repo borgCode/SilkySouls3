@@ -56,7 +56,23 @@ namespace SilkySouls3.Services
 
         public void SetSp(int sp) => chrInsService.SetSp(GetPlayerIns(), sp);
 
-        public void ToggleNoDamage(bool isEnabled) => chrInsService.ToggleNoDamage(GetPlayerIns(), isEnabled);
+        public void ToggleNoDamage(bool isEnabled)
+        {
+            reminderService.TrySetReminder();
+            chrInsService.ToggleNoDamage(GetPlayerIns(), isEnabled);
+        }
+
+        public void ToggleInvisible(bool isEnabled)
+        {
+            reminderService.TrySetReminder();
+            memoryService.Write(DebugFlags.Base + DebugFlags.Invisible, (byte)(isEnabled ? 1 : 0));
+        }
+
+        public void ToggleSilent(bool isEnabled)
+        {
+            reminderService.TrySetReminder();
+            memoryService.Write(DebugFlags.Base + DebugFlags.Silent, (byte)(isEnabled ? 1 : 0));
+        }
 
         public float GetPlayerSpeed() => chrInsService.GetSpeed(GetPlayerIns());
 
@@ -129,6 +145,8 @@ namespace SilkySouls3.Services
 
         public int GetBossGaugeId() => memoryService.Read<int>(
             memoryService.Read<nint>(MenuMan.Base) + MenuMan.BossGaugeId);
+
+        public int GetCurrentAnimationId() => chrInsService.GetCurrentAnimationId(GetPlayerIns());
 
         public Vector3 GetPosition() => chrInsService.GetPosition(GetPlayerIns());
 

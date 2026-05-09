@@ -63,7 +63,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        
+
         <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3">
             <StackPanel Margin="5">
                 <TextBlock Text="Halflight" FontWeight="Bold" Margin="0,0,0,5" />
@@ -80,21 +80,40 @@
                     </StackPanel>
                     <Button Content="Place Prism Stones"
                             Command="{Binding PlacePrismStonesCommand}"
-                            IsEnabled="{Binding CanPlacePrismStones}" 
+                            IsEnabled="{Binding CanPlacePrismStones}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center" />
                 </Grid>
             </StackPanel>
         </Border>
 
-        <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
-                IsEnabled="{Binding ArePontiffOptionsEnabled}">
-            <StackPanel Margin="5">
-                <TextBlock Text="Pontiff" FontWeight="Bold" Margin="0,0,0,5" />
-                <CheckBox Content="Prevent Clone Summon"
-                          IsChecked="{Binding IsPontiffNoCloneEnabled}" Margin="0,2" />
-            </StackPanel>
-        </Border>
+
+        <Grid Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
+                    IsEnabled="{Binding ArePontiffOptionsEnabled}">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Pontiff" FontWeight="Bold" Margin="0,0,0,5" />
+                    <CheckBox Content="Prevent Clone Summon"
+                              IsChecked="{Binding IsPontiffNoCloneEnabled}" Margin="0,2" />
+                </StackPanel>
+            </Border>
+            
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,5,0,5"
+                    IsEnabled="{Binding AreOceirosOptionsEnabled}">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Oceiros" FontWeight="Bold" Margin="0,0,0,5" />
+                    <Button Content="Phase 2" Padding="8,3" Margin="0,0,0,5" HorizontalAlignment="Left"
+                            Command="{Binding ForceOceirosPhaseTwoCommand}" />
+                </StackPanel>
+            </Border>
+
+        </Grid>
+        
 
         <Grid Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
@@ -115,7 +134,8 @@
                             <ColumnDefinition Width="80" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Left Side:" VerticalAlignment="Center" Margin="0,0,10,5" />
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Left Side:" VerticalAlignment="Center"
+                                   Margin="0,0,10,5" />
                         <ComboBox Grid.Row="0" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedLeftButterflyAnimation}"
                                   Margin="0,0,0,5" Width="120" HorizontalAlignment="Left">
@@ -124,7 +144,8 @@
                             <ComboBoxItem Content="Laser" />
                             <ComboBoxItem Content="Big Meatball" />
                         </ComboBox>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Right Side:" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Right Side:" VerticalAlignment="Center"
+                                   Margin="0,0,10,0" />
                         <ComboBox Grid.Row="1" Grid.Column="1"
                                   SelectedIndex="{Binding SelectedRightButterflyAnimation}"
                                   Width="120" HorizontalAlignment="Left">

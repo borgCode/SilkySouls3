@@ -142,6 +142,8 @@ namespace SilkySouls3.ViewModels
                 [
                     new("RTSR Setup", HotkeyActions.Rtsr),
                     new("Max HP", HotkeyActions.MaxHp),
+                    new("Die", HotkeyActions.Die),
+                    new("Set Custom HP", HotkeyActions.SetCustomHp),
                     new("Save Position 1", HotkeyActions.SavePos1),
                     new("Save Position 2", HotkeyActions.SavePos2),
                     new("Restore Position 1", HotkeyActions.RestorePos1),

@@ -45,7 +45,7 @@ namespace SilkySouls3.ViewModels
         private const int IrithyllBlockId = 0x25000000;
 
         private const int DeaconsBossGaugeId = 905220;
-
+        
         public const int ArchDeaconEntityId = 3500800;
         public const int GlowingDeaconSpEffectId = 11521;
 
@@ -92,6 +92,10 @@ namespace SilkySouls3.ViewModels
             Enumerable.Range(13504810, 33)
                 .Concat(Enumerable.Range(13504850, 33))
                 .ToList();
+        
+        private const int OceirosBossGaugeId = 902090;
+        private const int OceirosPhaseTransitionAnimId = 1500;
+        private const int OceirosEntityId = 3000830;
 
         public EnemyViewModel(IEnemyService enemyService, ICinderService cinderService, HotkeyManager hotkeyManager,
             IStateService stateService, IParamService paramService, IDebugDrawService debugDrawService,
@@ -110,6 +114,7 @@ namespace SilkySouls3.ViewModels
             PlacePrismStonesCommand = new DelegateCommand(PlacePrismStones);
             DeaconsPhase2Command = new DelegateCommand(DeaconsPhase2);
             DeaconsPhase2WithMoveCommand = new DelegateCommand(DeaconsPhase2WithMove);
+            ForceOceirosPhaseTwoCommand = new DelegateCommand(ForceOceirosPhaseTwo);
 
             _hotkeyManager = hotkeyManager;
             _paramService = paramService;
@@ -128,13 +133,17 @@ namespace SilkySouls3.ViewModels
                 });
 
             stateService.Subscribe<int>(State.BossFight,
-                gaugeId => { AreDeaconsOptionsEnabled = gaugeId == DeaconsBossGaugeId; }
+                gaugeId =>
+                {
+                    AreDeaconsOptionsEnabled = gaugeId == DeaconsBossGaugeId;
+                    AreOceirosOptionsEnabled = gaugeId == OceirosBossGaugeId;
+                }
             );
 
 
             RegisterHotkeys();
         }
-
+        
         #region Commands
 
         public ICommand SetCinderPhaseCommand { get; }
@@ -143,6 +152,7 @@ namespace SilkySouls3.ViewModels
         public ICommand PlacePrismStonesCommand { get; }
         public ICommand DeaconsPhase2Command { get; }
         public ICommand DeaconsPhase2WithMoveCommand { get; }
+        public ICommand ForceOceirosPhaseTwoCommand { get; }
 
         #endregion
 
@@ -255,6 +265,14 @@ namespace SilkySouls3.ViewModels
                 if (SetProperty(ref _isPontiffNoCloneEnabled, value))
                     _enemyService.TogglePontiffNoClone(value);
             }
+        }
+        
+        private bool _areOceirosOptionsEnabled;
+
+        public bool AreOceirosOptionsEnabled
+        {
+            get => _areOceirosOptionsEnabled;
+            set => SetProperty(ref _areOceirosOptionsEnabled, value);
         }
 
         private bool _isCinderPhaseLocked;
@@ -381,7 +399,7 @@ namespace SilkySouls3.ViewModels
 
         private void ForceDeaconsPhase2HpAndFlags()
         {
-            var archDeacon = _chrInsService.ChrInsByEntityId(ArchDeaconEntityId);
+            var archDeacon = _chrInsService.GetChrInsByEntityId(ArchDeaconEntityId);
             var maxHp = _chrInsService.GetMaxHp(archDeacon);
 
             _chrInsService.SetHp(archDeacon, maxHp * 65 / 100 - 1);
@@ -394,7 +412,7 @@ namespace SilkySouls3.ViewModels
 
             foreach (var id in DeaconEntityIds)
             {
-                var deacon = _chrInsService.ChrInsByEntityId(id);
+                var deacon = _chrInsService.GetChrInsByEntityId(id);
                 _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
             }
         }
@@ -405,7 +423,7 @@ namespace SilkySouls3.ViewModels
 
             for (var i = 0; i < DeaconEntityIds.Length; i++)
             {
-                var deacon = _chrInsService.ChrInsByEntityId(DeaconEntityIds[i]);
+                var deacon = _chrInsService.GetChrInsByEntityId(DeaconEntityIds[i]);
                 _chrInsService.ToggleFreezeAi(deacon, true);
                 _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
                 _chrInsService.ForceSetPosition(deacon, DeaconPositions[i]);
@@ -487,6 +505,12 @@ namespace SilkySouls3.ViewModels
             _isInHalfLightArena = false;
             _hasPlacedPrismStonesThisLoad = false;
             OnPropertyChanged(nameof(CanPlacePrismStones));
+        }
+        
+        private void ForceOceirosPhaseTwo()
+        {
+            var oceiros = _chrInsService.GetChrInsByEntityId(OceirosEntityId);
+            _chrInsService.RequestEventAnimation(oceiros, OceirosPhaseTransitionAnimId);
         }
 
         #endregion

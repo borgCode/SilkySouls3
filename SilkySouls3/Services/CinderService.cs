@@ -212,7 +212,7 @@ namespace SilkySouls3.Services
         private bool IsValidCinderFight()
         {
             if (_cinderChrIns != 0) return true;
-            _cinderChrIns = _chrInsService.ChrInsByEntityId(CinderEntityId);
+            _cinderChrIns = _chrInsService.GetChrInsByEntityId(CinderEntityId);
             return _cinderChrIns != 0;
         }
         

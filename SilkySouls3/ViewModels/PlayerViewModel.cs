@@ -317,7 +317,7 @@ namespace SilkySouls3.ViewModels
             {
                 if (SetProperty(ref _isInvisibleEnabled, value))
                 {
-                    _playerService.ToggleDebugFlag(DebugFlags.Invisible, _isInvisibleEnabled ? 1 : 0);
+                    _playerService.ToggleInvisible(_isInvisibleEnabled);
                 }
             }
         }
@@ -331,7 +331,7 @@ namespace SilkySouls3.ViewModels
             {
                 if (SetProperty(ref _isSilentEnabled, value))
                 {
-                    _playerService.ToggleDebugFlag(DebugFlags.Silent, _isSilentEnabled ? 1 : 0);
+                    _playerService.ToggleSilent(_isSilentEnabled);
                 }
             }
         }
@@ -500,6 +500,14 @@ namespace SilkySouls3.ViewModels
             }
         }
 
+        private int _currentAnimation;
+
+        public int CurrentAnimation
+        {
+            get => _currentAnimation;
+            set => SetProperty(ref _currentAnimation, value);
+        }
+
         private float _playerSpeed;
 
         public float PlayerSpeed
@@ -593,6 +601,8 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction(HotkeyActions.RestorePos2, () => RestorePosition(1));
             _hotkeyManager.RegisterAction(HotkeyActions.Rtsr, SetRtsr);
             _hotkeyManager.RegisterAction(HotkeyActions.MaxHp, () => SetHp(CurrentMaxHp));
+            _hotkeyManager.RegisterAction(HotkeyActions.Die, Die);
+            _hotkeyManager.RegisterAction(HotkeyActions.SetCustomHp, SetCustomHp);
             _hotkeyManager.RegisterAction(HotkeyActions.NoDeath, () => { IsNoDeathEnabled = !IsNoDeathEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.OneShot, () => { IsOneShotEnabled = !IsOneShotEnabled; });
             _hotkeyManager.RegisterAction(HotkeyActions.PlayerNoDamage,
@@ -613,6 +623,7 @@ namespace SilkySouls3.ViewModels
 
             CurrentHp = _playerService.GetHp();
             CurrentMaxHp = _playerService.GetMaxHp();
+            CurrentAnimation = _playerService.GetCurrentAnimationId();
             Souls = _playerService.GetPlayerStat(GameDataMan.PlayerGameDataOffsets.Stats.Souls);
             PlayerSpeed = _playerService.GetPlayerSpeed();
             int newSoulLevel = _playerService.GetPlayerStat(GameDataMan.PlayerGameDataOffsets.Stats.SoulLevel);
@@ -624,7 +635,9 @@ namespace SilkySouls3.ViewModels
             var newBlockId = _playerService.GetCurrentBlockId();
             if (newBlockId != _currentBlockId)
             {
+#if DEBUG
                 Console.WriteLine($"{newBlockId:X}");
+#endif
                 _currentBlockId = newBlockId;
                 _stateService.Publish(State.BlockChanged, _currentBlockId);
             }
@@ -632,6 +645,9 @@ namespace SilkySouls3.ViewModels
             var newBossGaugeId = _playerService.GetBossGaugeId();
             if (newBossGaugeId != _currentBossGaugeId)
             {
+#if DEBUG
+                Console.WriteLine(newBossGaugeId);
+#endif
                 _currentBossGaugeId = newBossGaugeId;
                 _stateService.Publish(State.BossFight, _currentBossGaugeId);
             }
