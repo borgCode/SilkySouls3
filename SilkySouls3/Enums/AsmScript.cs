@@ -35,4 +35,5 @@ public enum AsmScript
     LuaDoString,
     RefreshFromStorage,
     BreakWeapon,
+    DropItem
 }

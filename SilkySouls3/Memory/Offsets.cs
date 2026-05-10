@@ -329,6 +329,7 @@ namespace SilkySouls3.Memory
         public static class MapItemMan
         {
             public static nint Base;
+            public const int ItemDropRecordVec = 0x48;
         }
 
         public static class HitFlags
@@ -500,6 +501,7 @@ namespace SilkySouls3.Memory
             public static nint RefreshFromStorage;
             public static nint ResolveSlotIdx;
             public static nint SetCurrentDurability;
+            public static nint InsertItemDrop;
         }
 
         private static void InitializeBaseAddresses(nint moduleBase)
@@ -923,7 +925,7 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x4791A38,
                 _ => 0
             };
-            
+
             WorldAiManager.Base = moduleBase + Version switch
             {
                 Version1_3_2_0 => 0x4696110,
@@ -941,7 +943,6 @@ namespace SilkySouls3.Memory
                 Version1_15_1_0 or Version1_15_2_0 => 0x4751550,
                 _ => 0
             };
-
 
 
             GameSpeed = moduleBase + Version switch
@@ -2019,7 +2020,7 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x1815AE0,
                 _ => 0
             };
-            
+
             Functions.RefreshFromStorage = moduleBase + Version switch
             {
                 Version1_3_2_0 => 0x582480,
@@ -2037,7 +2038,7 @@ namespace SilkySouls3.Memory
                 Version1_15_2_0 => 0x58DB20,
                 _ => 0
             };
-            
+
             Functions.ResolveSlotIdx = moduleBase + Version switch
             {
                 Version1_3_2_0 => 0x84CF60,
@@ -2075,7 +2076,24 @@ namespace SilkySouls3.Memory
                 _ => 0
             };
 
-
+            Functions.InsertItemDrop = moduleBase + Version switch
+            {
+                Version1_3_2_0 => 0x7AE2B0,
+                Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x7AE950,
+                Version1_5_0_0 => 0x7AEF30,
+                Version1_5_1_0 => 0x7AED60,
+                Version1_6_0_0 => 0x7AF330,
+                Version1_7_0_0 => 0x7B0240,
+                Version1_8_0_0 or Version1_9_0_0 or Version1_10_0_0 => 0x7B8F80,
+                Version1_11_0_0 => 0x7BDD30,
+                Version1_12_0_0 => 0x7BE4C0,
+                Version1_13_0_0 => 0x7BE6B0,
+                Version1_14_0_0 => 0x7BE7A0,
+                Version1_15_0_0 => 0x7BE7E0,
+                Version1_15_1_0 => 0x7C6770,
+                Version1_15_2_0 => 0x7C6B20,
+                _ => 0
+            };
         }
 
 #if DEBUG

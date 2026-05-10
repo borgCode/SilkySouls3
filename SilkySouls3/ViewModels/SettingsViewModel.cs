@@ -197,6 +197,7 @@ namespace SilkySouls3.ViewModels
                     new("Skip King of the Storm", HotkeyActions.SkipKingOfTheStorm),
                     new("Deacons Phase 2", HotkeyActions.DeaconsPhaseTwo),
                     new("Deacons Phase 2 (With Move)", HotkeyActions.DeaconsPhaseTwoWithMove),
+                    new("Drop 10 Skulls at Deacons Fog", HotkeyActions.DropDeaconSkulls),
                     new("DSA Cycle Left Animation", HotkeyActions.CycleLeftButterflyAnimation),
                     new("DSA Cycle Right Animation", HotkeyActions.CycleRightButterflyAnimation),
                 ],

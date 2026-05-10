@@ -188,14 +188,19 @@
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="1" BorderThickness="1" BorderBrush="#333" CornerRadius="3"
-                    IsEnabled="{Binding AreDeaconsOptionsEnabled}">
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="#333" CornerRadius="3">
                 <StackPanel Margin="5">
                     <TextBlock Text="Deacons" FontWeight="Bold" Margin="0,0,0,5" />
                     <Button Content="Phase 2" Padding="8,3" Margin="0,0,0,5" HorizontalAlignment="Left"
+                            IsEnabled="{Binding AreDeaconsOptionsEnabled}"
                             Command="{Binding DeaconsPhase2Command}" />
-                    <Button Content="Phase 2 (Move deacons to other side)" Padding="8,3" HorizontalAlignment="Left"
+                    <Button Content="Phase 2 (Move deacons to other side)" Padding="8,3" Margin="0,0,0,5"
+                            HorizontalAlignment="Left"
+                            IsEnabled="{Binding AreDeaconsOptionsEnabled}"
                             Command="{Binding DeaconsPhase2WithMoveCommand}" />
+                    <Button Content="Drop 10 skulls at fog" Padding="8,3" HorizontalAlignment="Left"
+                            IsEnabled="{Binding CanDropDeaconSkulls}"
+                            Command="{Binding DropDeaconSkullsCommand}" />
                 </StackPanel>
             </Border>
         </Grid>

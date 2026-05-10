@@ -355,6 +355,23 @@ namespace SilkySouls3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 48 83 ec 30             sub    rsp,0x30
+        ///48 b9 00 00 00 00 00    movabs rcx,0x0
+        ///00 00 00 
+        ///48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 15 &lt;_main+0x15&gt;
+        ///48 b8 00 00 00 00 00    movabs rax,0x0
+        ///00 00 00 
+        ///ff d0                   call   rax
+        ///48 83 c4 30             add    rsp,0x30
+        ///c3                      ret.
+        /// </summary>
+        internal static string DropItem {
+            get {
+                return ResourceManager.GetString("DropItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 48 89 e5                mov    rbp,rsp
         ///48 81 ec 98 05 00 00    sub    rsp,0x598
         ///48 8d 8d e0 fb ff ff    lea    rcx,[rbp-0x420]

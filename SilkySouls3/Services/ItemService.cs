@@ -1,7 +1,9 @@
 ﻿using System;
+using SilkySouls3.Data;
 using SilkySouls3.Enums;
 using SilkySouls3.Interfaces;
 using SilkySouls3.Memory;
+using SilkySouls3.Models;
 using SilkySouls3.Utilities;
 using static SilkySouls3.Memory.Offsets;
 
@@ -9,6 +11,7 @@ namespace SilkySouls3.Services
 {
     public class ItemService(IMemoryService memoryService) : IItemService
     {
+        
         public void SpawnItem(int itemId, int quantity, bool shouldAdjustQuantity, int maxQuantity)
         {
             var qtyAdjustFlag = CustomCodeOffsets.Base + (int)CustomCodeOffsets.ItemSpawn.QtyAdjustFlag;
@@ -51,6 +54,31 @@ namespace SilkySouls3.Services
 
             memoryService.WriteBytes(code, codeBytes);
             memoryService.RunThread(code);
+        }
+        
+        public void DropItem(ItemDrop itemDrop)
+        {
+            var codeBytes = AsmLoader.GetAsmBytes(AsmScript.DropItem);
+            var itemRecordBytes = ItemDropTemplate.BuildFor(itemDrop);
+            
+            var mem = memoryService.AllocateMem((uint)(codeBytes.Length + itemRecordBytes.Length));
+            
+            memoryService.WriteBytes(mem, itemRecordBytes);
+            var code = mem + itemRecordBytes.Length;
+
+            var itemDropVec = memoryService.Read<nint>(MapItemMan.Base) + MapItemMan.ItemDropRecordVec;
+            
+            AsmHelper.WriteAbsoluteAddresses(codeBytes, [
+            (itemDropVec, 0x4 + 2),
+            (Functions.InsertItemDrop, 0x15 + 2)
+            ]);
+            
+            AsmHelper.WriteRelativeOffset(codeBytes, code + 0xE, mem, 7, 0xE + 3);
+            
+            memoryService.WriteBytes(code, codeBytes);
+            
+            memoryService.RunThread(code);
+            memoryService.FreeMem(mem);
         }
     }
 }

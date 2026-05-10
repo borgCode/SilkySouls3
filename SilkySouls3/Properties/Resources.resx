@@ -2528,4 +2528,15 @@ ff d0                   call   rax
 48 83 c4 20             add    rsp,0x20
 c3                      ret</value>
   </data>
+  <data name="DropItem" xml:space="preserve">
+    <value>48 83 ec 30             sub    rsp,0x30
+48 b9 00 00 00 00 00    movabs rcx,0x0
+00 00 00 
+48 8d 15 00 00 00 00    lea    rdx,[rip+0x0]        # 15 &lt;_main+0x15&gt;
+48 b8 00 00 00 00 00    movabs rax,0x0
+00 00 00 
+ff d0                   call   rax
+48 83 c4 30             add    rsp,0x30
+c3                      ret</value>
+  </data>
 </root>

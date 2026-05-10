@@ -82,6 +82,7 @@ public enum HotkeyActions
     SkipKingOfTheStorm,
     DeaconsPhaseTwo,
     DeaconsPhaseTwoWithMove,
+    DropDeaconSkulls,
     CycleLeftButterflyAnimation,
     CycleRightButterflyAnimation,
     Warp,

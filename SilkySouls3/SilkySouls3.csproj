@@ -127,6 +127,11 @@
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="Core\DelegateCommand.cs" />
+    <Compile Include="Data\ArgoData.cs" />
+    <Compile Include="Data\ButterflyData.cs" />
+    <Compile Include="Data\DeaconData.cs" />
+    <Compile Include="Data\ItemDropTemplate.cs" />
+    <Compile Include="Data\PrismStoneData.cs" />
     <Compile Include="Enums\AsmScript.cs" />
     <Compile Include="Enums\CinderPhase.cs" />
     <Compile Include="Enums\DlcRequirement.cs" />
@@ -164,6 +169,7 @@
     <Compile Include="Models\Defenses.cs" />
     <Compile Include="Models\Immunities.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemDrop.cs" />
     <Compile Include="Models\Loadout.cs" />
     <Compile Include="Models\Poise.cs" />
     <Compile Include="Models\Position.cs" />

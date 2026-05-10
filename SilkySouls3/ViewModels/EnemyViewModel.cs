@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using System.Windows.Input;
 using SilkySouls3.Core;
+using SilkySouls3.Data;
 using SilkySouls3.Enums;
 using SilkySouls3.GameIds;
 using SilkySouls3.Interfaces;
@@ -23,77 +21,22 @@ namespace SilkySouls3.ViewModels
         private readonly ISpEffectService _spEffectService;
         private readonly IEventService _eventService;
         private readonly IReminderService _reminderService;
-        private static readonly float[] ButterflyAnimationIds = { 0f, 3000f, 3001f, 3002f };
-
-        private const int TalkParamSpeedOffset = 0x2C;
-
-        private static readonly (uint RowId, float VanillaDuration)[] ArgoTalkRows =
-        [
-            (88000200, 10f),
-            (88000201, 8f),
-            (88000202, 9f),
-            (88000203, 6f),
-            (88000204, 3f),
-            (88000600, 4f),
-            (88000601, 9f)
-        ];
+        private readonly IItemService _itemService;
 
         private bool _isFadedIn;
         private bool _isInHalfLightArena;
+        private bool _isInCathedralOfTheDeep;
         private bool _hasPlacedPrismStonesThisLoad;
         private const int HalfLightBlockId = 0x33000000;
         private const int KilnBlockId = 0x29000000;
         private const int BarracksBlockId = 0x1E010000;
         private const int IrithyllBlockId = 0x25000000;
+        private const int CathedralOfTheDeepBlockId = 0x23000000;
 
         private const int DeaconsBossGaugeId = 905220;
 
         public const int ArchDeaconEntityId = 3500800;
         public const int GlowingDeaconSpEffectId = 11521;
-
-        private static readonly int[] DeaconEntityIds =
-        [
-            3500810, 3500811, 3500812, 3500813, 3500814, 3500815, 3500816, 3500817, 3500818, 3500819,
-            3500820, 3500821, 3500822, 3500823, 3500824, 3500825, 3500826, 3500827, 3500828, 3500834, 3500835,
-            3500836, 3500837, 3500838, 3500839, 3500840, 3500841, 3500842,
-        ];
-
-        public static readonly Vector3[] DeaconPositions =
-        [
-            new(-500.325f, -197.0186f, -644.5127f),
-            new(-494.1169f, -197.019f, -648.8835f),
-            new(-505.5398f, -196.9706f, -646.1632f),
-            new(-497.2601f, -197.0191f, -642.5104f),
-            new(-496.4046f, -197.0151f, -643.2489f),
-            new(-498.8778f, -197.0181f, -652.1129f),
-            new(-494.6716f, -196.9687f, -642.7067f),
-            new(-504.1354f, -196.9857f, -645.472f),
-            new(-505.4075f, -196.9684f, -648.8774f),
-            new(-506.8764f, -196.729f, -648.8887f),
-            new(-501.0263f, -197.0184f, -646.4899f),
-            new(-496.0489f, -196.9697f, -640.0248f),
-            new(-495.8222f, -197.0192f, -644.7987f),
-            new(-500.9214f, -197.0184f, -645.7462f),
-            new(-496.7068f, -196.9684f, -652.5776f),
-            new(-504.675f, -196.8416f, -650.919f),
-            new(-499.6657f, -197.0003f, -653.0974f),
-            new(-505.7625f, -196.9681f, -647.0373f),
-            new(-497.1692f, -197.0191f, -643.4066f),
-            new(-504.4316f, -196.9681f, -643.8191f),
-            new(-492.0796f, -196.9694f, -644.3951f),
-            new(-496.9165f, -197.0184f, -651.6621f),
-            new(-502.5919f, -197.0181f, -647.851f),
-            new(-495.4756f, -197.0186f, -651.1453f),
-            new(-504.0388f, -196.9671f, -651.3212f),
-            new(-501.8805f, -197.0181f, -650.9636f),
-            new(-501.434f, -197.0182f, -647.2271f),
-            new(-498.639f, -196.9692f, -639.585f)
-        ];
-
-        private static readonly List<int> DeaconPossessionEventFlags =
-            Enumerable.Range(13504810, 33)
-                .Concat(Enumerable.Range(13504850, 33))
-                .ToList();
 
         private const int OceirosBossGaugeId = 902090;
         private const int OceirosPhaseTransitionAnimId = 1500;
@@ -105,7 +48,7 @@ namespace SilkySouls3.ViewModels
         public EnemyViewModel(IEnemyService enemyService, ICinderService cinderService, HotkeyManager hotkeyManager,
             IStateService stateService, IParamService paramService, IDebugDrawService debugDrawService,
             IChrInsService chrInsService, ISpEffectService spEffectService, IEventService eventService,
-            IReminderService reminderService)
+            IReminderService reminderService, IItemService itemService)
         {
             _enemyService = enemyService;
             _cinderService = cinderService;
@@ -114,6 +57,7 @@ namespace SilkySouls3.ViewModels
             _spEffectService = spEffectService;
             _eventService = eventService;
             _reminderService = reminderService;
+            _itemService = itemService;
 
             SetCinderPhaseCommand = new DelegateCommand<CinderPhase>(SetCinderPhase);
             CastSoulmassCommand = new DelegateCommand(CastSoulmass);
@@ -123,6 +67,7 @@ namespace SilkySouls3.ViewModels
             DeaconsPhase2WithMoveCommand = new DelegateCommand(DeaconsPhase2WithMove);
             ForceOceirosPhaseTwoCommand = new DelegateCommand(ForceOceirosPhaseTwo);
             SkipKingOfTheStormCommand = new DelegateCommand(SkipKingOfTheStorm);
+            DropDeaconSkullsCommand = new DelegateCommand(DropDeaconSkulls);
 
             _hotkeyManager = hotkeyManager;
             _paramService = paramService;
@@ -134,12 +79,14 @@ namespace SilkySouls3.ViewModels
                 blockId =>
                 {
                     _isInHalfLightArena = HalfLightBlockId == blockId;
+                    _isInCathedralOfTheDeep = CathedralOfTheDeepBlockId == blockId;
                     AreCinderOptionsEnabled = KilnBlockId == blockId;
                     AreDsaOptionsEnabled = BarracksBlockId == blockId;
                     ArePontiffOptionsEnabled = IrithyllBlockId == blockId;
                     if (_isFadedIn && ArePontiffOptionsEnabled && IsPontiffNoCloneEnabled)
                         _enemyService.TogglePontiffNoClone(true);
                     OnPropertyChanged(nameof(CanPlacePrismStones));
+                    OnPropertyChanged(nameof(CanDropDeaconSkulls));
                     if (!AreDsaOptionsEnabled)
                     {
                         SelectedLeftButterflyAnimation = 0;
@@ -170,6 +117,7 @@ namespace SilkySouls3.ViewModels
         public ICommand DeaconsPhase2WithMoveCommand { get; }
         public ICommand ForceOceirosPhaseTwoCommand { get; }
         public ICommand SkipKingOfTheStormCommand { get; }
+        public ICommand DropDeaconSkullsCommand { get; }
 
         #endregion
 
@@ -444,6 +392,8 @@ namespace SilkySouls3.ViewModels
 
         public bool CanPlacePrismStones => _isInHalfLightArena && !_hasPlacedPrismStonesThisLoad;
 
+        public bool CanDropDeaconSkulls => _isInCathedralOfTheDeep;
+
         #endregion
 
         #region Private Methods
@@ -508,19 +458,24 @@ namespace SilkySouls3.ViewModels
                 {
                     if (AreDeaconsOptionsEnabled) DeaconsPhase2WithMove();
                 });
+            _hotkeyManager.RegisterAction(HotkeyActions.DropDeaconSkulls,
+                () =>
+                {
+                    if (CanDropDeaconSkulls) DropDeaconSkulls();
+                });
             _hotkeyManager.RegisterAction(HotkeyActions.CycleLeftButterflyAnimation,
                 () =>
                 {
                     if (AreDsaOptionsEnabled)
                         SelectedLeftButterflyAnimation =
-                            (SelectedLeftButterflyAnimation + 1) % ButterflyAnimationIds.Length;
+                            (SelectedLeftButterflyAnimation + 1) % ButterflyData.AnimationIds.Length;
                 });
             _hotkeyManager.RegisterAction(HotkeyActions.CycleRightButterflyAnimation,
                 () =>
                 {
                     if (AreDsaOptionsEnabled)
                         SelectedRightButterflyAnimation =
-                            (SelectedRightButterflyAnimation + 1) % ButterflyAnimationIds.Length;
+                            (SelectedRightButterflyAnimation + 1) % ButterflyData.AnimationIds.Length;
                 });
         }
 
@@ -530,14 +485,14 @@ namespace SilkySouls3.ViewModels
             var maxHp = _chrInsService.GetMaxHp(archDeacon);
 
             _chrInsService.SetHp(archDeacon, maxHp * 65 / 100 - 1);
-            _eventService.BatchSetEvent(DeaconPossessionEventFlags, false);
+            _eventService.BatchSetEvent(DeaconData.PossessionEventFlags, false);
         }
 
         private void DeaconsPhase2()
         {
             ForceDeaconsPhase2HpAndFlags();
 
-            foreach (var id in DeaconEntityIds)
+            foreach (var id in DeaconData.EntityIds)
             {
                 var deacon = _chrInsService.GetChrInsByEntityId(id);
                 _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
@@ -548,12 +503,12 @@ namespace SilkySouls3.ViewModels
         {
             ForceDeaconsPhase2HpAndFlags();
 
-            for (var i = 0; i < DeaconEntityIds.Length; i++)
+            for (var i = 0; i < DeaconData.EntityIds.Length; i++)
             {
-                var deacon = _chrInsService.GetChrInsByEntityId(DeaconEntityIds[i]);
+                var deacon = _chrInsService.GetChrInsByEntityId(DeaconData.EntityIds[i]);
                 _chrInsService.ToggleFreezeAi(deacon, true);
                 _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
-                _chrInsService.ForceSetPosition(deacon, DeaconPositions[i]);
+                _chrInsService.ForceSetPosition(deacon, DeaconData.Positions[i]);
                 _chrInsService.ToggleFreezeAi(deacon, false);
             }
         }
@@ -570,6 +525,8 @@ namespace SilkySouls3.ViewModels
             _hasPlacedPrismStonesThisLoad = true;
             OnPropertyChanged(nameof(CanPlacePrismStones));
         }
+
+        private void DropDeaconSkulls() => _itemService.DropItem(DeaconData.SkullDrop);
 
         private void OnGameLoaded()
         {
@@ -619,8 +576,8 @@ namespace SilkySouls3.ViewModels
 
         private void ApplyButterflyRng()
         {
-            var leftId = ButterflyAnimationIds[_selectedLeftButterflyAnimation];
-            var rightId = ButterflyAnimationIds[_selectedRightButterflyAnimation];
+            var leftId = ButterflyData.AnimationIds[_selectedLeftButterflyAnimation];
+            var rightId = ButterflyData.AnimationIds[_selectedRightButterflyAnimation];
             var enable = leftId != 0f || rightId != 0f;
 
             _enemyService.ToggleButterflyRng(enable);
@@ -632,11 +589,11 @@ namespace SilkySouls3.ViewModels
 
         private void ApplyArgoSpeed()
         {
-            foreach (var (rowId, vanilla) in ArgoTalkRows)
+            foreach (var (rowId, vanilla) in ArgoData.TalkRows)
             {
                 var row = _paramService.GetParamRow((int)Param.TalkParam, rowId);
                 if (row == IntPtr.Zero) continue;
-                _paramService.Write(row, TalkParamSpeedOffset, vanilla / _argoSpeedMultiplier);
+                _paramService.Write(row, ArgoData.TalkParamSpeedOffset, vanilla / _argoSpeedMultiplier);
             }
         }
 
@@ -654,8 +611,10 @@ namespace SilkySouls3.ViewModels
             AreOptionsEnabled = false;
             _isFadedIn = false;
             _isInHalfLightArena = false;
+            _isInCathedralOfTheDeep = false;
             _hasPlacedPrismStonesThisLoad = false;
             OnPropertyChanged(nameof(CanPlacePrismStones));
+            OnPropertyChanged(nameof(CanDropDeaconSkulls));
         }
 
         private void ForceOceirosPhaseTwo()
