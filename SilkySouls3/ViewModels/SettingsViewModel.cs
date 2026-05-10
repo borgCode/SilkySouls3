@@ -214,6 +214,12 @@ namespace SilkySouls3.ViewModels
                     new("Decrease Speed", HotkeyActions.DecreaseTargetSpeed),
                     new("Toggle Speed", HotkeyActions.ToggleTargetSpeed),
                     new("Show All Resistances", HotkeyActions.ShowAllResistances),
+                    new("Show Defenses", HotkeyActions.ShowDefenses),
+                    new("Disable All Except Target AI", HotkeyActions.DisableAllExceptTargetAi),
+                    new("Move Target To Player", HotkeyActions.MoveTargetToPlayer),
+                    new("No Attack", HotkeyActions.TargetNoAttack),
+                    new("No Move", HotkeyActions.TargetNoMove),
+                    new("Show Active SpEffects", HotkeyActions.TargetShowSpEffects),
                 ],
                 ["Utility"] =
                 [

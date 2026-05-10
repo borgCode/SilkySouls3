@@ -726,6 +726,12 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction(HotkeyActions.DisableAllExceptTargetAi, () =>
                 ExecuteTargetAction(() => IsDisableAllExceptTargetEnabled = !IsDisableAllExceptTargetEnabled));
             _hotkeyManager.RegisterAction(HotkeyActions.MoveTargetToPlayer, TryMoveTargetToPlayer);
+            _hotkeyManager.RegisterAction(HotkeyActions.TargetNoAttack, () =>
+                ExecuteTargetAction(() => IsNoAttackEnabled = !IsNoAttackEnabled));
+            _hotkeyManager.RegisterAction(HotkeyActions.TargetNoMove, () =>
+                ExecuteTargetAction(() => IsNoMoveEnabled = !IsNoMoveEnabled));
+            _hotkeyManager.RegisterAction(HotkeyActions.TargetShowSpEffects, () =>
+                ExecuteTargetAction(() => IsShowSpEffectEnabled = !IsShowSpEffectEnabled));
         }
 
         private void TryMoveTargetToPlayer()
