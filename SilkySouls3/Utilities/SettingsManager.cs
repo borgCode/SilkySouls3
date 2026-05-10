@@ -25,9 +25,11 @@ namespace SilkySouls3.Utilities
         public double WindowTop { get; set; }
         [DefaultValue(1.0)] public double ResistancesWindowScaleX { get; set; }
         [DefaultValue(1.0)] public double ResistancesWindowScaleY { get; set; }
+        [DefaultValue(0.5)] public double ResistancesWindowOpacity { get; set; }
         public double ResistancesWindowWidth { get; set; }
         public double ResistancesWindowLeft { get; set; }
         public double ResistancesWindowTop { get; set; }
+        public bool ResistancesShowCombatInfo { get; set; }
         [DefaultValue(1.0)] public double DefensesWindowScaleX { get; set; }
         [DefaultValue(1.0)] public double DefensesWindowScaleY { get; set; }
         [DefaultValue(0.5)] public double DefensesWindowOpacity { get; set; }

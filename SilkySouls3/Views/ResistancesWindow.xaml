@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:converters="clr-namespace:SilkySouls3.Converters"
         mc:Ignorable="d"
-        Height="Auto" Width="180"
-        SizeToContent="Height"
+        Width="180"
+        SizeToContent="WidthAndHeight"
         AllowsTransparency="True"
         WindowStyle="None"
         ShowInTaskbar="False"
@@ -18,12 +18,16 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
     </Window.Resources>
 
-    <Border BorderBrush="#80333333" BorderThickness="1" CornerRadius="3" Margin="2">
-        <Border.LayoutTransform>
-            <ScaleTransform x:Name="ContentScale" ScaleX="1" ScaleY="1"/>
-        </Border.LayoutTransform>
+    <Grid>
+        <Grid.LayoutTransform>
+            <ScaleTransform x:Name="ContentScale" ScaleX="1" ScaleY="1" />
+        </Grid.LayoutTransform>
+        <Border x:Name="MainBorder" BorderBrush="#80333333" BorderThickness="1" CornerRadius="3"
+                Margin="2" Width="170" Background="#80000000">
         <Grid Margin="5">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -47,11 +51,18 @@
                                 Margin="2,0,0,0"
                                 Click="IncreaseSize_Click"
                                 Cursor="Hand"/>
-
+                        <Button Content="◐" Width="24" Height="20" FontSize="14"
+                                Background="Transparent" BorderThickness="0" Foreground="#CCFFFFFF"
+                                Click="CycleOpacity_Click" Cursor="Hand" ToolTip="Opacity" />
+                        <Button Content="⚔" Width="24" Height="20" FontSize="10" Padding="3,3,0,0"
+                                Background="Transparent" BorderThickness="0" Foreground="#CCFFFFFF"
+                                Click="ToggleCombatInfo_Click" Cursor="Hand"
+                                ToolTip="Toggle Distance, Last Act and Current Animation" />
                     </StackPanel>
-        
+
                     <Button Content="✕" Width="16" Height="16" FontSize="8"
                             HorizontalAlignment="Right"
+                            Margin="0,3,0,0"
                             Background="Transparent"
                             BorderThickness="0" Foreground="#CCFFFFFF"
                             Click="CloseButton_Click"
@@ -60,18 +71,56 @@
             </Grid>
 
 
-            <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,8">
+            <TextBlock Grid.Row="1" HorizontalAlignment="Center">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="1" BlurRadius="3" Color="Black" Opacity="0.7"/>
                 </TextBlock.Effect>
-                <Run Text="{Binding CurrentHealth, Mode=OneWay}" 
+                <Run Text="{Binding CurrentHealth, Mode=OneWay}"
                      Foreground="#FF9900" FontSize="18" FontWeight="Bold"/>
                 <Run Text="/" Foreground="#FF9900" FontSize="18"/>
-                <Run Text="{Binding MaxHealth, Mode=OneWay}" 
+                <Run Text="{Binding MaxHealth, Mode=OneWay}"
                      Foreground="#FF9900" FontSize="18" FontWeight="Bold"/>
             </TextBlock>
-            
-            <StackPanel Grid.Row="2" Margin="0,0,0,5"
+
+            <TextBlock Grid.Row="2" HorizontalAlignment="Center"
+                       Text="{Binding HealthPercentage, Mode=OneWay, StringFormat={}({0}%)}"
+                       Foreground="#FF9900" FontSize="13" FontWeight="Bold" Opacity="0.85" Margin="0,-2,0,8">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="3" Color="Black" Opacity="0.7" />
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Margin="0,0,0,8"
+                       Visibility="{Binding ShowCombatInfo, Converter={StaticResource BoolToVis}}">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="3" Color="Black" Opacity="0.7" />
+                </TextBlock.Effect>
+                <Run Text="Distance" Foreground="#FF9900" FontSize="12" />
+            </TextBlock>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Right" DockPanel.Dock="Right"
+                       Visibility="{Binding ShowCombatInfo, Converter={StaticResource BoolToVis}}">
+                <Run Text="{Binding Dist, StringFormat={}{0:F2}, Mode=OneWay}"
+                     Foreground="#FF9900" FontSize="12" FontWeight="Bold" />
+            </TextBlock>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Margin="0,20,0,8"
+                       Visibility="{Binding ShowCombatInfo, Converter={StaticResource BoolToVis}}">
+                <Run Text="Last Act" Foreground="#FF9900" FontSize="12" />
+            </TextBlock>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Right" Margin="0,20,0,8"
+                       Visibility="{Binding ShowCombatInfo, Converter={StaticResource BoolToVis}}">
+                <Run Text="{Binding LastAct, Mode=OneWay}" Foreground="#FF9900" FontSize="12" FontWeight="Bold" />
+            </TextBlock>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Margin="0,40,0,8"
+                       Visibility="{Binding ShowCombatInfo, Converter={StaticResource BoolToVis}}">
+                <Run Text="Animation" Foreground="#FF9900" FontSize="12" />
+            </TextBlock>
+            <TextBlock Grid.Row="3" HorizontalAlignment="Right" Margin="0,40,0,8"
+                       Visibility="{Binding ShowCombatInfo, Converter={StaticResource BoolToVis}}">
+                <Run Text="{Binding CurrentAnimation, Mode=OneWay}" Foreground="#FF9900" FontSize="12"
+                     FontWeight="Bold" />
+            </TextBlock>
+
+            <StackPanel Grid.Row="4" Margin="0,0,0,5"
                         Visibility="{Binding ShowPoise, Converter={StaticResource BoolToVis}}">
                 <DockPanel Margin="0,0,0,2">
                     <TextBlock Text="Poise" Foreground="#CCFFFFFF" DockPanel.Dock="Left" />
@@ -105,7 +154,7 @@
                 </Grid>
             </StackPanel>
 
-            <StackPanel Grid.Row="3" Margin="0,0,0,5"
+            <StackPanel Grid.Row="5" Margin="0,0,0,5"
                         Visibility="{Binding ShowBleedAndNotImmune, Converter={StaticResource BoolToVis}}">
                 <DockPanel Margin="0,0,0,2">
                     <TextBlock Text="Bleed" Foreground="#CCFFFFFF" DockPanel.Dock="Left" />
@@ -141,7 +190,7 @@
                 </Grid>
             </StackPanel>
 
-            <StackPanel Grid.Row="4" Margin="0,0,0,5"
+            <StackPanel Grid.Row="6" Margin="0,0,0,5"
                         Visibility="{Binding ShowPoisonAndNotImmune, Converter={StaticResource BoolToVis}}">
                 <DockPanel Margin="0,0,0,2">
                     <TextBlock Text="Poison" Foreground="#CCFFFFFF" DockPanel.Dock="Left" />
@@ -177,7 +226,7 @@
                 </Grid>
             </StackPanel>
 
-            <StackPanel Grid.Row="5" Margin="0,0,0,5"
+            <StackPanel Grid.Row="7" Margin="0,0,0,5"
                         Visibility="{Binding ShowToxicAndNotImmune, Converter={StaticResource BoolToVis}}">
                 <DockPanel Margin="0,0,0,2">
                     <TextBlock Text="Toxic" Foreground="#CCFFFFFF" DockPanel.Dock="Left" />
@@ -213,7 +262,7 @@
                 </Grid>
             </StackPanel>
 
-            <StackPanel Grid.Row="6" Margin="0,0,0,0"
+            <StackPanel Grid.Row="8" Margin="0,0,0,0"
                         Visibility="{Binding ShowFrostAndNotImmune, Converter={StaticResource BoolToVis}}">
                 <DockPanel Margin="0,0,0,2">
                     <TextBlock Text="Frost" Foreground="#CCFFFFFF" DockPanel.Dock="Left" />
@@ -250,5 +299,6 @@
                 </Grid>
             </StackPanel>
         </Grid>
-    </Border>
+        </Border>
+    </Grid>
 </Window>

@@ -121,6 +121,7 @@
     <Compile Include="Controls\TitleBar.xaml.cs" />
     <Compile Include="Converters\BooleanAndConverter.cs" />
     <Compile Include="Converters\GreaterThanZeroVisibilityConverter.cs" />
+    <Compile Include="Converters\HealthFillConverter.cs" />
     <Compile Include="Converters\ImmuneFillConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />

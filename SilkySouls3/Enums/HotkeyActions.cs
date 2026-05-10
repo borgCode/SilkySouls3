@@ -63,6 +63,7 @@ public enum HotkeyActions
     TargetRepeatAct,
     IncreaseTargetSpeed,
     DecreaseTargetSpeed,
+    ToggleTargetSpeed,
     ShowAllResistances,
     ShowDefenses,
     DisableAi,

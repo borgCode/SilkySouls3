@@ -211,6 +211,7 @@ namespace SilkySouls3.ViewModels
                     new("Repeat Action", HotkeyActions.TargetRepeatAct),
                     new("Increase Speed", HotkeyActions.IncreaseTargetSpeed),
                     new("Decrease Speed", HotkeyActions.DecreaseTargetSpeed),
+                    new("Toggle Speed", HotkeyActions.ToggleTargetSpeed),
                     new("Show All Resistances", HotkeyActions.ShowAllResistances),
                 ],
                 ["Utility"] =

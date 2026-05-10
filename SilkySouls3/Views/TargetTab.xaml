@@ -11,6 +11,7 @@
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <converters:ImmuneFillConverter x:Key="ImmuneFillConverter" />
+        <converters:HealthFillConverter x:Key="HealthFillConverter" />
     </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="10,10,10,5">
         <StackPanel Margin="5">
@@ -61,10 +62,16 @@
                             <Border BorderBrush="#444444" BorderThickness="1" Background="#222222" CornerRadius="3">
                                 <Grid x:Name="PART_Track">
                                     <Rectangle x:Name="PART_Indicator"
-                                               Fill="#4CAF50"
                                                HorizontalAlignment="Left"
                                                RadiusX="2" RadiusY="2"
-                                               Margin="1" />
+                                               Margin="1">
+                                        <Rectangle.Fill>
+                                            <MultiBinding Converter="{StaticResource HealthFillConverter}">
+                                                <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                <Binding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}" />
+                                            </MultiBinding>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
                                 </Grid>
                             </Border>
                         </ControlTemplate>
@@ -349,11 +356,9 @@
                         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="0,0,20,0" VerticalAlignment="Top">
                             <TextBlock Text="Speed Modifier:" VerticalAlignment="Center" Margin="0,0,10,0" />
                             <xctk:DoubleUpDown x:Name="SpeedUpDown"
-                                               Value="{Binding Speed}"
+                                               Value="{Binding TargetSpeed}"
                                                FormatString="F2" Minimum="0" Maximum="5" Increment="0.50"
                                                Width="100"
-                                               PreviewKeyDown="SpeedUpDown_PreviewKeyDown"
-                                               LostFocus="SpeedUpDown_LostFocus"
                                                HorizontalAlignment="Left">
                                 <xctk:DoubleUpDown.IsEnabled>
                                     <MultiBinding Converter="{StaticResource BooleanAndConverter}">

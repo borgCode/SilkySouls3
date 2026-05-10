@@ -24,6 +24,10 @@ namespace SilkySouls3.ViewModels
         private DateTime _moveTargetInstallTime;
         private ResistancesWindow _resistancesWindowWindow;
 
+        private float _targetDesiredSpeed = -1f;
+        private const float DefaultSpeed = 1f;
+        private const float Epsilon = 0.0001f;
+
         private readonly SpEffectViewModel _spEffectViewModel = new();
         private SpEffectsWindow _spEffectsWindow;
 
@@ -41,6 +45,8 @@ namespace SilkySouls3.ViewModels
 
             stateService.Subscribe(State.Loaded, OnGameLoaded);
             stateService.Subscribe(State.NotLoaded, OnGameNotLoaded);
+
+            ShowCombatInfo = SettingsManager.Default.ResistancesShowCombatInfo;
 
             RegisterHotkeys();
 
@@ -131,7 +137,11 @@ namespace SilkySouls3.ViewModels
         public int CurrentHealth
         {
             get => _currentHealth;
-            set => SetProperty(ref _currentHealth, value);
+            set
+            {
+                SetProperty(ref _currentHealth, value);
+                OnPropertyChanged(nameof(HealthPercentage));
+            }
         }
 
         private int _maxHealth;
@@ -139,7 +149,30 @@ namespace SilkySouls3.ViewModels
         public int MaxHealth
         {
             get => _maxHealth;
-            set => SetProperty(ref _maxHealth, value);
+            set
+            {
+                SetProperty(ref _maxHealth, value);
+                OnPropertyChanged(nameof(HealthPercentage));
+            }
+        }
+
+        public string HealthPercentage => MaxHealth > 0
+            ? (CurrentHealth / (double)MaxHealth * 100).ToString("F1")
+            : "0.0";
+
+        private bool _showCombatInfo;
+
+        public bool ShowCombatInfo
+        {
+            get => _showCombatInfo;
+            set
+            {
+                if (SetProperty(ref _showCombatInfo, value))
+                {
+                    SettingsManager.Default.ResistancesShowCombatInfo = value;
+                    SettingsManager.Default.Save();
+                }
+            }
         }
 
         private bool _isFreezeHealthEnabled;
@@ -154,14 +187,14 @@ namespace SilkySouls3.ViewModels
             }
         }
 
-        private float _speed;
+        private float _targetSpeed;
 
-        public float Speed
+        public float TargetSpeed
         {
-            get => _speed;
+            get => _targetSpeed;
             set
             {
-                if (SetProperty(ref _speed, value))
+                if (SetProperty(ref _targetSpeed, value))
                     _targetService.SetSpeed(value);
             }
         }
@@ -597,7 +630,24 @@ namespace SilkySouls3.ViewModels
 
         #region Public Methods
 
-        public void SetSpeed(float value) => Speed = value;
+        public void SetSpeed(double value) => TargetSpeed = (float)value;
+
+        private void ToggleTargetSpeed()
+        {
+            if (!AreOptionsEnabled) return;
+
+            if (!IsApproximately(TargetSpeed, DefaultSpeed))
+            {
+                _targetDesiredSpeed = TargetSpeed;
+                SetSpeed(DefaultSpeed);
+            }
+            else if (_targetDesiredSpeed >= 0)
+            {
+                SetSpeed(_targetDesiredSpeed);
+            }
+        }
+
+        private static bool IsApproximately(float a, float b) => Math.Abs(a - b) < Epsilon;
 
         #endregion
 
@@ -664,9 +714,11 @@ namespace SilkySouls3.ViewModels
             _hotkeyManager.RegisterAction(HotkeyActions.DisableTargetAi, () =>
                 ExecuteTargetAction(() => IsFreezeAiEnabled = !IsFreezeAiEnabled));
             _hotkeyManager.RegisterAction(HotkeyActions.IncreaseTargetSpeed, () =>
-                ExecuteTargetAction(() => SetSpeed(Math.Min(5, Speed + 0.25f))));
+                ExecuteTargetAction(() => SetSpeed(Math.Min(5, TargetSpeed + 0.25f))));
             _hotkeyManager.RegisterAction(HotkeyActions.DecreaseTargetSpeed, () =>
-                ExecuteTargetAction(() => SetSpeed(Math.Max(0, Speed - 0.25f))));
+                ExecuteTargetAction(() => SetSpeed(Math.Max(0, TargetSpeed - 0.25f))));
+            _hotkeyManager.RegisterAction(HotkeyActions.ToggleTargetSpeed, () =>
+                ExecuteTargetAction(ToggleTargetSpeed));
             _hotkeyManager.RegisterAction(HotkeyActions.TargetRepeatAct, () =>
                 ExecuteTargetAction(() => IsRepeatActEnabled = !IsRepeatActEnabled));
             _hotkeyManager.RegisterAction(HotkeyActions.ShowDefenses, () =>
@@ -816,7 +868,7 @@ namespace SilkySouls3.ViewModels
 
             Dist = _targetService.GetDist();
             
-            Speed = _targetService.GetSpeed();
+            TargetSpeed = _targetService.GetSpeed();
             CurrentPoise = poise.Current;
             PoiseTimer = poise.Timer;
             CurrentPoison = IsPoisonImmune ? 0 : resistances.PoisonCurrent;
