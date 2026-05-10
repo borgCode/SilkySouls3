@@ -40,4 +40,5 @@ public interface ITargetService
     void MoveTargetToPlayer();
     int GetMoveTargetStatus();
     void UninstallMoveTargetHook();
+    int GetEventId();
 }

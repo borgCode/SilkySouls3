@@ -8,7 +8,7 @@ using static SilkySouls3.Memory.Offsets;
 
 namespace SilkySouls3.Services
 {
-    public class EventService(IMemoryService memoryService) : IEventService
+    public class EventService(IMemoryService memoryService, IReminderService reminderService) : IEventService
     {
         public void SetEvent(int eventId, bool setVal)
         {
@@ -78,8 +78,11 @@ namespace SilkySouls3.Services
             return memoryService.Read<byte>(CustomCodeOffsets.Base + CustomCodeOffsets.GetEventResult) == 1;
         }
 
-        public void ToggleDisableEvents(bool isEnabled) => memoryService.Write(
-            memoryService.Read<nint>(SprjDbgEvent.Base) + SprjDbgEvent.DisableEvent, isEnabled);
+        public void ToggleDisableEvents(bool isEnabled)
+        {
+            if (isEnabled) reminderService.TrySetReminder();
+            memoryService.Write(memoryService.Read<nint>(SprjDbgEvent.Base) + SprjDbgEvent.DisableEvent, isEnabled);
+        }
 
         public void ToggleDrawEvents(bool isEnabled) =>
             memoryService.Write(memoryService.Read<nint>(SprjDbgEvent.Base) + SprjDbgEvent.EventDraw, isEnabled);

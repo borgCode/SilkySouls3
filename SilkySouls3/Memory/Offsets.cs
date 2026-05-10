@@ -118,6 +118,8 @@ namespace SilkySouls3.Memory
                 public const int StateInfo = 0x156;
             }
 
+            public const int EventId = 0x1A1C;
+            
             public static readonly int[] CurrentBlockId = [0x1AC8, 0x18, 0x4E8];
 
             public static int Modules => Version switch
@@ -481,7 +483,7 @@ namespace SilkySouls3.Memory
             public static nint HasSpEffectId;
             public static nint StopMusic;
             public static nint Rest;
-            public static nint ChrInsByEntityId;
+            public static nint ChrInsByEventId;
             public static nint SpawnSfxSimple;
             public static nint DestroyFxInner;
             public static nint RegisterPrismStoneSfx;
@@ -1687,7 +1689,7 @@ namespace SilkySouls3.Memory
             };
 
 
-            Functions.ChrInsByEntityId = moduleBase + Version switch
+            Functions.ChrInsByEventId = moduleBase + Version switch
             {
                 Version1_3_2_0 => 0x4BC560,
                 Version1_4_1_0 or Version1_4_2_0 or Version1_4_3_0 => 0x4BC5F0,
@@ -2162,7 +2164,7 @@ namespace SilkySouls3.Memory
             PrintOffset("HasSpEffectId", Functions.HasSpEffectId);
             PrintOffset("Rest", Functions.Rest);
             PrintOffset("StopMusic", Functions.StopMusic);
-            PrintOffset("ChrInsByEntityId", Functions.ChrInsByEntityId);
+            PrintOffset("ChrInsByEventId", Functions.ChrInsByEventId);
             PrintOffset("SpawnSfxSimple", Functions.SpawnSfxSimple);
             PrintOffset("DestroyFxInner", Functions.DestroyFxInner);
             PrintOffset("RegisterPrismStoneSfx", Functions.RegisterPrismStoneSfx);

@@ -7,7 +7,7 @@ namespace SilkySouls3.Data
 {
     public static class DeaconData
     {
-        public static readonly int[] EntityIds =
+        public static readonly int[] EventIds =
         [
             3500810, 3500811, 3500812, 3500813, 3500814, 3500815, 3500816, 3500817, 3500818, 3500819,
             3500820, 3500821, 3500822, 3500823, 3500824, 3500825, 3500826, 3500827, 3500828, 3500834, 3500835,

@@ -21,7 +21,7 @@ namespace SilkySouls3.Services
         private readonly IParamService _paramService;
         private readonly IReminderService _reminderService;
 
-        private const int CinderEntityId = 4100800;
+        private const int CinderEventId = 4100800;
         
         private const int CinderNpcParamId = 528000;
         private const int StaggerParamOffset = 0x50;
@@ -213,7 +213,7 @@ namespace SilkySouls3.Services
         private bool IsValidCinderFight()
         {
             if (_cinderChrIns != 0) return true;
-            _cinderChrIns = _chrInsService.GetChrInsByEntityId(CinderEntityId);
+            _cinderChrIns = _chrInsService.GetChrInsByEventId(CinderEventId);
             return _cinderChrIns != 0;
         }
         

@@ -58,16 +58,16 @@ public class ChrInsService(IMemoryService memoryService) : IChrInsService
         memoryService.IsBitSet(GetChrSuperArmor(chrIns) + ChrIns.ChrSuperArmorOffsets.InfinitePoise.Offset,
             ChrIns.ChrSuperArmorOffsets.InfinitePoise.Bit);
 
-    public nint GetChrInsByEntityId(int entityId)
+    public nint GetChrInsByEventId(int eventId)
     {
-        var bytes = AsmLoader.GetAsmBytes(AsmScript.ChrInsByEntityId);
-        var storeLocation = CustomCodeOffsets.Base + CustomCodeOffsets.StoredChrInsByEntityId;
+        var bytes = AsmLoader.GetAsmBytes(AsmScript.ChrInsByEventId);
+        var storeLocation = CustomCodeOffsets.Base + CustomCodeOffsets.StoredChrInsByEventId;
         AsmHelper.WriteAbsoluteAddresses(bytes, [
-            (Functions.ChrInsByEntityId, 0xF + 2),
+            (Functions.ChrInsByEventId, 0xF + 2),
             (storeLocation, 0x1b + 2)
         ]);
 
-        AsmHelper.WriteImmediateDword(bytes, entityId, 0x9 + 2);
+        AsmHelper.WriteImmediateDword(bytes, eventId, 0x9 + 2);
         memoryService.AllocateAndExecute(bytes);
         return memoryService.Read<nint>(storeLocation);
     }
@@ -197,6 +197,8 @@ public class ChrInsService(IMemoryService memoryService) : IChrInsService
         memoryService.Write<byte>(physicsModule + 0xA1, 1);
         memoryService.Write<byte>(physicsModule + 0x1E2, 1);
     }
+
+    public int GetEventId(nint chrIns) => memoryService.Read<int>(chrIns + ChrIns.EventId);
 
     #region Private Methods
 

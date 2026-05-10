@@ -21,7 +21,7 @@ public interface IChrInsService
     void SetSpeed(nint chrIns, float speed);
     void ToggleInfinitePoise(nint chrIns, bool isEnabled);
     bool IsInfinitePoiseEnabled(nint chrIns);
-    nint GetChrInsByEntityId(int entityId);
+    nint GetChrInsByEventId(int eventId);
     void RequestEventAnimation(nint chrIns, int animationId);
     int GetCurrentAnimationId(nint chrIns);
     Resistances GetResistances(nint chrIns);
@@ -42,4 +42,5 @@ public interface IChrInsService
     float GetHitRadius(nint chrIns);
     float GetDistBetweenChrs(nint chrIns1, nint chrIns2);
     void ForceSetPosition(nint chrIns, Vector3 position);
+    int GetEventId(nint chrIns);
 }

@@ -273,9 +273,9 @@ namespace SilkySouls3.Properties {
         ///48 83 c4 28             add    rsp,0x28
         ///c3                      ret.
         /// </summary>
-        internal static string ChrInsByEntityId {
+        internal static string ChrInsByEventId {
             get {
-                return ResourceManager.GetString("ChrInsByEntityId", resourceCulture);
+                return ResourceManager.GetString("ChrInsByEventId", resourceCulture);
             }
         }
         

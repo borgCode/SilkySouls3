@@ -66,7 +66,7 @@ namespace SilkySouls3
                 new PlayerService(_memoryService, chrInsService, reminderService, travelService);
             IUtilityService utilityService = new UtilityService(_memoryService, hookManager, reminderService,
                 paramService, playerService);
-            IEventService eventService = new EventService(_memoryService);
+            IEventService eventService = new EventService(_memoryService, reminderService);
             ITargetService targetService = new TargetService(_memoryService, hookManager, chrInsService,
                 reminderService, playerService);
             IEnemyService enemyService = new EnemyService(_memoryService, hookManager);

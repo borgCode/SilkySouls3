@@ -35,15 +35,15 @@ namespace SilkySouls3.ViewModels
 
         private const int DeaconsBossGaugeId = 905220;
 
-        public const int ArchDeaconEntityId = 3500800;
+        public const int ArchDeaconEventId = 3500800;
         public const int GlowingDeaconSpEffectId = 11521;
 
         private const int OceirosBossGaugeId = 902090;
         private const int OceirosPhaseTransitionAnimId = 1500;
-        private const int OceirosEntityId = 3000830;
+        private const int OceirosEventId = 3000830;
 
         private const int KingOfTheStormGaugeId = 905030;
-        private const int KingOfTheStormEntityId = 3200850;
+        private const int KingOfTheStormEventId = 3200850;
 
         public EnemyViewModel(IEnemyService enemyService, ICinderService cinderService, HotkeyManager hotkeyManager,
             IStateService stateService, IParamService paramService, IDebugDrawService debugDrawService,
@@ -478,7 +478,7 @@ namespace SilkySouls3.ViewModels
 
         private void ForceDeaconsPhase2HpAndFlags()
         {
-            var archDeacon = _chrInsService.GetChrInsByEntityId(ArchDeaconEntityId);
+            var archDeacon = _chrInsService.GetChrInsByEventId(ArchDeaconEventId);
             var maxHp = _chrInsService.GetMaxHp(archDeacon);
 
             _chrInsService.SetHp(archDeacon, maxHp * 65 / 100 - 1);
@@ -489,9 +489,9 @@ namespace SilkySouls3.ViewModels
         {
             ForceDeaconsPhase2HpAndFlags();
 
-            foreach (var id in DeaconData.EntityIds)
+            foreach (var id in DeaconData.EventIds)
             {
-                var deacon = _chrInsService.GetChrInsByEntityId(id);
+                var deacon = _chrInsService.GetChrInsByEventId(id);
                 _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
             }
         }
@@ -500,9 +500,9 @@ namespace SilkySouls3.ViewModels
         {
             ForceDeaconsPhase2HpAndFlags();
 
-            for (var i = 0; i < DeaconData.EntityIds.Length; i++)
+            for (var i = 0; i < DeaconData.EventIds.Length; i++)
             {
-                var deacon = _chrInsService.GetChrInsByEntityId(DeaconData.EntityIds[i]);
+                var deacon = _chrInsService.GetChrInsByEventId(DeaconData.EventIds[i]);
                 _chrInsService.ToggleFreezeAi(deacon, true);
                 _spEffectService.RemoveSpEffect(deacon, GlowingDeaconSpEffectId);
                 _chrInsService.ForceSetPosition(deacon, DeaconData.Positions[i]);
@@ -614,13 +614,13 @@ namespace SilkySouls3.ViewModels
 
         private void ForceOceirosPhaseTwo()
         {
-            var oceiros = _chrInsService.GetChrInsByEntityId(OceirosEntityId);
+            var oceiros = _chrInsService.GetChrInsByEventId(OceirosEventId);
             _chrInsService.RequestEventAnimation(oceiros, OceirosPhaseTransitionAnimId);
         }
 
         private void SkipKingOfTheStorm()
         {
-            var kots = _chrInsService.GetChrInsByEntityId(KingOfTheStormEntityId);
+            var kots = _chrInsService.GetChrInsByEventId(KingOfTheStormEventId);
             _chrInsService.SetHp(kots, 0);
         }
 

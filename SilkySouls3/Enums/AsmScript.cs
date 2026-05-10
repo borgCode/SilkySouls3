@@ -23,7 +23,7 @@ public enum AsmScript
     ItemLotBase,
     RestoreAllObjects,
     BreakAllObjects,
-    ChrInsByEntityId,
+    ChrInsByEventId,
     TrySetReminder,
     BonfireWarp,
     PlacePrismStones,

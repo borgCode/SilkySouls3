@@ -165,7 +165,9 @@ namespace SilkySouls3.Services
 
         public void UninstallMoveTargetHook() =>
             hookManager.UninstallHook(Base + (int)MoveTarget.Code);
-        
+
+        public int GetEventId() => chrInsService.GetEventId(GetChrIns());
+
         #endregion
 
         #region Private Methods

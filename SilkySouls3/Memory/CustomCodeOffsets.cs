@@ -45,7 +45,7 @@ namespace SilkySouls3.Memory
 
         public const int CinderSoulmassRemoval = 0x700;
 
-        public const int StoredChrInsByEntityId = 0x800;
+        public const int StoredChrInsByEventId = 0x800;
 
         public const int SetReminderCode = 0x900;
         public const int ReminderText = 0x950;

@@ -1746,7 +1746,7 @@ c3                      ret</value>
 0f 84 00 00 00 00       je     11 &lt;_main+0x11&gt;
 e9 00 00 00 00          jmp    16 &lt;_main+0x16&gt;</value>
   </data>
-  <data name="ChrInsByEntityId" xml:space="preserve">
+  <data name="ChrInsByEventId" xml:space="preserve">
     <value>48 83 ec 28             sub    rsp,0x28
 48 8d 4c 24 30          lea    rcx,[rsp+0x30]
 c7 01 ef be ad de       mov    DWORD PTR [rcx],0xdeadbeef

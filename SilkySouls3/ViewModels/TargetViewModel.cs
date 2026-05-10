@@ -831,6 +831,7 @@ namespace SilkySouls3.ViewModels
             {
 #if DEBUG
                 Console.WriteLine($@"enemyIns: {(long)targetChrIns:X}");
+                Console.WriteLine($@"eventId: {_targetService.GetEventId()}");
 #endif
                 IsFreezeAiEnabled = _targetService.IsAiFrozen();
                 IsTargetingViewEnabled = _targetService.IsTargetViewEnabled();
