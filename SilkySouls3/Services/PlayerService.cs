@@ -19,8 +19,6 @@ namespace SilkySouls3.Services
     {
         private const int StatsBlockSize = 0x38;
         private const int CemeteryOfAshBlockId = 671088640;
-        private const int UntendedGravesCeremonyId = 40000010;
-        private const int UntendedGravesBonfireId = 4001953;
         private const int WorldBlockInfoSize = 0x70;
 
         private readonly Dictionary<int, int> _lowLevelSoulRequirements = new()
@@ -28,8 +26,6 @@ namespace SilkySouls3.Services
             { 2, 673 }, { 3, 690 }, { 4, 707 }, { 5, 724 }, { 6, 741 }, { 7, 758 }, { 8, 775 }, { 9, 793 }, { 10, 811 },
             { 11, 829 },
         };
-
-        private readonly Dictionary<uint, int> _bonfiresByBlockId = DataLoader.LoadDict<uint, int>("BonfiresByBlockId");
 
         private readonly Position[] _positions =
         [
@@ -97,20 +93,32 @@ namespace SilkySouls3.Services
 
         public void SavePosition(int index)
         {
+            var current = GetCurrentPosition();
             var posToSave = _positions[index];
+            posToSave.BlockId = current.BlockId;
+            posToSave.CeremonyId = current.CeremonyId;
+            posToSave.Coords = current.Coords;
+            posToSave.Angle = current.Angle;
+        }
+
+        public Position GetCurrentPosition()
+        {
             var playerIns = GetPlayerIns();
             var currentBlockId = memoryService.Read<uint>(
                 memoryService.FollowPointers(playerIns, ChrIns.CurrentBlockId, false));
             var physicsModule = memoryService.FollowPointers(playerIns, ChrIns.ChrPhysicsModule, true);
 
+            var pos = new Position
+            {
+                BlockId = currentBlockId,
+                Coords = memoryService.Read<Vector3>(physicsModule + ChrIns.ChrPhysicsOffsets.Position),
+                Angle = memoryService.Read<float>(physicsModule + ChrIns.ChrPhysicsOffsets.Angle)
+            };
             if (currentBlockId == CemeteryOfAshBlockId)
             {
-                posToSave.CeremonyId = ReadCeremonyId();
+                pos.CeremonyId = ReadCeremonyId();
             }
-
-            posToSave.BlockId = currentBlockId;
-            posToSave.Coords = memoryService.Read<Vector3>(physicsModule + ChrIns.ChrPhysicsOffsets.Position);
-            posToSave.Angle = memoryService.Read<float>(physicsModule + ChrIns.ChrPhysicsOffsets.Angle);
+            return pos;
         }
 
         public void RestorePosition(int index)
@@ -323,9 +331,8 @@ namespace SilkySouls3.Services
 
         private int ResolveBonfireId(uint blockId, int ceremonyId)
         {
-            if (blockId == CemeteryOfAshBlockId && ceremonyId == UntendedGravesCeremonyId)
-                return UntendedGravesBonfireId;
-            return _bonfiresByBlockId[blockId];
+            travelService.TryResolveBonfire(blockId, ceremonyId, out var bonfireId, out _);
+            return bonfireId;
         }
         
         private void RefreshFromStorage()

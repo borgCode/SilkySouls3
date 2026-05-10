@@ -14,8 +14,31 @@ namespace SilkySouls3.Services
     
     public class TravelService(IMemoryService memoryService, HookManager hookManager) : ITravelService
     {
+        private const int CemeteryOfAshBlockId = 671088640;
+        private const int UntendedGravesCeremonyId = 40000010;
         private const int UntendedGravesBonfireId = 4001953;
         private const int ChampGundyrBonfireId = 4001954;
+
+        private readonly Dictionary<uint, BonfireInfo> _bonfiresByBlockId = DataLoader.LoadBonfireInfo();
+
+        public bool TryResolveBonfire(uint blockId, int ceremonyId, out int bonfireId, out DlcRequirement dlcRequirement)
+        {
+            if (blockId == CemeteryOfAshBlockId && ceremonyId == UntendedGravesCeremonyId)
+            {
+                bonfireId = UntendedGravesBonfireId;
+                dlcRequirement = DlcRequirement.Always;
+                return true;
+            }
+            if (_bonfiresByBlockId.TryGetValue(blockId, out var info))
+            {
+                bonfireId = info.BonfireId;
+                dlcRequirement = info.DlcRequirement;
+                return true;
+            }
+            bonfireId = 0;
+            dlcRequirement = DlcRequirement.Always;
+            return false;
+        }
         
         public void Warp(int bonfireId)
         {

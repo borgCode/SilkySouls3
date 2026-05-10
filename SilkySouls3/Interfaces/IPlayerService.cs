@@ -1,4 +1,4 @@
-// 
+//
 
 using System.Numerics;
 using SilkySouls3.Models;
@@ -38,6 +38,7 @@ public interface IPlayerService
     Vector3 GetPosition();
     void SavePosition(int index);
     void RestorePosition(int index);
+    Position GetCurrentPosition();
     void ForceSetPosition(Vector3 position);
     int GetCurrentBlockId();
     int GetBossGaugeId();

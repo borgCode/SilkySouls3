@@ -82,7 +82,7 @@ namespace SilkySouls3
                 spEffectService);
             var utilityViewModel = new UtilityViewModel(utilityService, hotkeyManager,
                 playerViewModel, debugDrawService, _stateService, ezStateService, eventService);
-            var travelViewModel = new TravelViewModel(travelService, hotkeyManager, _stateService, _dlcService);
+            var travelViewModel = new TravelViewModel(travelService, hotkeyManager, _stateService, _dlcService, playerService);
             var eventViewModel = new EventViewModel(eventService, _stateService, _dlcService);
             var targetViewModel = new TargetViewModel(targetService, hotkeyManager, debugDrawService, _stateService,
                 gameTickService, spEffectService);

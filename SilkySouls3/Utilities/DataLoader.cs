@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Numerics;
+using System.Text.Json;
 using SilkySouls3.Enums;
 using SilkySouls3.Models;
 using SilkySouls3.Properties;
@@ -250,6 +251,30 @@ namespace SilkySouls3.Utilities
             return customLoadouts;
         }
         
+        public static Dictionary<uint, BonfireInfo> LoadBonfireInfo()
+        {
+            var dict = new Dictionary<uint, BonfireInfo>();
+            string data = Resources.BonfiresByBlockId;
+            if (string.IsNullOrWhiteSpace(data)) return dict;
+
+            using var reader = new StringReader(data);
+            while (reader.ReadLine() is { } line)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                string[] parts = line.Split(',');
+                if (parts.Length < 3) continue;
+
+                var dlc = ParseDlcRequirement(parts[0].Trim());
+                uint blockId = uint.Parse(parts[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture);
+                int bonfireId = int.Parse(parts[2].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture);
+
+                dict[blockId] = new BonfireInfo { BonfireId = bonfireId, DlcRequirement = dlc };
+            }
+
+            return dict;
+        }
+
         public static Dictionary<TKey, TValue> LoadDict<TKey, TValue>(string resourceName, char separator = ',')
         {
             var dict = new Dictionary<TKey, TValue>();
@@ -274,6 +299,40 @@ namespace SilkySouls3.Utilities
             }
 
             return dict;
+        }
+
+        private static string CustomWarpsPath => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "SilkySouls3",
+            "CustomWarps.json");
+
+        public static Dictionary<string, List<CustomWarp>> LoadCustomWarps()
+        {
+            if (!File.Exists(CustomWarpsPath))
+                return new Dictionary<string, List<CustomWarp>>();
+
+            try
+            {
+                string json = File.ReadAllText(CustomWarpsPath);
+                var options = new JsonSerializerOptions { IncludeFields = true };
+                return JsonSerializer.Deserialize<Dictionary<string, List<CustomWarp>>>(json, options)
+                       ?? new Dictionary<string, List<CustomWarp>>();
+            }
+            catch
+            {
+                return new Dictionary<string, List<CustomWarp>>();
+            }
+        }
+
+        public static void SaveCustomWarps(Dictionary<string, List<CustomWarp>> warps)
+        {
+            string directory = Path.GetDirectoryName(CustomWarpsPath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
+            string json = JsonSerializer.Serialize(warps, options);
+            File.WriteAllText(CustomWarpsPath, json);
         }
     }
 }

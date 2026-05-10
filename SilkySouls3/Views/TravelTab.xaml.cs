@@ -19,5 +19,11 @@ namespace SilkySouls3.Views
             if (_travelViewModel.AreOptionsEnabled)
                 _travelViewModel.WarpCommand.Execute(null);
         }
+
+        private void CustomWarp_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (_travelViewModel.AreOptionsEnabled)
+                _travelViewModel.CustomWarpCommand.Execute(null);
+        }
     }
 }
