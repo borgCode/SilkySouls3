@@ -313,7 +313,6 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isEndlessSoulmassEnabled, value)) return;
-                if (_isEndlessSoulmassEnabled) _reminderService.TrySetReminder();
                 _cinderService.ToggleEndlessSoulmass(_isEndlessSoulmassEnabled);
             }
         }
@@ -326,7 +325,6 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isCinderNoStaggerEnabled, value)) return;
-                if (_isCinderNoStaggerEnabled) _reminderService.TrySetReminder();
                 _cinderService.ToggleCinderStagger(_isCinderNoStaggerEnabled);
             }
         }
@@ -339,7 +337,6 @@ namespace SilkySouls3.ViewModels
             set
             {
                 if (!SetProperty(ref _isNoSoulmassRemoveOnStaggerEnabled, value)) return;
-                if (_isNoSoulmassRemoveOnStaggerEnabled) _reminderService.TrySetReminder();
                 _cinderService.ToggleNoSoulmassRemoveOnStagger(_isNoSoulmassRemoveOnStaggerEnabled);
             }
         }
@@ -563,6 +560,8 @@ namespace SilkySouls3.ViewModels
                 _enemyService.ToggleDrawNavigation(true);
             }
 
+            if (IsCinderPhasedLocked) _cinderService.ToggleCinderPhaseLock(true);
+
             if (Math.Abs(_argoSpeedMultiplier - 1.0f) > float.Epsilon) ApplyArgoSpeed();
             AreOptionsEnabled = true;
         }
@@ -599,10 +598,6 @@ namespace SilkySouls3.ViewModels
 
         private void OnGameNotLoaded()
         {
-            IsCinderPhasedLocked = false;
-            IsCinderNoStaggerEnabled = false;
-            IsEndlessSoulmassEnabled = false;
-            IsNoSoulmassRemoveOnStaggerEnabled = false;
             AreCinderOptionsEnabled = false;
             AreDeaconsOptionsEnabled = false;
             AreDsaOptionsEnabled = false;

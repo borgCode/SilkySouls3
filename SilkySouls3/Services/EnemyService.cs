@@ -34,6 +34,7 @@ namespace SilkySouls3.Services
             memoryService.WriteBytes(transforms, PrismStoneData.TransformBytes);
             
             
+            
             var code = allocatedMem + 0x800;
             var bytes = AsmLoader.GetAsmBytes(AsmScript.PlacePrismStones);
             

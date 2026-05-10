@@ -479,22 +479,6 @@
                     </Grid>
                 </Grid>
 
-                <TextBlock Text="Force Act Sequence" FontWeight="Bold" Margin="5,5,0,0" />
-                <StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
-                    <TextBox Height="32" Width="250" FontSize="14" Margin="10" MaxLength="29" IsEnabled="False" />
-                    <Button Content="Force acts" Height="32" Margin="10,0,0,0" IsEnabled="False" />
-                    <Border Background="#3498db" CornerRadius="10" Width="12" Height="12" Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            ToolTip="Enter a sequence of acts separated by spaces, max 10 acts"
-                            ToolTipService.InitialShowDelay="100">
-                        <TextBlock Text="i" Foreground="White" HorizontalAlignment="Center"
-                                   VerticalAlignment="Center" FontWeight="Bold" FontSize="10" />
-                    </Border>
-                    <TextBlock FontSize="16" Text="Dist:" Margin="40,10,0,0" />
-                    <TextBlock Text="{Binding Dist, StringFormat={}{0:F2}}" Width="40" FontSize="16"
-                               TextAlignment="Right" Foreground="Gold" Margin="5,10,0,0" />
-                </StackPanel>
-
                 <StackPanel Orientation="Horizontal" Margin="0,-10,0,0">
                     <CheckBox Content="Disable All AI Besides Target"
                               Margin="20,10,0,0" IsChecked="{Binding IsDisableAllExceptTargetEnabled}">
@@ -505,6 +489,9 @@
                             </MultiBinding>
                         </CheckBox.IsEnabled>
                     </CheckBox>
+                    <TextBlock FontSize="16" Text="Dist:" Margin="40,10,0,0" />
+                    <TextBlock Text="{Binding Dist, StringFormat={}{0:F2}}" Width="40" FontSize="16"
+                               TextAlignment="Right" Foreground="Gold" Margin="5,10,0,0" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="20,10,0,0">

@@ -43,32 +43,38 @@
             </Grid>
         </Border>
 
-        <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,0,5"
-                IsEnabled="{Binding AreCinderOptionsEnabled}">
+        <Border BorderThickness="1" BorderBrush="#333" CornerRadius="3" Margin="0,0,0,5">
             <StackPanel Margin="5">
                 <TextBlock Text="Cinder" FontWeight="Bold" Margin="0,0,0,5" />
                 <Grid Margin="5,0,0,5">
                     <WrapPanel Orientation="Horizontal">
                         <Button Content="Sword" Margin="0,0,5,5" Padding="8,3" MinWidth="40"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding SetCinderPhaseCommand}"
                                 CommandParameter="{x:Static enums:CinderPhase.Sword}" />
                         <Button Content="Lance" Margin="0,0,5,5" Padding="8,3" MinWidth="40"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding SetCinderPhaseCommand}"
                                 CommandParameter="{x:Static enums:CinderPhase.Lance}" />
                         <Button Content="Curved" Margin="0,0,5,5" Padding="8,3" MinWidth="40"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding SetCinderPhaseCommand}"
                                 CommandParameter="{x:Static enums:CinderPhase.Curved}" />
                         <Button Content="Staff" Margin="0,0,5,5" Padding="8,3" MinWidth="40"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding SetCinderPhaseCommand}"
                                 CommandParameter="{x:Static enums:CinderPhase.Staff}" />
                         <Button Content="Gwyn" Margin="0,0,5,5" Padding="8,3" MinWidth="40"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding SetCinderPhaseCommand}"
                                 CommandParameter="{x:Static enums:CinderPhase.Gwyn}" />
                     </WrapPanel>
                     <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
                         <Button Content="Cast Soulmass" Margin="0,0,0,3" Padding="8,3"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding CastSoulmassCommand}" />
                         <Button Content="Remove Soulmass" Padding="8,3"
+                                IsEnabled="{Binding AreCinderOptionsEnabled}"
                                 Command="{Binding RemoveSoulmassCommand}" />
                     </StackPanel>
                 </Grid>

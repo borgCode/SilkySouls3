@@ -71,7 +71,7 @@ namespace SilkySouls3.Services
             var cinderPhaseLockCode = CustomCodeOffsets.Base + CustomCodeOffsets.CinderPhaseLock;
             if (enable)
             {
-                if (!IsValidCinderFight()) return;
+                _reminderService.TrySetReminder();
                 
                 byte[] phaseLockBytes = AsmLoader.GetAsmBytes(AsmScript.CinderPhaseLock);
                 byte[] jmpBytes =
@@ -150,12 +150,12 @@ namespace SilkySouls3.Services
 
         public void ToggleEndlessSoulmass(bool isEnabled)
         {
-            _reminderService.TrySetReminder();
             
             var soulmassRow = _paramService.GetParamRow((int)Param.SpEffectParam, SoulmassSpEffectId);
             _paramService.Write(soulmassRow, SpEffectDurationOffset, isEnabled ? -1.0f : 40.0f);
 
             if (!isEnabled) return;
+            _reminderService.TrySetReminder();
             if (_spEffectService.HasSpEffect(_cinderChrIns, SoulmassSpEffectId))
             {
                 _spEffectService.ApplySpEffect(_cinderChrIns, SoulmassSpEffectId);
@@ -173,6 +173,7 @@ namespace SilkySouls3.Services
 
             if (isEnabled)
             {
+                _reminderService.TrySetReminder();
                 var hookLoc = Hooks.SoulmassStaggerRemoval;
                 int endOfFuncOffset = 0x5A;
                 var codeBytes = AsmLoader.GetAsmBytes(AsmScript.CinderSoulmassRemoval);
@@ -194,7 +195,7 @@ namespace SilkySouls3.Services
 
         public void ToggleCinderStagger(bool isEnabled)
         {
-            _reminderService.TrySetReminder();
+            if (isEnabled) _reminderService.TrySetReminder();
 
             var npcParam = _paramService.GetParamRow((int)Param.NpcParam, CinderNpcParamId);
             _paramService.Write(npcParam, StaggerParamOffset, isEnabled ? 0 : 5360);
